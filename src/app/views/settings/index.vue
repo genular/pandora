@@ -77,7 +77,7 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix"><span>Subscription</span></div>
                     <div>
-                        <el-button type="primary" :disabled="this.$config.isDemoServer == true" @click="generatePortalSession">Manage your subscription</el-button>
+                        <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="generatePortalSession">Manage your subscription</el-button>
                     </div>
                 </el-card>
                 <el-card class="box-card" style="margin-top: 15px;">
@@ -89,7 +89,7 @@
                 </el-card>
                 <el-card class="box-card" style="margin-top: 15px;">
                     <div slot="header" class="clearfix"><span>Danger area</span></div>
-                    <div><el-button :disabled="this.$config.isDemoServer == true" type="error">Delete your account</el-button></div>
+                    <div><el-button :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" type="error">Delete your account</el-button></div>
                 </el-card>
             </el-col>
         </el-row>

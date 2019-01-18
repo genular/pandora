@@ -28,7 +28,7 @@
                         <span>create new account?</span>
                     </el-col>
                     <el-col :span="12" class="info-button">
-                        <el-button class="button-register" :disabled="this.$config.isDemoServer == true" style="height: 40px;" @click.prevent.stop="navigateTo('register&usertype=private&step=0')">Sign up now</el-button>
+                        <el-button class="button-register" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" style="height: 40px;" @click.prevent.stop="navigateTo('register&usertype=private&step=0')">Sign up now</el-button>
                     </el-col>
                 </el-row>
             </el-col>
