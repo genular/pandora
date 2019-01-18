@@ -432,15 +432,16 @@ export default {
     methods: {
         fillDemoData(dataStep) {
             this.userForm.username = "demouser";
-            this.userForm.email_adress = "youremail@here.com";
+            this.userForm.email_adress = "";
             this.userForm.firstName = "John";
             this.userForm.lastName = "Doe"; 
             this.userForm.phoneNumber = "+358502818692";
             this.userForm.password = "demouser";
-            this.userForm.validated = 6;
+            // Should be 6 to pass, but we don't want to validate email automatically
+            this.userForm.validated = 5;
             this.userForm.org_invite_code = Math.random().toString(36).substring(7);
             for (const name in this.validation["userForm"]) {
-                if (this.validation["userForm"].hasOwnProperty(name)) {
+                if (name !== "email" && this.validation["userForm"].hasOwnProperty(name)) {
                     this.validation["userForm"][name] = "el-input__icon el-icon-success";
                 }
             }
