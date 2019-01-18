@@ -1,0 +1,172 @@
+{
+    "name": "simon-frontend",
+    "productName": "SIMON",
+    "description": "SIMON",
+    "version": "0.1.0",
+    "private": true,
+    "author": "Ivan Tomic <info@genular.com>",
+    "copyright": "Copyright © 2018 Ivan Tomic <info@genular.com> All rights reserved.",
+    "homepage": "http://genular.com",
+    "repository": "https://github.com/LogIN-/genular-frontend",
+    "main": "compiled/electron/background.bundle.js",
+    "browserslist": "since 2018",
+    "build": {
+        "compression": "store",
+        "appId": "com.genular.simon-frontend",
+        "files": [
+            "compiled/**/*",
+            "node_modules/**/*",
+            "package.json"
+        ],
+        "dmg": {
+            "contents": [
+                {
+                    "x": 130,
+                    "y": 220
+                },
+                {
+                    "x": 410,
+                    "y": 220,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
+        },
+        "win": {
+            "target": [
+                "nsis"
+            ]
+        },
+        "linux": {
+            "target": [
+                "AppImage"
+            ],
+            "category": "Education"
+        },
+        "directories": {
+            "buildResources": "static"
+        },
+        "publish": {
+            "provider": "github"
+        }
+    },
+    "scripts": {
+        "postinstall": "electron-builder install-app-deps",
+        "start:web": "webpack-dev-server --progress --colors --config=.webpack-config/webpack.app.config.js --env=development --target=web",
+        "webpack:web:dev": "webpack --config=.webpack-config/webpack.app.config.js --env=development --target=web",
+        "start:electron": "node .webpack-config/start.js --env=development --target electron",
+        "start:prod": "node .webpack-config/start.js --env=production --target electron",
+        "release": "run -s webpack && electron-builder",
+        "webpack:electron:dev": "webpack --config=.webpack-config/webpack.app.config.js --env=development --target=electron",
+        "webpack:electron:prod": "webpack --config=.webpack-config/webpack.app.config.js --env=production --target=electron",
+        "webpack:web:prod": "webpack --config=.webpack-config/webpack.app.config.js --env=production --target=web",
+        "pack": "run-s webpack:compile private:build:all",
+        "pack:mac": "run-s webpack:prod private:build:mac",
+        "pack:win": "run-s webpack:prod private:build:win",
+        "pack:linux": " run-s webpack:prod private:build:linux",
+        "private:build:all": "electron-builder -mwl",
+        "private:build:mac": "electron-builder --mac",
+        "private:build:win": "electron-builder --win",
+        "private:build:linux": "cross-env DEBUG=true electron-builder --linux"
+    },
+    "dependencies": {
+        "accounting": "^0.4.1",
+        "axios": "^0.18.0",
+        "babel-polyfill": "^6.26.0",
+        "clipboard": "^2.0.1",
+        "crypto-js": "^3.1.9-1",
+        "dropzone": "^5.5.1",
+        "echarts": "^4.2.0-rc.2",
+        "element-ui": "^2.4.11",
+        "file-saver": "^1.3.8",
+        "flag-icon-css": "^3.0.0",
+        "font-awesome": "^4.7.0",
+        "is-electron-renderer": "^2.0.1",
+        "is-url": "^1.2.4",
+        "lodash": "^4.17.10",
+        "material-design-icons": "^3.0.1",
+        "mockjs": "^1.0.1-beta3",
+        "moment": "^2.22.2",
+        "normalize.css": "^8.0.0",
+        "nprogress": "^0.2.0",
+        "store": "^2.0.12",
+        "uuid": "^3.3.2",
+        "vue": "^2.5.16",
+        "vue-count-to": "^1.0.13",
+        "vue-highlightjs": "^1.3.3",
+        "vue-i18n": "^8.0.0",
+        "vue-particles": "^1.0.9",
+        "vue-router": "^3.0.1",
+        "vuedraggable": "^2.16.0",
+        "vuex": "^3.0.1",
+        "whatwg-fetch": "^2.0.4",
+        "xlsx": "^0.13.1"
+    },
+    "peerDependencies": {
+        "node-sass": "^4.7.2"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-core": "^6.26.3",
+        "babel-eslint": "^8.2.5",
+        "babel-helper-vue-jsx-merge-props": "^2.0.3",
+        "babel-jest": "^23.2.0",
+        "babel-loader": "^7.1.4",
+        "babel-plugin-add-module-exports": "^0.2.1",
+        "babel-plugin-syntax-dynamic-import": "^6.18.0",
+        "babel-plugin-syntax-jsx": "^6.18.0",
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+        "babel-plugin-transform-runtime": "^6.23.0",
+        "babel-plugin-transform-vue-jsx": "^3.7.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-stage-0": "^6.24.1",
+        "babel-preset-stage-2": "^6.24.1",
+        "babel-preset-stage-3": "^6.24.1",
+        "babel-register": "^6.26.0",
+        "clean-webpack-plugin": "^0.1.19",
+        "compression-webpack-plugin": "^1.1.11",
+        "copy-webpack-plugin": "^4.5.2",
+        "cross-env": "^5.2.0",
+        "css-loader": "^0.28.11",
+        "electron": "^2.0.4",
+        "electron-builder": "^20.19.1",
+        "electron-debug": "^2.0.0",
+        "electron-devtools-installer": "^2.2.4",
+        "eslint": "^5.1.0",
+        "eslint-config-prettier": "^2.9.0",
+        "eslint-friendly-formatter": "^4.0.1",
+        "eslint-loader": "^2.0.0",
+        "eslint-plugin-prettier": "^2.6.2",
+        "eslint-plugin-vue": "^4.7.0",
+        "file-loader": "^1.1.11",
+        "friendly-errors-webpack-plugin": "^1.7.0",
+        "fs-jetpack": "^1.3.0",
+        "html-webpack-plugin": "^3.2.0",
+        "mini-css-extract-plugin": "^0.4.1",
+        "minimist": "^1.2.0",
+        "node-sass": "^4.9.0",
+        "npm-run-all": "^4.1.3",
+        "prettier": "prettier/prettier#master",
+        "resolve-url-loader": "^2.3.0",
+        "sass-loader": "^7.0.3",
+        "script-loader": "^0.7.2",
+        "source-map-support": "^0.5.6",
+        "spectron": "^3.8.0",
+        "style-loader": "^0.21.0",
+        "uglifyjs-webpack-plugin": "^1.2.7",
+        "url-loader": "^1.0.1",
+        "vue-devtools": "^4.1.4",
+        "vue-eslint-parser": "^3.1.1",
+        "vue-hot-reload-api": "^2.3.0",
+        "vue-html-loader": "^1.2.4",
+        "vue-loader": "^15.2.4",
+        "vue-style-loader": "^4.1.0",
+        "vue-template-compiler": "^2.5.16",
+        "webpack": "^4.14.0",
+        "webpack-bundle-analyzer": "^2.13.1",
+        "webpack-cli": "^3.0.8",
+        "webpack-dev-server": "^3.1.4",
+        "webpack-merge": "^4.1.3",
+        "webpack-node-externals": "^1.7.2"
+    }
+}

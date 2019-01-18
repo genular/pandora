@@ -1,0 +1,22 @@
+node_modules
+
+.DS_Store
+Thumbs.db
+
+*.log
+
+/dist
+/temp
+
+# ignore everything in 'app' folder what had been generated from 'src' folder
+/compiled/app.js
+/compiled/background.js
+/compiled/**/*.map
+/compiled/*
+/theme
+
+*.sublime-workspace
+
+
+env_development.json
+env_production.json

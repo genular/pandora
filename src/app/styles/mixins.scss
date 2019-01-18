@@ -1,0 +1,108 @@
+// MIXIN FOR RESPONSIVE CSS GRID;
+// Extra small screen / phone
+$xs: 0; // Small screen / phone
+$sm: 480px; // Medium screen / tablet
+$md: 768px; // Large screen / desktop
+$lg: 1024px; // // Extra large screen / wide desktop
+// $xl: 1200px;
+@mixin respond-to($media...) {
+    @for $i from 1 through length($media) {
+        @include privat-respond-to(nth($media, $i)) {
+            @content;
+        }
+        ;
+    }
+}
+
+@mixin privat-respond-to($current-media) {
+    @if $current-media=='xs' {
+        @media only screen and (max-width: $sm) {
+            @content;
+        }
+    }
+
+    @else if $current-media=='sm' {
+        @media only screen and (min-width: $sm + 1) {
+            @content;
+        }
+    }
+
+    @else if $current-media=='md' {
+        @media only screen and (min-width: $md + 1) {
+            @content;
+        }
+    }
+
+    @else if $current-media=='lg' {
+        @media only screen and (min-width: $lg + 1) {
+            @content;
+        }
+    }
+
+    @else if $current-media=='xl' {
+        @media only screen and (min-width: $xl) {
+            @content;
+        }
+    }
+}
+
+@mixin clearfix {
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+@mixin scrollBar {
+    &::-webkit-scrollbar-track-piece {
+        background: #d3dce6;
+    }
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #99a9bf;
+        border-radius: 20px;
+    }
+}
+
+@mixin relative {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+@mixin pct($pct) {
+    width: #{$pct};
+    position: relative;
+    margin: 0 auto;
+}
+
+@mixin triangle($width, $height, $color, $direction) {
+    $width: $width/2;
+    $color-border-style: $height solid $color;
+    $transparent-border-style: $width solid transparent;
+    height: 0;
+    width: 0;
+    @if $direction==up {
+        border-bottom: $color-border-style;
+        border-left: $transparent-border-style;
+        border-right: $transparent-border-style;
+    }
+    @else if $direction==right {
+        border-left: $color-border-style;
+        border-top: $transparent-border-style;
+        border-bottom: $transparent-border-style;
+    }
+    @else if $direction==down {
+        border-top: $color-border-style;
+        border-left: $transparent-border-style;
+        border-right: $transparent-border-style;
+    }
+    @else if $direction==left {
+        border-right: $color-border-style;
+        border-top: $transparent-border-style;
+        border-bottom: $transparent-border-style;
+    }
+}

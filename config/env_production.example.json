@@ -1,0 +1,22 @@
+{
+    "name": "production",
+    "isDemoServer": true,
+    "productionTip": false,
+    "developer":
+    {
+        "productName": "SIMON",
+        "companyName": "Genular",
+        "submitURL": "https://genular.com/simon-crash-report",
+        "uploadToServer": false
+    },
+    "server":
+    {
+        "frontend": "PLACEHOLDER",
+        "backend": "PLACEHOLDER",
+        "homepage": "PLACEHOLDER"
+    },
+    "api": {
+        "chargebee_site_name": "PLACEHOLDER",
+        "chargebee": "PLACEHOLDER"
+    }
+}

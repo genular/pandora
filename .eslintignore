@@ -1,0 +1,4 @@
+dist/*.js
+compiled/*.js
+.electron-simon/*.js
+src/app/assets
