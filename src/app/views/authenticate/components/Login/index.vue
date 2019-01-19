@@ -108,6 +108,12 @@ export default {
                         })
                         .catch(error => {
                             console.log(error);
+                            this.$message({
+                                message: "Username password combination is not correct!",
+                                type: "error",
+                                duration: 2500,
+                                showClose: true
+                            });
                             this.loadingWizard = false;
                         });
                 } else {

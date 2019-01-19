@@ -725,6 +725,7 @@ export default {
                 }
             } else if (validationField === "email") {
                 if (validateEmail(validationValue) === false) {
+                    console.log("Cannot validate email: " + validationValue);
                     if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
                         this.validation[formName][validationField] = "el-input__icon el-icon-error";
                         this[formName].validated -= 1;
