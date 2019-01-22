@@ -1,7 +1,7 @@
 # Localization
 
 ## Implementation
-
+Locales defined in `src/app/translations/supported-locales.json` must match ones defined in `Crowdin`
 
 ## Extract new/edited English strings for translation
 These are compiled automatically into JSON message files by custom webpack plugin `src/app/translations/scripts/prepareMessagesPlugin.js`.

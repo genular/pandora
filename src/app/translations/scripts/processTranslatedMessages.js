@@ -1,48 +1,45 @@
 /*
-* @Author: LogIN-
-* @Date:   2019-01-22 11:54:49
-* @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-22 13:25:01
-*/
-const fs = require('fs')
-const glob = require('glob')
+ * @Author: LogIN-
+ * @Date:   2019-01-22 11:54:49
+ * @Last Modified by:   LogIN-
+ * @Last Modified time: 2019-01-22 13:58:17
+ */
+const fs = require("fs");
+const glob = require("glob");
 const path = require("path");
-const supportedLocales = require('../supported-locales.json')
-const defaultMessages = require('../all-messages.json')
-const translatedMessages = {}
-const unsupportedLocales = []
+const supportedLocales = require(path.resolve(__dirname, "../supported-locales.json"));
+const defaultMessages = require(path.resolve(__dirname, "../all-messages.json"));
+const translatedMessages = {};
+const unsupportedLocales = [];
 
 const filePattern = path.resolve(__dirname, "../") + "/languages/**/*.json";
+const outputDir = path.resolve(__dirname, "../");
 
-glob.sync(filePattern)
-  .map((filePath) => {
+glob.sync(filePattern).map(filePath => {
+	const file = fs.readFileSync(filePath, "utf8");
+	const contents = JSON.parse(file);
+	const locale = filePath.substring(filePath.indexOf("/languages/") + 11, filePath.lastIndexOf("/"));
 
-    const file = fs.readFileSync(filePath, 'utf8')
-    const contents = JSON.parse(file)
-    const locale = filePath.substring( filePath.indexOf('/languages/') + 11, filePath.lastIndexOf('/') )
+	if (locale && contents) {
+		if (supportedLocales.includes(locale)) {
+			translatedMessages[locale] = contents;
+			console.info(`✅  ${locale}`);
+		} else {
+			unsupportedLocales.push(locale);
+		}
+	} else {
+		console.info(`Error processing translations for ${locale}`);
+	}
+});
 
-    if (locale && contents) {
-
-      if (supportedLocales.includes(locale)) {
-        translatedMessages[locale] = contents
-        console.info(`✅  ${locale}`)
-      } else {
-        unsupportedLocales.push(locale)
-      }
-
-    } else {
-      console.info(`❌  Error processing translations for ${locale}`)
-    }
-    
-  })
-
-translatedMessages['en-US'] = defaultMessages
+translatedMessages["en-US"] = defaultMessages;
 
 if (unsupportedLocales.length) {
-  console.info(`\nNOTE: translations not processed for these unsupported locales:`)
-  unsupportedLocales.map((locale) => console.info(`❌  ${locale} is not supported`))
+	console.info(`\nNOTE: translations not processed for these unsupported locales:`);
+	unsupportedLocales.map(locale => console.info(`${locale} is not supported`));
 }
 
-fs.writeFileSync('./translations/translated-messages.json', JSON.stringify(translatedMessages, null, 2))
+const translationsPath = outputDir + "/translated-messages.json";
+fs.writeFileSync(translationsPath, JSON.stringify(translatedMessages, null, 2));
 
-console.info('\n✅  Updated: /translations/translated-messages.json\n')
+console.info("\nUpdated: " + translationsPath + "\n");

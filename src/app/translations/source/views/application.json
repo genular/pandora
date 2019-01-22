@@ -1,8 +1,8 @@
 {
     "language": {
         "changed": "Language successfully switched",
-        "en": "English",
-        "de": "Deutsch"
+        "en-US": "English",
+        "de-DE": "German"
     },
     "route": {
         "dashboard": "Dashboard",

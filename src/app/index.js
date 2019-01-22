@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2019-01-14 16:20:23
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-22 10:45:28
+* @Last Modified time: 2019-01-22 14:22:53
 */
 import "whatwg-fetch";
 
@@ -26,6 +26,7 @@ import store from "./store";
 import locale from "element-ui/lib/locale/lang/en";
 
 import i18n from "./translations"; // Internationalization
+console.log(i18n);
 
 import "@/styles/main.scss"; // require styles using webpack alias
 
