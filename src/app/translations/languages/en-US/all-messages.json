@@ -1,7 +1,7 @@
 {
-  "language.changed": "Language successfully switched",
+  "language.changed": "Language successfully updated",
   "language.en": "English",
-  "language.de": "Deutsch",
+  "language.de": "German",
   "route.dashboard": "Dashboard",
   "route.settings": "Settings",
   "route.workspace": "Workspace",
