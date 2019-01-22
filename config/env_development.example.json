@@ -16,6 +16,7 @@
         "homepage": "PLACEHOLDER"
     },
     "api": {
+        "secret": "PLACEHOLDER",
         "chargebee_site_name": "PLACEHOLDER",
         "chargebee": "PLACEHOLDER"
     }

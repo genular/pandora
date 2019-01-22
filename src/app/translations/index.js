@@ -1,3 +1,9 @@
+/*
+* @Author: LogIN-
+* @Date:   2018-10-31 11:23:36
+* @Last Modified by:   LogIN-
+* @Last Modified time: 2019-01-22 12:01:29
+*/
 import Vue from "vue";
 import VueI18n from "vue-i18n";
 
@@ -7,8 +13,10 @@ import estore from "@/utils/storage/settings";
 import elementEnLocale from "element-ui/lib/locale/lang/en"; // element-ui lang
 import elementDeLocale from "element-ui/lib/locale/lang/de"; // element-ui lang
 
-import enLocale from "./locale/en";
-import deLocale from "./locale/de";
+
+import * as supportedLocales from './supported-locales.json';
+
+import * as enLocale from './source/views/application.json';
 
 Vue.use(VueI18n);
 
@@ -16,10 +24,6 @@ const messages = {
     en: {
         ...enLocale,
         ...elementEnLocale
-    },
-    de: {
-        ...deLocale,
-        ...elementDeLocale
     }
 };
 

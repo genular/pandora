@@ -1,3 +1,9 @@
+/*
+* @Author: LogIN-
+* @Date:   2019-01-14 16:20:23
+* @Last Modified by:   LogIN-
+* @Last Modified time: 2019-01-22 10:45:28
+*/
 import "whatwg-fetch";
 
 const isRenderer = require("is-electron-renderer");
@@ -19,7 +25,7 @@ import store from "./store";
 
 import locale from "element-ui/lib/locale/lang/en";
 
-import i18n from "./lang"; // Internationalization
+import i18n from "./translations"; // Internationalization
 
 import "@/styles/main.scss"; // require styles using webpack alias
 

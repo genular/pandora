@@ -1,3 +1,15 @@
+/*
+* @Author: LogIN-
+* @Date:   2019-01-22 11:52:45
+* @Last Modified by:   LogIN-
+* @Last Modified time: 2019-01-22 13:23:28
+*/
+/*
+ * @Author: LogIN-
+ * @Date:   2019-01-18 08:41:04
+ * @Last Modified by:   LogIN-
+ * @Last Modified time: 2019-01-22 11:52:45
+ */
 "use strict";
 const path = require("path");
 
@@ -24,6 +36,11 @@ const OUTPUT_DIR = path.resolve(__dirname, "../" + output);
 const SRC_DIR = path.resolve(__dirname, "../src");
 
 const packageInfo = require(path.resolve(__dirname, `../package.json`));
+
+const prepareMessagesPlugin = require(path.resolve(
+    __dirname,
+    `../src/app/translations/scripts/prepareMessagesPlugin.js`
+));
 
 module.exports = env => {
     const config = {
@@ -151,6 +168,8 @@ module.exports = env => {
                 filename: env == "development" ? "[name].css" : "[name].[hash].css",
                 chunkFilename: env == "development" ? "[id].css" : "[id].[hash].css"
             }),
+            // Prepare translations files
+            new prepareMessagesPlugin(),
             new HtmlWebpackPlugin({
                 title: "SIMON",
                 template: SRC_DIR + "/index.html",

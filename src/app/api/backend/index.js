@@ -1,14 +1,16 @@
 /*
 * @Author: LogIN-
-* @Date:   2018-03-22 13:10:00
+* @Date:   2019-01-22 10:26:55
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2018-07-24 09:48:46
+* @Last Modified time: 2019-01-22 10:27:01
 */
 import request from "@/utils/request";
 const baseUrlPath = "/backend";
 
 /**
- * Login User to back-end and create Auth Token
+ * Login user to back-end and create Auth Token in the database
+ * @param {string} username - Username of the current user
+ * @param {string} password - Password of the current user
  */
 export function userLogin(username, password) {
     const data = {
@@ -21,7 +23,9 @@ export function userLogin(username, password) {
         data
     });
 }
-
+/**
+ * @return {[type]}
+ */
 export function userLogout() {
     return request({
         url: baseUrlPath + "/user/logout",
@@ -48,7 +52,11 @@ export function userDetials() {
 }
 /**
  * Checks if value is available in specific Database Table, like user-name, email address
- *
+ * 
+ * @param  {[string]} validationTable
+ * @param  {[string]} validationField
+ * @param  {[string]} validationValue
+ * @return {[type]}
  */
 export function checkDatabaseAvailability(validationTable, validationField, validationValue) {
     return request({
@@ -73,7 +81,9 @@ export function retrieveAllActivePlans(customerType) {
         method: "GET"
     });
 }
-
+/**
+ * @return {[type]}
+ */
 export function fetchServerStats() {
     return request({
         url: baseUrlPath + "/dashboard/stats",
