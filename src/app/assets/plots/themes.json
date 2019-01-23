@@ -1,0 +1,38 @@
+[
+    {
+        "id": "theme_gray",
+        "name": "Gray",
+        "description": "The signature theme with a grey background and white gridlines, designed to put the data forward yet make comparisons easy."
+    },
+    {
+        "id": "theme_bw",
+        "name": "Black&White",
+        "description": "The classic dark-on-light theme. May work better for presentations displayed with a projector."
+    },
+    {
+        "id": "theme_linedraw",
+        "name": "Line Draw",
+        "description": "A theme with only black lines of various widths on white backgrounds, reminiscent of a line drawings. Serves a purpose similar to bw. Note that this theme has some very thin lines (<< 1 pt) which some journals may refuse."
+    },
+    {
+        "id": "theme_light",
+        "name": "Light",
+        "description": "A theme similar to linedraw but with light grey lines and axes, to direct more attention towards the data."
+    },
+    {
+        "id": "theme_dark",
+        "name": "Dark",
+        "description": "The dark cousin of light, with similar line sizes but a dark background. Useful to make thin coloured lines pop out."
+    },
+    {
+        "id": "theme_minimal",
+        "name": "Minimal",
+        "description": "A minimalistic theme with no background annotations."
+    },
+    {
+        "id": "theme_classic",
+        "name": "Classic",
+        "description": "A classic-looking theme, with x and y axis lines and no gridlines."
+    },
+    { "id": "theme_void", "name": "Empty", "description": "A completely empty theme." }
+]

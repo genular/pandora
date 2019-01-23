@@ -1,0 +1,4 @@
+dist/*.js
+compiled/*.js
+.webpack-config/*.js
+src/app/assets

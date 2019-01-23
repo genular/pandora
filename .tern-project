@@ -1,0 +1,15 @@
+{
+    "plugins": {
+     "node": {},
+     "modules": {},
+     "requirejs": {},
+     "es_modules": {},
+     "jasmine": {}
+    },
+    "libs": [
+        "ecma5",
+        "ecma6",
+         "browser"
+    ],
+    "ecmaVersion": 6
+}

@@ -1,0 +1,247 @@
+[
+    {
+        "id": "BrBG",
+        "value": "BrBG",
+        "category": "div",
+        "maxcolors": 11,
+        "colorblind": true
+    },
+    {
+        "id": "PiYG",
+        "value": "PiYG",
+        "category": "div",
+        "maxcolors": 11,
+        "colorblind": true
+    },
+    {
+        "id": "PRGn",
+        "value": "PRGn",
+        "category": "div",
+        "maxcolors": 11,
+        "colorblind": true
+    },
+    {
+        "id": "PuOr",
+        "value": "PuOr",
+        "category": "div",
+        "maxcolors": 11,
+        "colorblind": true
+    },
+    {
+        "id": "RdBu",
+        "value": "RdBu",
+        "category": "div",
+        "maxcolors": 11,
+        "colorblind": true
+    },
+    {
+        "id": "RdGy",
+        "value": "RdGy",
+        "category": "div",
+        "maxcolors": 11,
+        "colorblind": false
+    },
+    {
+        "id": "RdYlBu",
+        "value": "RdYlBu",
+        "category": "div",
+        "maxcolors": 11,
+        "colorblind": true
+    },
+    {
+        "id": "RdYlGn",
+        "value": "RdYlGn",
+        "category": "div",
+        "maxcolors": 11,
+        "colorblind": false
+    },
+    {
+        "id": "Spectral",
+        "value": "Spectral",
+        "category": "div",
+        "maxcolors": 11,
+        "colorblind": false
+    },
+    {
+        "id": "Accent",
+        "value": "Accent",
+        "category": "qual",
+        "maxcolors": 8,
+        "colorblind": false
+    },
+    {
+        "id": "Dark2",
+        "value": "Dark2",
+        "category": "qual",
+        "maxcolors": 8,
+        "colorblind": true
+    },
+    {
+        "id": "Paired",
+        "value": "Paired",
+        "category": "qual",
+        "maxcolors": 12,
+        "colorblind": true
+    },
+    {
+        "id": "Pastel1",
+        "value": "Pastel1",
+        "category": "qual",
+        "maxcolors": 9,
+        "colorblind": false
+    },
+    {
+        "id": "Pastel2",
+        "value": "Pastel2",
+        "category": "qual",
+        "maxcolors": 8,
+        "colorblind": false
+    },
+    {
+        "id": "Set1",
+        "value": "Set1",
+        "category": "qual",
+        "maxcolors": 9,
+        "colorblind": false
+    },
+    {
+        "id": "Set2",
+        "value": "Set2",
+        "category": "qual",
+        "maxcolors": 8,
+        "colorblind": true
+    },
+    {
+        "id": "Set3",
+        "value": "Set3",
+        "category": "qual",
+        "maxcolors": 12,
+        "colorblind": false
+    },
+    {
+        "id": "Blues",
+        "value": "Blues",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "BuGn",
+        "value": "BuGn",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "BuPu",
+        "value": "BuPu",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "GnBu",
+        "value": "GnBu",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "Greens",
+        "value": "Greens",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "Greys",
+        "value": "Greys",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "Oranges",
+        "value": "Oranges",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "OrRd",
+        "value": "OrRd",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "PuBu",
+        "value": "PuBu",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "PuBuGn",
+        "value": "PuBuGn",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "PuRd",
+        "value": "PuRd",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "Purples",
+        "value": "Purples",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "RdPu",
+        "value": "RdPu",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "Reds",
+        "value": "Reds",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "YlGn",
+        "value": "YlGn",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "YlGnBu",
+        "value": "YlGnBu",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "YlOrBr",
+        "value": "YlOrBr",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    },
+    {
+        "id": "YlOrRd",
+        "value": "YlOrRd",
+        "category": "seq",
+        "maxcolors": 9,
+        "colorblind": true
+    }
+]

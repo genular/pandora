@@ -1,0 +1,5 @@
+Main text Font: Reislust
+Main Font Color HEX: #ffffff
+Slogan Text Font: Coqueta
+Slogan Font Color HEX: #ffffff
+Symbol Color HEX: #ffffff

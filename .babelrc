@@ -1,0 +1,19 @@
+{
+    "presets": [
+        ["env",
+        {
+            "modules": false,
+            "targets":
+            {
+                firefox: 62,
+                uglify: true
+
+            },
+            useBuiltIns: true,
+            debug: true
+        }],
+        "stage-3"
+    ],
+    "plugins": ["add-module-exports", "transform-vue-jsx", "transform-runtime", "transform-es2015-modules-commonjs", "syntax-dynamic-import"],
+    comments: false
+}
