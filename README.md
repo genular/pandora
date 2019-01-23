@@ -70,7 +70,7 @@ If you believe you don't have necessarily skills to do so, you could always ask 
     # In case you want to use different OS (e.g. Fedora, CentOS and RHEL)
     # please follow this install script and adjust it to your OS
     cd /tmp
-    wget https://github.com/LogIN-/simon-backend/blob/master/documentation/installation/install_dependencies.sh
+    wget https://github.com/genular/simon-backend/blob/master/documentation/installation/install_dependencies.sh
     chmod 777 install_dependencies.sh
     
     # Start it and follow instructions
@@ -78,7 +78,7 @@ If you believe you don't have necessarily skills to do so, you could always ask 
 
     # Configure nginx virtual hosts and generate HTTPS certificates
     ## cd /etc/nginx/sites-available
-    wget https://github.com/LogIN-/simon-backend/blob/master/documentation/installation/nginx/vhosts.conf
+    wget https://github.com/genular/simon-backend/blob/master/documentation/installation/nginx/vhosts.conf
     ## Restart nginx and make sure domains are working
 
     # Generate certs using letsencrypt: https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04
@@ -127,28 +127,14 @@ If you believe you don't have necessarily skills to do so, you could always ask 
 Backend is made as multiple separate modules. You can run this modules on one machine or each on separate one.
 Analysis is made on multiple cloud servers in parallel to speed-up things, but can also be configured to run on same machine where backend is hosted.
 
-### Analysis backend - R
+### Analysis backend
 is compatible with any Cloud Provider that supports [openstack compute api](https://developer.openstack.org/api-ref/compute/).
 In following example we will use [Hetzner Cloud](https://www.hetzner.com/cloud) as a service provider.
 
-### Main system backend - PHP
-PHP 7.2.11
-
-### Plots backend - R
-
-### Data storage - S3
+### Data storage
 storage backend is compatible with any S3 object storage like provider.
 In following example we will use [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/)
 
-### Frontend interace - HTML/JS
-node v10.12.0
-
-[Element-theme](https://www.npmjs.com/package/element-theme)
-To generates default styles:
-```bash
-Just **change primary-color** in `./src/app/styles/element-variables.css` and run:
-npm run generate_theme
-```
 
 ## Translations
 Translations are managed in https://crowdin.com/project/genular
@@ -174,7 +160,7 @@ Tutorials | Help others use `SIMON` | Write a tutorial or record it, with exampl
 Organizing | Ask clarifying questions on recently opened issues to move the discussion forward | [Here](https://crowdin.com/project/genular)
 
 ## Browser Support
-Tested on `Firefox Quantum` 64 or above
+Tested on `Firefox Quantum 64` or above. As much as we like other browsers we are focusing here to primary provide support for open source ones.
 
 <!---
 ## Backers
@@ -185,7 +171,7 @@ Become a sponsor and get your logo on our README on Github with a link to your s
 -->
 
 ### Reaching Out
-If you'd like to start a conversation about `SIMON` feel free to e-mail me at [info@genular.com](mailto:info@genular.com)
+If you'd like to start a conversation feel free to e-mail me at [info@genular.com](mailto:info@genular.com)
 
 ## Security Vulnerabilities
 If you discover a security vulnerability within `SIMON`, please send e-mail to me at [info@genular.com](mailto:info@genular.com). All security vulnerabilities will be promptly addressed.

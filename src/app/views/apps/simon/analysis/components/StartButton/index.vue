@@ -116,6 +116,7 @@ import {
 
 import clipboard from "@/utils/clipboard";
 import { findObjectIndexByKey } from "@/utils/helpers";
+import { downloadFileTemplate } from "@/utils/templates.js";
 
 export default {
     name: "StartButton",
@@ -236,7 +237,7 @@ export default {
             const item = this.datasetResamples[resampleIndex]["data"][rowIndex];
 
             const downloadWindow = window.open("", "_blank");
-            downloadWindow.document.write("Generating download link, please wait...");
+            downloadWindow.document.write(downloadFileTemplate());
 
             ApiGenarateFileDownloadLink({ fileID: item.fileID })
                 .then(response => {

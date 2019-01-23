@@ -2,47 +2,67 @@
     <div class="datasetsTab-container">
         <el-row align="top">
             <el-col :span="24">
-
                 <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <span>1. Please select one dataset for exploration</span>
-                    </div>
-                    <el-table ref="resamplesTable"
-                        @sort-change="({ column, prop, order }) => { deepSort({ column, prop, order }, 'jobDetailsData', null, 'resamplesList', null, 'paginateResamples') }"
+                    <div slot="header" class="clearfix"><span>1. Please select one dataset for exploration</span></div>
+                    <el-table
+                        ref="resamplesTable"
+                        @sort-change="
+                            ({ column, prop, order }) => {
+                                deepSort(
+                                    { column, prop, order },
+                                    'jobDetailsData',
+                                    null,
+                                    'resamplesList',
+                                    null,
+                                    'paginateResamples'
+                                );
+                            }
+                        "
                         :data="displayResamples"
                         :row-class-name="resamplesTableRowClass"
-                         @row-click="selectResample"
-                         highlight-current-row
-                         height="300"
-                         max-height="300">
+                        @row-click="selectResample"
+                        highlight-current-row
+                        height="300"
+                        max-height="300"
+                    >
                         <el-table-column type="expand" style="padding: 0;">
                             <template slot-scope="props">
-                              <el-table
+                                <el-table
                                     :ref="'prop_table' + props.row.resampleID"
                                     :data="props.row.proportions"
-                                    class="proportionsTable">
-                                  <el-table-column  align="center" label="Class" prop="label">
+                                    class="proportionsTable"
+                                >
+                                    <el-table-column align="center" label="Class" prop="label">
                                         <template slot-scope="scope">
-                                            <span>{{scope.row.label}}</span>
+                                            <span>{{ scope.row.label }}</span>
                                         </template>
                                     </el-table-column>
                                     <!-- loop datasets (train/test) -->
-                                    <el-table-column v-for="(classesItem, classesIndex) in props.row.proportions[1].classes"
+                                    <el-table-column
+                                        v-for="(classesItem, classesIndex) in props.row.proportions[1].classes"
                                         :key="'props_dataset_' + classesIndex"
-                                        :label="classesIndex">
-                                           <!-- loop dataset classes - outcomes (high/low/global) -->
-                                           <el-table-column v-for="(classesSubItem, classesSubIndex) in classesItem"
-                                                :key="'props_dataset_classes_' + classesSubIndex"  
-                                                :label="classesSubIndex">
-                                                     <!-- loop dataset classes values (details / prop) -->
-                                                    <template slot-scope="scope">
-                                                        <div v-if="scope.row.classes[classesIndex][classesSubIndex]">
-                                                            <div v-for="(subItem, subItemIndex) in scope.row.classes[classesIndex][classesSubIndex]" style="text-align: center;">
-                                                                <span v-html="subItem"></span>
-                                                            </div>
-                                                        </div>
-                                                    </template>
-                                            </el-table-column>
+                                        :label="classesIndex"
+                                    >
+                                        <!-- loop dataset classes - outcomes (high/low/global) -->
+                                        <el-table-column
+                                            v-for="(classesSubItem, classesSubIndex) in classesItem"
+                                            :key="'props_dataset_classes_' + classesSubIndex"
+                                            :label="classesSubIndex"
+                                        >
+                                            <!-- loop dataset classes values (details / prop) -->
+                                            <template slot-scope="scope">
+                                                <div v-if="scope.row.classes[classesIndex][classesSubIndex]">
+                                                    <div
+                                                        v-for="(subItem, subItemIndex) in scope.row.classes[
+                                                            classesIndex
+                                                        ][classesSubIndex]"
+                                                        style="text-align: center;"
+                                                    >
+                                                        <span v-html="subItem"></span>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </el-table-column>
                                     </el-table-column>
                                 </el-table>
                             </template>
@@ -50,88 +70,136 @@
 
                         <el-table-column align="center" width="30">
                             <template slot-scope="scope">
-                                <div v-if="scope.row.dataSource = 1">
+                                <div v-if="(scope.row.dataSource = 1)">
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">
-                                            Initial
-                                        </div>
+                                        <div slot="content">Initial</div>
                                         <span class="el-icon-more"></span>
                                     </el-tooltip>
                                 </div>
                                 <div v-else>
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">
-                                            Predicted
-                                        </div>
+                                        <div slot="content">Predicted</div>
                                         <span class="el-icon-more-outline"></span>
                                     </el-tooltip>
                                 </div>
                             </template>
                         </el-table-column>
 
-                        <el-table-column  align="center" width="100" label="ID" prop="resampleID" sortable="custom">
+                        <el-table-column align="center" width="100" label="ID" prop="resampleID" sortable="custom">
                             <template slot-scope="scope">
-                                <span>{{scope.row.resampleID}}</span>
+                                <span>{{ scope.row.resampleID }}</span>
                             </template>
                         </el-table-column>
 
-                        <el-table-column  align="center" width="125" label="Features" sortable="custom">
+                        <el-table-column align="center" width="125" label="Features" sortable="custom">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.featuresTotal">{{scope.row.featuresTotal}}</span> <span v-else>N/A</span>
+                                <span v-if="scope.row.featuresTotal">{{ scope.row.featuresTotal }}</span>
+                                <span v-else>N/A</span>
                             </template>
                         </el-table-column>
 
-                        <el-table-column v-for="(performanceItem, performanceIndex) in jobDetailsData.performance"  
-                            :prop="'performance|'+performanceItem"
-                            :key="performanceItem + '_' + performanceIndex" 
+                        <el-table-column
+                            v-for="(performanceItem, performanceIndex) in jobDetailsData.performance"
+                            :prop="'performance|' + performanceItem"
+                            :key="performanceItem + '_' + performanceIndex"
                             :label="performanceItem"
                             sortable="custom"
                             @sort-orders="['ascending', 'descending']"
                             align="center"
-                            width="150">
+                            width="150"
+                        >
                             <template slot-scope="scope">
-                                <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">{{scope.row.performance[performanceItem]}}</span> <span v-else>N/A</span>
+                                <span
+                                    v-if="
+                                        typeof scope.row.performance !== 'undefined' &&
+                                            scope.row.performance[performanceItem]
+                                    "
+                                    >{{ scope.row.performance[performanceItem] }}</span
+                                >
+                                <span v-else>N/A</span>
                             </template>
                         </el-table-column>
 
-                        <el-table-column align="center" width="150" label="Total samples" prop="samplesTotal" sortable="custom">
+                        <el-table-column
+                            align="center"
+                            width="150"
+                            label="Total samples"
+                            prop="samplesTotal"
+                            sortable="custom"
+                        >
                             <template slot-scope="scope">
-                                <span v-if="scope.row.samplesTotal">{{scope.row.samplesTotal}}</span> <span v-else>N/A</span>
+                                <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span>
+                                <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" width="170" label="Samples Training"  prop="samplesTraining" sortable="custom">
+                        <el-table-column
+                            align="center"
+                            width="170"
+                            label="Samples Training"
+                            prop="samplesTraining"
+                            sortable="custom"
+                        >
                             <template slot-scope="scope">
-                                 <span v-if="scope.row.samplesTraining">{{scope.row.samplesTraining}}</span> <span v-else>N/A</span>
+                                <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span>
+                                <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" width="170" label="Samples Testing"  prop="samplesTesting" sortable="custom">
+                        <el-table-column
+                            align="center"
+                            width="170"
+                            label="Samples Testing"
+                            prop="samplesTesting"
+                            sortable="custom"
+                        >
                             <template slot-scope="scope">
-                             <span v-if="scope.row.samplesTesting">{{scope.row.samplesTesting}}</span> <span v-else>N/A</span>
+                                <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span>
+                                <span v-else>N/A</span>
                             </template>
                         </el-table-column>
 
-                        <el-table-column align="center" width="175" label="Models submitted" prop="modelsTotal" sortable="custom">
+                        <el-table-column
+                            align="center"
+                            width="175"
+                            label="Models submitted"
+                            prop="modelsTotal"
+                            sortable="custom"
+                        >
                             <template slot-scope="scope">
-                                <span v-if="scope.row.modelsTotal">{{scope.row.modelsTotal}}</span> <span v-else>N/A</span>
+                                <span v-if="scope.row.modelsTotal">{{ scope.row.modelsTotal }}</span>
+                                <span v-else>N/A</span>
                             </template>
                         </el-table-column>
 
                         <el-table-column class-name="settings" fixed="right" label="Operations" width="120">
                             <template slot-scope="scope">
-                                <el-button size="mini" style="float: left;" type="primary" plain icon="el-icon-download" @click="handleClick(scope.$index, scope.row)"></el-button>
-                                <el-button size="mini" style="float: right;" type="danger" plain icon="el-icon-delete" @click="handleClick(scope.$index, scope.row)"></el-button>
+                                <el-button
+                                    size="mini"
+                                    style="float: left;"
+                                    type="primary"
+                                    plain
+                                    icon="el-icon-download"
+                                    @click="handleOperations('download', scope.row)"
+                                ></el-button>
+                                <el-button
+                                    size="mini"
+                                    style="float: right;"
+                                    type="danger"
+                                    plain
+                                    icon="el-icon-delete"
+                                    @click="handleOperations('delete', scope.row)"
+                                ></el-button>
                             </template>
                         </el-table-column>
-
                     </el-table>
-                    <el-pagination 
+                    <el-pagination
                         background
                         @current-change="paginateResamples"
                         :current-page.sync="paginateResamplesData.currentPage"
                         :page-size="paginateResamplesData.page_size"
                         layout="total, prev, pager, next, jumper"
                         :total="paginateResamplesData.total_items"
-                        :disabled="paginateResamplesData.total_items <= 5">
+                        :disabled="paginateResamplesData.total_items <= 5"
+                    >
                     </el-pagination>
                 </el-card>
             </el-col>
@@ -143,66 +211,110 @@
                         <span>2. Please select as much as models you wish to compare</span>
                     </div>
                     <!-- Model Details data -->
-                    <el-table ref="modelDetailsTable"
+                    <el-table
+                        ref="modelDetailsTable"
                         :data="displayModels"
                         @select-all="handleModelsSelectionChange"
                         @select="handleModelsSelectionChange"
-                        @sort-change="({ column, prop, order }) => { deepSort({ column, prop, order }, 'jobDetailsData', null, 'resampleModels', 'selectedFeatureSetId', 'paginateModels') }"
+                        @sort-change="
+                            ({ column, prop, order }) => {
+                                deepSort(
+                                    { column, prop, order },
+                                    'jobDetailsData',
+                                    null,
+                                    'resampleModels',
+                                    'selectedFeatureSetId',
+                                    'paginateModels'
+                                );
+                            }
+                        "
                         row-key="modelID"
                         empty-text="Nothing to display"
                         height="300"
-                        max-height="300">
-
-                       <el-table-column
+                        max-height="300"
+                    >
+                        <el-table-column
                             type="selection"
                             reserve-selection
                             @selectable="checkModelsSelectionChange"
                             width="40"
-                            fixed>
+                            fixed
+                        >
                         </el-table-column>
 
+                        <el-table-column
+                            fixed
+                            width="150"
+                            prop="modelName"
+                            sortable
+                            :label="$t('views.dashboard.jobs.table.modal_info.methods.method')"
+                        >
+                            <template slot-scope="scope">
+                                <div v-if="scope.row.status > 0" style="float: left;">
+                                    <span class="el-icon-success"></span>
+                                </div>
+                                <div v-else style="float: left;">
+                                    <el-tooltip class="item" effect="dark" placement="top-start">
+                                        <div
+                                            slot="content"
+                                            v-html="
+                                                $t('views.dashboard.jobs.table.modal_info.methods.model_error_info')
+                                            "
+                                        ></div>
+                                        <span class="el-icon-warning"></span>
+                                    </el-tooltip>
+                                </div>
+                                <span v-if="scope.row.modelName" style="padding-left: 10px;">{{
+                                    scope.row.modelName
+                                }}</span>
+                                <span v-else style="padding-left: 10px;">N/A</span>
+                            </template>
+                        </el-table-column>
 
-                            <el-table-column fixed width="150" prop="modelName" sortable :label="$t('views.dashboard.jobs.table.modal_info.methods.method')">
-                                    <template slot-scope="scope">
-                                        <div v-if="scope.row.status > 0" style="float: left;">
-                                            <span class="el-icon-success"></span>
-                                        </div>
-                                        <div v-else style="float: left;">
-                                            <el-tooltip class="item" effect="dark" placement="top-start">
-                                                <div slot="content" v-html="$t('views.dashboard.jobs.table.modal_info.methods.model_error_info')"></div>
-                                                <span class="el-icon-warning"></span>
-                                            </el-tooltip>
-                                        </div>
-                                        <span v-if="scope.row.modelName" style="padding-left: 10px;">{{scope.row.modelName}}</span> <span v-else style="padding-left: 10px;">N/A</span>
-                                    </template>
-                            </el-table-column>
+                        <el-table-column
+                            v-for="(performanceItem, performanceIndex) in jobDetailsData.performance"
+                            :prop="'performance|' + performanceItem"
+                            :key="performanceItem + '_' + performanceIndex"
+                            :label="performanceItem"
+                            sortable="custom"
+                            @sort-orders="['ascending', 'descending']"
+                        >
+                            <template slot-scope="scope">
+                                <span
+                                    v-if="
+                                        typeof scope.row.performance !== 'undefined' &&
+                                            scope.row.performance[performanceItem]
+                                    "
+                                    >{{ scope.row.performance[performanceItem] }}</span
+                                >
+                                <span v-else>N/A</span>
+                            </template>
+                        </el-table-column>
 
-                            <el-table-column v-for="(performanceItem, performanceIndex) in jobDetailsData.performance"  
-                                    :prop="'performance|'+performanceItem"
-                                :key="performanceItem + '_' + performanceIndex" 
-                                :label="performanceItem"
-                                sortable="custom"
-                                @sort-orders="['ascending', 'descending']">
-                                <template slot-scope="scope">
-                                    <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">{{scope.row.performance[performanceItem]}}</span> <span v-else>N/A</span>
-                                </template>
-                            </el-table-column>
-
-                            <el-table-column align="center" prop="trainingTime" sortable show-overflow-tooltip :label="$t('views.dashboard.jobs.table.modal_info.methods.time')">
-                                <template slot-scope="scope">
-                                    <span v-if="scope.row.trainingTime">{{(scope.row.trainingTime * 1000) | millisecondsToStr}}</span> <span v-else>N/A</span>
-                                </template>
-                            </el-table-column>
-
+                        <el-table-column
+                            align="center"
+                            prop="trainingTime"
+                            sortable
+                            show-overflow-tooltip
+                            :label="$t('views.dashboard.jobs.table.modal_info.methods.time')"
+                        >
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.trainingTime">{{
+                                    (scope.row.trainingTime * 1000) | millisecondsToStr
+                                }}</span>
+                                <span v-else>N/A</span>
+                            </template>
+                        </el-table-column>
                     </el-table>
-                     <el-pagination 
+                    <el-pagination
                         background
                         @current-change="paginateModels"
                         :current-page.sync="paginateModelsData.currentPage"
                         :page-size="paginateModelsData.page_size"
                         layout="total, prev, pager, next, jumper"
                         :total="paginateModelsData.total_items"
-                        :disabled="paginateModelsData.total_items <= 5">
+                        :disabled="paginateModelsData.total_items <= 5"
+                    >
                     </el-pagination>
                 </el-card>
             </el-col>
@@ -210,7 +322,9 @@
 
         <el-row v-if="jobClassesDisaply.length > 0" style="margin-top: 15px;">
             <el-col :span="12">
-                <el-select class="flud-selects" v-model="selectedClasses"
+                <el-select
+                    class="flud-selects"
+                    v-model="selectedClasses"
                     multiple
                     filterable
                     remote
@@ -219,8 +333,14 @@
                     size="large"
                     :remote-method="filterAvaliableClasses"
                     @change="selectChangeClasses"
-                    @focus="selectSuggestClasses">
-                    <el-option v-for="(classItem, index) in jobClassesDisaply" :key="classItem.remapped" :label="classItem.original" :value="classItem.remapped"></el-option>
+                    @focus="selectSuggestClasses"
+                >
+                    <el-option
+                        v-for="(classItem, index) in jobClassesDisaply"
+                        :key="classItem.remapped"
+                        :label="classItem.original"
+                        :value="classItem.remapped"
+                    ></el-option>
                 </el-select>
             </el-col>
         </el-row>
@@ -229,10 +349,21 @@
             <el-col :span="24" style="margin-top: 15px;">
                 <el-tabs v-model="activeDatasetSubTabName" v-if="selectedFeatureSetId > 0" type="card">
                     <!-- Don't display Tab Pane if we have only one Tab to display and he doesn't satisfy display criteria -->
-                    <el-tab-pane v-for="item in datasetsTabMapOptions" :label="item.label" :key='item.key' :name="item.key" v-if="!isTabDisabled(item)" :disabled="isTabDisabled(item)">
-                    <span slot="label"><i :class="item.icon"></i> {{item.label}}</span>
+                    <el-tab-pane
+                        v-for="item in datasetsTabMapOptions"
+                        :label="item.label"
+                        :key="item.key"
+                        :name="item.key"
+                        v-if="!isTabDisabled(item)"
+                        :disabled="isTabDisabled(item)"
+                    >
+                        <span slot="label"><i :class="item.icon"></i> {{ item.label }}</span>
                         <keep-alive>
-                            <sub-tab-pane v-if='activeDatasetSubTabName==item.key' :currentView='item.view' :columnName='item.key'></sub-tab-pane>
+                            <sub-tab-pane
+                                v-if="activeDatasetSubTabName == item.key"
+                                :currentView="item.view"
+                                :columnName="item.key"
+                            ></sub-tab-pane>
                             <!-- inactive components will be cached! -->
                         </keep-alive>
                     </el-tab-pane>
@@ -243,11 +374,15 @@
 </template>
 <script>
 import { fetchJobDetails } from "@/api/analysis";
+import {
+    deleteDatasetResampleTask as ApiDeleteDatasetResampleTask,
+} from "@/api/backend";
 
 import clipboard from "@/utils/clipboard";
 import _ from "lodash";
 
 import subTabPane from "./components/subTabPane";
+import { downloadFileTemplate } from "@/utils/templates.js";
 
 export default {
     name: "datasetsTab",
@@ -401,8 +536,51 @@ export default {
                 }
             }
         },
-        handleClick() {
-            console.log("handleClick");
+        // Download and delete resample actions
+        handleOperations(clickAction, rowInfo) {
+            if (clickAction === "download") {
+                const fileID = rowInfo.fileID_train;
+
+                const downloadWindow = window.open("", "_blank");
+                downloadWindow.document.write(downloadFileTemplate());
+                ApiGenarateFileDownloadLink({ fileID: fileID })
+                    .then(response => {
+                        downloadWindow.location.href = response.data.message.url;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            } else if (clickAction === "delete") {
+                const resampleID = rowInfo.resampleID;
+                this.$confirm(
+                    "This will permanently delete everything on the system related to selected resample. Continue?",
+                    "Warning",
+                    {
+                        type: "warning"
+                    }
+                )
+                    .then(_ => {
+                        ApiDeleteDatasetResampleTask({ resampleID: resampleID })
+                            .then(response => {
+                                if (response.data.success === true) {
+                                    this.getDatasetQueueList();
+                                }
+                                this.$message({
+                                    type: "success",
+                                    message: "Successfully deleted!"
+                                });
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                    })
+                    .catch(_ => {
+                        this.$message({
+                            type: "info",
+                            message: "Delete error, canceled!"
+                        });
+                    });
+            }
         },
         // Filter and display classes on user typing!
         filterAvaliableClasses(userInput) {
@@ -692,18 +870,18 @@ export default {
 };
 </script>
 
-<style rel='stylesheet/scss' lang='scss'>
-.el-table__expanded-cell[class*=cell] {
+<style rel="stylesheet/scss" lang="scss">
+.el-table__expanded-cell[class*="cell"] {
     padding: 5px 0;
 }
 .proportionsTable {
     width: 1000px;
     font-size: 12px;
-    th, td {
+    th,
+    td {
         padding: 5px 0;
     }
 }
-
 
 .el-table .warning-row {
     background: oldlace;

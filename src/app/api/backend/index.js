@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2019-01-22 10:26:55
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-22 10:27:01
+* @Last Modified time: 2019-01-23 15:20:25
 */
 import request from "@/utils/request";
 const baseUrlPath = "/backend";
@@ -257,6 +257,11 @@ export function cancelDatasetQueueTask(submitData) {
     });
 }
 
+/**
+ * Deletes selected Queue from database with all associated data
+ * @param  {[type]} submitData [description]
+ * @return {[type]}            [description]
+ */
 export function deleteDatasetQueueTask(submitData) {
     const data = {
         submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData)))
@@ -268,6 +273,27 @@ export function deleteDatasetQueueTask(submitData) {
     });
 }
 
+/**
+ * Deletes selected Queue Resample from database
+ * @param  {[type]} submitData [description]
+ * @return {[type]}            [description]
+ */
+export function deleteDatasetResampleTask(submitData) {
+    const data = {
+        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData)))
+    };
+    return request({
+        url: baseUrlPath + "/system/simon/dataset-queue/delete",
+        method: "POST",
+        data
+    });
+}
+
+/**
+ * Generates publicly accessible download link for specific file ID
+ * @param  {[type]} submitData [description]
+ * @return {[type]}            [description]
+ */
 export function genarateFileDownloadLink(submitData) {
     return request({
         url: baseUrlPath + "/system/filesystem/download/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),

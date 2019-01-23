@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2019-01-14 16:20:23
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-22 14:34:55
+* @Last Modified time: 2019-01-23 14:37:18
 */
 import "whatwg-fetch";
 
@@ -32,8 +32,6 @@ import "@/styles/main.scss"; // require styles using webpack alias
 import "./errorLog"; // error log
 import "./routeguard"; // permission control
 
-import "./mock"; // simulation data
-
 Vue.prototype.$config = env;
 Vue.prototype.$accounting = accounting;
 
@@ -56,14 +54,9 @@ if (isRenderer === true) {
             Vue.prototype.$electron = require("electron");
         }
     });
-
-    // Vue.prototype.$electron.ipcRenderer.setMaxListeners(20);
-    // Define global variable to hold Cache Directory Location
-    // Vue.prototype.$cacheDirectory = path.join(Vue.prototype.$electron.remote.app.getPath("userData"), 'data_cache');
-    // mkdirSync(Vue.prototype.$cacheDirectory);
 }
 
-// register global utility filters from  './filters'
+// Register global utility filters from  './filters'
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key]);
 });
