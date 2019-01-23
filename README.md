@@ -2,7 +2,7 @@
     <img width="200" src="https://github.com/genular/simon-frontend/raw/master/src/app/assets/logo/png/dark_logo_transparent@2x.png">
 </p>
 
-> Back-end interface for SIMON
+> Front-end interface for SIMON
 
 <h1 align="center">Introduction</h1>
 
@@ -176,11 +176,13 @@ Organizing | Ask clarifying questions on recently opened issues to move the disc
 ## Browser Support
 Tested on `Firefox Quantum` 64 or above
 
+<!---
 ## Backers
 Support us with a monthly donation and help us continue our activities. [[Become a backer](https://opencollective.com/genular#backer)]
 
 ## Sponsors
 Become a sponsor and get your logo on our README on Github with a link to your site. [[Become a sponsor](https://opencollective.com/genular#sponsor)]
+-->
 
 ### Reaching Out
 If you'd like to start a conversation about `SIMON` feel free to e-mail me at [info@genular.com](mailto:info@genular.com)
