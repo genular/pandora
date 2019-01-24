@@ -2,86 +2,128 @@
     <div>
         <el-row>
             <el-col :span="24">
-
                 <el-form :inline="true">
-
                     <el-form-item label="Theme">
-                        <el-select v-model="settingsForm.theme"  size="mini" placeholder="Select" style="width:135px;">
+                        <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="width:135px;">
                             <el-option
                                 v-for="item in settingOptions.theme"
                                 :key="item.id"
                                 :label="item.name"
-                                :value="item.id">
-                            <span style="float: left">{{ item.name }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px">
-                                <el-tooltip placement="top">
-                                    <div slot="content" style="text-align: center;">
-                                        <img :src="'static/images/plot_styles/' + item.id +'_'+ settingsForm.colorPalette + '.svg'" style="height: 125px;"><br />
-                                        <span style="max-width: 125px;width: 150px;display: block;">{{ item.description }}</span>
-                                    </div>
-                                    <span class="el-icon-info"></span>
-                                </el-tooltip>
-                            </span>
+                                :value="item.id"
+                            >
+                                <span style="float: left">{{ item.name }}</span>
+                                <span style="float: right; color: #8492a6; font-size: 13px">
+                                    <el-tooltip placement="top">
+                                        <div slot="content" style="text-align: center;">
+                                            <img
+                                                :src="
+                                                    'static/images/plot_styles/' +
+                                                        item.id +
+                                                        '_' +
+                                                        settingsForm.colorPalette +
+                                                        '.svg'
+                                                "
+                                                style="height: 125px;"
+                                            /><br />
+                                            <span style="max-width: 125px;width: 150px;display: block;">{{
+                                                item.description
+                                            }}</span>
+                                        </div>
+                                        <span class="el-icon-info"></span>
+                                    </el-tooltip>
+                                </span>
                             </el-option>
                         </el-select>
                     </el-form-item>
 
                     <el-form-item label="Color">
-                        <el-select v-model="settingsForm.colorPalette"  size="mini" placeholder="Select" style="width:130px;">
+                        <el-select
+                            v-model="settingsForm.colorPalette"
+                            size="mini"
+                            placeholder="Select"
+                            style="width:130px;"
+                        >
                             <el-option
                                 v-for="item in settingOptions.colorPalette"
                                 :key="item.id"
                                 :label="item.value"
-                                :value="item.id">
-                            <span style="float: left">{{ item.value }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px">
-                                <el-tooltip placement="top">
-                                    <div slot="content" style="text-align: center;">
-                                        <img :src="'static/images/plot_styles/' + settingsForm.theme +'_'+ item.id + '.svg'" style="height: 125px;"><br />
-                                        <span style="max-width: 125px;width: 150px;display: block;">
-                                            colorblind: {{ item.colorblind }}
-                                        </span>
-                                    </div>
-                                    <span class="el-icon-info"></span>
-                                </el-tooltip>
-                            </span>
+                                :value="item.id"
+                            >
+                                <span style="float: left">{{ item.value }}</span>
+                                <span style="float: right; color: #8492a6; font-size: 13px">
+                                    <el-tooltip placement="top">
+                                        <div slot="content" style="text-align: center;">
+                                            <img
+                                                :src="
+                                                    'static/images/plot_styles/' +
+                                                        settingsForm.theme +
+                                                        '_' +
+                                                        item.id +
+                                                        '.svg'
+                                                "
+                                                style="height: 125px;"
+                                            /><br />
+                                            <span style="max-width: 125px;width: 150px;display: block;">
+                                                colorblind: {{ item.colorblind }}
+                                            </span>
+                                        </div>
+                                        <span class="el-icon-info"></span>
+                                    </el-tooltip>
+                                </span>
                             </el-option>
                         </el-select>
                     </el-form-item>
 
                     <el-form-item label="Fontsize">
-                        <el-input-number size="mini"
+                        <el-input-number
+                            size="mini"
                             v-model="settingsForm.fontSize"
                             :step="1"
                             :max="48"
                             :min="6"
-                            style="width:100px;">
-                       </el-input-number>
+                            style="width:100px;"
+                        >
+                        </el-input-number>
                     </el-form-item>
 
                     <el-form-item label="Dotsize">
-                        <el-input-number size="mini"
+                        <el-input-number
+                            size="mini"
                             v-model="settingsForm.dotsize"
                             :step="0.02"
                             :max="75"
                             :min="0.02"
-                            style="width:100px;">
+                            style="width:100px;"
+                        >
                         </el-input-number>
                     </el-form-item>
 
                     <el-form-item style="float: right;">
-                        <el-button size="mini" type="primary" :loading="loadingPlot" round @click="redrawImage">Plot</el-button>
+                        <el-button size="mini" type="primary" :loading="loadingPlot" round @click="redrawImage"
+                            >Plot</el-button
+                        >
                     </el-form-item>
 
                     <el-form-item style="float: right;">
-                        <el-button size="mini" type="primary" icon="el-icon-download" :disabled="renderedImage === '' || loadingPlot" @click="downloadPlotImage"></el-button>
+                        <el-button
+                            size="mini"
+                            type="primary"
+                            icon="el-icon-download"
+                            :disabled="renderedImage === '' || loadingPlot"
+                            @click="downloadPlotImage"
+                        ></el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
         </el-row>
         <el-row justify="center">
             <el-col :span="24" v-loading="loadingPlot" element-loading-text="Processing..." style="text-align: center;">
-                <object id="correlation-svg" style="margin: 0 auto;" :data="renderedImage" type="image/svg+xml"></object>
+                <object
+                    id="correlation-svg"
+                    style="margin: 0 auto;"
+                    :data="renderedImage"
+                    type="image/svg+xml"
+                ></object>
             </el-col>
         </el-row>
     </div>
@@ -179,16 +221,14 @@ export default {
                 settings: JSON.stringify(this.settingsForm)
             })
                 .then(response => {
-                    this.renderedImageData = new Buffer(response.data, "base64")
-                        .toString("ascii")
-                        .replace(/(\r\n|\n|\r)/gm, "")
-                        .trim();
-
-                    this.renderedImage = "data:image/svg+xml;utf8," + encodeURIComponent(this.renderedImageData);
+                    // Decode base64 encoded results
+                    this.renderedImageData = window.atob(response.data.image);
+                    
+                    this.renderedImage = "data:image/svg+xml;base64," + encodeURIComponent(response.data.image);
                     this.loadingPlot = false;
                 })
                 .catch(error => {
-                    console.log("Server error:");
+                    console.log("Server error occurred");
                     this.renderedImage = line_chart_404;
                     this.loadingPlot = false;
                 });

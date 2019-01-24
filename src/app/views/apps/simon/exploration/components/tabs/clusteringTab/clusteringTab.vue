@@ -2,43 +2,64 @@
     <div class="clusteringTab-container">
         <el-row type="flex" align="top">
             <el-col :span="24" style="text-align: right;">
-                <el-button type="primary" icon="el-icon-download" :disabled="renderedImage === '' || loadingPlot" @click="downloadPlotImage"></el-button>
+                <el-button
+                    type="primary"
+                    icon="el-icon-download"
+                    :disabled="renderedImage === '' || loadingPlot"
+                    @click="downloadPlotImage"
+                ></el-button>
             </el-col>
         </el-row>
         <el-row type="flex" align="top">
             <el-col :span="7">
                 <el-form ref="settingsForm" :model="settingsForm" label-width="150px">
                     <el-form-item label="Columns">
-                        <el-select v-model="settingsForm.selectedColumns"
+                        <el-select
+                            v-model="settingsForm.selectedColumns"
                             multiple
                             filterable
-                            remote default-first-option
+                            remote
+                            default-first-option
                             placeholder="Type to search..."
-                            :remote-method="(userInput) => { filterAvaliableColumns(userInput, 'columns') }"
+                            :remote-method="
+                                userInput => {
+                                    filterAvaliableColumns(userInput, 'columns');
+                                }
+                            "
                             :loading="loading['columns']"
-                            @focus="selectAvaliableFeaturesDisplay('columns')">
+                            @focus="selectAvaliableFeaturesDisplay('columns')"
+                        >
                             <el-option
                                 v-for="item in settingOptions.columns"
                                 :key="item.remapped"
                                 :label="item.original"
-                                :value="item.remapped">
+                                :value="item.remapped"
+                            >
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Rows">
-                        <el-select v-model="settingsForm.selectedRows"
+                        <el-select
+                            v-model="settingsForm.selectedRows"
                             multiple
                             filterable
-                            remote default-first-option
+                            remote
+                            default-first-option
                             placeholder="Type to search..."
-                            :remote-method="(userInput) => { filterAvaliableColumns(userInput, 'features') }"
+                            :remote-method="
+                                userInput => {
+                                    filterAvaliableColumns(userInput, 'features');
+                                }
+                            "
                             :loading="loading['features']"
-                            @focus="selectAvaliableFeaturesDisplay('features')">
+                            @focus="selectAvaliableFeaturesDisplay('features')"
+                        >
                             <el-option
                                 v-for="item in settingOptions.features"
                                 :key="item.remapped"
                                 :label="item.original"
-                                :value="item.remapped">
+                                :value="item.remapped"
+                            >
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -52,7 +73,8 @@
                                 v-for="item in settingOptions.scale"
                                 :key="item.id"
                                 :label="item.id"
-                                :value="item.id">
+                                :value="item.id"
+                            >
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -65,11 +87,14 @@
                         <el-checkbox v-model="settingsForm.displayNumbers"></el-checkbox>
                     </el-form-item>
                     <el-form-item label="Numbers font-size" v-if="settingsForm.displayNumbers">
-                        <el-input-number v-model="settingsForm.fontSizeNumbers" 
-                            :value="settingsForm.fontSizeNumbers" 
-                            :min="settingOptions.fontSizeNumbers.min" 
-                            :max="settingOptions.fontSizeNumbers.max" 
-                            :step="settingOptions.fontSizeNumbers.step" controls-position="right">
+                        <el-input-number
+                            v-model="settingsForm.fontSizeNumbers"
+                            :value="settingsForm.fontSizeNumbers"
+                            :min="settingOptions.fontSizeNumbers.min"
+                            :max="settingOptions.fontSizeNumbers.max"
+                            :step="settingOptions.fontSizeNumbers.step"
+                            controls-position="right"
+                        >
                         </el-input-number>
                     </el-form-item>
 
@@ -77,11 +102,14 @@
                         <el-checkbox v-model="settingsForm.displayColnames"></el-checkbox>
                     </el-form-item>
                     <el-form-item label="Colnames font-size" v-if="settingsForm.displayColnames">
-                        <el-input-number v-model="settingsForm.fontSizeCol" 
-                            :value="settingsForm.fontSizeCol" 
-                            :min="settingOptions.fontSizeCol.min" 
-                            :max="settingOptions.fontSizeCol.max" 
-                            :step="settingOptions.fontSizeCol.step" controls-position="right">
+                        <el-input-number
+                            v-model="settingsForm.fontSizeCol"
+                            :value="settingsForm.fontSizeCol"
+                            :min="settingOptions.fontSizeCol.min"
+                            :max="settingOptions.fontSizeCol.max"
+                            :step="settingOptions.fontSizeCol.step"
+                            controls-position="right"
+                        >
                         </el-input-number>
                     </el-form-item>
 
@@ -89,28 +117,37 @@
                         <el-checkbox v-model="settingsForm.displayRownames"></el-checkbox>
                     </el-form-item>
                     <el-form-item label="Rownames font-size" v-if="settingsForm.displayRownames">
-                        <el-input-number v-model="settingsForm.fontSizeRow" 
-                            :value="settingsForm.fontSizeRow" 
-                            :min="settingOptions.fontSizeRow.min" 
-                            :max="settingOptions.fontSizeRow.max" 
-                            :step="settingOptions.fontSizeRow.step" controls-position="right">
+                        <el-input-number
+                            v-model="settingsForm.fontSizeRow"
+                            :value="settingsForm.fontSizeRow"
+                            :min="settingOptions.fontSizeRow.min"
+                            :max="settingOptions.fontSizeRow.max"
+                            :step="settingOptions.fontSizeRow.step"
+                            controls-position="right"
+                        >
                         </el-input-number>
                     </el-form-item>
 
                     <el-form-item label="Plot width">
-                        <el-input-number v-model="settingsForm.plotWidth" 
-                            :value="settingsForm.plotWidth" 
-                            :min="settingOptions.plotWidth.min" 
-                            :max="settingOptions.plotWidth.max" 
-                            :step="settingOptions.plotWidth.step" controls-position="right">
+                        <el-input-number
+                            v-model="settingsForm.plotWidth"
+                            :value="settingsForm.plotWidth"
+                            :min="settingOptions.plotWidth.min"
+                            :max="settingOptions.plotWidth.max"
+                            :step="settingOptions.plotWidth.step"
+                            controls-position="right"
+                        >
                         </el-input-number>
                     </el-form-item>
                     <el-form-item label="Plot ratio (height / width)">
-                        <el-input-number v-model="settingsForm.plotRatio" 
-                            :value="settingsForm.plotRatio" 
-                            :min="settingOptions.plotRatio.min" 
-                            :max="settingOptions.plotRatio.max" 
-                            :step="settingOptions.plotRatio.step" controls-position="right">
+                        <el-input-number
+                            v-model="settingsForm.plotRatio"
+                            :value="settingsForm.plotRatio"
+                            :min="settingOptions.plotRatio.min"
+                            :max="settingOptions.plotRatio.max"
+                            :step="settingOptions.plotRatio.step"
+                            controls-position="right"
+                        >
                         </el-input-number>
                     </el-form-item>
 
@@ -120,7 +157,8 @@
                                 v-for="item in settingOptions.clustDistance"
                                 :key="item.id"
                                 :label="item.id"
-                                :value="item.value">
+                                :value="item.value"
+                            >
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -130,7 +168,8 @@
                                 v-for="item in settingOptions.clustLinkage"
                                 :key="item.id"
                                 :label="item.id"
-                                :value="item.value">
+                                :value="item.value"
+                            >
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -140,18 +179,21 @@
                                 v-for="item in settingOptions.clustOrdering"
                                 :key="item.id"
                                 :label="item.id"
-                                :value="item.value">
+                                :value="item.value"
+                            >
                             </el-option>
                         </el-select>
                     </el-form-item>
 
-
                     <el-form-item label="Overall font-size">
-                        <el-input-number v-model="settingsForm.fontSizeGeneral" 
-                            :value="settingsForm.fontSizeGeneral" 
-                            :min="settingOptions.fontSizeGeneral.min" 
-                            :max="settingOptions.fontSizeGeneral.max" 
-                            :step="settingOptions.fontSizeGeneral.step" controls-position="right">
+                        <el-input-number
+                            v-model="settingsForm.fontSizeGeneral"
+                            :value="settingsForm.fontSizeGeneral"
+                            :min="settingOptions.fontSizeGeneral.min"
+                            :max="settingOptions.fontSizeGeneral.max"
+                            :step="settingOptions.fontSizeGeneral.step"
+                            controls-position="right"
+                        >
                         </el-input-number>
                     </el-form-item>
 
@@ -160,8 +202,20 @@
                     </el-form-item>
                 </el-form>
             </el-col>
-            <el-col :span="17" class="correlation-svg-container" :disabled="loadingPlot" v-loading="loadingPlot" element-loading-text="Processing..." style="text-align: center;">
-                <object id="correlation-svg" style="margin: 0 auto;" :data="renderedImage" type="image/svg+xml"></object>
+            <el-col
+                :span="17"
+                class="correlation-svg-container"
+                :disabled="loadingPlot"
+                v-loading="loadingPlot"
+                element-loading-text="Processing..."
+                style="text-align: center;"
+            >
+                <object
+                    id="correlation-svg"
+                    style="margin: 0 auto;"
+                    :data="renderedImage"
+                    type="image/svg+xml"
+                ></object>
             </el-col>
         </el-row>
     </div>
@@ -200,7 +254,7 @@ export default {
                 columns: [],
                 features: [],
                 // removeNA: false,
-                scale: [{id: "row"}, {id: "column"}, {id: "none"}],
+                scale: [{ id: "row" }, { id: "column" }, { id: "none" }],
                 displayNumbers: false,
                 displayLegend: true,
                 displayColnames: true,
@@ -268,7 +322,7 @@ export default {
                 selectedColumns: [],
                 selectedRows: [],
 
-                removeNA: false,                
+                removeNA: false,
                 scale: "column",
 
                 displayNumbers: false,
@@ -350,16 +404,13 @@ export default {
                 settings: this.settingsForm
             })
                 .then(response => {
-                    // Update the image data.
-                    this.renderedImageData = new Buffer(response.data, "base64")
-                        .toString("ascii")
-                        .replace(/(\r\n|\n|\r)/gm, "")
-                        .trim();
+                    // Decode base64 encoded results
+                    this.renderedImageData = window.atob(response.data.image);
 
                     if (this.renderedImageData.length < 15) {
                         this.renderedImage = line_chart_404;
                     } else {
-                        this.renderedImage = "data:image/svg+xml;utf8," + encodeURIComponent(this.renderedImageData);
+                        this.renderedImage = "data:image/svg+xml;base64," + encodeURIComponent(response.data.image);
                     }
 
                     this.loadingPlot = false;

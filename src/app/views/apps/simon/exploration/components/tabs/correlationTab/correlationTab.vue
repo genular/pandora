@@ -327,13 +327,10 @@ export default {
 
             fetchCorrPlotImage({ resampleID: this.selectedFeatureSetId, settings: this.settingsForm })
                 .then((response) => {
-                    // Update the image data.
-                    this.renderedImageData = new Buffer(response.data, "base64")
-                        .toString("ascii")
-                        .replace(/(\r\n|\n|\r)/gm, "")
-                        .trim();
+                    // Decode base64 encoded results
+                    this.renderedImageData = window.atob(response.data.image);
 
-                    this.renderedImage = "data:image/svg+xml;utf8," + encodeURIComponent(this.renderedImageData);
+                    this.renderedImage = "data:image/svg+xml;base64," + encodeURIComponent(response.data.image);
                     this.loadingPlot = false;
                 })
                 .catch((error) => {

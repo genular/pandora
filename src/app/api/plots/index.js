@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2018-03-22 13:10:06
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2018-04-12 08:40:46
+* @Last Modified time: 2019-01-24 12:38:29
 */
 import request from "@/utils/request";
 const baseUrlPath = "/plots";
@@ -18,8 +18,7 @@ export function fetchCorrPlotImage(query) {
     return request({
         url: baseUrlPath + "/correlation/render-plot",
         method: "GET",
-        params: query,
-        responseType: "arraybuffer"
+        params: query
     });
 }
 
@@ -27,8 +26,7 @@ export function fetchHeatmapImage(query) {
     return request({
         url: baseUrlPath + "/heatmap/render-plot",
         method: "GET",
-        params: query,
-        responseType: "arraybuffer"
+        params: query
     });
 }
 
@@ -36,8 +34,7 @@ export function fetchGraphVariableImportance(query) {
     return request({
         url: baseUrlPath + "/variableImportance/render-plot",
         method: "GET",
-        params: query,
-        responseType: "arraybuffer"
+        params: query
     });
 }
 
