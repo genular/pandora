@@ -1,5 +1,15 @@
 <p align="center">
-    <img width="200" src="https://github.com/genular/simon-frontend/raw/master/src/app/assets/logo/png/dark_logo_transparent@2x.png">
+    <img width="200" src="https://github.com/genular/simon-frontend/raw/master/src/app/assets/logo/png/dark_logo_transparent@2x.png">         
+</p>
+<p align="center">
+    <a href="https://translate.genular.org/project/genular" alt="Help us translate">
+        <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
+    <a href="https://app.fossa.io/projects/git%2Bgithub.com%2Fgenular%2Fsimon-frontend?ref=badge_small" alt="Licence">
+        <img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Fgenular%2Fsimon-frontend.svg?type=small" /></a>
+    <a href="#reposize">
+        <img src="https://img.shields.io/github/repo-size/genular/simon-frontend.svg" /></a>
+    <a href="https://twitter.com/intent/follow?screen_name=genular" alt="Follow us on twitter">
+        <img src="https://img.shields.io/twitter/follow/genular.svg?label=Follow&style=social&logo=twitter" alt="build status"></a>
 </p>
 
 > Front-end interface for SIMON
