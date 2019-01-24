@@ -2,7 +2,7 @@
     <img width="200" src="https://github.com/genular/simon-frontend/raw/master/src/app/assets/logo/png/dark_logo_transparent@2x.png">         
 </p>
 <p align="center">
-    <a href="https://translate.genular.org/project/genular" alt="Help us translate">
+    <a href="https://crowdin.com/project/genular" alt="Help us translate">
         <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
     <a href="https://app.fossa.io/projects/git%2Bgithub.com%2Fgenular%2Fsimon-frontend?ref=badge_small" alt="Licence">
         <img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Fgenular%2Fsimon-frontend.svg?type=small" /></a>
