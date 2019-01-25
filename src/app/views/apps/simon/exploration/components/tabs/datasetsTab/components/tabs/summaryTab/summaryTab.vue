@@ -161,7 +161,7 @@ export default {
     }
 };
 </script>
-<style rel='stylesheet/scss' lang='scss'>
+<style rel='stylesheet/scss' lang='scss' scoped>
 .code-output {
     max-width: 90%;
     height: 300px;

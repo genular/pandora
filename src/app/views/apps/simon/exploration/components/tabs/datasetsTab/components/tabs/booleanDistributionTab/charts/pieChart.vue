@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height, width:width}"></div>
+    <div :class="className" :style="{ height: height, width: width }"></div>
 </template>
 
 <script>
@@ -7,7 +7,7 @@ import * as echarts from "echarts";
 // echarts theme
 require("echarts/theme/macarons");
 
-import { debounce } from "@/utils";
+import { debounce } from "@/utils/helpers";
 
 export default {
     name: "pieChart",
@@ -119,7 +119,7 @@ export default {
                 const name = "Data: " + type;
                 const typeValue = this.statisticalData.series[name].data.total;
 
-                chartOptions.series[0].data.push({ value: typeValue, name: name })
+                chartOptions.series[0].data.push({ value: typeValue, name: name });
             }
 
             this.chart.setOption(chartOptions);

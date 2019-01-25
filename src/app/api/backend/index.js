@@ -2,9 +2,10 @@
 * @Author: LogIN-
 * @Date:   2019-01-22 10:26:55
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-24 09:54:19
+* @Last Modified time: 2019-01-25 09:32:13
 */
 import request from "@/utils/request";
+
 const baseUrlPath = "/backend";
 
 /**
@@ -158,21 +159,26 @@ export function fetchResampleModels(query) {
     });
 }
 
-export function readFilesInUserDirectory(selectedDirectory) {
-    const data = {
-        selectedDirectory: encodeURIComponent(window.btoa(selectedDirectory))
-    };
-
+/**
+ * Retrives list of files fot the user uploaded in specific user directory
+ * @param  {object} submitData Object containing one string variable: selectedDirectory that corresponds to upload_directory column in users_files table
+ * @return {object}            JSON decoded API response object
+ */
+export function readFilesInUserDirectory(submitData) {
     return request({
-        url: baseUrlPath + "/system/filesystem/list",
-        method: "POST",
-        data
+        url: baseUrlPath + "/system/filesystem/list/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
+        method: "GET"
     });
 }
 
-export function deleteFile(file_id) {
+/**
+ * Deletes file from database and from file system
+ * @param  {int} fileID ID of the desired file to be deleted from users_files database table
+ * @return {object}            JSON decoded API response object
+ */
+export function deleteFile(fileID) {
     return request({
-        url: baseUrlPath + "/system/filesystem/delete/" + file_id,
+        url: baseUrlPath + "/system/filesystem/delete/" + fileID,
         method: "GET"
     });
 }
@@ -210,9 +216,15 @@ export function getSimonHeaderSuggest(selectedFiles, input) {
     });
 }
 
-export function resamplesFeaturesSuggest(query) {
+/**
+ * Suggest features of requested re-sample ID
+ * @param  {object} Containing 3 variables
+ * resampleID: database ID of the resample, userInput: user inputed string, inputType: features, outcome, classes
+ * @return {object}            JSON decoded API response object
+ */
+export function resamplesFeaturesSuggest(submitData) { 
     return request({
-        url: baseUrlPath + "/queue/resamples/features/suggest",
+        url: baseUrlPath + "/queue/resamples/features/suggest/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
         method: "GET",
         params: query
     });
@@ -285,8 +297,10 @@ export function deleteDatasetResampleTask(submitData) {
 
 /**
  * Generates publicly accessible download link for specific file ID
- * @param  {[type]} submitData [description]
- * @return {[type]}            [description]
+ * @param  {object} Containing two variables: 
+ * downloadType (resample:single, resample:details, queue:single)
+ * fileID Id of the file from users_files database table
+ * @return {object}            JSON decoded API response object
  */
 export function genarateFileDownloadLink(submitData) {
     return request({

@@ -472,7 +472,7 @@ export default {
 
                     const downloadWindow = window.open("", "_blank");
                     downloadWindow.document.write(downloadFileTemplate());
-                    ApiGenarateFileDownloadLink({ fileID: fileID })
+                    ApiGenarateFileDownloadLink({ downloadType: 'queue:single', fileID: fileID })
                         .then(response => {
                             downloadWindow.location.href = response.data.message.url;
                         })

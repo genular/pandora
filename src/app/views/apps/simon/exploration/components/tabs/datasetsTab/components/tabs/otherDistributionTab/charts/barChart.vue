@@ -7,7 +7,7 @@ import echarts from "echarts";
 // echarts theme
 require("echarts/theme/macarons");
 
-import { debounce } from "@/utils";
+import { debounce } from "@/utils/helpers";
 
 const animationDuration = 6000;
 

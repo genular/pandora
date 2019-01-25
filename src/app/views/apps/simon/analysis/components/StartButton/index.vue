@@ -239,7 +239,7 @@ export default {
             const downloadWindow = window.open("", "_blank");
             downloadWindow.document.write(downloadFileTemplate());
 
-            ApiGenarateFileDownloadLink({ fileID: item.fileID })
+            ApiGenarateFileDownloadLink({ downloadType: 'dataset:details', fileID: item.fileID })
                 .then(response => {
                     this.stopLoading();
                     // downloadWindow.document.write(JSON.stringify(response.data.message.header));

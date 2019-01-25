@@ -1,20 +1,19 @@
 <template>
-    <el-dropdown trigger="click" class='international' @command="handleSetLanguage">
-        <div>
-            <i class="fa fa-globe" aria-hidden="true"></i>
-        </div>
-        <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="lang in languages" :key="lang" :command="lang" :disabled="language===lang">
-                {{$t('language.' + lang)}}
+    <el-dropdown trigger="click" class="international" @command="handleSetLanguage">
+        <div><i class="fa fa-globe" aria-hidden="true"></i></div>
+        <el-dropdown-menu slot="dropdown" class="language-dropdown">
+            <el-dropdown-item v-for="lang in languages" :key="lang" :command="lang" :disabled="language === lang">
+                {{ $t("language." + lang) }}
             </el-dropdown-item>
         </el-dropdown-menu>
     </el-dropdown>
 </template>
 <script>
+import { sortAlphaNum } from "@/utils/helpers.js";
 export default {
     computed: {
         languages() {
-            return Object.keys(this.$i18n.messages);
+            return Object.keys(this.$i18n.messages).sort(sortAlphaNum);
         },
         language() {
             return this.$store.getters.language;
@@ -42,5 +41,12 @@ export default {
     cursor: pointer;
     vertical-align: -5px !important;
     cursor: pointer;
+}
+.language-dropdown {
+    top: 40px !important;
+    max-height: 300px;
+    overflow: scroll;
+    overflow-x: scroll;
+    overflow-x: hidden;
 }
 </style>

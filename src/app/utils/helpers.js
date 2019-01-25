@@ -2,10 +2,16 @@
 * @Author: LogIN-
 * @Date:   2018-01-25 14:43:35
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2018-07-22 14:19:38
+* @Last Modified time: 2019-01-25 09:58:34
 */
 const md5 = require("@/utils/3rdparty/md5.js");
 
+/**
+ * Sorts alphanumeric array You can use it in this way: array.sort(sortAlphaNum)
+ * @param  {[type]} a Array item a
+ * @param  {[type]} b Array item b
+ * @return {boolean}   Returns boolean
+ */
 export function sortAlphaNum(a, b) {
     if (a === b) {
         return 0;
@@ -16,62 +22,20 @@ export function sortAlphaNum(a, b) {
     return typeof a < typeof b ? -1 : 1;
 }
 
-// asyncForEach(selectedHeaderFields, async feature => {
-//     await ApiGetSimonPreAnalysisDetails(data)
-//         .then(response => {
-//         })
-//         .catch(error => {
-//         });
-// });
-export async function asyncForEach(array, callback) {
-    for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array);
-    }
-}
-
-export function levenshteinDistance(s, t) {
-    var thisLength = s.length;
-    var thatLength = t.length;
-
-    //    if (Math.abs(thisLength - thatLength) > (limit || 32)) return limit || 32;
-    if (thisLength === 0) return thatLength;
-    if (thatLength === 0) return thisLength;
-    if (thisLength == thatLength) return 0;
-
-    var matrix = new Array(thisLength + 1);
-    var i = thisLength;
-    var j = thatLength;
-    for (; i >= 0; i--) matrix[i] = [i];
-    for (; j >= 0; j--) matrix[0][j] = j;
-
-    // Calculate matrix.
-    var this_i, that_j, cost, min, t, x, y;
-    for (i = 1, x = 0; i <= thisLength; ++i, ++x) {
-        // x = i - 1;
-        this_i = s[x];
-
-        // Step 4
-        for (j = 1, y = 0; j <= thatLength; ++j, ++y) {
-            // Check the jagged ld total so far
-            if (i === j && matrix[i][j] > 4) return thisLength;
-
-            // y = j - 1;
-            that_j = t[y];
-            cost = this_i === that_j ? 0 : 1; // Step 5
-            // Calculate the minimum (much faster than Math.min(...)).
-            min = matrix[x][j] + 1; // Deletion.
-            if ((t = matrix[i][y] + 1) < min) min = t; // Insertion.
-            if ((t = matrix[x][y] + cost) < min) min = t; // Substitution.
-
-            matrix[i][j] = min; // Update matrix.
-        }
-    }
-
-    return matrix[thisLength][thatLength];
+/* Order-by function
+ * Example: this.avaliablePackages = orderBy(allPackagesUnique, "internal_id")
+ */
+export function orderBy(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key];
+        var y = b[key];
+        return x < y ? -1 : x > y ? 1 : 0;
+    });
 }
 
 /** Check if a string is a valid JSON string
- *
+ * @param  {string} String to check
+ * @return {boolean}   Returns boolean
  */
 export function IsJsonString(str) {
     try {
@@ -83,7 +47,10 @@ export function IsJsonString(str) {
 }
 
 /** Created MD5 Hash from ID values contained in array
- *
+ * Example: const selectedFilesHash = createHashFromArrayID(this.selectedFiles)
+ * @param  {array} Array of objects
+ * @param  {string} ID of array key to use as key
+ * @return {string} 32 character MD5 hash
  */
 export function createHashFromArrayID(data, identifier = "id") {
     const IDs = data
@@ -95,19 +62,16 @@ export function createHashFromArrayID(data, identifier = "id") {
     return md5(JSON.stringify(IDs));
 }
 
-export function findObjectByKey(dataArray, key, value) {
-    return dataArray.find(function(obj) {
-        return obj[key] === value;
-    });
-}
 /**
  * find index of an object by key and value in an javascript dataArray
+ * Example: const resampleIndex = findObjectIndexByKey(this.datasetResamples[index].data, "selected", true)
  */
 export function findObjectIndexByKey(dataArray, key, value) {
     return dataArray.findIndex(obj => obj[key] === value);
 }
 /*
- * removeDuplicates(arrayWithDuplicates, 'size');
+ * Removes duplicate array objects if their keys have same values
+ * Example: const allPackagesUnique = removeDuplicateObjectsByKey(allPackages, "internal_id")
  */
 export function removeDuplicateObjectsByKey(dataArray, objKey) {
     var trimmedArray = [];
@@ -127,7 +91,8 @@ export function removeDuplicateObjectsByKey(dataArray, objKey) {
 }
 
 /**
- * intersection(array1, array2, array3, array4); //["Lorem"]
+ * Calculates intersection of arrays
+ * Example: const selectionDifference = arrayIntersection(selected, this[selectors[i]]);
  */
 export function arrayIntersection() {
     var result = [];
@@ -224,15 +189,4 @@ export function debounce(func, wait, immediate) {
     };
 
     return debounced;
-}
-
-/* Orderby JavaScript function
- *
- */
-export function orderBy(array, key) {
-    return array.sort(function(a, b) {
-        var x = a[key];
-        var y = b[key];
-        return x < y ? -1 : x > y ? 1 : 0;
-    });
 }

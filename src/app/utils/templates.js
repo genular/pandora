@@ -2,11 +2,11 @@
  * @Author: LogIN-
  * @Date:   2019-01-23 15:04:44
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-01-23 15:07:23
+ * @Last Modified time: 2019-01-25 09:37:39
  */
 
 /**
- * Html Temaplte used in download file window
+ * HTML Template used in download file window
  * @return {string} HTML Template string
  */
 export function downloadFileTemplate() {

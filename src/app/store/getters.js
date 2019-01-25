@@ -18,7 +18,6 @@ const getters = {
 
     user_avatar: state => state.user.avatar,
     user_roles: state => state.user.roles,
-    user_settings_server_address_general: state => state.user.settings.server.address.general,
     user_settings_server_address_analysis: state => state.user.settings.server.address.analysis,
     user_settings_server_address_backend: state => state.user.settings.server.address.backend,
     user_settings_server_address_plots: state => state.user.settings.server.address.plots,

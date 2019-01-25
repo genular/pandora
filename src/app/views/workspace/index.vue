@@ -130,7 +130,7 @@ export default {
         },
         fetchReadFilesInDirectory(selectedPath) {
             this.startLoading();
-            ApiReadFilesInUserDirectory(selectedPath)
+            ApiReadFilesInUserDirectory({selectedDirectory: selectedPath})
                 .then(response => {
                     if (response.data.success === true) {
                         const directoryFilesHash = md5String(JSON.stringify(response.data.message));

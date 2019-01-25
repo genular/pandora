@@ -89,10 +89,7 @@
 </template>
 <script>
 import { fetchSamrFormOptions, submitSAMJob, fetchSAMJob } from "@/api/analysis";
-import { saveDataString, loadDataString, existsSync } from "@/utils/filesystem";
-
 import { md5String } from "@/utils";
-import path from "path";
 
 export default {
     name: "samrAnalysisTab",

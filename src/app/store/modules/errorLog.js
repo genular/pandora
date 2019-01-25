@@ -3,13 +3,19 @@ const errorLog = {
         logs: []
     },
     mutations: {
-        ADD_ERROR_LOG: (state, log) => {
+        ADD_LOG: (state, log) => {
             state.logs.push(log);
+        },
+        CLEAR_LOG: (state) => {
+            state.logs = [];
         }
     },
     actions: {
-        addErrorLog({ commit }, log) {
-            commit("ADD_ERROR_LOG", log);
+        addLog({ commit }, log) {
+            commit("ADD_LOG", log);
+        },
+        clearLog({ commit }) {
+            commit("CLEAR_LOG");
         }
     }
 };

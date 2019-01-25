@@ -19,7 +19,6 @@ const user = {
                 address: {
                     analysis: estore.get("user-settings-server-address-analysis") || "",
                     backend: estore.get("user-settings-server-address-backend") || "",
-                    general: estore.get("user-settings-server-address-general") || "",
                     plots: estore.get("user-settings-server-address-plots") || ""
                 }
             }
@@ -46,10 +45,6 @@ const user = {
         SET_ROLES: (state, roles) => {
             estore.set("user-roles", roles);
             state.roles = roles;
-        },
-        SET_SETTING_SERVER_ADDRESS_GENERAL: (state, generalServer) => {
-            estore.set("user-settings-server-address-general", generalServer);
-            state.settings.server.address.general = generalServer;
         },
         SET_SETTING_SERVER_ADDRESS_ANALYSIS: (state, analysisServer) => {
             estore.set("user-settings-server-address-analysis", analysisServer);

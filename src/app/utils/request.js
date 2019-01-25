@@ -20,8 +20,6 @@ service.interceptors.request.use(
 
         if (config.url.startsWith("/analysis")) {
             config.baseURL = store.getters.user_settings_server_address_analysis;
-        } else if (config.url.startsWith("/general")) {
-            config.baseURL = store.getters.user_settings_server_address_general;
         } else if (config.url.startsWith("/plots")) {
             config.baseURL = store.getters.user_settings_server_address_plots;
         } else if (config.url.startsWith("/backend")) {

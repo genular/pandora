@@ -5,7 +5,8 @@ function numberEnding(number) {
 }
 /**
  * Convert milliseconds to human readable string
- *
+ * @param  {string} milliseconds
+ * @return {string}
  **/
 export function millisecondsToStr(milliseconds) {
     // TIP: to find current time in milliseconds, use:
@@ -35,10 +36,14 @@ export function millisecondsToStr(milliseconds) {
     }
     return "less than a second";
 }
+
 /**
- * Format time
- *
- **/
+ * parses date time string and returns it in desired format
+ * Example: parseTime(time, "{y}-{m}-{d} {h}:{i}")
+ * @param  {string} time
+ * @param  {string} cFormat
+ * @returns {string}
+ */
 export function parseTime(time, cFormat) {
     time = moment(time).format("x");
 
@@ -76,50 +81,14 @@ export function parseTime(time, cFormat) {
     return time_str;
 }
 
-export function toThousandslsFilter(num) {
-    return (+num || 0).toString().replace(/^-?\d+/g, (m) => m.replace(/(?=(?!\b)(\d{3})+$)/g, ","));
-}
-
+/**
+ * Truncates string and addds custom end to it
+ * Example: {{feature.original | truncateString(10)}}
+ * @param  {string} text 
+ * @param  {string} stop 
+ * @param  {string} clamp
+ * @return {string}      
+ */
 export function truncateString(text, stop, clamp) {
     return text.slice(0, stop) + (stop < text.length ? clamp || "..." : "");
-}
-
-/**
- * http://json2html.com/builder/#json-tab
- * {class_name: "outcome", feature_set_type: 1, measurement_type: 1, value: "high", result: 1880}
- */
-export function proportionsToHTMLTableTrain(data) {
-    const proportions_train = data.filter(function(e) {
-        return e.feature_set_type === 1 && e.measurement_type === 1;
-    });
-
-    const transform_train = {
-        "<>": "li",
-        html: [
-            { "<>": "span", style: "float: left;", html: "${class_name} (${value})" },
-            { "<>": "span", style: "float: right;", html: "${result}" }
-        ]
-    };
-
-    const html_train = json2html.transform(proportions_train, transform_train);
-
-    return html_train;
-}
-
-export function proportionsToHTMLTableTest(data) {
-    const proportions_test = data.filter(function(e) {
-        return e.feature_set_type === 2 && e.measurement_type === 1;
-    });
-
-    const transform_test = {
-        "<>": "li",
-        html: [
-            { "<>": "span", style: "float: left;", html: "${class_name} (${value})" },
-            { "<>": "span", style: "float: right;", html: "${result}" }
-        ]
-    };
-
-    const html_test = json2html.transform(proportions_test, transform_test);
-
-    return html_test;
 }

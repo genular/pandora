@@ -7,7 +7,7 @@ import * as echarts from "echarts";
 // echarts theme
 require("echarts/theme/macarons");
 
-import { debounce } from "@/utils";
+import { debounce } from "@/utils/helpers";
 
 export default {
     name: "pieChart",
