@@ -361,7 +361,7 @@ import waves from "@/directive/waves";
 import { parseTime, md5String } from "@/utils";
 import { sortAlphaNum } from "@/utils/helpers.js";
 
-import { downloadFileTemplate } from "@/utils/templates.js";
+import { downloadFileTemplate, downloadItemsTemplate } from "@/utils/templates.js";
 
 export default {
     name: "QueueTable",
@@ -468,16 +468,20 @@ export default {
         handleOperations(clickAction, rowInfo) {
             if (clickAction === "download" || clickAction === "delete") {
                 if (clickAction === "download") {
-                    const fileID = rowInfo.fileID;
-
                     const downloadWindow = window.open("", "_blank");
                     downloadWindow.document.write(downloadFileTemplate());
-                    ApiGenarateFileDownloadLink({ downloadType: 'queue:single', fileID: fileID })
+                    ApiGenarateFileDownloadLink({ downloadType: "queue", recordID: rowInfo.queueID})
                         .then(response => {
-                            downloadWindow.location.href = response.data.message.url;
+                            if (response.data.success === true && response.data.message.length > 0) {
+                                console.log("setting INNER html");
+                                downloadWindow.document.getElementById("download_links").innerHTML = downloadItemsTemplate(response.data.message);
+                            } else {
+                                downloadWindow.close();
+                            }
                         })
                         .catch(error => {
                             console.log(error);
+                            downloadWindow.close();
                         });
                 } else if (clickAction === "delete") {
                     const queueID = rowInfo.queueID;

@@ -1,88 +1,104 @@
 <template>
-    <div class='simon-start-button'>
-        <el-row type='flex' align='middle'>
-            <el-col :offset='13' :span='11'>
-                <el-row type='flex' align='middle'>
-                    <el-col :span='24'>
-                        <el-button class='validate-analysis' type='primary' size='medium' round icon='el-icon-caret-right' :disabled='isValidateDisabled == true' @click='validateJob'>Validate data</el-button>
+    <div class="simon-start-button">
+        <el-row type="flex" align="middle">
+            <el-col :offset="13" :span="11">
+                <el-row type="flex" align="middle">
+                    <el-col :span="24">
+                        <el-button
+                            class="validate-analysis"
+                            type="primary"
+                            size="medium"
+                            round
+                            icon="el-icon-caret-right"
+                            :disabled="isValidateDisabled == true"
+                            @click="validateJob"
+                            >Validate data</el-button
+                        >
                     </el-col>
                 </el-row>
             </el-col>
         </el-row>
         <!-- Confirm submission Alert Dialog -->
-        <el-dialog title="Looks good! Please confirm task submission" :visible.sync="submissionVisible" width="40%" :before-close="handleSubmissionCancle">
+        <el-dialog
+            title="Looks good! Please confirm task submission"
+            :visible.sync="submissionVisible"
+            width="40%"
+            :before-close="handleSubmissionCancle"
+        >
             <div class="tip">
-                <p>
-                    <div style="float: left;">>Based on your current selection what we got following dataset(s):</div>
+                <div style="float: left;">>Based on your current selection what we got following dataset(s):</div>
 
-                    <el-tooltip placement="top">
-                        <div slot="content">
-                            This number tell you how many missing values occur across your dataset.
-                        </div>
-                        <div style="float: right;">Data sparsity 
-                            <span>{{datasetQueueSparsity * 100}}%</span>
-                        </div>
-                    </el-tooltip>
-                    <br />
-                    <br />
-                    <el-tabs v-if="datasetResamples.length > 0" type="border-card">
-                        <el-tab-pane v-for="(item, index) in datasetResamples"  :label="item.outcome.original + ' ('+datasetResamples[index]['data'].length+')' " :key="index" :name="String(index)" :v-model="0">
+                <el-tooltip placement="top">
+                    <div slot="content">This number tell you how many missing values occur across your dataset.</div>
+                    <div style="float: right;">
+                        Data sparsity <span>{{ datasetQueueSparsity * 100 }}%</span>
+                    </div>
+                </el-tooltip>
+                <br />
+                <br />
+                <el-tabs v-if="datasetResamples.length > 0" type="border-card">
+                    <el-tab-pane
+                        v-for="(item, index) in datasetResamples"
+                        :label="item.outcome.original + ' (' + datasetResamples[index]['data'].length + ')'"
+                        :key="index"
+                        :name="String(index)"
+                        :v-model="0"
+                    >
+                        <el-table
+                            :data="datasetResamples[index]['data']"
+                            :ref="'datasetResamplesTable_' + item.outcome.remapped"
+                            height="250"
+                            style="width: 100%"
+                            @selection-change="
+                                selection => {
+                                    resampleSelectionChange(selection, index);
+                                }
+                            "
+                        >
+                            <el-table-column type="selection"> </el-table-column>
 
-                            <el-table
-                                :data="datasetResamples[index]['data']"
-                                :ref="'datasetResamplesTable_' + item.outcome.remapped"
-                                height="250"
-                                style="width: 100%"
-                                @selection-change="(selection) => { resampleSelectionChange(selection, index) }">
+                            <el-table-column property="totalFeatures" label="Features" sortable align="center">
+                            </el-table-column>
 
-                                <el-table-column
-                                    type="selection">
-                                </el-table-column>
+                            <el-table-column property="totalSamples" label="Samples" sortable align="center">
+                            </el-table-column>
 
-                                <el-table-column
-                                    property="totalFeatures"
-                                    label="Features"
-                                    sortable
-                                    align="center">
-                                </el-table-column>
+                            <el-table-column property="totalDatapoints" label="Datapoints" align="center">
+                            </el-table-column>
 
-                                <el-table-column
-                                    property="totalSamples"
-                                    label="Samples"
-                                    sortable
-                                    align="center">
-                                </el-table-column>
-
-                                <el-table-column
-                                    property="totalDatapoints"
-                                    label="Datapoints"
-                                    align="center">
-                                </el-table-column>
-
-                                <el-table-column align="center">
-                                        <template slot-scope="scope">
-                                            <el-button
-                                            type="primary"
-                                            size="mini"
-                                            @click.native.prevent="downloadResampleDataset(scope.$index, index)"
-                                            icon="el-icon-download" circle></el-button>
-                                        </template>
-                                </el-table-column>
-                            </el-table>
-
-                        </el-tab-pane>
-                     </el-tabs>
-                        <br />
-                        <br />Now this data will be submitted for processing. You can track the progress of this task in your Dashboard panel.
-                        <br />
-                        <br />Do you wish to proceed?
-                </p>
+                            <el-table-column align="center">
+                                <template slot-scope="scope">
+                                    <el-button
+                                        type="primary"
+                                        size="mini"
+                                        @click.native.prevent="downloadResampleDataset(scope.$index, index)"
+                                        icon="el-icon-download"
+                                        circle
+                                    ></el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-tab-pane>
+                </el-tabs>
+                <br />
+                <br />Now this data will be submitted for processing. You can track the progress of this task in your
+                Dashboard panel. <br />
+                <br />Do you wish to proceed?
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button type='info' size='medium' round icon='el-icon-caret-right' @click="handleSubmissionCancle">Cancel</el-button>
-                <el-button class='submit-analysis' type='primary' size='medium' round 
-                    icon='el-icon-caret-right' 
-                    :disabled='!processTaskVisible' @click='processTask'>Process</el-button>
+                <el-button type="info" size="medium" round icon="el-icon-caret-right" @click="handleSubmissionCancle"
+                    >Cancel</el-button
+                >
+                <el-button
+                    class="submit-analysis"
+                    type="primary"
+                    size="medium"
+                    round
+                    icon="el-icon-caret-right"
+                    :disabled="!processTaskVisible"
+                    @click="processTask"
+                    >Process</el-button
+                >
             </span>
         </el-dialog>
         <!-- ERROR Alert Dialog -->
@@ -91,10 +107,18 @@
             :visible.sync="messageWarnings.length > 0"
             width="35%"
             :show-close="false"
-            center>
+            center
+        >
             <div class="tip">
                 <p>
-                    <el-alert v-for="(item, index) in messageWarnings" :title="item" :key="index" type="error" :closable="false" show-icon></el-alert>
+                    <el-alert
+                        v-for="(item, index) in messageWarnings"
+                        :title="item"
+                        :key="index"
+                        type="error"
+                        :closable="false"
+                        show-icon
+                    ></el-alert>
                 </p>
             </div>
             <span slot="footer" class="dialog-footer">
@@ -102,7 +126,13 @@
             </span>
         </el-dialog>
         <div class="progress-circle" v-if="progressBar.percentage > 0 || progressBar.status != ''">
-            <el-progress type="circle" :percentage="progressBar.percentage" :width="256" :stroke-width="8" :status="progressBar.status"></el-progress>
+            <el-progress
+                type="circle"
+                :percentage="progressBar.percentage"
+                :width="256"
+                :stroke-width="8"
+                :status="progressBar.status"
+            ></el-progress>
         </div>
     </div>
 </template>
@@ -116,7 +146,7 @@ import {
 
 import clipboard from "@/utils/clipboard";
 import { findObjectIndexByKey } from "@/utils/helpers";
-import { downloadFileTemplate } from "@/utils/templates.js";
+import { downloadFileTemplate, downloadItemsTemplate } from "@/utils/templates.js";
 
 export default {
     name: "StartButton",
@@ -239,15 +269,20 @@ export default {
             const downloadWindow = window.open("", "_blank");
             downloadWindow.document.write(downloadFileTemplate());
 
-            ApiGenarateFileDownloadLink({ downloadType: 'dataset:details', fileID: item.fileID })
+            ApiGenarateFileDownloadLink({ downloadType: "resample", recordID: item.id })
                 .then(response => {
+                    if (response.data.success === true && response.data.message.length > 0) {
+                        downloadWindow.document.getElementById("download_links").innerHTML = downloadItemsTemplate(
+                            response.data.message
+                        );
+                    } else {
+                        downloadWindow.close();
+                    }
                     this.stopLoading();
-                    // downloadWindow.document.write(JSON.stringify(response.data.message.header));
-                    downloadWindow.location.href = response.data.message.url;
                 })
                 .catch(error => {
                     this.stopLoading();
-                    console.log(error);
+                    downloadWindow.close();
                 });
         },
         resampleSelectionChange(selection, index) {
@@ -262,9 +297,9 @@ export default {
             });
 
             const resampleIndex = findObjectIndexByKey(this.datasetResamples[index].data, "selected", true);
-            if(resampleIndex !== -1){
+            if (resampleIndex !== -1) {
                 this.processTaskVisible = true;
-            }else{
+            } else {
                 this.processTaskVisible = false;
             }
         },
@@ -415,7 +450,7 @@ export default {
                         this.datasetResamples = response.data.message.resamples;
                         this.datasetQueueID = response.data.message.queueID;
 
-                        this.datasetQueueSparsity = (response.data.message.sparsity * 100);
+                        this.datasetQueueSparsity = response.data.message.sparsity * 100;
 
                         this.submissionVisible = true;
                         this.isValidateDisabled = true;
@@ -439,7 +474,7 @@ export default {
                 // Loop all created tables and preselect all rows
                 this.datasetResamples.forEach((resample, resampleIndex) => {
                     const tableReference = "datasetResamplesTable_" + resample.outcome.remapped;
-                    if(resample.data.length > 0){
+                    if (resample.data.length > 0) {
                         this.processTaskVisible = true;
                     }
                     resample.data.forEach((row, rowIndex) => {
@@ -456,7 +491,7 @@ export default {
     }
 };
 </script>
-<style rel='stylesheet/scss' lang='scss' scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
 @import "~scss_vars";
 .simon-start-button {
     margin-top: 20px;

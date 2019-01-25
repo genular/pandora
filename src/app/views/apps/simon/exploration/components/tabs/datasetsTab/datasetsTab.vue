@@ -376,13 +376,14 @@
 import { fetchJobDetails } from "@/api/analysis";
 import {
     deleteDatasetResampleTask as ApiDeleteDatasetResampleTask,
+    genarateFileDownloadLink as ApiGenarateFileDownloadLink
 } from "@/api/backend";
 
 import clipboard from "@/utils/clipboard";
 import _ from "lodash";
 
 import subTabPane from "./components/subTabPane";
-import { downloadFileTemplate } from "@/utils/templates.js";
+import { downloadFileTemplate, downloadItemsTemplate } from "@/utils/templates.js";
 
 export default {
     name: "datasetsTab",
@@ -539,19 +540,23 @@ export default {
         // Download and delete resample actions
         handleOperations(clickAction, rowInfo) {
             if (clickAction === "download") {
-                const fileID = rowInfo.fileID_train;
-
                 const downloadWindow = window.open("", "_blank");
                 downloadWindow.document.write(downloadFileTemplate());
-                ApiGenarateFileDownloadLink({ downloadType: 'resample:details', fileID: fileID })
+                ApiGenarateFileDownloadLink({ downloadType: "resample", recordID: rowInfo.resampleID })
                     .then(response => {
-                        downloadWindow.location.href = response.data.message.url;
+                        if (response.data.success === true && response.data.message.length > 0) {
+                            downloadWindow.document.getElementById("download_links").innerHTML = downloadItemsTemplate(
+                                response.data.message
+                            );
+                        } else {
+                            downloadWindow.close();
+                        }
                     })
                     .catch(error => {
                         console.log(error);
+                        downloadWindow.close();
                     });
             } else if (clickAction === "delete") {
-                const resampleID = rowInfo.resampleID;
                 this.$confirm(
                     "This will permanently delete everything on the system related to selected resample. Continue?",
                     "Warning",
@@ -560,7 +565,7 @@ export default {
                     }
                 )
                     .then(_ => {
-                        ApiDeleteDatasetResampleTask({ resampleID: resampleID })
+                        ApiDeleteDatasetResampleTask({ resampleID: rowInfo.resampleID })
                             .then(response => {
                                 if (response.data.success === true) {
                                     this.getDatasetQueueList();

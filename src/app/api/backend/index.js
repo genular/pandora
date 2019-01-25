@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2019-01-22 10:26:55
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-25 09:32:13
+* @Last Modified time: 2019-01-25 14:55:20
 */
 import request from "@/utils/request";
 
@@ -298,8 +298,8 @@ export function deleteDatasetResampleTask(submitData) {
 /**
  * Generates publicly accessible download link for specific file ID
  * @param  {object} Containing two variables: 
- * downloadType (resample:single, resample:details, queue:single)
- * fileID Id of the file from users_files database table
+ * downloadType: (resample, queue)
+ * recordID: main ID of the queue or resample
  * @return {object}            JSON decoded API response object
  */
 export function genarateFileDownloadLink(submitData) {
