@@ -1,9 +1,5 @@
 <template>
-    <div
-        class="calendar-list-container"
-        v-loading="queueListLoading"
-        :element-loading-text="$t('views.dashboard.jobs.loading_title')"
-    >
+    <div class="calendar-list-container" v-loading="queueListLoading" :element-loading-text="$t('views.dashboard.jobs.loading_title')">
         <div class="filter-container">
             <el-input
                 @keyup.enter.native="handleFilter"
@@ -14,21 +10,12 @@
             >
             </el-input>
             <el-select @change="handleFilter" style="width: 140px" class="filter-item" v-model="queueFilterQuery.sort">
-                <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key">
-                </el-option>
+                <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"> </el-option>
             </el-select>
-            <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{
-                $t("views.dashboard.jobs.search.buttons.search")
+            <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{ $t("views.dashboard.jobs.search.buttons.search") }}</el-button>
+            <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">{{
+                $t("views.dashboard.jobs.search.buttons.export")
             }}</el-button>
-            <el-button
-                class="filter-item"
-                type="primary"
-                :loading="downloadLoading"
-                v-waves
-                icon="el-icon-download"
-                @click="handleDownload"
-                >{{ $t("views.dashboard.jobs.search.buttons.export") }}</el-button
-            >
         </div>
         <el-table
             :data="queueList"
@@ -56,22 +43,13 @@
             </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.jobs.table.header.processing_time')">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.queueProcessingTime || scope.row.updated">{{
-                        formatProcessingTime(scope.row.queueProcessingTime) | millisecondsToStr
-                    }}</span>
+                    <span v-if="scope.row.queueProcessingTime || scope.row.updated">{{ formatProcessingTime(scope.row.queueProcessingTime) | millisecondsToStr }}</span>
                     <span v-else>N/A</span>
                 </template>
             </el-table-column>
-            <el-table-column
-                align="center"
-                class-name="status-col"
-                :label="$t('views.dashboard.jobs.table.header.status')"
-                width="175"
-            >
+            <el-table-column align="center" class-name="status-col" :label="$t('views.dashboard.jobs.table.header.status')" width="175">
                 <template slot-scope="scope">
-                    <el-tag :type="statusFilter(scope.row.status, 'class')">{{
-                        statusFilter(scope.row.status, "value")
-                    }}</el-tag>
+                    <el-tag :type="statusFilter(scope.row.status, 'class')">{{ statusFilter(scope.row.status, "value") }}</el-tag>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="Extraction">
@@ -101,27 +79,9 @@
             </el-table-column>
             <el-table-column class-name="settings" fixed="right" label="Operations" width="180">
                 <template slot-scope="scope">
-                    <el-button
-                        size="mini"
-                        type="success"
-                        round
-                        icon="el-icon-info"
-                        @click="handleOperations('info', scope.row)"
-                    ></el-button>
-                    <el-button
-                        size="mini"
-                        type="primary"
-                        plain
-                        icon="el-icon-download"
-                        @click="handleOperations('download', scope.row)"
-                    ></el-button>
-                    <el-button
-                        size="mini"
-                        type="danger"
-                        plain
-                        icon="el-icon-delete"
-                        @click="handleOperations('delete', scope.row)"
-                    ></el-button>
+                    <el-button size="mini" type="success" round icon="el-icon-info" @click="handleOperations('info', scope.row)"></el-button>
+                    <el-button size="mini" type="primary" plain icon="el-icon-download" @click="handleOperations('download', scope.row)"></el-button>
+                    <el-button size="mini" type="danger" plain icon="el-icon-delete" @click="handleOperations('delete', scope.row)"></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -151,13 +111,7 @@
                             size="small"
                             placeholder="Select performace measurement"
                         >
-                            <el-option
-                                v-for="item in performaceVariables[selectedResamplesID]"
-                                :key="item"
-                                :label="item"
-                                :value="item"
-                            >
-                            </el-option>
+                            <el-option v-for="item in performaceVariables[selectedResamplesID]" :key="item" :label="item" :value="item"> </el-option>
                         </el-select>
                     </el-col>
                 </el-row>
@@ -179,73 +133,40 @@
                                 <span>{{ scope.row.resampleID }}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                            fixed
-                            align="center"
-                            :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.source')"
-                            width="75"
-                        >
+                        <el-table-column fixed align="center" :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.source')" width="75">
                             <template slot-scope="scope">
                                 <div v-if="(scope.row.dataSource = 1)">
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">
-                                            {{ $t("views.dashboard.jobs.table.modal_info.feature_sets.initial") }}
-                                        </div>
+                                        <div slot="content">{{ $t("views.dashboard.jobs.table.modal_info.feature_sets.initial") }}</div>
                                         <span class="el-icon-more"></span>
                                     </el-tooltip>
                                 </div>
                                 <div v-else>
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">
-                                            {{ $t("views.dashboard.jobs.table.modal_info.feature_sets.predicted") }}
-                                        </div>
+                                        <div slot="content">{{ $t("views.dashboard.jobs.table.modal_info.feature_sets.predicted") }}</div>
                                         <span class="el-icon-more-outline"></span>
                                     </el-tooltip>
                                 </div>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                            align="center"
-                            prop="samplesTotal"
-                            sortable
-                            :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.samples')"
-                        >
+                        <el-table-column align="center" prop="samplesTotal" sortable :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.samples')">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span>
-                                <span v-else>N/A</span>
+                                <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                            align="center"
-                            prop="featuresTotal"
-                            sortable
-                            :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.features')"
-                        >
+                        <el-table-column align="center" prop="featuresTotal" sortable :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.features')">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.featuresTotal">{{ scope.row.featuresTotal }}</span>
-                                <span v-else>N/A</span>
+                                <span v-if="scope.row.featuresTotal">{{ scope.row.featuresTotal }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                            align="center"
-                            prop="samplesTraining"
-                            sortable
-                            :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.samples_training')"
-                        >
+                        <el-table-column align="center" prop="samplesTraining" sortable :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.samples_training')">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span>
-                                <span v-else>N/A</span>
+                                <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                            align="center"
-                            prop="samplesTesting"
-                            sortable
-                            :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.samples_testing')"
-                        >
+                        <el-table-column align="center" prop="samplesTesting" sortable :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.samples_testing')">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span>
-                                <span v-else>N/A</span>
+                                <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
                         <el-table-column align="center" label="Models Processed">
@@ -278,12 +199,7 @@
                                 <div v-if="scope.row.status > 0"><span class="el-icon-success"></span></div>
                                 <div v-else>
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div
-                                            slot="content"
-                                            v-html="
-                                                $t('views.dashboard.jobs.table.modal_info.methods.model_error_info')
-                                            "
-                                        ></div>
+                                        <div slot="content" v-html="$t('views.dashboard.jobs.table.modal_info.methods.model_error_info')"></div>
                                         <span class="el-icon-warning"></span>
                                     </el-tooltip>
                                 </div>
@@ -294,28 +210,14 @@
                                 <span>{{ scope.row.modelID }}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                            align="left"
-                            prop="modelName"
-                            sortable
-                            :label="$t('views.dashboard.jobs.table.modal_info.methods.method')"
-                        >
+                        <el-table-column align="left" prop="modelName" sortable :label="$t('views.dashboard.jobs.table.modal_info.methods.method')">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.modelName">{{ scope.row.modelName }}</span>
-                                <span v-else>N/A</span>
+                                <span v-if="scope.row.modelName">{{ scope.row.modelName }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                            align="center"
-                            prop="trainingTime"
-                            sortable
-                            :label="$t('views.dashboard.jobs.table.modal_info.methods.time')"
-                        >
+                        <el-table-column align="center" prop="trainingTime" sortable :label="$t('views.dashboard.jobs.table.modal_info.methods.time')">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.trainingTime">{{
-                                    (scope.row.trainingTime * 1000) | millisecondsToStr
-                                }}</span>
-                                <span v-else>N/A</span>
+                                <span v-if="scope.row.trainingTime">{{ (scope.row.trainingTime * 1000) | millisecondsToStr }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -327,13 +229,9 @@
                             @sort-orders="['ascending', 'descending']"
                         >
                             <template slot-scope="scope">
-                                <span
-                                    v-if="
-                                        typeof scope.row.performance !== 'undefined' &&
-                                            scope.row.performance[performanceItem]
-                                    "
-                                    >{{ scope.row.performance[performanceItem] }}</span
-                                >
+                                <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">{{
+                                    scope.row.performance[performanceItem]
+                                }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
@@ -341,9 +239,7 @@
                 </el-col>
             </el-row>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogQueueDetails = false">{{
-                    $t("views.dashboard.jobs.table.modal_info.buttons.close")
-                }}</el-button>
+                <el-button type="primary" @click="dialogQueueDetails = false">{{ $t("views.dashboard.jobs.table.modal_info.buttons.close") }}</el-button>
             </span>
         </el-dialog>
     </div>
@@ -470,7 +366,7 @@ export default {
                 if (clickAction === "download") {
                     const downloadWindow = window.open("", "_blank");
                     downloadWindow.document.write(downloadFileTemplate());
-                    ApiGenarateFileDownloadLink({ downloadType: "queue", recordID: rowInfo.queueID})
+                    ApiGenarateFileDownloadLink({ downloadType: "queue", recordID: rowInfo.queueID })
                         .then(response => {
                             if (response.data.success === true && response.data.message.length > 0) {
                                 console.log("setting INNER html");
@@ -485,13 +381,10 @@ export default {
                         });
                 } else if (clickAction === "delete") {
                     const queueID = rowInfo.queueID;
-                    this.$confirm(
-                        "This will permanently delete everything on the system related to selected queue. Continue?",
-                        "Warning",
-                        {
-                            type: "warning"
-                        }
-                    )
+                     this.queueListLoading = true;
+                    this.$confirm("This will permanently delete everything on the system related to selected queue. Continue?", "Warning", {
+                        type: "warning"
+                    })
                         .then(_ => {
                             ApiDeleteDatasetQueueTask({ queueID: queueID })
                                 .then(response => {
@@ -501,7 +394,7 @@ export default {
                                     }
                                     this.$message({
                                         type: "success",
-                                        message: "Successfully deleted!"
+                                        message: "Success!"
                                     });
                                 })
                                 .catch(error => {
@@ -513,7 +406,7 @@ export default {
                             this.queueListLoading = false;
                             this.$message({
                                 type: "info",
-                                message: "Delete error, canceled!"
+                                message: "Canceled!"
                             });
                         });
                 }
@@ -549,7 +442,7 @@ export default {
             const statusMap = {
                 0: { class: "success", value: "Created" },
                 1: { class: "success", value: "Confirmed" },
-                2: { class: "info", value: "Canceled" },
+                2: { class: "warning", value: "Canceled" },
                 3: { class: "info", value: "Processing" },
                 4: { class: "info", value: "Processing" },
                 5: { class: "success", value: "Completed" },
@@ -590,8 +483,7 @@ export default {
                                 this.dialogQueueDetails = true;
                             } else {
                                 this.$message({
-                                    message:
-                                        "Cannot fetch Job details from the back-end server. Please try again latter or choose another Job!",
+                                    message: "Cannot fetch Job details from the back-end server. Please try again latter or choose another Job!",
                                     type: "error",
                                     duration: 5000,
                                     showClose: true
@@ -624,8 +516,7 @@ export default {
                             }
                         } else {
                             this.$message({
-                                message:
-                                    "Cannot fetch Job details from the back-end server. Please try again latter or choose another Job!",
+                                message: "Cannot fetch Job details from the back-end server. Please try again latter or choose another Job!",
                                 type: "error",
                                 duration: 5000,
                                 showClose: true
@@ -722,28 +613,8 @@ export default {
         handleDownload() {
             this.downloadLoading = true;
             import("@/vendor/Export2Excel").then(excel => {
-                const tHeader = [
-                    "queueID",
-                    "created",
-                    "modelsSuccess",
-                    "modelsTotal",
-                    "queueExtraction",
-                    "queueProcessingTime",
-                    "resamplesTotal",
-                    "sparsity",
-                    "status"
-                ];
-                const filterVal = [
-                    "queueID",
-                    "created",
-                    "modelsSuccess",
-                    "modelsTotal",
-                    "queueExtraction",
-                    "queueProcessingTime",
-                    "resamplesTotal",
-                    "sparsity",
-                    "status"
-                ];
+                const tHeader = ["queueID", "created", "modelsSuccess", "modelsTotal", "queueExtraction", "queueProcessingTime", "resamplesTotal", "sparsity", "status"];
+                const filterVal = ["queueID", "created", "modelsSuccess", "modelsTotal", "queueExtraction", "queueProcessingTime", "resamplesTotal", "sparsity", "status"];
                 const data = this.formatJson(filterVal, this.queueList);
                 excel.export_json_to_excel(tHeader, data, "table-list");
                 this.downloadLoading = false;

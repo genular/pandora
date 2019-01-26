@@ -569,11 +569,11 @@ export default {
                             .then(response => {
                                 if (response.data.success === true) {
                                     this.getDatasetQueueList();
+                                    this.$message({
+                                        type: "success",
+                                        message: "Successfully deleted!"
+                                    });
                                 }
-                                this.$message({
-                                    type: "success",
-                                    message: "Successfully deleted!"
-                                });
                             })
                             .catch(error => {
                                 console.log(error);

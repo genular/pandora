@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2019-01-22 10:26:55
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-25 14:55:20
+* @Last Modified time: 2019-01-25 16:33:32
 */
 import request from "@/utils/request";
 
@@ -285,13 +285,9 @@ export function deleteDatasetQueueTask(submitData) {
  * @return {[type]}            [description]
  */
 export function deleteDatasetResampleTask(submitData) {
-    const data = {
-        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData)))
-    };
     return request({
-        url: baseUrlPath + "/system/simon/dataset-queue/delete",
-        method: "POST",
-        data
+        url: baseUrlPath + "/system/simon/dataset-resample/delete/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
+        method: "GET"
     });
 }
 
