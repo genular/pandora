@@ -38,21 +38,14 @@
         "dashboard": "Dashboard",
         "settings": "Settings",
         "workspace": "Workspace",
-        "other": "Other",
         "simon": "SIMON",
-        "editing": "Edit/Check",
         "analysis": "Analysis",
         "exploratory-analysis": "Exploration"
     },
     "navbar": {
-        "minimize": "Minimize",
-        "fullscreen": "Toggle full-screen",
-        "quit": "Quit",
         "logOut": "Log Out",
         "dashboard": "Dashboard",
-        "settings": "Settings",
-        "github": "Github",
-        "theme": "theme"
+        "settings": "Settings"
     },
     "buttons": {
         "ok": "OK",

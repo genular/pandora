@@ -369,7 +369,6 @@ export default {
                     ApiGenarateFileDownloadLink({ downloadType: "queue", recordID: rowInfo.queueID })
                         .then(response => {
                             if (response.data.success === true && response.data.message.length > 0) {
-                                console.log("setting INNER html");
                                 downloadWindow.document.getElementById("download_links").innerHTML = downloadItemsTemplate(response.data.message);
                             } else {
                                 downloadWindow.close();
