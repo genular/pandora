@@ -1,9 +1,9 @@
 /*
-* @Author: LogIN-
-* @Date:   2019-01-22 10:26:55
-* @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-25 16:33:32
-*/
+ * @Author: LogIN-
+ * @Date:   2019-01-22 10:26:55
+ * @Last Modified by:   LogIN-
+ * @Last Modified time: 2019-01-29 15:55:55
+ */
 import request from "@/utils/request";
 
 const baseUrlPath = "/backend";
@@ -54,7 +54,7 @@ export function userDetials() {
 /**
  * Checks if value is available in specific Database Table, like user-name, email address
  * Returns true or false. TRUE if record is available
- * 
+ *
  * @param  {[string]} validationTable
  * @param  {[string]} validationField
  * @param  {[string]} validationValue
@@ -110,9 +110,7 @@ export function searchCountry(input) {
 
 export function searchAddressSuggest(input) {
     return request({
-        url:
-            "http://places.cit.api.here.com/places/v1/suggest?app_code=HjaPdhcpX2fQcX4-Bhsr5w&app_id=UErNjt36zAkX8xBdxWFV&pretty=true&q=" +
-            encodeURIComponent(input),
+        url: "http://places.cit.api.here.com/places/v1/suggest?app_code=HjaPdhcpX2fQcX4-Bhsr5w&app_id=UErNjt36zAkX8xBdxWFV&pretty=true&q=" + encodeURIComponent(input),
         method: "GET",
         headers: { "X-Map-Viewport": "13.3704,52.5122,13.4194,52.5262" }
     });
@@ -196,22 +194,13 @@ export function fetchSimonAvailablePackages(selectedFiles) {
 
 export function simonHeaderVerify(selectedFiles) {
     return request({
-        url:
-            baseUrlPath +
-            "/system/simon/header/" +
-            encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))) +
-            "/verify",
+        url: baseUrlPath + "/system/simon/header/" + encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))) + "/verify",
         method: "GET"
     });
 }
 export function getSimonHeaderSuggest(selectedFiles, input) {
     return request({
-        url:
-            baseUrlPath +
-            "/system/simon/header/" +
-            encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))) +
-            "/suggest/" +
-            encodeURIComponent(window.btoa(input)),
+        url: baseUrlPath + "/system/simon/header/" + encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))) + "/suggest/" + encodeURIComponent(window.btoa(input)),
         method: "GET"
     });
 }
@@ -222,7 +211,7 @@ export function getSimonHeaderSuggest(selectedFiles, input) {
  * resampleID: database ID of the resample, userInput: user inputed string, inputType: features, outcome, classes
  * @return {object}            JSON decoded API response object
  */
-export function resamplesFeaturesSuggest(submitData) { 
+export function resamplesFeaturesSuggest(submitData) {
     return request({
         url: baseUrlPath + "/queue/resamples/features/suggest/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
         method: "GET",
@@ -293,7 +282,7 @@ export function deleteDatasetResampleTask(submitData) {
 
 /**
  * Generates publicly accessible download link for specific file ID
- * @param  {object} Containing two variables: 
+ * @param  {object} Containing two variables:
  * downloadType: (resample, queue)
  * recordID: main ID of the queue or resample
  * @return {object}            JSON decoded API response object
@@ -310,5 +299,17 @@ export function getVariableImportance(query) {
         url: baseUrlPath + "/queue/exploration/variableImportance",
         method: "GET",
         params: query
+    });
+}
+
+export function getOpenMLDatasets(requestData) {
+    return request({
+        url: baseUrlPath + "/dataset/3rdparty/list/openml", // "https://www.openml.org/api/v1/json/data/list/limit/10/offset/1",
+        method: "GET",
+        params: {
+            page: requestData.page,
+            limit: requestData.limit,
+            api_key: "d499cded4edafdc833155968af56a055"
+        }
     });
 }

@@ -1,12 +1,12 @@
 <template>
-    <div class="dashboard-editor-container">
+    <div class="dashboard-inner-container">
         <div class=" clearfix">
             <pan-thumb style="float: left" :image="avatar"> Your roles:
                 <span class="pan-info-roles" :key='item' v-for="item in user_roles">{{item}}</span>
             </pan-thumb>
             <div class="info-container">
                 <span class="display_name">{{user_username}}</span>
-                <span style="font-size:20px;padding-top:20px;display:inline-block;">editor : dashboard</span>
+                <span style="font-size:20px;padding-top:20px;display:inline-block;">inner : dashboard</span>
             </div>
         </div>
         <div>
@@ -44,7 +44,7 @@ export default {
     margin: 0 auto;
 }
 
-.dashboard-editor-container {
+.dashboard-inner-container {
     background-color: $ui-icon-inactive;
     padding: 50px;
     .pan-info-roles {

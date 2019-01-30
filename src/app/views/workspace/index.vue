@@ -1,32 +1,81 @@
 <template>
     <div class="app-container workspace-container">
-        <div class="editor-container">
-          <dropzone
-                ref="workspaceDropzone"
-                id="workspaceDropzone"
-                v-on:dropzone-removedFile="dropzoneRemoved"
-                v-on:dropzone-success="dropzoneUploaded"
-                v-on:dropzone-fileClick="dropzoneFileClick"
-
-                defaultMsg="Drop files here or click to upload."
-                :thumbnailHeight="75"
-                :thumbnailWidth="80"
-                :maxFiles="1000"
-                :maxFilesize="1000000"
-                :authToken="auth_token"
-                acceptedFiles="text/csv,application/octet-stream"
-                :url="user_settings_server_address_backend + '/backend/system/filesystem/upload'">
-          </dropzone>
-          <!-- v-on:dropzone-fileAdded="dropzoneFileAdded" -->
-          <div class="dropzone-previews dropzone"></div>
-        </div>
+        <el-row type="flex" align="top">
+            <el-col :span="24">
+                <el-button icon="el-icon-question" size="mini" type="primary" round @click.prevent.stop="importOpenML">OpenML Import</el-button>
+            </el-col>
+        </el-row>
+        <el-row class="dropzone-container" type="flex" align="top">
+            <el-col :span="24">
+                <dropzone
+                    ref="workspaceDropzone"
+                    id="workspaceDropzone"
+                    v-on:dropzone-removedFile="dropzoneRemoved"
+                    v-on:dropzone-success="dropzoneUploaded"
+                    v-on:dropzone-fileClick="dropzoneFileClick"
+                    defaultMsg="Drop files here or click to upload."
+                    :thumbnailHeight="75"
+                    :thumbnailWidth="80"
+                    :maxFiles="1000"
+                    :maxFilesize="1000000"
+                    :authToken="auth_token"
+                    acceptedFiles="text/csv,application/octet-stream"
+                    :url="user_settings_server_address_backend + '/backend/system/filesystem/upload'"
+                >
+                </dropzone>
+            </el-col>
+        </el-row>
+        <el-row class="files-container" type="flex" align="top">
+            <el-col :span="24">
+                <div class="dropzone-previews dropzone"></div>
+            </el-col>
+        </el-row>
+        <el-dialog title="Please choose OpenML dataset you wish to import" :visible.sync="dialogOpenMLDatasets">
+            <el-table :data="openMLData" ref="openMLTable" empty-text="Finding datasets for import" stripe border fit style="width: 100%">
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <pre class="code-output" v-highlightjs="props.row.description"><code class="bash"></code></pre>
+                    </template>
+                </el-table-column>
+                <el-table-column 
+                    property="did" 
+                    label="ID"
+                    width="50">
+                </el-table-column>
+                <el-table-column 
+                    label="Name">
+                    <template slot-scope="scope">
+                        <a :href="scope.row.url" target="_blank">{{scope.row.name}}</a> 
+                    </template>
+                </el-table-column>
+                <el-table-column 
+                    label="Tags">
+                    <template slot-scope="scope">
+                        {{scope.row.tag}}
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="pagination-container">
+                <el-pagination
+                    background
+                    v-loading="openMLDatasetsLoading"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="queueFilterQuery.page"
+                    :page-sizes="[5, 10]"
+                    :page-size="queueFilterQuery.limit"
+                    layout="total, sizes, prev, pager, next, jumper"
+                >
+                </el-pagination>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
 import { Dropzone } from "./components";
 import { mapGetters } from "vuex";
 
-import { readFilesInUserDirectory as ApiReadFilesInUserDirectory, deleteFile as ApiDeleteFile } from "@/api/backend";
+import { readFilesInUserDirectory as ApiReadFilesInUserDirectory, deleteFile as ApiDeleteFile, getOpenMLDatasets as ApiGetOpenMLDatasets } from "@/api/backend";
 import { md5String } from "@/utils";
 
 export default {
@@ -37,6 +86,15 @@ export default {
     },
     data() {
         return {
+            openMLData: [],
+            dialogOpenMLDatasets: false,
+            openMLMesurments: [],
+            openMLDatasetsLoading: false,
+            queueFilterQuery: {
+                page: 1,
+                limit: 5
+            },
+
             totalFileSize: 0,
             totalFiles: 0,
             directoryFilesHash: "",
@@ -59,6 +117,33 @@ export default {
         }
     },
     methods: {
+        handleSizeChange(val) {
+            this.queueFilterQuery.limit = val;
+            this.importOpenML();
+        },
+        handleCurrentChange(val) {
+            this.queueFilterQuery.page = val;
+            this.importOpenML();
+        },
+        importOpenML() {
+            this.openMLDatasetsLoading = true;
+            this.dialogOpenMLDatasets = true;
+
+            ApiGetOpenMLDatasets(this.queueFilterQuery)
+                .then(response => {
+                    // Update elements only if needed to avoid DOM rendering
+                    if (response.data.success === true) {
+                        this.openMLData = response.data.message.dataset;
+                        this.openMLMesurments = response.data.message.qualityMesurments;
+                    }
+                    this.openMLDatasetsLoading = false;
+                })
+                .catch(error => {
+                    console.log("==> Cannot get ApiGetOpenMLDatasets stats: " + error);
+                    this.openMLDatasetsLoading = false;
+                    this.dialogOpenMLDatasets = false;
+                });
+        },
         // Initialize selected file class on initial file load
         dropzoneFileAdded(file) {
             if (this.selectedFiles.length === 0) {
@@ -130,7 +215,7 @@ export default {
         },
         fetchReadFilesInDirectory(selectedPath) {
             this.startLoading();
-            ApiReadFilesInUserDirectory({selectedDirectory: selectedPath})
+            ApiReadFilesInUserDirectory({ selectedDirectory: selectedPath })
                 .then(response => {
                     if (response.data.success === true) {
                         const directoryFilesHash = md5String(JSON.stringify(response.data.message));
@@ -167,4 +252,15 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+.code-output {
+    height: 300px;
+    overflow: auto;
+    font-size: 11px;
+}
+.dropzone-container {
+    margin-top: 10px;
+}
+.files-container {
+    margin-top: 10px;
+}
 </style>

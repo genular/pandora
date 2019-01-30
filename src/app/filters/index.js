@@ -1,40 +1,28 @@
 const moment = require("moment");
 
-function numberEnding(number) {
-    return number > 1 ? "s" : "";
-}
+
 /**
  * Convert milliseconds to human readable string
  * @param  {string} milliseconds
- * @return {string}
+ * @return {string} "2:10" "20:30" "05:53:50"
  **/
-export function millisecondsToStr(milliseconds) {
-    // TIP: to find current time in milliseconds, use:
-    // var  current_time_milliseconds = new Date().getTime();
+export function millisecondsToStr(millisec) {
+    var seconds = (millisec / 1000).toFixed(0);
+    var minutes = Math.floor(seconds / 60);
+    var hours = "";
+    if (minutes > 59) {
+        hours = Math.floor(minutes / 60);
+        hours = hours >= 10 ? hours : "0" + hours;
+        minutes = minutes - hours * 60;
+        minutes = minutes >= 10 ? minutes : "0" + minutes;
+    }
 
-    var temp = Math.floor(milliseconds / 1000);
-    var years = Math.floor(temp / 31536000);
-    if (years) {
-        return years + " year" + numberEnding(years);
+    seconds = Math.floor(seconds % 60);
+    seconds = seconds >= 10 ? seconds : "0" + seconds;
+    if (hours != "") {
+        return hours + ":" + minutes + ":" + seconds;
     }
-    // TODO: Months! Maybe weeks?
-    var days = Math.floor((temp %= 31536000) / 86400);
-    if (days) {
-        return days + " day" + numberEnding(days);
-    }
-    var hours = Math.floor((temp %= 86400) / 3600);
-    if (hours) {
-        return hours + " hour" + numberEnding(hours);
-    }
-    var minutes = Math.floor((temp %= 3600) / 60);
-    if (minutes) {
-        return minutes + " minute" + numberEnding(minutes);
-    }
-    var seconds = temp % 60;
-    if (seconds) {
-        return seconds + " second" + numberEnding(seconds);
-    }
-    return "less than a second";
+    return minutes + ":" + seconds;
 }
 
 /**
@@ -84,10 +72,10 @@ export function parseTime(time, cFormat) {
 /**
  * Truncates string and addds custom end to it
  * Example: {{feature.original | truncateString(10)}}
- * @param  {string} text 
- * @param  {string} stop 
+ * @param  {string} text
+ * @param  {string} stop
  * @param  {string} clamp
- * @return {string}      
+ * @return {string}
  */
 export function truncateString(text, stop, clamp) {
     return text.slice(0, stop) + (stop < text.length ? clamp || "..." : "");

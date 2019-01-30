@@ -1,5 +1,5 @@
 <template>
-    <div class="calendar-list-container" v-loading="queueListLoading" :element-loading-text="$t('views.dashboard.jobs.loading_title')">
+    <div class="queue-list-container" v-loading="queueListLoading" :element-loading-text="$t('views.dashboard.jobs.loading_title')">
         <div class="filter-container">
             <el-input
                 @keyup.enter.native="handleFilter"
@@ -27,6 +27,7 @@
             stripe
             border
             fit
+            class="queue-list-container-table"
             style="width: 100%"
         >
             <el-table-column type="selection" reserve-selection width="40" fixed> </el-table-column>
@@ -43,7 +44,7 @@
             </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.jobs.table.header.processing_time')">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.queueProcessingTime || scope.row.updated">{{ formatProcessingTime(scope.row.queueProcessingTime) | millisecondsToStr }}</span>
+                    <span v-if="scope.row.queueProcessingTime">{{ scope.row.queueProcessingTime | millisecondsToStr }}</span>
                     <span v-else>N/A</span>
                 </template>
             </el-table-column>
@@ -316,15 +317,19 @@ export default {
         if (this.queueListHash === "") {
             this.getDatasetQueueList();
         }
-        this.interval = setInterval(
-            function() {
-                this.getDatasetQueueList();
-            }.bind(this),
-            120000
-        );
+
+        if (this.updateInterval === null) {
+            this.updateInterval = setInterval(
+                function() {
+                    this.getDatasetQueueList();
+                }.bind(this),
+                120000
+            );
+        }
     },
     beforeDestroy: function() {
-        clearInterval(this.interval);
+        clearInterval(this.updateInterval);
+        this.updateInterval = null;
     },
     methods: {
         deepSort({ column, prop, order }, dataArray, dataArrayID, dataProp, dataPropID) {
@@ -380,7 +385,7 @@ export default {
                         });
                 } else if (clickAction === "delete") {
                     const queueID = rowInfo.queueID;
-                     this.queueListLoading = true;
+                    this.queueListLoading = true;
                     this.$confirm("This will permanently delete everything on the system related to selected queue. Continue?", "Warning", {
                         type: "warning"
                     })
@@ -421,22 +426,6 @@ export default {
                 }
             }
         },
-        formatProcessingTime(row) {
-            let time = 0;
-
-            const currentTime = +new Date();
-            const createdTime = Date.parse(row.updated);
-
-            if (row.status < 3) {
-                time = currentTime - createdTime;
-            } else if (row.status > 3) {
-                time = row.queueProcessingTime;
-            } else {
-                time = currentTime - createdTime;
-            }
-
-            return time;
-        },
         statusFilter(status, type) {
             const statusMap = {
                 0: { class: "success", value: "Created" },
@@ -445,26 +434,30 @@ export default {
                 3: { class: "info", value: "Processing" },
                 4: { class: "info", value: "Processing" },
                 5: { class: "success", value: "Completed" },
-                6: { class: "danger", value: "Some errors" }
+                6: { class: "danger", value: "Completed/Errors" }
             };
             return statusMap[status][type];
         },
         getDatasetQueueList() {
-            this.queueListLoading = true;
+            // Display loading only for initial request
+            if (this.queueListHash === "") {
+                this.queueListLoading = true;
+            }
             apiFetchQueueList(this.queueFilterQuery)
                 .then(response => {
-                    const queueListHash = md5String(JSON.stringify(response.data.data));
+                    const queueListHash = md5String(JSON.stringify(response.data.message));
                     // Update elements only if needed to avoid DOM rendering
-                    if (this.queueListHash !== queueListHash && typeof response.data.data !== "undefined") {
-                        this.queueList = response.data.data;
+                    if (this.queueListHash !== queueListHash && response.data.success === true) {
+                        this.queueList = response.data.message.queueList;
                         this.queueListHash = queueListHash;
-                        this.queueTotalItems = response.data.totalItems;
+                        this.queueTotalItems = response.data.message.queueTotalItems;
                     }
-
-                    this.queueListLoading = false;
+                    if (this.queueListLoading === true) {
+                        this.queueListLoading = false;
+                    }
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.log("==> Cannot get dashboard queue stats: " + error);
                 });
         },
         getDatasetResamplesList(pqid, status) {
@@ -634,25 +627,25 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import "~scss_vars";
-.job_selectable {
-    cursor: copy;
-}
-.job_not_selectable {
-    cursor: not-allowed;
-}
+    @import "~scss_vars";
+    .job_selectable {
+        cursor: copy;
+    }
+    .job_not_selectable {
+        cursor: not-allowed;
+    }
 
-.el-table .warning-row {
-    background-color: rgba(53, 34, 74, 0.05);
-}
-.el-table .success-row {
-    background-color: #ffffff;
-}
-/** Icons **/
-.el-icon-success {
-    color: #67c23a;
-}
-.el-icon-warning {
-    color: #e3006e;
-}
+    .el-table .warning-row {
+        background-color: rgba(53, 34, 74, 0.05);
+    }
+    .el-table .success-row {
+        background-color: #ffffff;
+    }
+    /** Icons **/
+    .el-icon-success {
+        color: #67c23a;
+    }
+    .el-icon-warning {
+        color: #e3006e;
+    }
 </style>

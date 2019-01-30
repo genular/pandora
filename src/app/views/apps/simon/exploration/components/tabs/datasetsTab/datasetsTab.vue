@@ -3,19 +3,12 @@
         <el-row align="top">
             <el-col :span="24">
                 <el-card class="box-card">
-                    <div slot="header" class="clearfix"><span>1. Please select one dataset for exploration</span></div>
+                    <div slot="header" class="clearfix"><div class="card_intro">1. Please select one dataset for exploration</div></div>
                     <el-table
                         ref="resamplesTable"
                         @sort-change="
                             ({ column, prop, order }) => {
-                                deepSort(
-                                    { column, prop, order },
-                                    'jobDetailsData',
-                                    null,
-                                    'resamplesList',
-                                    null,
-                                    'paginateResamples'
-                                );
+                                deepSort({ column, prop, order }, 'jobDetailsData', null, 'resamplesList', null, 'paginateResamples');
                             }
                         "
                         :data="displayResamples"
@@ -27,44 +20,7 @@
                     >
                         <el-table-column type="expand" style="padding: 0;">
                             <template slot-scope="props">
-                                <el-table
-                                    :ref="'prop_table' + props.row.resampleID"
-                                    :data="props.row.proportions"
-                                    class="proportionsTable"
-                                >
-                                    <el-table-column align="center" label="Class" prop="label">
-                                        <template slot-scope="scope">
-                                            <span>{{ scope.row.label }}</span>
-                                        </template>
-                                    </el-table-column>
-                                    <!-- loop datasets (train/test) -->
-                                    <el-table-column
-                                        v-for="(classesItem, classesIndex) in props.row.proportions[1].classes"
-                                        :key="'props_dataset_' + classesIndex"
-                                        :label="classesIndex"
-                                    >
-                                        <!-- loop dataset classes - outcomes (high/low/global) -->
-                                        <el-table-column
-                                            v-for="(classesSubItem, classesSubIndex) in classesItem"
-                                            :key="'props_dataset_classes_' + classesSubIndex"
-                                            :label="classesSubIndex"
-                                        >
-                                            <!-- loop dataset classes values (details / prop) -->
-                                            <template slot-scope="scope">
-                                                <div v-if="scope.row.classes[classesIndex][classesSubIndex]">
-                                                    <div
-                                                        v-for="(subItem, subItemIndex) in scope.row.classes[
-                                                            classesIndex
-                                                        ][classesSubIndex]"
-                                                        style="text-align: center;"
-                                                    >
-                                                        <span v-html="subItem"></span>
-                                                    </div>
-                                                </div>
-                                            </template>
-                                        </el-table-column>
-                                    </el-table-column>
-                                </el-table>
+                                <span>TODO!</span>
                             </template>
                         </el-table-column>
 
@@ -109,61 +65,33 @@
                             width="150"
                         >
                             <template slot-scope="scope">
-                                <span
-                                    v-if="
-                                        typeof scope.row.performance !== 'undefined' &&
-                                            scope.row.performance[performanceItem]
-                                    "
-                                    >{{ scope.row.performance[performanceItem] }}</span
-                                >
+                                <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">{{
+                                    scope.row.performance[performanceItem]
+                                }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
 
-                        <el-table-column
-                            align="center"
-                            width="150"
-                            label="Total samples"
-                            prop="samplesTotal"
-                            sortable="custom"
-                        >
+                        <el-table-column align="center" width="150" label="Total samples" prop="samplesTotal" sortable="custom">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                            align="center"
-                            width="170"
-                            label="Samples Training"
-                            prop="samplesTraining"
-                            sortable="custom"
-                        >
+                        <el-table-column align="center" width="170" label="Samples Training" prop="samplesTraining" sortable="custom">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                            align="center"
-                            width="170"
-                            label="Samples Testing"
-                            prop="samplesTesting"
-                            sortable="custom"
-                        >
+                        <el-table-column align="center" width="170" label="Samples Testing" prop="samplesTesting" sortable="custom">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
 
-                        <el-table-column
-                            align="center"
-                            width="175"
-                            label="Models submitted"
-                            prop="modelsTotal"
-                            sortable="custom"
-                        >
+                        <el-table-column align="center" width="175" label="Models submitted" prop="modelsTotal" sortable="custom">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.modelsTotal">{{ scope.row.modelsTotal }}</span>
                                 <span v-else>N/A</span>
@@ -172,22 +100,24 @@
 
                         <el-table-column class-name="settings" fixed="right" label="Operations" width="120">
                             <template slot-scope="scope">
-                                <el-button
-                                    size="mini"
-                                    style="float: left;"
-                                    type="primary"
-                                    plain
-                                    icon="el-icon-download"
-                                    @click="handleOperations('download', scope.row)"
-                                ></el-button>
-                                <el-button
-                                    size="mini"
-                                    style="float: right;"
-                                    type="danger"
-                                    plain
-                                    icon="el-icon-delete"
-                                    @click="handleOperations('delete', scope.row)"
-                                ></el-button>
+                                <el-button-group>
+                                    <el-button
+                                        size="mini"
+                                        title="Download resample datasets"
+                                        style="float: left;"
+                                        type="primary"
+                                        icon="el-icon-download"
+                                        @click="handleOperations('downloadResample', scope.row)"
+                                    ></el-button>
+                                    <el-button
+                                        size="mini"
+                                        title="Delete resample"
+                                        style="float: right;"
+                                        type="danger"
+                                        icon="el-icon-delete"
+                                        @click="handleOperations('deleteResample', scope.row)"
+                                    ></el-button>
+                                </el-button-group>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -208,7 +138,14 @@
             <el-col :span="24">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>2. Please select as much as models you wish to compare</span>
+                        <div class="card_intro">2. Please select as much as models you wish to compare</div>
+                        <div class="models_actions" v-if="selectedModelsIDs.length > 0">
+                            <el-button-group>
+                                <el-button size="small" title="Download selected model(s)" type="danger" icon="el-icon-download" @click="handleOperations('downloadModels', null)"></el-button>
+                                <el-button size="small" title="Deploy selected model(s)" type="success" icon="el-icon-share" @click="handleOperations('deployModels', null)"></el-button>
+                                <el-button size="small" title="Delete selected model(s)" type="danger" icon="el-icon-delete" @click="handleOperations('deleteModels', null)"></el-button>
+                            </el-button-group>
+                        </div>
                     </div>
                     <!-- Model Details data -->
                     <el-table
@@ -218,14 +155,7 @@
                         @select="handleModelsSelectionChange"
                         @sort-change="
                             ({ column, prop, order }) => {
-                                deepSort(
-                                    { column, prop, order },
-                                    'jobDetailsData',
-                                    null,
-                                    'resampleModels',
-                                    'selectedFeatureSetId',
-                                    'paginateModels'
-                                );
+                                deepSort({ column, prop, order }, 'jobDetailsData', null, 'resampleModels', 'selectedFeatureSetId', 'paginateModels');
                             }
                         "
                         row-key="modelID"
@@ -233,40 +163,20 @@
                         height="300"
                         max-height="300"
                     >
-                        <el-table-column
-                            type="selection"
-                            reserve-selection
-                            @selectable="checkModelsSelectionChange"
-                            width="40"
-                            fixed
-                        >
-                        </el-table-column>
+                        <el-table-column type="selection" reserve-selection @selectable="checkModelsSelectionChange" width="40" fixed> </el-table-column>
 
-                        <el-table-column
-                            fixed
-                            width="150"
-                            prop="modelName"
-                            sortable
-                            :label="$t('views.dashboard.jobs.table.modal_info.methods.method')"
-                        >
+                        <el-table-column fixed width="150" prop="modelName" sortable :label="$t('views.dashboard.jobs.table.modal_info.methods.method')">
                             <template slot-scope="scope">
                                 <div v-if="scope.row.status > 0" style="float: left;">
                                     <span class="el-icon-success"></span>
                                 </div>
                                 <div v-else style="float: left;">
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div
-                                            slot="content"
-                                            v-html="
-                                                $t('views.dashboard.jobs.table.modal_info.methods.model_error_info')
-                                            "
-                                        ></div>
+                                        <div slot="content" v-html="$t('views.dashboard.jobs.table.modal_info.methods.model_error_info')"></div>
                                         <span class="el-icon-warning"></span>
                                     </el-tooltip>
                                 </div>
-                                <span v-if="scope.row.modelName" style="padding-left: 10px;">{{
-                                    scope.row.modelName
-                                }}</span>
+                                <span v-if="scope.row.modelName" style="padding-left: 10px;">{{ scope.row.modelName }}</span>
                                 <span v-else style="padding-left: 10px;">N/A</span>
                             </template>
                         </el-table-column>
@@ -280,28 +190,16 @@
                             @sort-orders="['ascending', 'descending']"
                         >
                             <template slot-scope="scope">
-                                <span
-                                    v-if="
-                                        typeof scope.row.performance !== 'undefined' &&
-                                            scope.row.performance[performanceItem]
-                                    "
-                                    >{{ scope.row.performance[performanceItem] }}</span
-                                >
+                                <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">{{
+                                    scope.row.performance[performanceItem]
+                                }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
 
-                        <el-table-column
-                            align="center"
-                            prop="trainingTime"
-                            sortable
-                            show-overflow-tooltip
-                            :label="$t('views.dashboard.jobs.table.modal_info.methods.time')"
-                        >
+                        <el-table-column align="center" prop="trainingTime" sortable show-overflow-tooltip :label="$t('views.dashboard.jobs.table.modal_info.methods.time')">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.trainingTime">{{
-                                    (scope.row.trainingTime * 1000) | millisecondsToStr
-                                }}</span>
+                                <span v-if="scope.row.trainingTime">{{ (scope.row.trainingTime * 1000) | millisecondsToStr }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
@@ -335,12 +233,7 @@
                     @change="selectChangeClasses"
                     @focus="selectSuggestClasses"
                 >
-                    <el-option
-                        v-for="(classItem, index) in jobClassesDisaply"
-                        :key="classItem.remapped"
-                        :label="classItem.original"
-                        :value="classItem.remapped"
-                    ></el-option>
+                    <el-option v-for="(classItem, index) in jobClassesDisaply" :key="classItem.remapped" :label="classItem.original" :value="classItem.remapped"></el-option>
                 </el-select>
             </el-col>
         </el-row>
@@ -359,11 +252,7 @@
                     >
                         <span slot="label"><i :class="item.icon"></i> {{ item.label }}</span>
                         <keep-alive>
-                            <sub-tab-pane
-                                v-if="activeDatasetSubTabName == item.key"
-                                :currentView="item.view"
-                                :columnName="item.key"
-                            ></sub-tab-pane>
+                            <sub-tab-pane v-if="activeDatasetSubTabName == item.key" :currentView="item.view" :columnName="item.key"></sub-tab-pane>
                             <!-- inactive components will be cached! -->
                         </keep-alive>
                     </el-tab-pane>
@@ -374,10 +263,7 @@
 </template>
 <script>
 import { fetchJobDetails } from "@/api/analysis";
-import {
-    deleteDatasetResampleTask as ApiDeleteDatasetResampleTask,
-    genarateFileDownloadLink as ApiGenarateFileDownloadLink
-} from "@/api/backend";
+import { deleteDatasetResampleTask as ApiDeleteDatasetResampleTask, genarateFileDownloadLink as ApiGenarateFileDownloadLink } from "@/api/backend";
 
 import clipboard from "@/utils/clipboard";
 import _ from "lodash";
@@ -539,15 +425,13 @@ export default {
         },
         // Download and delete resample actions
         handleOperations(clickAction, rowInfo) {
-            if (clickAction === "download") {
+            if (clickAction === "downloadResample") {
                 const downloadWindow = window.open("", "_blank");
                 downloadWindow.document.write(downloadFileTemplate());
                 ApiGenarateFileDownloadLink({ downloadType: "resample", recordID: rowInfo.resampleID })
                     .then(response => {
                         if (response.data.success === true && response.data.message.length > 0) {
-                            downloadWindow.document.getElementById("download_links").innerHTML = downloadItemsTemplate(
-                                response.data.message
-                            );
+                            downloadWindow.document.getElementById("download_links").innerHTML = downloadItemsTemplate(response.data.message);
                         } else {
                             downloadWindow.close();
                         }
@@ -556,14 +440,10 @@ export default {
                         console.log(error);
                         downloadWindow.close();
                     });
-            } else if (clickAction === "delete") {
-                this.$confirm(
-                    "This will permanently delete everything on the system related to selected resample. Continue?",
-                    "Warning",
-                    {
-                        type: "warning"
-                    }
-                )
+            } else if (clickAction === "deleteResample") {
+                this.$confirm("This will permanently delete everything on the system related to selected resample. Continue?", "Warning", {
+                    type: "warning"
+                })
                     .then(_ => {
                         ApiDeleteDatasetResampleTask({ resampleID: rowInfo.resampleID })
                             .then(response => {
@@ -571,7 +451,7 @@ export default {
                                     this.getDatasetQueueList();
                                     this.$message({
                                         type: "success",
-                                        message: "Successfully deleted!"
+                                        message: "Resample successfully deleted!"
                                     });
                                 }
                             })
@@ -582,9 +462,44 @@ export default {
                     .catch(_ => {
                         this.$message({
                             type: "info",
-                            message: "Delete error, canceled!"
+                            message: "Delete resample error, operation canceled!"
                         });
                     });
+            } else if (clickAction === "deleteModels") {
+                this.$confirm("This will permanently delete everything on the system related to selected model(s). Continue?", "Warning", {
+                    type: "warning"
+                })
+                    .then(_ => {
+                        ApiDeleteDatasetResampleTask({ modelIDs: this.selectedModelsIDs })
+                            .then(response => {
+                                if (response.data.success === true) {
+                                    this.getDatasetQueueList();
+                                    this.$message({
+                                        type: "success",
+                                        message: "Models successfully deleted!"
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                    })
+                    .catch(_ => {
+                        this.$message({
+                            type: "info",
+                            message: "Delete Models error, operation canceled!"
+                        });
+                    });
+            } else if (clickAction === "downloadModels") {
+                this.$message({
+                    type: "info",
+                    message: "Not implemented in this version, operation canceled!"
+                });
+            } else if (clickAction === "deployModels") {
+                this.$message({
+                    type: "info",
+                    message: "Not implemented in this version, operation canceled!"
+                });
             }
         },
         // Filter and display classes on user typing!
@@ -667,10 +582,7 @@ export default {
                         console.log("skipping: " + selectedClass.remapped);
                     }
                 }
-                console.log(
-                    "STEP 2 ====================: " + this.datasetsTabMapOptions.length,
-                    this.datasetsTabMapOptions
-                );
+                console.log("STEP 2 ====================: " + this.datasetsTabMapOptions.length, this.datasetsTabMapOptions);
                 // STEP 2
                 // Remove classes from TABS that are not selected anymore
                 for (let k = 0, lenK = this.datasetsTabMapOptions.length; k < lenK; k++) {
@@ -702,9 +614,7 @@ export default {
             if (this.selectedModelsIDs.length > 0 && this.selectedModels.length === 0) {
                 if (this.selectedFeatureSetId > 0) {
                     if (this.jobDetailsData.resampleModels[this.selectedFeatureSetId].length > 0) {
-                        this.selectedModels = this.jobDetailsData.resampleModels[this.selectedFeatureSetId].filter(
-                            model => this.selectedModelsIDs.includes(model.modelID)
-                        );
+                        this.selectedModels = this.jobDetailsData.resampleModels[this.selectedFeatureSetId].filter(model => this.selectedModelsIDs.includes(model.modelID));
                         this.selectedModels.forEach(row => {
                             this.$refs.modelDetailsTable.toggleRowSelection(row, true);
                         });
@@ -821,9 +731,7 @@ export default {
             if (row.resampleID !== this.selectedFeatureSetId) {
                 this.selectedFeatureSetId = row.resampleID;
                 // Select only models with that feature set ID
-                this.jobDetailsData.resampleModels[this.selectedFeatureSetId] = this.jobDetailsData.modelsList.filter(
-                    model => model.resampleID === this.selectedFeatureSetId
-                );
+                this.jobDetailsData.resampleModels[this.selectedFeatureSetId] = this.jobDetailsData.modelsList.filter(model => model.resampleID === this.selectedFeatureSetId);
 
                 this.$refs.resamplesTable.setCurrentRow(row);
                 this.paginateModels(1);
@@ -876,22 +784,18 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
+.card_intro {
+    float: left;
+}
+.models_actions {
+    float: right;
+}
 .el-table__expanded-cell[class*="cell"] {
     padding: 5px 0;
 }
-.proportionsTable {
-    width: 1000px;
-    font-size: 12px;
-    th,
-    td {
-        padding: 5px 0;
-    }
-}
-
 .el-table .warning-row {
     background: oldlace;
 }
-
 .el-table .success-row {
     background: #f0f9eb;
 }

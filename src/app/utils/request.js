@@ -20,15 +20,20 @@ service.interceptors.request.use(
 
         if (config.url.startsWith("/analysis")) {
             config.baseURL = store.getters.user_settings_server_address_analysis;
+
         } else if (config.url.startsWith("/plots")) {
             config.baseURL = store.getters.user_settings_server_address_plots;
+
         } else if (config.url.startsWith("/backend")) {
             if (store.getters.user_settings_server_address_backend !== "") {
                 config.baseURL = store.getters.user_settings_server_address_backend;
             }
-        } else if (store.getters.user_settings_server_address_backend !== "") {
-            config.baseURL = store.getters.user_settings_server_address_backend;
-        }
+        } 
+        // For all other requests keep original request URL
+        // 
+        // else if (store.getters.user_settings_server_address_backend !== "") {
+        //     config.baseURL = store.getters.user_settings_server_address_backend;
+        // }
 
         return config;
     },

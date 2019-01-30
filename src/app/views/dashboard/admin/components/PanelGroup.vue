@@ -1,5 +1,5 @@
 <template>
-    <el-row class="panel-group" :gutter="15" justify="center" v-loading="listLoading" :element-loading-text="$t('views.dashboard.server_stats.loading_title')">
+    <el-row class="dashboard-inner-panel-group" :gutter="15" justify="center" v-loading="listLoading" :element-loading-text="$t('views.dashboard.server_stats.loading_title')">
         <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
             <div class="card-panel">
                 <div class="card-panel-icon-wrapper icon-1">
@@ -28,7 +28,7 @@
                     <i class="fa fa-icon fa-area-chart card-panel-icon"></i>
                 </div>
                 <div class="card-panel-description">
-                    <div class="card-panel-text">{{$t('views.dashboard.server_stats.analysis')}}</div>
+                    <div class="card-panel-text">{{ $t("views.dashboard.server_stats.analysis") }}</div>
                     <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_models)" :duration="2500"></count-to>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <i class="fa fa-icon fa-cog card-panel-icon"></i>
                 </div>
                 <div class="card-panel-description">
-                    <div class="card-panel-text">{{$t('views.dashboard.server_stats.features')}}</div>
+                    <div class="card-panel-text">{{ $t("views.dashboard.server_stats.features") }}</div>
                     <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_features)" :duration="3000"></count-to>
                 </div>
             </div>
@@ -59,7 +59,7 @@ export default {
     data() {
         return {
             listLoading: true,
-            interval: null,
+            updateInterval: null,
             statistics: {
                 total_queue: 0,
                 total_resamples: 0,
@@ -74,49 +74,49 @@ export default {
         if (this.statsHash === "") {
             this.getServerStats();
         }
-
-        this.interval = setInterval(
-            function() {
-                this.getServerStats();
-            }.bind(this),
-            120000
-        );
+        if (this.updateInterval === null) {
+            this.updateInterval = setInterval(
+                function() {
+                    this.getServerStats();
+                }.bind(this),
+                120000
+            );
+        }
     },
     beforeDestroy: function() {
-        clearInterval(this.interval);
+        clearInterval(this.updateInterval);
+        this.updateInterval = null;
     },
     methods: {
         getServerStats() {
-            this.listLoading = true;
+            // Display loading only for initial request
+            if (this.statsHash === "") {
+                this.listLoading = true;
+            }
             fetchServerStats()
                 .then(response => {
-                    const statistics = response.data.data;
-
+                    const statistics = response.data.message;
                     const statsHash = md5String(JSON.stringify(statistics));
                     if (this.statsHash !== statsHash) {
+                        this.statsHas = statsHash;
                         this.statistics = statistics;
                         this.$store.dispatch("setIsOnline", true);
                     }
-                    this.listLoading = false;
+                    if (this.listLoading === true) {
+                        this.listLoading = false;
+                    }
                 })
                 .catch(error => {
                     console.log("==> Cannot get server stats: " + error);
                     this.$store.dispatch("setIsOnline", false);
-                    setTimeout(() => {
-                        // start the timer again
-                        this.getServerStats();
-                    }, 15000);
                 });
         }
     }
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-.panel-group {
-    margin-top: 18px;
-    .card-panel-col {
-        margin-bottom: 32px;
-    }
+.dashboard-inner-panel-group {
+    padding-bottom: 20px;
     .card-panel {
         height: 108px;
         cursor: pointer;

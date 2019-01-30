@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2018-03-22 13:10:16
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2018-06-28 16:36:49
+* @Last Modified time: 2019-01-29 13:01:27
 */
 import request from "@/utils/request";
 const baseUrlPath = "/analysis";
@@ -27,15 +27,22 @@ export function submitSAMJob(query) {
     return request({
         url: baseUrlPath + "/other/sam/render-plot",
         method: "GET",
-        params: query,
-        responseType: "arraybuffer"
+        params: query
     });
 }
 
-export function fetchSAMJob() {
+// <!-- CATBOOST functions -->
+export function fetchCatBoostFormOptions() {
     return request({
-        url: baseUrlPath + "/apps/simon/analysis/samrcheck",
+        url: baseUrlPath + "/other/predict/catboost/renderOptions",
+        method: "GET"
+    });
+}
+
+export function submitCatBoostJob(query) {
+    return request({
+        url: baseUrlPath + "/other/predict/catboost/submit",
         method: "GET",
-        responseType: "arraybuffer"
+        params: query
     });
 }

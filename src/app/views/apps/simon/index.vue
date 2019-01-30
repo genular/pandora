@@ -8,7 +8,3 @@ export default {
     name: "simon"
 };
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-
-</style>

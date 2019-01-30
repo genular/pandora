@@ -146,11 +146,11 @@ export default {
             ApiFetchQueueExplorationDetails({ queueID: this.explorationJobId, measurements: this.measurements })
                 .then(response => {
                     if (response.data.success === true) {
-                        this.jobDetailsData.resamplesList = response.data.data.resamplesList;
-                        this.jobDetailsData.queueDetails = response.data.data.queueDetails;
-                        this.jobDetailsData.modelsList = response.data.data.modelsList;
+                        this.jobDetailsData.resamplesList = response.data.message.resamplesList;
+                        this.jobDetailsData.queueDetails = response.data.message.queueDetails;
+                        this.jobDetailsData.modelsList = response.data.message.modelsList;
 
-                        this.performaceVariables = response.data.data.performaceVariables;
+                        this.performaceVariables = response.data.message.performaceVariables;
                         // Preselect if nothing selected.. eg. first run
                         if (this.jobDetailsData.performance.length < 1) {
                             this.jobDetailsData.performance = ["Accuracy", "PredictAUC", "Sensitivity", "Specificity", "Recall"];
