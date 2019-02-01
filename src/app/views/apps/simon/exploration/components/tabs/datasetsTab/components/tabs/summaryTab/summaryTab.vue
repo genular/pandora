@@ -7,11 +7,24 @@
                         <span>Model comparison</span>
                     </el-col>
                     <el-col :span="12" style="text-align: right;">
-                        <el-button  size="mini" round type="primary" :loading="loadingPlot" icon="el-icon-download" :disabled="summary.boxplot === false" @click="downloadPlotImage('boxplot')">
+                        <el-button
+                            size="mini"
+                            round
+                            type="primary"
+                            :loading="loadingSummary"
+                            icon="el-icon-download"
+                            :disabled="summary.boxplot === false"
+                            @click="downloadPlotImage('boxplot')"
+                        >
                         </el-button>
                     </el-col>
                 </el-row>
-                <object v-loading="loadingPlot" id="summary-boxplot" style="margin: 0 auto;" :data="summary.boxplot" type="image/svg+xml"></object>
+                <object
+                    id="summary-boxplot" 
+                    style="margin: 0 auto;" 
+                    :data="summary.boxplot" 
+                    type="image/svg+xml">
+                </object>
             </el-col>
             <el-col :span="12">
                 <el-row type="flex" align="top">
@@ -19,11 +32,19 @@
                         <span>ROC summary</span>
                     </el-col>
                     <el-col :span="12" style="text-align: right;">
-                        <el-button  size="mini" round type="primary" :loading="loadingPlot" icon="el-icon-download" :disabled="summary.rocplot === false" @click="downloadPlotImage('rocplot')">
+                        <el-button
+                            size="mini"
+                            round
+                            type="primary"
+                            :loading="loadingSummary"
+                            icon="el-icon-download"
+                            :disabled="summary.rocplot === false"
+                            @click="downloadPlotImage('rocplot')"
+                        >
                         </el-button>
                     </el-col>
                 </el-row>
-                <object v-loading="loadingPlot" id="summary-rocplot" style="margin: 0 auto;" :data="summary.rocplot" type="image/svg+xml"></object>
+                <object v-loading="loadingSummary" id="summary-rocplot" style="margin: 0 auto;" :data="summary.rocplot" type="image/svg+xml"></object>
             </el-col>
         </el-row>
 
@@ -34,7 +55,7 @@
                         <span>Statistics</span>
                     </el-col>
                     <el-col :span="12" style="text-align: right;">
-                        <el-button  size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.differences, $event)"></el-button>
+                        <el-button size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.differences, $event)"></el-button>
                     </el-col>
                 </el-row>
                 <pre class="code-output" v-highlightjs="summary.info.differences"><code class="bash"></code></pre>
@@ -45,12 +66,12 @@
                         <span>Raw data</span>
                     </el-col>
                     <el-col :span="12" style="text-align: right;">
-                        <el-button  size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.summary, $event)"></el-button>
+                        <el-button size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.summary, $event)"></el-button>
                     </el-col>
                 </el-row>
                 <pre class="code-output" v-highlightjs="summary.info.summary"><code class="bash"></code></pre>
             </el-col>
-        </el-row> 
+        </el-row>
     </div>
 </template>
 <script>
@@ -65,7 +86,7 @@ export default {
 
     data() {
         return {
-            loadingPlot: true,
+            loadingSummary: true,
             summary: {
                 boxplot: false,
                 rocplot: false,
@@ -95,7 +116,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedModelId", value);
-            } 
+            }
         }
     },
     methods: {
@@ -107,61 +128,49 @@ export default {
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
-            downloadLink.download = "summary-"+summaryID+".svg";
+            downloadLink.download = "summary-" + summaryID + ".svg";
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
         },
         handleFetchSummaryPlots() {
-            this.loadingPlot = true;
+            this.loadingSummary = true;
 
             fetchGraphSummary({
                 resampleID: this.selectedFeatureSetId,
                 modelsIDs: JSON.stringify(this.selectedModelsIDs)
             })
                 .then(response => {
-                    let respData = new Buffer(response.data, "base64")
-                        .toString("ascii")
-                        .replace(/(\r\n|\n|\r)/gm, "")
-                        .trim();
-
-                    respData = JSON.parse(respData);
+                    let respData = response.data.message;
                     // Update the image data.
+                    // list( boxplot = NULL, rocplot = NULL, info = list(summary = NULL, differences = NULL))
                     for (let respIndex in respData) {
                         let respItem = respData[respIndex];
+
                         // This is true if no plot is in question
-                        if (typeof respItem === "object" && respItem !== null) {
+                        if (typeof respItem === "object") {
                             for (let respsumIndex in respItem) {
-                                this.summary.info[respsumIndex] = new Buffer(respItem[respsumIndex], "base64")
-                                    .toString("ascii")
-                                    .trim();
+                                this.summary.info[respsumIndex] = window.atob(respItem[respsumIndex]);
                             }
                         } else {
-                            // Update the image data.
-                            this.summary[respIndex] = new Buffer(respItem, "base64")
-                                .toString("ascii")
-                                .replace(/(\r\n|\n|\r)/gm, "")
-                                .trim();
-
-                            if (this.summary[respIndex].length < 15) {
+                            if (respItem.length < 15) {
                                 this.summary[respIndex] = line_chart_404;
                             } else {
-                                this.summary[respIndex] =
-                                    "data:image/svg+xml;utf8," + encodeURIComponent(this.summary[respIndex]);
+                                this.summary[respIndex] = "data:image/svg+xml;base64," + encodeURIComponent(respItem);
                             }
                         }
                     }
-                    this.loadingPlot = false;
+                    this.loadingSummary = false;
                 })
                 .catch(error => {
                     console.log(error);
-                    this.loadingPlot = false;
+                    this.loadingSummary = false;
                 });
         }
     }
 };
 </script>
-<style rel='stylesheet/scss' lang='scss' scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
 .code-output {
     max-width: 90%;
     height: 300px;

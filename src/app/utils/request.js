@@ -6,12 +6,12 @@ import { IsJsonString } from "@/utils/helpers";
 
 import * as dataReceiver from "crypto-js";
 
-// create an axios instance
+// Create new axios instance
 const service = axios.create({
     timeout: 10 * 3600
 });
 
-// request interceptor
+// Request interceptor
 service.interceptors.request.use(
     function(config) {
         if (store.getters.auth_token) {
@@ -20,17 +20,15 @@ service.interceptors.request.use(
 
         if (config.url.startsWith("/analysis")) {
             config.baseURL = store.getters.user_settings_server_address_analysis;
-
         } else if (config.url.startsWith("/plots")) {
             config.baseURL = store.getters.user_settings_server_address_plots;
-
         } else if (config.url.startsWith("/backend")) {
             if (store.getters.user_settings_server_address_backend !== "") {
                 config.baseURL = store.getters.user_settings_server_address_backend;
             }
-        } 
+        }
         // For all other requests keep original request URL
-        // 
+        //
         // else if (store.getters.user_settings_server_address_backend !== "") {
         //     config.baseURL = store.getters.user_settings_server_address_backend;
         // }
@@ -39,12 +37,12 @@ service.interceptors.request.use(
     },
     function(error) {
         // Do something with request error
-        console.log(error); // for debug
+        console.log(error);
         Promise.reject(error);
     }
 );
 
-// respone interceptor
+// Request response interceptor
 service.interceptors.response.use(
     function(response) {
         /** Decrypt server return data */
@@ -75,21 +73,34 @@ service.interceptors.response.use(
         return response;
     },
     function(error) {
-        if (error.response.status === 401) {
-            error.message = "You are logged out. Please login again using Settings panel.";
+        // Error message displayed to user
+        let errorMessage = "";
+
+        // The request was made and the server responded with a status code
+        if (typeof error.response !== "undefined") {
+            if (error.response.status === 401) {
+                errorMessage = "You are logged out. Please login again using Settings panel.";
+                setTimeout(function() {
+                    window.location.href = [location.protocol, "//", location.host, location.pathname].join("") + "#/settings/?startIndex=1x";
+                }, 5000);
+            }
+            // The request was made but no response was received
+        } else if (error.request) {
+            errorMessage = "Request failed, cannot communicate with backend server. Please try again latter.";
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            errorMessage = "Request failed, cannot set up request. Please try again latter.";
         }
-        Message({
-            message: error.message,
-            type: "error",
-            showClose: true,
-            duration: 5000
-        });
-        if (error.response.status === 401) {
-            setTimeout(function() {
-                window.location.href =
-                    [location.protocol, "//", location.host, location.pathname].join("") + "#/settings/?startIndex=1x";
-            }, 5000);
+
+        if (errorMessage !== "") {
+            Message({
+                message: errorMessage,
+                type: "error",
+                showClose: true,
+                duration: 5000
+            });
         }
+
         return Promise.reject(error);
     }
 );

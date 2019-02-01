@@ -37,6 +37,11 @@
                     <span>{{ scope.row.queueID }}</span>
                 </template>
             </el-table-column>
+            <el-table-column align="left" label="Name">
+                <template slot-scope="scope">
+                    <span>{{ scope.row.queueName }}</span>
+                </template>
+            </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.jobs.table.header.submitted')">
                 <template slot-scope="scope">
                     <span>{{ scope.row.submitted | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
@@ -60,7 +65,15 @@
             </el-table-column>
             <el-table-column align="center" label="Sparsity (%)">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.sparsity * 100 }}%</span>
+                    <span v-if="scope.row.sparsity < 0.5">
+                        <span class="el-icon-success"></span> {{ scope.row.sparsity * 100 }}%
+                    </span>
+                    <span v-else-if="scope.row.sparsity > 0.5 && scope.row.sparsity < 0.75">
+                         <span class="el-icon-warning"></span> {{ scope.row.sparsity * 100 }}%
+                    </span>
+                    <span v-else>
+                        <span class="el-icon-error"></span> {{ scope.row.sparsity * 100 }}%
+                    </span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="Resamples">
@@ -216,9 +229,9 @@
                                 <span v-if="scope.row.modelName">{{ scope.row.modelName }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" prop="trainingTime" sortable :label="$t('views.dashboard.jobs.table.modal_info.methods.time')">
+                        <el-table-column align="center" prop="processing_time" sortable :label="$t('views.dashboard.jobs.table.modal_info.methods.time')">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.trainingTime">{{ (scope.row.trainingTime * 1000) | millisecondsToStr }}</span> <span v-else>N/A</span>
+                                <span v-if="scope.row.processing_time">{{ scope.row.processing_time | millisecondsToStr }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
                         <el-table-column

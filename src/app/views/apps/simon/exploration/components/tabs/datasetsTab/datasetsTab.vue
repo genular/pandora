@@ -3,7 +3,25 @@
         <el-row align="top">
             <el-col :span="24">
                 <el-card class="box-card">
-                    <div slot="header" class="clearfix"><div class="card_intro">1. Please select one dataset for exploration</div></div>
+                    <div slot="header" class="clearfix">
+                        <div class="card_intro">1. Please select one dataset for exploration</div>
+                        <div class="models_actions" v-if="jobClassesDisaply.length > 0">
+                            <el-select
+                                style="min-width: 350px;"
+                                v-model="selectedClasses"
+                                multiple
+                                filterable
+                                remote
+                                default-first-option
+                                placeholder="Please select exploration classes"
+                                size="large"
+                                :remote-method="filterAvaliableClasses"
+                                @change="selectChangeClasses"
+                                @focus="selectSuggestClasses">
+                                <el-option v-for="(classItem, index) in jobClassesDisaply" :key="classItem.remapped" :label="classItem.original" :value="classItem.remapped"></el-option>
+                            </el-select>
+                        </div>
+                    </div>
                     <el-table
                         ref="resamplesTable"
                         @sort-change="
@@ -197,9 +215,9 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column align="center" prop="trainingTime" sortable show-overflow-tooltip :label="$t('views.dashboard.jobs.table.modal_info.methods.time')">
+                        <el-table-column align="center" prop="processing_time" show-overflow-tooltip :label="$t('views.dashboard.jobs.table.modal_info.methods.time')">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.trainingTime">{{ (scope.row.trainingTime * 1000) | millisecondsToStr }}</span>
+                                <span v-if="scope.row.processing_time">{{ (scope.row.processing_time * 1000) | millisecondsToStr }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
@@ -217,27 +235,6 @@
                 </el-card>
             </el-col>
         </el-row>
-
-        <el-row v-if="jobClassesDisaply.length > 0" style="margin-top: 15px;">
-            <el-col :span="12">
-                <el-select
-                    class="flud-selects"
-                    v-model="selectedClasses"
-                    multiple
-                    filterable
-                    remote
-                    default-first-option
-                    placeholder="Please select classes, type to search..."
-                    size="large"
-                    :remote-method="filterAvaliableClasses"
-                    @change="selectChangeClasses"
-                    @focus="selectSuggestClasses"
-                >
-                    <el-option v-for="(classItem, index) in jobClassesDisaply" :key="classItem.remapped" :label="classItem.original" :value="classItem.remapped"></el-option>
-                </el-select>
-            </el-col>
-        </el-row>
-
         <el-row>
             <el-col :span="24" style="margin-top: 15px;">
                 <el-tabs v-model="activeDatasetSubTabName" v-if="selectedFeatureSetId > 0" type="card">
@@ -786,9 +783,13 @@ export default {
 <style rel="stylesheet/scss" lang="scss">
 .card_intro {
     float: left;
+    height: 40px;
+    line-height: 40px;
 }
 .models_actions {
     float: right;
+    height: 40px;
+    line-height: 40px;
 }
 .el-table__expanded-cell[class*="cell"] {
     padding: 5px 0;

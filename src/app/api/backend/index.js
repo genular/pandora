@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 10:26:55
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-01-29 15:55:55
+ * @Last Modified time: 2019-01-31 13:31:54
  */
 import request from "@/utils/request";
 
@@ -302,14 +302,9 @@ export function getVariableImportance(query) {
     });
 }
 
-export function getOpenMLDatasets(requestData) {
+export function getPublicDatasets(submitData) {
     return request({
-        url: baseUrlPath + "/dataset/3rdparty/list/openml", // "https://www.openml.org/api/v1/json/data/list/limit/10/offset/1",
-        method: "GET",
-        params: {
-            page: requestData.page,
-            limit: requestData.limit,
-            api_key: "d499cded4edafdc833155968af56a055"
-        }
+        url: baseUrlPath + "/dataset/import/public/list/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
+        method: "GET"
     });
 }
