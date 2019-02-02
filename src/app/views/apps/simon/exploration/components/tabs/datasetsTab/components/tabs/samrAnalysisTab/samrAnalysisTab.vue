@@ -3,7 +3,7 @@
         <el-row v-if="tabEnabled">
             <el-row type="flex" align="top" :gutter="20">
                     <el-col :span="7" v-loading="loadingOptions" element-loading-text="Processing">
-                        <el-form ref="settingsForm" :model="settingsForm" label-width="200px">
+                        <el-form ref="settingsForm" :model="settingsForm" class="samr_form" label-width="200px">
                             <el-form-item label="Delta Slider">
                                 <el-slider
                                     v-model="settingsForm.deltaInput.value"
@@ -262,7 +262,17 @@ export default {
     }
 };
 </script>
-<style rel='stylesheet/scss' lang='scss' scoped>
+<style rel='stylesheet/scss' lang='scss'>
+
+.samr_form {
+    .el-form-item {
+        margin-bottom: 5px;
+        label {
+            color: #333333;
+            font-weight: 500;
+        }
+    }
+}
 .code-output {
     max-width: 90%;
     height: 300px;

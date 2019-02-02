@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 10:26:55
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-01-31 13:31:54
+ * @Last Modified time: 2019-02-02 10:29:13
  */
 import request from "@/utils/request";
 
@@ -174,9 +174,9 @@ export function readFilesInUserDirectory(submitData) {
  * @param  {int} fileID ID of the desired file to be deleted from users_files database table
  * @return {object}            JSON decoded API response object
  */
-export function deleteFile(fileID) {
+export function deleteFile(submitData) {
     return request({
-        url: baseUrlPath + "/system/filesystem/delete/" + fileID,
+        url: baseUrlPath + "/system/filesystem/delete/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
         method: "GET"
     });
 }
@@ -214,8 +214,7 @@ export function getSimonHeaderSuggest(selectedFiles, input) {
 export function resamplesFeaturesSuggest(submitData) {
     return request({
         url: baseUrlPath + "/queue/resamples/features/suggest/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
-        method: "GET",
-        params: query
+        method: "GET"
     });
 }
 
@@ -305,6 +304,13 @@ export function getVariableImportance(query) {
 export function getPublicDatasets(submitData) {
     return request({
         url: baseUrlPath + "/dataset/import/public/list/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
+        method: "GET"
+    });
+}
+
+export function importPublicDatasets(submitData) {
+    return request({
+        url: baseUrlPath + "/dataset/import/public/import/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
         method: "GET"
     });
 }

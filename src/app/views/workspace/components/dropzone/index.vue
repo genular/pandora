@@ -1,6 +1,6 @@
 <template>
     <div :ref="id" :action="url" class="dropzone" :id="id">
-        <input type="file" name="file">
+        <input type="file" name="file" />
     </div>
 </template>
 <script>
@@ -11,13 +11,15 @@ export default {
     name: "dropzone",
     data() {
         return {
-            dropzone: "",
+            isDestroyEvent: false,
+            dropzone: null,
             initOnce: true
         };
     },
     mounted() {
         const element = document.getElementById(this.id);
         const vm = this;
+
         this.dropzone = new Dropzone(element, {
             clickable: true,
             previewsContainer: ".dropzone-previews",
@@ -38,15 +40,11 @@ export default {
             retryChunksLimit: 3,
             createImageThumbnails: false,
             timeout: 50000,
-            dictDefaultMessage:
-                '<i style="display: table-cell; vertical-align: middle;" class="el-icon-upload">  ' +
-                this.defaultMsg +
-                "</i>",
+            dictDefaultMessage: '<i style="display: table-cell; vertical-align: middle;" class="el-icon-upload">  ' + this.defaultMsg + "</i>",
             headers: {
                 "X-Token": this.authToken || "failed"
             },
             dictMaxFilesExceeded: "You can not upload any more files.",
-
             previewTemplate:
                 '<div class="dz-preview dz-file-preview">\n  <div class="dz-image" style="width:' +
                 this.thumbnailWidth +
@@ -73,19 +71,9 @@ export default {
                 }
             },
             accept: (file, done) => {
-                /* 七牛*/
-                // const token = this.$store.getters.token;
-                // getToken(token).then(response => {
-                //   file.token = response.data.qiniu_token;
-                //   file.key = response.data.qiniu_key;
-                //   file.url = response.data.qiniu_url;
-                //   done();
-                // })
                 done();
             },
             sending: (file, xhr, formData) => {
-                // formData.append('token', file.token);
-                // formData.append('key', file.key);
                 vm.initOnce = false;
             }
         });
@@ -108,18 +96,26 @@ export default {
             // file.type = "file";
             file.url = "/static/icons/defult.png";
             // Add fileID
-            vm.$emit("dropzone-success", file, vm.dropzone.element);
+            vm.$emit("fileUploaded", file, vm.dropzone.element);
         });
-        this.dropzone.on("addedfile", file => {
-            this.dropzone.emit("thumbnail", file, "/static/icons/defult.png");
-            vm.$emit("dropzone-fileAdded", file);
-            file.previewElement.addEventListener("click", function() {
-                vm.$emit("dropzone-fileClick", file);
+        this.dropzone.on("addedfile", item => {
+            this.dropzone.emit("thumbnail", item, "/static/icons/defult.png");
+
+            item.previewElement.addEventListener("click", e => {
+                vm.$emit("actionListener", { action: "click", file: item, event: e  });
             });
+            item.previewElement.addEventListener("contextmenu", e => {
+                vm.$emit("actionListener", { action: "contextmenu", file: item, event: e });
+            });
+
         });
         this.dropzone.on("removedfile", file => {
-            console.log("Event: removedfile");
-            // vm.$emit("dropzone-removedFile", file);
+            if (this.isDestroyEvent === false) {
+                console.log("Event: removedfile");
+                // https://github.com/enyo/dropzone/issues/1175#issuecomment-412302917
+                if (file.manuallyAdded) vm.dropzone.options.maxFiles++;
+                vm.$emit("fileRemoved", file);
+            }
         });
         this.dropzone.on("error", (file, error, xhr) => {
             vm.$emit("dropzone-error", file, error, xhr);
@@ -129,8 +125,9 @@ export default {
         });
     },
     methods: {
-        removeAllFiles() {
-            this.dropzone.removeAllFiles(true);
+        removeAllFiles(bool) {
+            console.log("Removing all files from workspace");
+            this.dropzone.removeAllFiles(bool);
         },
         processQueue() {
             this.dropzone.processQueue();
@@ -141,18 +138,18 @@ export default {
                 this.dropzone.addFile(items[0].getAsFile());
             }
         },
-        initFiles(val) {
-            if (Array.isArray(val)) {
-                val.map((file, i) => {
-                    this.dropzone.emit("addedfile", file);
-                    return true;
-                });
-            }
+        manuallyAddFile(file) {
+            file.manuallyAdded = true;
+            this.dropzone.emit("addedfile", file);
+            this.dropzone.files.push(file);
+            if (this.dropzone.options.maxFiles) this.dropzone.options.maxFiles--;
         }
     },
     destroyed() {
+        this.isDestroyEvent = true;
         document.removeEventListener("paste", this.pasteImg);
         this.dropzone.destroy();
+        this.isDestroyEvent = false;
     },
     watch: {
         defaultImg(val) {

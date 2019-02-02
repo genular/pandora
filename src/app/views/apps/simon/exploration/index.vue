@@ -1,7 +1,7 @@
 <template>
-    <div class="app-container">
+    <div class="app-container" v-loading.fullscreen.lock="loading" element-loading-text="Processing...">
 
-        <el-row type="flex" align="middle" v-loading="loading" element-loading-text="Loading...">
+        <el-row type="flex" align="middle">
             <el-col :span="24">
                 <el-tooltip style="float: left;" placement="top" v-if="explorationJobId">
                     <div slot="content">Copy</div>
@@ -33,7 +33,7 @@
         </el-row>
 
         <br />
-        <el-tabs v-model="activeTabName" v-loading="loading" element-loading-text="Loading..." v-if="jobDetailsData.resamplesList.length > 0" type="border-card" class="tab-container">
+        <el-tabs v-model="activeTabName" v-if="jobDetailsData.resamplesList.length > 0" type="border-card" class="tab-container">
           <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key='item.key' :name="item.key" :disabled="isTabDisabled(item)">
             <span slot="label"><i :class="item.icon"></i> {{item.label}}</span>
             <keep-alive>

@@ -217,7 +217,7 @@
 
                         <el-table-column align="center" prop="processing_time" show-overflow-tooltip :label="$t('views.dashboard.jobs.table.modal_info.methods.time')">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.processing_time">{{ (scope.row.processing_time * 1000) | millisecondsToStr }}</span>
+                                <span v-if="scope.row.processing_time">{{ (scope.row.processing_time ) | millisecondsToStr }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>

@@ -1,5 +1,5 @@
 <template>
-    <div class="summaryTab-container">
+    <div class="summaryTab-container" v-loading.fullscreen.lock="loading" element-loading-text="Processing...">
         <el-row type="flex" align="top">
             <el-col :span="12">
                 <el-row type="flex" align="top">
@@ -11,7 +11,6 @@
                             size="mini"
                             round
                             type="primary"
-                            :loading="loadingSummary"
                             icon="el-icon-download"
                             :disabled="summary.boxplot === false"
                             @click="downloadPlotImage('boxplot')"
@@ -36,7 +35,6 @@
                             size="mini"
                             round
                             type="primary"
-                            :loading="loadingSummary"
                             icon="el-icon-download"
                             :disabled="summary.rocplot === false"
                             @click="downloadPlotImage('rocplot')"
@@ -44,7 +42,7 @@
                         </el-button>
                     </el-col>
                 </el-row>
-                <object v-loading="loadingSummary" id="summary-rocplot" style="margin: 0 auto;" :data="summary.rocplot" type="image/svg+xml"></object>
+                <object id="summary-rocplot" style="margin: 0 auto;" :data="summary.rocplot" type="image/svg+xml"></object>
             </el-col>
         </el-row>
 
@@ -86,7 +84,7 @@ export default {
 
     data() {
         return {
-            loadingSummary: true,
+            loading: true,
             summary: {
                 boxplot: false,
                 rocplot: false,
@@ -134,7 +132,7 @@ export default {
             document.body.removeChild(downloadLink);
         },
         handleFetchSummaryPlots() {
-            this.loadingSummary = true;
+            this.loading = true;
 
             fetchGraphSummary({
                 resampleID: this.selectedFeatureSetId,
@@ -160,11 +158,11 @@ export default {
                             }
                         }
                     }
-                    this.loadingSummary = false;
+                    this.loading = false;
                 })
                 .catch(error => {
                     console.log(error);
-                    this.loadingSummary = false;
+                    this.loading = false;
                 });
         }
     }

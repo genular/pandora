@@ -1,5 +1,5 @@
 <template>
-    <div class="correlationTab-container">
+    <div class="correlationTab-container" v-loading.fullscreen.lock="loadingPlot" element-loading-text="Processing...">
         <el-row v-if="tabEnabled">
             <el-row type="flex" align="top">
                 <el-col :span="24" style="text-align: right;">
@@ -7,8 +7,8 @@
                 </el-col>
             </el-row>
             <el-row type="flex" align="top">
-                <el-col :span="7">
-                    <el-form ref="settingsForm" :model="settingsForm" label-width="200px">
+                <el-col :span="9">
+                    <el-form class="corrolation-form" ref="settingsForm" :model="settingsForm" label-width="200px">
                         <el-form-item :label="$t('views.exploratory.tabs.correlationTab.settings.correlation_method')">
                             <el-select v-model="settingsForm.correlation_method" placeholder="Select">
                                 <el-option
@@ -136,11 +136,11 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" :loading="loadingPlot" round @click="redrawImage">Plot</el-button>
+                            <el-button type="primary" round @click="redrawImage">Plot</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
-                <el-col :span="17" class="correlation-svg-container" v-loading="loadingPlot" element-loading-text="Processing..." style="text-align: center;">
+                <el-col :span="15" class="correlation-svg-container" style="text-align: center;">
                     <object id="correlation-svg" style="margin: 0 auto;" :data="renderedImage" type="image/svg+xml"></object>
                 </el-col>
             </el-row>
@@ -344,5 +344,13 @@ export default {
 };
 </script>
 <style rel='stylesheet/scss' lang='scss'>
-
+.corrolation-form {
+    .el-form-item {
+        margin-bottom: 5px;
+        label {
+            color: #333333;
+            font-weight: 500;
+        }
+    }
+}
 </style>

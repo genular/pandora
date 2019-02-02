@@ -1,18 +1,13 @@
 <template>
-    <div class="clusteringTab-container">
+    <div class="clusteringTab-container" v-loading.fullscreen.lock="loadingPlot" element-loading-text="Processing...">
         <el-row type="flex" align="top">
             <el-col :span="24" style="text-align: right;">
-                <el-button
-                    type="primary"
-                    icon="el-icon-download"
-                    :disabled="renderedImage === '' || loadingPlot"
-                    @click="downloadPlotImage"
-                ></el-button>
+                <el-button type="primary" icon="el-icon-download" :disabled="renderedImage === '' || loadingPlot" @click="downloadPlotImage"></el-button>
             </el-col>
         </el-row>
         <el-row type="flex" align="top">
-            <el-col :span="7">
-                <el-form ref="settingsForm" :model="settingsForm" label-width="150px">
+            <el-col :span="9">
+                <el-form ref="settingsForm" :model="settingsForm" class="clustering_form" label-width="200px">
                     <el-form-item label="Columns">
                         <el-select
                             v-model="settingsForm.selectedColumns"
@@ -29,13 +24,7 @@
                             :loading="loading['columns']"
                             @focus="selectAvaliableFeaturesDisplay('columns')"
                         >
-                            <el-option
-                                v-for="item in settingOptions.columns"
-                                :key="item.remapped"
-                                :label="item.original"
-                                :value="item.remapped"
-                            >
-                            </el-option>
+                            <el-option v-for="item in settingOptions.columns" :key="item.remapped" :label="item.original" :value="item.remapped"> </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Rows">
@@ -54,39 +43,29 @@
                             :loading="loading['features']"
                             @focus="selectAvaliableFeaturesDisplay('features')"
                         >
-                            <el-option
-                                v-for="item in settingOptions.features"
-                                :key="item.remapped"
-                                :label="item.original"
-                                :value="item.remapped"
-                            >
-                            </el-option>
+                            <el-option v-for="item in settingOptions.features" :key="item.remapped" :label="item.original" :value="item.remapped"> </el-option>
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item label="Remove NA values?">
+                    <el-form-item label="Remove NA?">
                         <el-checkbox v-model="settingsForm.removeNA"></el-checkbox>
                     </el-form-item>
                     <el-form-item label="Scale">
                         <el-select v-model="settingsForm.scale" placeholder="Select">
-                            <el-option
-                                v-for="item in settingOptions.scale"
-                                :key="item.id"
-                                :label="item.id"
-                                :value="item.id"
-                            >
-                            </el-option>
+                            <el-option v-for="item in settingOptions.scale" :key="item.id" :label="item.id" :value="item.id"> </el-option>
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item label="Display legend">
-                        <el-checkbox v-model="settingsForm.displayLegend"></el-checkbox>
+                    <!-- ["numbers", "legend", "colnames", "rownames"] -->
+                    <el-form-item label="Display">
+                        <el-checkbox-group class="checkbox_group" v-model="settingsForm.displayOptions" size="mini">
+                            <el-checkbox v-for="(item, index) in settingOptions.displayOptions" :style="index !== 0 && index % 2 === 0 ? 'clear: left;float: left;margin-left: 0;' : ''"
+                            :key="item.id"
+                            :label="item.id">{{item.label}}</el-checkbox>
+                        </el-checkbox-group>
                     </el-form-item>
 
-                    <el-form-item label="Display numbers">
-                        <el-checkbox v-model="settingsForm.displayNumbers"></el-checkbox>
-                    </el-form-item>
-                    <el-form-item label="Numbers font-size" v-if="settingsForm.displayNumbers">
+                    <el-form-item label="Numbers size" v-if="settingsForm.displayOptions.indexOf('numbers') !== -1">
                         <el-input-number
                             v-model="settingsForm.fontSizeNumbers"
                             :value="settingsForm.fontSizeNumbers"
@@ -97,11 +76,7 @@
                         >
                         </el-input-number>
                     </el-form-item>
-
-                    <el-form-item label="Display colnames">
-                        <el-checkbox v-model="settingsForm.displayColnames"></el-checkbox>
-                    </el-form-item>
-                    <el-form-item label="Colnames font-size" v-if="settingsForm.displayColnames">
+                    <el-form-item label="Colnames size" v-if="settingsForm.displayOptions.indexOf('colnames') !== -1">
                         <el-input-number
                             v-model="settingsForm.fontSizeCol"
                             :value="settingsForm.fontSizeCol"
@@ -112,11 +87,7 @@
                         >
                         </el-input-number>
                     </el-form-item>
-
-                    <el-form-item label="Display rownames">
-                        <el-checkbox v-model="settingsForm.displayRownames"></el-checkbox>
-                    </el-form-item>
-                    <el-form-item label="Rownames font-size" v-if="settingsForm.displayRownames">
+                    <el-form-item label="Rownames size" v-if="settingsForm.displayOptions.indexOf('rownames') !== -1">
                         <el-input-number
                             v-model="settingsForm.fontSizeRow"
                             :value="settingsForm.fontSizeRow"
@@ -153,35 +124,17 @@
 
                     <el-form-item label="Clustering distance">
                         <el-select v-model="settingsForm.clustDistance" placeholder="Select">
-                            <el-option
-                                v-for="item in settingOptions.clustDistance"
-                                :key="item.id"
-                                :label="item.id"
-                                :value="item.value"
-                            >
-                            </el-option>
+                            <el-option v-for="item in settingOptions.clustDistance" :key="item.id" :label="item.id" :value="item.value"> </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Clustering method">
                         <el-select v-model="settingsForm.clustLinkage" placeholder="Select">
-                            <el-option
-                                v-for="item in settingOptions.clustLinkage"
-                                :key="item.id"
-                                :label="item.id"
-                                :value="item.value"
-                            >
-                            </el-option>
+                            <el-option v-for="item in settingOptions.clustLinkage" :key="item.id" :label="item.id" :value="item.value"> </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Tree ordering">
                         <el-select v-model="settingsForm.clustOrdering" placeholder="Select">
-                            <el-option
-                                v-for="item in settingOptions.clustOrdering"
-                                :key="item.id"
-                                :label="item.id"
-                                :value="item.value"
-                            >
-                            </el-option>
+                            <el-option v-for="item in settingOptions.clustOrdering" :key="item.id" :label="item.id" :value="item.value"> </el-option>
                         </el-select>
                     </el-form-item>
 
@@ -196,26 +149,13 @@
                         >
                         </el-input-number>
                     </el-form-item>
-
-                    <el-form-item>
-                        <el-button type="primary" :loading="loadingPlot" round @click="redrawImage">Plot</el-button>
+                    <el-form-item label="">
+                        <el-button type="primary" size="mini" icon="el-icon-picture-outline" @click="redrawImage" round>Plot image</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
-            <el-col
-                :span="17"
-                class="correlation-svg-container"
-                :disabled="loadingPlot"
-                v-loading="loadingPlot"
-                element-loading-text="Processing..."
-                style="text-align: center;"
-            >
-                <object
-                    id="correlation-svg"
-                    style="margin: 0 auto;"
-                    :data="renderedImage"
-                    type="image/svg+xml"
-                ></object>
+            <el-col :span="15" class="correlation-svg-container" :disabled="loadingPlot" element-loading-text="Processing..." style="text-align: center;">
+                <object id="correlation-svg" style="margin: 0 auto;" :data="renderedImage" type="image/svg+xml"></object>
             </el-col>
         </el-row>
     </div>
@@ -255,10 +195,8 @@ export default {
                 features: [],
                 // removeNA: false,
                 scale: [{ id: "row" }, { id: "column" }, { id: "none" }],
-                displayNumbers: false,
-                displayLegend: true,
-                displayColnames: true,
-                displayRownames: true,
+                displayOptions: [{ label: "Numbers", id: "numbers" }, { label: "Legend", id: "legend" }, { label: "Colnames", id: "colnames" }, { label: "Rownames", id: "rownames" }],
+                
                 plotWidth: {
                     min: 5,
                     max: 50,
@@ -325,10 +263,7 @@ export default {
                 removeNA: false,
                 scale: "column",
 
-                displayNumbers: false,
-                displayLegend: true,
-                displayColnames: true,
-                displayRownames: true,
+                displayOptions: ["legend", "colnames", "rownames"],
 
                 plotWidth: 20,
                 plotRatio: 0.8,
@@ -424,3 +359,20 @@ export default {
     }
 };
 </script>
+<style rel="stylesheet/scss" lang="scss">
+.clustering_form {
+    .el-form-item {
+        margin-bottom: 5px;
+        .checkbox_group {
+            .el-checkbox {
+                float: left;
+                min-width: 100px;
+            }
+        }
+        label {
+            color: #333333;
+            font-weight: 500;
+        }
+    }
+}
+</style>

@@ -1,8 +1,9 @@
 <template>
-    <div class="app-container workspace-container">
+    <div class="app-container workspace-container" v-loading.fullscreen.lock="loading" element-loading-text="Processing..." @click="closeContextMenus">
         <el-row type="flex" align="top">
             <el-col :span="24">
-                <genular></genular>
+                <public-import style="float:left;" ref="publicImporte" v-on:refresh-items="refreshFilesInDirectory"></public-import>
+                <el-button style="float:right;" icon="el-icon-delete" size="mini" type="primary" round @click.prevent.stop="deleteFilesInDirectory">Delete all</el-button>
             </el-col>
         </el-row>
         <el-row class="dropzone-container" type="flex" align="top">
@@ -10,9 +11,9 @@
                 <dropzone
                     ref="workspaceDropzone"
                     id="workspaceDropzone"
-                    v-on:dropzone-removedFile="dropzoneRemoved"
-                    v-on:dropzone-success="dropzoneUploaded"
-                    v-on:dropzone-fileClick="dropzoneFileClick"
+                    v-on:fileRemoved="dropzoneRemoved"
+                    v-on:fileUploaded="dropzoneUploaded"
+                    v-on:actionListener="dropzoneFileClick"
                     defaultMsg="Drop files here or click to upload."
                     :thumbnailHeight="75"
                     :thumbnailWidth="80"
@@ -30,11 +31,19 @@
                 <div class="dropzone-previews dropzone"></div>
             </el-col>
         </el-row>
-
+        <div class="dropzone-context-menu">
+            <ul class="menu-options">
+                <li class="menu-option" @click="contextAction('select')">Select</li>
+                <li class="menu-option" @click="contextAction('download')">Download</li>
+                <li class="menu-option" @click="contextAction('delete')">Delete</li>
+                <li class="menu-option" @click="contextAction('Preview')">Preview</li>
+                <li class="menu-option" @click="contextAction('stats')">Stats</li>
+            </ul>
+        </div>
     </div>
 </template>
 <script>
-import { Dropzone, genular } from "./components";
+import { Dropzone, publicImport } from "./components";
 import { mapGetters } from "vuex";
 
 import { readFilesInUserDirectory as ApiReadFilesInUserDirectory, deleteFile as ApiDeleteFile } from "@/api/backend";
@@ -45,18 +54,25 @@ export default {
 
     components: {
         Dropzone,
-        genular
+        publicImport
     },
     data() {
         return {
+            loading: false,
+            refreshLoading: false,
             totalFileSize: 0,
             totalFiles: 0,
             directoryFilesHash: "",
-            loadingInstance: null,
-            loadingText: "please wait..."
+            loadingText: "please wait...",
+            contextmenu: {
+                element: null,
+                visible: false,
+                selectedFile: null
+            }
         };
     },
     mounted() {
+        this.contextmenu.element = document.querySelector(".dropzone-context-menu");
         this.fetchReadFilesInDirectory();
     },
     computed: {
@@ -71,33 +87,79 @@ export default {
         }
     },
     methods: {
-        // Initialize selected file class on initial file load
-        dropzoneFileAdded(file) {
-            if (this.selectedFiles.length === 0) {
-                this.dropzoneFileClick(file);
+        deleteFilesInDirectory() {
+            this.$confirm("This will delete all files. Do you wish to proceed?", "Warning", {
+                type: "warning"
+            })
+                .then(_ => {
+                    this.$refs.workspaceDropzone.removeAllFiles(false);
+                })
+                .catch(_ => {
+                    this.$message({
+                        type: "info",
+                        message: "Action canceled"
+                    });
+                });
+        },
+        manuallyAddFiles(files) {
+            if (Array.isArray(files)) {
+                files.map((file, i) => {
+                    this.totalFileSize += file.size;
+                    this.$refs.workspaceDropzone.manuallyAddFile({
+                        fileId: parseInt(file.id),
+                        size: file.size,
+                        name: file.display_filename + file.extension,
+                        basename: file.display_filename,
+                        extension: file.extension.replace(".", ""),
+                        mime_type: file.mime_type || "text/plain",
+                        type: file.item_type
+                    });
+                });
             }
         },
-        addFile(item) {
-            this.totalFileSize += item.size;
-            this.$refs.workspaceDropzone.initFiles([
-                {
-                    fileId: parseInt(item.id),
-                    size: item.size,
-                    name: item.display_filename + item.extension,
-                    basename: item.display_filename,
-                    extension: item.extension.replace(".", ""),
-                    mime_type: item.mime_type || "text/plain",
-                    type: item.item_type
-                }
-            ]);
+        closeContextMenus(event) {
+            if (this.contextmenu.visible) {
+                this.toggleMenu("hide");
+            }
         },
-        dropzoneFileClick(file) {
+        toggleMenu(command) {
+            this.contextmenu.element.style.display = command === "show" ? "block" : "none";
+            this.contextmenu.visible = !this.contextmenu.visible;
+        },
+        setPosition({ top, left }) {
+            this.contextmenu.element.style.left = `${left}px`;
+            this.contextmenu.element.style.top = `${top}px`;
+            this.toggleMenu("show");
+        },
+        contextAction(action) {
+            console.log(action);
+            console.log(this.contextmenu.selectedFile);
+            this.$message({
+                type: "info",
+                message: "Not jet implemented"
+            });
+        },
+        dropzoneFileClick(item) {
+            if (this.contextmenu.visible) {
+                this.toggleMenu("hide");
+            }
+            if (item.action === "contextmenu") {
+                item.event.preventDefault();
+                this.contextmenu.selectedFile = item.file;
+
+                this.setPosition({
+                    left: item.event.pageX,
+                    top: item.event.pageY
+                });
+                return false;
+            }
+
             let selectFile = false;
             const selectedFile = {
-                id: parseInt(file.fileId),
-                basename: file.name,
-                extension: file.extension,
-                type: file.type
+                id: parseInt(item.file.fileId),
+                basename: item.file.name,
+                extension: item.file.extension,
+                type: item.file.type
             };
 
             // Check if there are any existing file selected
@@ -110,18 +172,24 @@ export default {
                 selectFile = true;
             }
             if (selectFile === true) {
-                file.previewElement.classList.add("dz-selected");
+                item.file.previewElement.classList.add("dz-selected");
             } else {
-                file.previewElement.classList.remove("dz-selected");
+                item.file.previewElement.classList.remove("dz-selected");
             }
         },
         dropzoneUploaded(file, element) {
             this.$message({ message: file.name + " uploaded!", type: "success" });
         },
         dropzoneRemoved(file) {
-            this.startLoading();
             console.log("dropzoneRemoved");
-            ApiDeleteFile(file.fileId)
+            // If loading is already running dont delete files since probably its all about
+            // fetchReadFilesInDirectory => removeAllFiles
+            if (this.refreshLoading === true) {
+                return;
+            }
+
+            this.loading = true;
+            ApiDeleteFile({ selectedFiles: [file.fileId] })
                 .then(response => {
                     if (response.data.success === true) {
                         this.$message({ message: file.name + " deleted", type: "success" });
@@ -132,57 +200,71 @@ export default {
                         console.log(response);
                         this.$message({ message: "Operation failed!", type: "warning" });
                     }
-                    this.stopLoading();
+                    this.loading = false;
                 })
                 .catch(error => {
                     console.log(error);
-                    this.stopLoading();
+                    this.loading = false;
                     this.$message({ message: "Operation failed!", type: "warning" });
                 });
         },
-        fetchReadFilesInDirectory(selectedPath) {
-            this.startLoading();
-            ApiReadFilesInUserDirectory({ selectedDirectory: selectedPath })
+        fetchReadFilesInDirectory() {
+            this.loading = true;
+            ApiReadFilesInUserDirectory({ selectedDirectory: "" })
                 .then(response => {
                     if (response.data.success === true) {
                         const directoryFilesHash = md5String(JSON.stringify(response.data.message));
                         if (this.directoryFilesHash !== directoryFilesHash) {
                             this.totalFiles = response.data.message.length;
-                            response.data.message.forEach(item => {
-                                this.addFile(item);
-                            });
+                            this.manuallyAddFiles(response.data.message);
                         }
                     } else {
                         console.log(response);
                     }
-                    this.stopLoading();
+                    this.loading = false;
                 })
                 .catch(error => {
                     console.log(error);
-                    this.stopLoading();
+                    this.loading = false;
                 });
         },
-        startLoading() {
-            this.loadingInstance = this.$loading({
-                lock: true,
-                text: this.loadingText,
-                spinner: "el-icon-loading",
-                fullscreen: true,
-                customClass: "loading-api",
-                background: "rgba(0, 0, 0, 0.7)"
-            });
-        },
-        stopLoading() {
-            this.loadingInstance.close();
+        refreshFilesInDirectory() {
+            this.refreshLoading = true;
+            this.$refs.workspaceDropzone.removeAllFiles(false);
+            this.fetchReadFilesInDirectory();
+            this.refreshLoading = false;
         }
     }
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-
 .dropzone-container {
     margin-top: 10px;
 }
+.dropzone-context-menu {
+    box-shadow: 0 4px 5px 3px rgb(239, 240, 249);
+    position: fixed;
+    display: none;
+    z-index: 1001;
+    background-color: #ffffff;
+
+    .menu-options {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        .menu-option {
+            font-size: 14px;
+            padding: 10px 40px 10px 20px;
+            cursor: pointer;
+
+            &:hover {
+                background: rgb(239, 240, 249);
+            }
+        }
+    }
+}
+
 .files-container {
     margin-top: 10px;
 }
