@@ -1,15 +1,13 @@
 <template>
-    <div class="app-working-files">
-        <span v-if="selectedFiles.length < 1" class="empty-selection"> Please select one file from Workspace!</span>
-
-        <div v-for="file in selectedFiles" :key="file.id" class="files-view-item active" closable :type="file.type">
-            {{file.basename}}
-            <span class='el-icon-close' @click='closeSelectedFile(file.id)'></span>
+    <div class="selected-files-container">
+        <div v-if="selectedFiles.length < 1" class="files-view-item empty-selection">Please select one file from Workspace!</div>
+        <div v-for="file in selectedFiles" :key="file.id" class="files-view-item active">
+            {{ file.basename }}
+            <span class="close-container" @click="closeSelectedFile(file.id)">x</span>
         </div>
-
         <div v-if="explorationJobId != ''" class="files-view-item explorationJobId" closable>
             Analysis ID: {{ explorationJobId }}
-            <span class='el-icon-close' @click.prevent.stop='handleCloseExplorationJobId()'></span>
+            <span class="close-container" @click.prevent.stop="handleCloseExplorationJobId()">x</span>
         </div>
     </div>
 </template>
@@ -46,7 +44,7 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-.app-working-files {
+.selected-files-container {
     vertical-align: middle;
 
     .empty-selection {
@@ -56,45 +54,29 @@ export default {
 
     .files-view-item {
         display: inline-block;
+
+        float: left;
         line-height: 40px;
         border: 0;
-        background: #3d2d53;
+
+        background-color: #e3006e;
+        color: #fff;
+
         padding: 0 10px;
-        margin: 5px;
         height: 40px;
         font-size: 12px;
         cursor: default;
-        &:first-of-type {
-            margin-left: 5px;
+        &:not(:last-child) {
+            margin-right: 10px;
         }
-        &.active {
-            background-color: #e3006e;
-            color: #fff;
-            border-color: #e3006e;
-            &::before {
-                content: "";
-                background: #fff;
-                display: inline-block;
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                position: relative;
-                margin-right: 2px;
-            }
-        }
-        .el-icon-close {
-            width: 17px;
-            height: 17px;
-            border-radius: 50%;
+        .close-container {
+            width: 15px;
+            height: 15px;
+            border-radius: 25%;
             text-align: center;
-            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-            transform-origin: 100% 50%;
+            font-weight: bold;
             cursor: pointer;
-            &:before {
-                transform: scale(0.6);
-                display: inline-block;
-                vertical-align: -3px;
-            }
+
             &:hover {
                 background-color: #b4bccc;
                 color: #fff;

@@ -3,14 +3,13 @@
         <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
         <breadcrumb class="breadcrumb-container"></breadcrumb>
         <div class="right-menu">
-
+            <!-- Selected Files and Exploation IDs -->
             <selected-files class="right-menu-item"></selected-files>
-
-            <error-log class="errLog-container right-menu-item"></error-log>
-
+            <error-log v-if="errorLogs.length > 0" class="right-menu-item error-logs"></error-log>
+            <lang-select class="right-menu-item international "></lang-select>
             <el-dropdown class="avatar-container right-menu-item" trigger="click">
                 <div class="avatar-wrapper">
-                    <img class="user-avatar" :src="user_avatar+'?imageView2/1/w/80/h/80'">
+                    <img class="user-avatar" :src="user_avatar">
                     <i class="el-icon-caret-bottom"></i>
                 </div>
                 <el-dropdown-menu slot="dropdown">
@@ -29,9 +28,6 @@
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
-
-            <lang-select class="international right-menu-item"></lang-select>
-
         </div>
     </el-menu>
 </template>
@@ -52,7 +48,7 @@ export default {
         LangSelect
     },
     computed: {
-        ...mapGetters(["sidebar", "user_avatar"])
+        ...mapGetters(["sidebar", "user_avatar", "errorLogs"])
     },
     methods: {
         toggleSideBar() {
@@ -91,10 +87,6 @@ export default {
     .breadcrumb-container {
         float: left;
     }
-    .errLog-container {
-        display: inline-block;
-        vertical-align: top;
-    }
     .right-menu {
         float: right;
         height: 100%;
@@ -103,16 +95,23 @@ export default {
         }
         .right-menu-item {
             display: inline-block;
-            margin: 0 8px;
+            &:not(:last-child) {
+                padding-right: 10px;
+            }
         }
         .international {
             vertical-align: top;
             font-size: 20px;
             cursor: pointer;
-            width: 44px;
+            width: 40px;
             text-align: center;
-            margin-right: 0;
-            margin-left: 0;
+        }
+        .error-logs {
+            vertical-align: top;
+            font-size: 20px;
+            cursor: pointer;
+            width: 40px;
+            text-align: center;
         }
         .avatar-container {
             height: 50px;
@@ -128,7 +127,6 @@ export default {
                 .user-avatar {
                     width: 40px;
                     height: 40px;
-                    border-radius: 10px;
                 }
                 .el-icon-caret-bottom {
                     position: absolute;

@@ -7,7 +7,8 @@
 </template>
 <script>
 const padding = 15; // tag's padding
-
+// Scroll bar for interface Tags
+// Example ./src/app/views/layout/components/TagsView.vue
 export default {
     name: "scrollPane",
     data() {

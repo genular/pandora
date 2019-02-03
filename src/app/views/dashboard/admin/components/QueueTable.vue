@@ -65,15 +65,9 @@
             </el-table-column>
             <el-table-column align="center" label="Sparsity (%)">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.sparsity < 0.5">
-                        <span class="el-icon-success"></span> {{ scope.row.sparsity * 100 }}%
-                    </span>
-                    <span v-else-if="scope.row.sparsity > 0.5 && scope.row.sparsity < 0.75">
-                         <span class="el-icon-warning"></span> {{ scope.row.sparsity * 100 }}%
-                    </span>
-                    <span v-else>
-                        <span class="el-icon-error"></span> {{ scope.row.sparsity * 100 }}%
-                    </span>
+                    <span v-if="scope.row.sparsity < 0.5"> <span class="el-icon-success"></span> {{ scope.row.sparsity * 100 }}% </span>
+                    <span v-else-if="scope.row.sparsity > 0.5 && scope.row.sparsity < 0.75"> <span class="el-icon-warning"></span> {{ scope.row.sparsity * 100 }}% </span>
+                    <span v-else> <span class="el-icon-error"></span> {{ scope.row.sparsity * 100 }}% </span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="Resamples">
@@ -640,25 +634,17 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-    @import "~scss_vars";
-    .job_selectable {
-        cursor: copy;
-    }
-    .job_not_selectable {
-        cursor: not-allowed;
-    }
-
-    .el-table .warning-row {
-        background-color: rgba(53, 34, 74, 0.05);
-    }
-    .el-table .success-row {
-        background-color: #ffffff;
-    }
-    /** Icons **/
-    .el-icon-success {
-        color: #67c23a;
-    }
-    .el-icon-warning {
-        color: #e3006e;
-    }
+.el-table .warning-row {
+    background-color: rgba(53, 34, 74, 0.05);
+}
+.el-table .success-row {
+    background-color: #ffffff;
+}
+/** Icons **/
+.el-icon-success {
+    color: #67c23a;
+}
+.el-icon-warning {
+    color: #e3006e;
+}
 </style>

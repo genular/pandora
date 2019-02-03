@@ -8,7 +8,9 @@ const main = {
         is_online: false,
         language: estore.get("main-language") || "en-US",
         is_configured: estore.get("main-is_configured") || false,
-        selectedFiles: estore.get("main-selectedFiles") || []
+        selectedFiles: estore.get("main-selectedFiles") || [],
+        packageVersion: packageInfo.version || "N/A",
+        packageEnviroment: packageInfo.environment || "development"
     },
     mutations: {
         TOGGLE_SIDEBAR: state => {

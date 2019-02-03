@@ -8,6 +8,8 @@
 <script>
 const delta = 15;
 
+// Scroll bar for interface sidebar
+// Example ./src/app/views/layout/components/Sidebar/index.vue:
 export default {
     name: "scrollBar",
     data() {

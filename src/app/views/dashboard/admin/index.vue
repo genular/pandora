@@ -42,8 +42,9 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .tutorial_button{
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
+    position: fixed;
+    right: 30px;
+    bottom: 5px;
+    z-index: 100;
 }
 </style>

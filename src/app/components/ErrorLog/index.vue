@@ -1,5 +1,5 @@
 <template>
-    <div v-if="errorLogs.length > 0">
+    <div>
         <el-badge :value="errorLogs.length" :max="10" style="line-height: 30px;" @click.native="errorDialog = true">
             <i class="fa fa-bug" aria-hidden="true"></i>
         </el-badge>
@@ -104,6 +104,13 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+.el-badge__content {
+    font-size: 10px;
+    border-radius: 25px;
+    height: 15px;
+    line-height: 15px;
+    padding: 0 5px;
+}
 .el-dialog__body {
     padding: 0 20px;
     .help-us {

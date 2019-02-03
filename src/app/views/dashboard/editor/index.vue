@@ -1,9 +1,6 @@
 <template>
     <div class="dashboard-inner-container">
         <div class=" clearfix">
-            <pan-thumb style="float: left" :image="avatar"> Your roles:
-                <span class="pan-info-roles" :key='item' v-for="item in user_roles">{{item}}</span>
-            </pan-thumb>
             <div class="info-container">
                 <span class="display_name">{{user_username}}</span>
                 <span style="font-size:20px;padding-top:20px;display:inline-block;">inner : dashboard</span>
@@ -17,13 +14,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import PanThumb from "@/components/PanThumb";
 
 export default {
     name: "dashboard-editor",
-    components: {
-        PanThumb
-    },
     data() {
         return {
             emptyGif:

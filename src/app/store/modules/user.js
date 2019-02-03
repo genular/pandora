@@ -12,7 +12,7 @@ const user = {
         username: estore.get("user-username") || "",
         auth_token: estore.get("user-auth_token") || "",
         uuid: estore.get("user-uuid") || "",
-        avatar: estore.get("user-avatar") || "https://www.gravatar.com/avatar/0bd7bb5ea784ed3975feac068c1e3c2a",
+        avatar: estore.get("user-avatar") || "/static/favicon/android-icon-48x48.png",
         roles: estore.get("user-roles") || [], // 1 - Global Administrator / 2 - User / 3 - Organization Administrator / 4 - Organization User
         settings: {
             server: {

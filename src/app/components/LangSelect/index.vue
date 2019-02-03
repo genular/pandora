@@ -1,6 +1,6 @@
 <template>
     <el-dropdown trigger="click" class="international" @command="handleSetLanguage">
-        <div><i class="fa fa-globe" aria-hidden="true"></i></div>
+        <i class="fa fa-globe" aria-hidden="true"></i>
         <el-dropdown-menu slot="dropdown" class="language-dropdown">
             <el-dropdown-item v-for="lang in languages" :key="lang" :command="lang" :disabled="language === lang">
                 {{ $t("language." + lang) }}
@@ -36,17 +36,19 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-.international-icon {
-    font-size: 20px;
-    cursor: pointer;
-    vertical-align: -5px !important;
-    cursor: pointer;
-}
+.international:hover {
+    > i {
+        color: #35224a;
+    }
+};
 .language-dropdown {
     top: 40px !important;
     max-height: 300px;
     overflow: scroll;
     overflow-x: scroll;
     overflow-x: hidden;
+    > li:hover{
+        color: #35224a;
+    }
 }
 </style>

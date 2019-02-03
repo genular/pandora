@@ -35,7 +35,6 @@ body {
     margin: 0;
 }
 
-
 body {
     font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", sans-serif;
 }
@@ -121,26 +120,6 @@ div:focus {
         height: 0;
     }
 }
-/*
-code {
-    background: #ffffff;
-    padding: 15px 16px;
-    margin-bottom: 20px;
-    display: block;
-    line-height: 36px;
-    font-size: 15px;
-    font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
-    color: #020202;
-    box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
-    a {
-        color: #337ab7;
-        cursor: pointer;
-        &:hover {
-            color: rgb(32, 160, 255);
-        }
-    }
-}
-*/
 
 .warn-content {
     background: rgba(66, 185, 131, 0.1);
@@ -154,8 +133,6 @@ code {
         font-weight: 600;
     }
 }
-
-
 
 .components-container {
     margin: 30px 50px;
@@ -182,11 +159,7 @@ code {
     text-align: right;
     padding-right: 20px;
     transition: 600ms ease position;
-    background: linear-gradient( 90deg,
-    rgba(32, 182, 249, 1) 0%,
-    rgba(32, 182, 249, 1) 0%,
-    rgba(33, 120, 241, 1) 100%,
-    rgba(33, 120, 241, 1) 100%);
+    background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
     .subtitle {
         font-size: 20px;
         color: #fff;
@@ -199,21 +172,25 @@ code {
     }
 }
 
-.link-type,
-.link-type:focus {
-    color: #337ab7;
-    cursor: pointer;
-    &:hover {
-        color: rgb(32, 160, 255);
-    }
-}
-
+/** table header filter items / buttons */
 .filter-container {
     padding-bottom: 10px;
     .filter-item {
         display: inline-block;
         vertical-align: middle;
         margin-bottom: 10px;
+        &:not(:first-child):not(:last-child) {
+            margin-left: 10px;
+        }
+    }
+}
+
+.link-type,
+.link-type:focus {
+    color: #337ab7;
+    cursor: pointer;
+    &:hover {
+        color: rgb(32, 160, 255);
     }
 }
 
@@ -234,6 +211,9 @@ code {
     margin: 20px 0;
 }
 
+/** Custom full page loading class 
+    Example: ./src/app/views/apps/simon/analysis/components/StartButton/index.vue:
+*/
 .loading-api {
     .el-icon-loading {
         font-size: 34px;
