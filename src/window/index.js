@@ -11,12 +11,12 @@ import initCrashReporter from "./helpers/crashReporter";
 import setTryMenu from "./helpers/tray_menu";
 
 // Special module holding environment variables in config/env_xxx.json file.
-import env from "env";
+import env_vars from "env_vars";
 
 // https://stackoverflow.com/questions/9768444/possible-eventemitter-memory-leak-detected
 // require('events').EventEmitter.prototype._maxListeners = 20;
 
-const isDevelopment = env.name === "development";
+const isDevelopment = env_vars.name === "development";
 
 let mainWindow = null;
 let forceQuit = false;
@@ -25,9 +25,9 @@ let tray = null;
 initCrashReporter();
 
 // Save userData in separate folders for each environment.
-if (env.name === "development") {
+if (env_vars.name === "development") {
     const userDataPath = app.getPath("userData");
-    app.setPath("userData", `${userDataPath}_${env.name}`);
+    app.setPath("userData", `${userDataPath}_${env_vars.name}`);
 }
 
 // Create cache directory if it doesn't exist

@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2019-01-22 11:52:45
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-22 13:23:28
+* @Last Modified time: 2019-02-02 16:44:18
 */
 /*
  * @Author: LogIN-
@@ -42,12 +42,12 @@ const prepareMessagesPlugin = require(path.resolve(
     `../src/app/translations/scripts/prepareMessagesPlugin.js`
 ));
 
-module.exports = env => {
+module.exports = enviroment => {
     const config = {
         resolve: {
             extensions: [".js", ".vue", ".css", ".json", ".scss", ".eot", ".ttf", ".woff", ".woff2", ".svg"],
             alias: {
-                env: path.resolve(__dirname, `../config/env_${env}.json`),
+                env_vars$: path.resolve(__dirname, `../config/env_${enviroment}.json`),
                 scss_vars: SRC_DIR + "/app/styles/variables.scss",
                 "@": SRC_DIR + "/app"
             },
@@ -94,7 +94,7 @@ module.exports = env => {
                     loader: "vue-loader",
                     options: {
                         hotReload: false,
-                        extractCSS: env === "production",
+                        extractCSS: enviroment === "production",
                         cssSourceMap: true,
                         loaders: {
                             scss: ["vue-style-loader", "css-loader", "resolve-url-loader", "sass-loader"],
@@ -144,7 +144,7 @@ module.exports = env => {
             new VueLoaderPlugin(),
             new webpack.DefinePlugin({
                 "process.env": {
-                    ENV: '"' + env + '"',
+                    ENV: '"' + enviroment + '"',
                     VERSION: JSON.stringify(packageInfo.version),
                     REPOSITORY: JSON.stringify(packageInfo.repository),
                     HOMEPAGE: JSON.stringify(packageInfo.homepage),
@@ -160,13 +160,13 @@ module.exports = env => {
             new webpack.optimize.OccurrenceOrderPlugin(),
             new webpack.NoEmitOnErrorsPlugin(),
             new FriendlyErrorsWebpackPlugin({
-                clearConsole: env.name === "development"
+                clearConsole: enviroment === "development"
             }),
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
-                filename: env == "development" ? "[name].css" : "[name].[hash].css",
-                chunkFilename: env == "development" ? "[id].css" : "[id].[hash].css"
+                filename: enviroment == "development" ? "[name].css" : "[name].[hash].css",
+                chunkFilename: enviroment == "development" ? "[id].css" : "[id].[hash].css"
             }),
             // Prepare translations files
             new prepareMessagesPlugin(),
@@ -301,7 +301,7 @@ module.exports = env => {
         };
     }
 
-    if (env == "development") {
+    if (enviroment == "development") {
         config.devtool = "source-map";
         config.devServer = {
             historyApiFallback: true,

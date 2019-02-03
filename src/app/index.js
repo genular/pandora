@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2019-01-14 16:20:23
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-23 14:37:18
+* @Last Modified time: 2019-02-02 16:39:36
 */
 import "whatwg-fetch";
 
@@ -10,7 +10,7 @@ const isRenderer = require("is-electron-renderer");
 const accounting = require("accounting");
 
 import Vue from "vue";
-import env from "env";
+import env_vars from "env_vars";
 
 import Element from "element-ui";
 import VueParticles from "vue-particles";
@@ -32,7 +32,7 @@ import "@/styles/main.scss"; // require styles using webpack alias
 import "./errorLog"; // error log
 import "./routeguard"; // permission control
 
-Vue.prototype.$config = env;
+Vue.prototype.$config = env_vars;
 Vue.prototype.$accounting = accounting;
 
 import * as filters from "./filters"; // global filters

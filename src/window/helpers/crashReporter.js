@@ -2,13 +2,13 @@ const {
  crashReporter
 } = require('electron');
 
-import env from "env"
+import env_vars from "env_vars";
 
 export default function initCrashReporter (){
     crashReporter.start({
-        productName: env.developer.productName,
-        companyName: env.developer.companyName,
-        submitURL: env.developer.submitURL,
-        uploadToServer: env.developer.uploadToServer
+        productName: env_vars.developer.productName,
+        companyName: env_vars.developer.companyName,
+        submitURL: env_vars.developer.submitURL,
+        uploadToServer: env_vars.developer.uploadToServer
     });
 }
