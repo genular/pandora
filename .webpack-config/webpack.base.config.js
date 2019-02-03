@@ -1,9 +1,9 @@
 /*
-* @Author: LogIN-
-* @Date:   2019-01-22 11:52:45
-* @Last Modified by:   LogIN-
-* @Last Modified time: 2019-02-02 16:44:18
-*/
+ * @Author: LogIN-
+ * @Date:   2019-01-22 11:52:45
+ * @Last Modified by:   LogIN-
+ * @Last Modified time: 2019-02-02 17:17:19
+ */
 /*
  * @Author: LogIN-
  * @Date:   2019-01-18 08:41:04
@@ -12,6 +12,7 @@
  */
 "use strict";
 const path = require("path");
+const fs = require('fs');
 
 const webpack = require("webpack");
 
@@ -28,6 +29,7 @@ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const argv = require("minimist")(process.argv.slice(2));
 const isWeb = argv && argv.target === "web";
+
 const output = isWeb ? "compiled/web" : "compiled/electron";
 
 const _ = require("./utils");
@@ -37,12 +39,40 @@ const SRC_DIR = path.resolve(__dirname, "../src");
 
 const packageInfo = require(path.resolve(__dirname, `../package.json`));
 
-const prepareMessagesPlugin = require(path.resolve(
-    __dirname,
-    `../src/app/translations/scripts/prepareMessagesPlugin.js`
-));
+const prepareMessagesPlugin = require(path.resolve(__dirname, `../src/app/translations/scripts/prepareMessagesPlugin.js`));
 
 module.exports = enviroment => {
+    // Copy configuration template and try to set initial env variables
+    const envTemplateExample = path.resolve(__dirname, `../config/env_${enviroment}.example.json`);
+    const envTemplateFinal = path.join(__dirname, `../config/env_${enviroment}.json`);
+
+    if (!fs.existsSync(envTemplateFinal)) {
+        if(argv){
+            let envTemplate = require(envTemplateExample);
+            if(typeof argv.server_frontend !== "undefined"){
+                envTemplate.server.frontend = argv.server_frontend;
+            }
+            if(typeof argv.server_backend !== "undefined"){
+                envTemplate.server.backend = argv.server_backend;
+            }
+            if(typeof argv.server_homepage !== "undefined"){
+                envTemplate.server.homepage = argv.server_homepage;
+            }
+            if(typeof argv.api_secret !== "undefined"){
+                envTemplate.api.secret = argv.api_secret;
+            }
+            if(typeof argv.api_chargebee_site_name !== "undefined"){
+                envTemplate.api.chargebee_site_name = argv.api_chargebee_site_name;
+            }
+            if(typeof argv.api_chargebee !== "undefined"){
+                envTemplate.api.chargebee = argv.api_chargebee;
+            }
+            envTemplate = JSON.stringify(envTemplate,null,2);  
+            fs.writeFileSync(envTemplateFinal, envTemplate)
+            // yarn run start:web --server_frontend=xyc --server_backend=xyc --server_homepage=xyc --api_secret=xyc --api_chargebee_site_name=xyc --api_chargebee=xyc
+        }     
+    }
+
     const config = {
         resolve: {
             extensions: [".js", ".vue", ".css", ".json", ".scss", ".eot", ".ttf", ".woff", ".woff2", ".svg"],
