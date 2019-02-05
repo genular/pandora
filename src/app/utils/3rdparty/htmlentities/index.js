@@ -1,11 +1,12 @@
 /*
-* @Author: LogIN-
-* @Date:   2019-02-01 18:17:10
-* @Last Modified by:   LogIN-
-* @Last Modified time: 2019-02-01 18:19:33
-*/
+ * @Author: LogIN-
+ * @Date:   2019-02-01 18:17:10
+ * @Last Modified by:   LogIN-
+ * @Last Modified time: 2019-02-04 09:08:03
+ */
+const getHtmlTranslationTable = require("./get_html_translation_table");
 
-export default function htmlentities (string, quoteStyle, charset, doubleEncode) {
+export default function htmlentities(string, quoteStyle, charset, doubleEncode) {
   //  discuss at: http://locutus.io/php/htmlentities/
   // original by: Kevin van Zonneveld (http://kvz.io)
   //  revised by: Kevin van Zonneveld (http://kvz.io)
@@ -23,32 +24,33 @@ export default function htmlentities (string, quoteStyle, charset, doubleEncode)
   //   example 2: htmlentities("foo'bar","ENT_QUOTES")
   //   returns 2: 'foo&#039;bar'
 
-  const getHtmlTranslationTable = require('./get_html_translation_table');
-  const hashMap = getHtmlTranslationTable('HTML_ENTITIES', quoteStyle);
+  const hashMap = getHtmlTranslationTable("HTML_ENTITIES", quoteStyle);
 
-  string = string === null ? '' : `${string}`
+  string = string === null ? "" : `${string}`;
 
   if (!hashMap) {
-    return false
+    return false;
   }
 
-  if (quoteStyle && quoteStyle === 'ENT_QUOTES') {
-    hashMap["'"] = '&#039;'
+  if (quoteStyle && quoteStyle === "ENT_QUOTES") {
+    hashMap["'"] = "&#039;";
   }
 
-  doubleEncode = doubleEncode === null || !!doubleEncode
+  doubleEncode = doubleEncode === null || !!doubleEncode;
 
-  const regex = new RegExp(`&(?:#\\d+|#x[\\da-f]+|[a-zA-Z][\\da-z]*);|[${Object.keys(hashMap)
-.join('')
-// replace regexp special chars
-.replace(/([()[\]{}\-.*+?^$|/\\])/g, '\\$1')}]`,
-    'g');
+  const regex = new RegExp(
+    `&(?:#\\d+|#x[\\da-f]+|[a-zA-Z][\\da-z]*);|[${Object.keys(hashMap)
+      .join("")
+      // replace regexp special chars
+      .replace(/([()[\]{}\-.*+?^$|/\\])/g, "\\$1")}]`,
+    "g"
+  );
 
   return string.replace(regex, ent => {
     if (ent.length > 1) {
-      return doubleEncode ? hashMap['&'] + ent.substr(1) : ent
+      return doubleEncode ? hashMap["&"] + ent.substr(1) : ent;
     }
 
-    return hashMap[ent]
+    return hashMap[ent];
   });
-};
+}

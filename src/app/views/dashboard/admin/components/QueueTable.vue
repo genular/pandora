@@ -39,7 +39,7 @@
             </el-table-column>
             <el-table-column align="left" label="Name">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.queueName }}</span>
+                    <span class="queue-name" :title="scope.row.queueName">{{ scope.row.queueName }}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.jobs.table.header.submitted')">
@@ -262,9 +262,9 @@ import {
 } from "@/api/backend";
 
 import waves from "@/directive/waves";
+
 import { parseTime, md5String } from "@/utils";
 import { sortAlphaNum } from "@/utils/helpers.js";
-
 import { downloadFileTemplate, downloadItemsTemplate } from "@/utils/templates.js";
 
 export default {
@@ -320,6 +320,7 @@ export default {
         }
     },
     mounted() {
+
         // Initial Items request
         if (this.queueListHash === "") {
             this.getDatasetQueueList();
@@ -634,6 +635,13 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+.queue-list-container-table {
+    .queue-name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
 .el-table .warning-row {
     background-color: rgba(53, 34, 74, 0.05);
 }
