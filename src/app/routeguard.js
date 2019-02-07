@@ -8,10 +8,14 @@ import NProgress from "nprogress"; // progress bar
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
 // Permission judge function
-function hasInAppPermission(roles, permissionRoles) {
-    if (roles.indexOf("admin") >= 0) return true; // admin permission passed directly
-    if (!permissionRoles) return true;
-    return roles.some(role => permissionRoles.indexOf(role) >= 0);
+function hasInAppPermission(role, permissionRoles) {
+    if (role === 1) {
+        return true;
+    } // admin permission passed directly
+    if (!permissionRoles) {
+        return true;
+    }
+    return permissionRoles.indexOf(role) >= 0;
 }
 // Check if URL is publicly accessible
 function hasOutAppPermission(whiteListURLs, currentURL) {
@@ -37,15 +41,16 @@ router.beforeEach((to, from, next) => {
 
     // 2nd check if user is logged in
     if (typeof userAuthToken !== "undefined") {
-        if (store.getters.user_roles.length === 0) {
+        if (store.getters.user_role === 0) {
             store
                 .dispatch("getUserDetails")
                 .then(response => {
-                    store.dispatch("generateUserSpecificRoutes", response.account_roles).then(() => {
-                        router.addRoutes(store.getters.addRouters);
-
-                        next({ ...to, replace: true });
-                    });
+                    if (response !== false) {
+                        store.dispatch("generateUserSpecificRoutes", response.account_type).then(() => {
+                            router.addRoutes(store.getters.addRouters);
+                            next({ ...to, replace: true });
+                        });
+                    }
                 })
                 .catch(error => {
                     console.log(error);
@@ -56,7 +61,7 @@ router.beforeEach((to, from, next) => {
                 });
         } else {
             // 3rd check some app specific restrictions
-            if (hasInAppPermission(store.getters.user_roles, to.meta.roles)) {
+            if (hasInAppPermission(store.getters.user_role, to.meta.roles)) {
                 next(); //
             } else {
                 next({

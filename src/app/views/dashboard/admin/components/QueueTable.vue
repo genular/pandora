@@ -320,7 +320,6 @@ export default {
         }
     },
     mounted() {
-
         // Initial Items request
         if (this.queueListHash === "") {
             this.getDatasetQueueList();
@@ -393,11 +392,19 @@ export default {
                         });
                 } else if (clickAction === "delete") {
                     const queueID = rowInfo.queueID;
-                    this.queueListLoading = true;
                     this.$confirm("This will permanently delete everything on the system related to selected queue. Continue?", "Warning", {
                         type: "warning"
                     })
                         .then(_ => {
+                            if (this.$config.isDemoServer) {
+                                this.$message({
+                                    type: "warning",
+                                    message: "This function is disabled on demo server"
+                                });
+                                return;
+                            }
+                            this.queueListLoading = true;
+
                             ApiDeleteDatasetQueueTask({ queueID: queueID })
                                 .then(response => {
                                     this.queueListLoading = false;
@@ -415,7 +422,6 @@ export default {
                                 });
                         })
                         .catch(_ => {
-                            this.queueListLoading = false;
                             this.$message({
                                 type: "info",
                                 message: "Canceled!"
@@ -428,7 +434,7 @@ export default {
                     this.getDatasetResamplesList(queueID, rowInfo.status);
                 } else {
                     this.$message({
-                        message: "You cannot view detail information for this submission",
+                        message: "You cannot view detail information for this submission since task is not processed",
                         type: "warning"
                     });
                 }

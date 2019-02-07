@@ -19,6 +19,10 @@
                 <el-button type="primary" @click="redirectToHomepage">Go to homepage</el-button>
             </div>
         </el-dialog>
+        <div class="unsupported_device">
+            <span>Unfortunately your device is still unsupported. 
+            We are working on supporting smaller screen devices. Please visit us again with bigger screen 😞</span>
+        </div>
     </div>
 </template>
 <script>
@@ -99,6 +103,7 @@ export default {
                 });
         },
         navigateTo(action) {
+            console.log("navigateTo" + action);
             this.$router.push({
                 path: "/authenticate/?action=" + action
             });

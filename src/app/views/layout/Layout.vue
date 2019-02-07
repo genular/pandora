@@ -1,13 +1,17 @@
 <template>
     <div>
         <!-- <traybar></traybar> -->
-        <div class="app-wrapper" :class="{ showSidebar: sidebar.opened, 'hideSidebar': !sidebar.opened }">
+        <div class="app-wrapper" :class="{ showSidebar: sidebar.opened, hideSidebar: !sidebar.opened }">
             <sidebar class="sidebar-container"></sidebar>
             <div class="main-container">
                 <navbar></navbar>
                 <tags-view></tags-view>
                 <app-main></app-main>
             </div>
+        </div>
+        <div class="unsupported_device">
+            <span>Unfortunately your device is still unsupported. 
+            We are working on supporting smaller screen devices. Please visit us again with bigger screen 😞</span>
         </div>
     </div>
 </template>

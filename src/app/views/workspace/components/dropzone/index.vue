@@ -17,6 +17,7 @@ export default {
         };
     },
     mounted() {
+
         const element = document.getElementById(this.id);
         const vm = this;
 
@@ -78,6 +79,10 @@ export default {
             }
         });
 
+        if(this.$config.isDemoServer){
+            this.dropzone.disable();    
+        }
+
         if (this.couldPaste) {
             document.addEventListener("paste", this.pasteImg);
         }
@@ -102,12 +107,11 @@ export default {
             this.dropzone.emit("thumbnail", item, "/static/icons/defult.png");
 
             item.previewElement.addEventListener("click", e => {
-                vm.$emit("actionListener", { action: "click", file: item, event: e  });
+                vm.$emit("actionListener", { action: "click", file: item, event: e });
             });
             item.previewElement.addEventListener("contextmenu", e => {
                 vm.$emit("actionListener", { action: "contextmenu", file: item, event: e });
             });
-
         });
         this.dropzone.on("removedfile", file => {
             if (this.isDestroyEvent === false) {

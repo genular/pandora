@@ -24,7 +24,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["user_username", "avatar", "user_roles"])
+        ...mapGetters(["user_username", "user_roles"])
     }
 };
 </script>

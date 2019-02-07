@@ -4,9 +4,9 @@ import { asyncRouterMap, constantRouterMap } from "@/router";
  * @param roles
  * @param route
  */
-function hasPermission(roles, route) {
+function hasPermission(account_role, route) {
     if (route.meta && route.meta.roles) {
-        return roles.some(account_role => route.meta.roles.includes(account_role));
+        return route.meta.roles.includes(account_role);
     } else {
         return true;
     }
@@ -16,11 +16,11 @@ function hasPermission(roles, route) {
  * @param asyncRouterMap
  * @param roles
  */
-function filterAsyncRouter(asyncRouterMap, roles) {
+function filterAsyncRouter(asyncRouterMap, account_role) {
     const accessedRouters = asyncRouterMap.filter(route => {
-        if (hasPermission(roles, route)) {
+        if (hasPermission(account_role, route)) {
             if (route.children && route.children.length) {
-                route.children = filterAsyncRouter(route.children, roles);
+                route.children = filterAsyncRouter(route.children, account_role);
             }
             return true;
         }
@@ -41,14 +41,14 @@ const permission = {
         }
     },
     actions: {
-        generateUserSpecificRoutes({ commit }, account_roles) {
+        generateUserSpecificRoutes({ commit }, account_role) {
             return new Promise(resolve => {
                 let accessedRouters;
                 // Check if Global Administrator
-                if (account_roles.includes(1)) {
+                if (account_role === 1) {
                     accessedRouters = asyncRouterMap;
                 } else {
-                    accessedRouters = filterAsyncRouter(asyncRouterMap, account_roles);
+                    accessedRouters = filterAsyncRouter(asyncRouterMap, account_role);
                 }
                 commit("SET_ROUTERS", accessedRouters);
                 resolve();

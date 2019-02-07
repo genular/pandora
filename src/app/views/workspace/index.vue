@@ -15,6 +15,7 @@
                     v-on:fileUploaded="dropzoneUploaded"
                     v-on:actionListener="dropzoneFileClick"
                     defaultMsg="Drop files here or click to upload."
+                    :showRemoveLink="!$config.isDemoServer"
                     :thumbnailHeight="75"
                     :thumbnailWidth="80"
                     :maxFiles="1000"
@@ -92,7 +93,14 @@ export default {
                 type: "warning"
             })
                 .then(_ => {
-                    this.$refs.workspaceDropzone.removeAllFiles(false);
+                    if (!this.$config.isDemoServer) {
+                        this.$refs.workspaceDropzone.removeAllFiles(false);
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: "This function is disabled on demo server"
+                        });
+                    }
                 })
                 .catch(_ => {
                     this.$message({

@@ -10,10 +10,9 @@ import estore from "@/utils/storage/settings";
 const user = {
     state: {
         username: estore.get("user-username") || "",
+        user_id: estore.get("user-user_id") || 0,
         auth_token: estore.get("user-auth_token") || "",
-        uuid: estore.get("user-uuid") || "",
-        avatar: estore.get("user-avatar") || "/static/favicon/android-icon-48x48.png",
-        roles: estore.get("user-roles") || [], // 1 - Global Administrator / 2 - User / 3 - Organization Administrator / 4 - Organization User
+        role: estore.get("user-role") || 0, // 1 - Global Administrator / 2 - User / 3 - Organization Administrator / 4 - Organization User
         settings: {
             server: {
                 address: {
@@ -30,21 +29,17 @@ const user = {
             estore.set("user-username", username);
             state.username = username;
         },
+        SET_USERID: (state, user_id) => {
+            estore.set("user-user_id", user_id);
+            state.user_id = user_id;
+        },
         SET_AUTH_TOKEN: (state, auth_token) => {
             estore.set("user-auth_token", auth_token);
             state.auth_token = auth_token;
         },
-        SET_UUID: (state, uuid) => {
-            estore.set("user-uuid", uuid);
-            state.uuid = uuid;
-        },
-        SET_AVATAR: (state, avatar) => {
-            estore.set("user-avatar", avatar);
-            state.avatar = avatar;
-        },
-        SET_ROLES: (state, roles) => {
-            estore.set("user-roles", roles);
-            state.roles = roles;
+        SET_ROLE: (state, role) => {
+            estore.set("user-role", role);
+            state.role = role;
         },
         SET_SETTING_SERVER_ADDRESS_ANALYSIS: (state, analysisServer) => {
             estore.set("user-settings-server-address-analysis", analysisServer);
@@ -61,12 +56,6 @@ const user = {
     },
 
     actions: {
-        setUserAvatar({ commit }, avatar) {
-            commit("SET_AVATAR", avatar);
-        },
-        changeUUID({ commit }, uuid) {
-            commit("SET_UUID", uuid);
-        },
         configureBackendServers({ commit }, backendServerUrl) {
             return new Promise((resolve, reject) => {
                 ApiBackendSystemConfigure(backendServerUrl)
@@ -100,8 +89,6 @@ const user = {
                             console.log("logging in user");
                             commit("SET_USERNAME", user.username);
                             commit("SET_AUTH_TOKEN", response.data.auth_token);
-                            // commit("SET_ROLES", response.data.account_roles);
-                            // commit("SET_ROLES", ["admin"]
                             status = true;
                         } else {
                             status = false;
@@ -119,9 +106,12 @@ const user = {
                 ApiBackendUserDetails()
                     .then(response => {
                         if (response.data.success === true) {
-                            commit("SET_ROLES", response.data.account_roles);
+                            commit("SET_ROLE", response.data.message.account_type);
+                            commit("SET_USERID", response.data.message.id);
+                            resolve(response.data.message);
+                        }else{
+                            resolve(false);
                         }
-                        resolve({ account_roles: response.data.account_roles });
                     })
                     .catch(error => {
                         console.log(error);

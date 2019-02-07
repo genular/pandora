@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2019-01-14 16:20:23
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-02-02 16:39:36
+* @Last Modified time: 2019-02-06 14:03:55
 */
 import "whatwg-fetch";
 
@@ -31,6 +31,8 @@ import "@/styles/main.scss"; // require styles using webpack alias
 
 import "./errorLog"; // error log
 import "./routeguard"; // permission control
+
+env_vars.isDemoServer = (env_vars.name == 'production' && env_vars.isDemoServer == true);
 
 Vue.prototype.$config = env_vars;
 Vue.prototype.$accounting = accounting;

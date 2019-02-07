@@ -24,11 +24,8 @@
                     </el-row>
                 </el-form>
                 <el-row class="bottom-info">
-                    <el-col :span="12" class="info-text">
-                        <span>create new account?</span>
-                    </el-col>
-                    <el-col :span="12" class="info-button">
-                        <el-button class="button-register" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" style="height: 40px;" @click.prevent.stop="navigateTo('register&usertype=private&step=0')">Sign up now</el-button>
+                    <el-col :span="24" class="info-button">
+                        <el-button class="button-register" style="height: 40px;" @click.prevent.stop="navigateTo('register&usertype=private&step=0')">Sign up now</el-button>
                     </el-col>
                 </el-row>
             </el-col>
@@ -73,18 +70,26 @@ export default {
         };
     },
     mounted() {
-        console.log(this.$config);
-        
         if (this.$config.name === "development") {
+            console.log(this.$config);
+        }
+        if (this.$config.name === "development" || this.$config.isDemoServer) {
             this.loginForm.username = "demouser";
             this.loginForm.password = "demouser";
         }
     },
     methods: {
         navigateTo(action) {
-            this.$router.push({
-                path: "/authenticate/?action=" + action
-            });
+            if (!this.$config.isDemoServer) {
+                this.$router.push({
+                    path: "/authenticate/?action=" + action
+                });
+            } else {
+                this.$message({
+                    type: "warning",
+                    message: "This function is disabled on demo server"
+                });
+            }
         },
         showPassword() {
             if (this.passwordType === "password") {
@@ -127,6 +132,11 @@ export default {
 <style rel="stylesheet/scss" lang="scss">
 .login-tab-container {
     min-width: 400px;
+
+    @media only screen and (max-width: 768px) {
+        min-width: 100%;
+    }
+
     .login-tab-form {
         padding: 15px;
         .button-login {

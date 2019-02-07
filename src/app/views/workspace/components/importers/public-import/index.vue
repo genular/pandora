@@ -174,6 +174,13 @@ export default {
                 type: "info"
             })
                 .then(_ => {
+                    if (this.$config.isDemoServer) {
+                        this.$message({
+                            type: "warning",
+                            message: "This function is disabled on demo server"
+                        });
+                        return;
+                    }
                     this.datasetsLoading = true;
                     ApiImportPublicDatasets({ datasetIDs: datasetIDs })
                         .then(response => {

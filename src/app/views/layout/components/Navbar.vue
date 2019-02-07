@@ -9,22 +9,22 @@
             <lang-select class="right-menu-item international "></lang-select>
             <el-dropdown class="avatar-container right-menu-item" trigger="click">
                 <div class="avatar-wrapper">
-                    <img class="user-avatar" :src="user_avatar">
+                    <img class="user-avatar" :src="'https://backend.api.doom.xc/backend/user/avatar?id=' + user_id + '&size=64'" />
                     <i class="el-icon-caret-bottom"></i>
                 </div>
                 <el-dropdown-menu slot="dropdown">
                     <router-link to="/">
                         <el-dropdown-item>
-                            {{$t('navbar.dashboard')}}
+                            {{ $t("navbar.dashboard") }}
                         </el-dropdown-item>
                     </router-link>
                     <router-link to="/settings/?startIndex=1">
                         <el-dropdown-item>
-                            {{$t('navbar.settings')}}
+                            {{ $t("navbar.settings") }}
                         </el-dropdown-item>
                     </router-link>
                     <el-dropdown-item divided>
-                        <span @click="logoutUser" style="display:block;">{{$t('navbar.logOut')}}</span>
+                        <span @click="logoutUser" style="display:block;">{{ $t("navbar.logOut") }}</span>
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
@@ -48,7 +48,7 @@ export default {
         LangSelect
     },
     computed: {
-        ...mapGetters(["sidebar", "user_avatar", "errorLogs"])
+        ...mapGetters(["sidebar", "errorLogs", "user_id"])
     },
     methods: {
         toggleSideBar() {

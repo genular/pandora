@@ -19,12 +19,7 @@
             </el-col>
         </el-row>
         <!-- Confirm submission Alert Dialog -->
-        <el-dialog
-            title="Looks good! Please confirm task submission"
-            :visible.sync="submissionVisible"
-            width="40%"
-            :before-close="handleSubmissionCancle"
-        >
+        <el-dialog title="Looks good! Please confirm task submission" :visible.sync="submissionVisible" width="40%" :before-close="handleSubmissionCancle">
             <div class="tip">
                 <div style="float: left;">>Based on your current selection what we got following dataset(s):</div>
 
@@ -57,14 +52,11 @@
                         >
                             <el-table-column type="selection"> </el-table-column>
 
-                            <el-table-column property="totalFeatures" label="Features" sortable align="center">
-                            </el-table-column>
+                            <el-table-column property="totalFeatures" label="Features" sortable align="center"> </el-table-column>
 
-                            <el-table-column property="totalSamples" label="Samples" sortable align="center">
-                            </el-table-column>
+                            <el-table-column property="totalSamples" label="Samples" sortable align="center"> </el-table-column>
 
-                            <el-table-column property="totalDatapoints" label="Datapoints" align="center">
-                            </el-table-column>
+                            <el-table-column property="totalDatapoints" label="Datapoints" align="center"> </el-table-column>
 
                             <el-table-column align="center">
                                 <template slot-scope="scope">
@@ -81,44 +73,21 @@
                     </el-tab-pane>
                 </el-tabs>
                 <br />
-                <br />Now this data will be submitted for processing. You can track the progress of this task in your
-                Dashboard panel. <br />
+                <br />Now this data will be submitted for processing. You can track the progress of this task in your Dashboard panel. <br />
                 <br />Do you wish to proceed?
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="info" size="medium" round icon="el-icon-caret-right" @click="handleSubmissionCancle"
-                    >Cancel</el-button
-                >
-                <el-button
-                    class="submit-analysis"
-                    type="primary"
-                    size="medium"
-                    round
-                    icon="el-icon-caret-right"
-                    :disabled="!processTaskVisible"
-                    @click="processTask"
+                <el-button type="info" size="medium" round icon="el-icon-caret-right" @click="handleSubmissionCancle">Cancel</el-button>
+                <el-button class="submit-analysis" type="primary" size="medium" round icon="el-icon-caret-right" :disabled="!processTaskVisible" @click="processTask"
                     >Process</el-button
                 >
             </span>
         </el-dialog>
         <!-- ERROR Alert Dialog -->
-        <el-dialog
-            title="Following errors needs to be corrected"
-            :visible.sync="messageWarnings.length > 0"
-            width="35%"
-            :show-close="false"
-            center
-        >
+        <el-dialog title="Following errors needs to be corrected" :visible.sync="messageWarnings.length > 0" width="35%" :show-close="false" center>
             <div class="tip">
                 <p>
-                    <el-alert
-                        v-for="(item, index) in messageWarnings"
-                        :title="item"
-                        :key="index"
-                        type="error"
-                        :closable="false"
-                        show-icon
-                    ></el-alert>
+                    <el-alert v-for="(item, index) in messageWarnings" :title="item" :key="index" type="error" :closable="false" show-icon></el-alert>
                 </p>
             </div>
             <span slot="footer" class="dialog-footer">
@@ -126,13 +95,7 @@
             </span>
         </el-dialog>
         <div class="progress-circle" v-if="progressBar.percentage > 0 || progressBar.status != ''">
-            <el-progress
-                type="circle"
-                :percentage="progressBar.percentage"
-                :width="256"
-                :stroke-width="8"
-                :status="progressBar.status"
-            ></el-progress>
+            <el-progress type="circle" :percentage="progressBar.percentage" :width="256" :stroke-width="8" :status="progressBar.status"></el-progress>
         </div>
     </div>
 </template>
@@ -272,9 +235,7 @@ export default {
             ApiGenarateFileDownloadLink({ downloadType: "resample", recordID: item.id })
                 .then(response => {
                     if (response.data.success === true && response.data.message.length > 0) {
-                        downloadWindow.document.getElementById("download_links").innerHTML = downloadItemsTemplate(
-                            response.data.message
-                        );
+                        downloadWindow.document.getElementById("download_links").innerHTML = downloadItemsTemplate(response.data.message);
                     } else {
                         downloadWindow.close();
                     }
@@ -389,6 +350,13 @@ export default {
             });
         },
         validateJob() {
+            if (this.$config.isDemoServer) {
+                this.$message({
+                    type: "warning",
+                    message: "This function is disabled on demo server"
+                });
+                return;
+            }
             const message_warnings = [];
             // Check if Features are selected
             if (this.selectedFeatures.length === 0) {

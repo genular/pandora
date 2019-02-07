@@ -211,6 +211,33 @@ div:focus {
     margin: 20px 0;
 }
 
+.unsupported_device {
+    display: none;
+    @media screen and (max-width: 1024px) {
+        display: block;
+    }
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #333333b3;
+    height: 100%;
+    width: 100%;
+    z-index: 9999;
+    text-align: center;
+    > span {
+        position: relative;
+        float: left;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #FFFFFF;
+        font-weight: bold;
+        width: 50%;
+        font-size: 18px;
+    }
+}
+
 /** Custom full page loading class 
     Example: ./src/app/views/apps/simon/analysis/components/StartButton/index.vue:
 */

@@ -1,10 +1,10 @@
 <template>
-    <div class="app-container settings-container" :loading="requestLoading">
+    <div class="app-container settings-container" v-loading="requestLoading" :element-loading-text="$t('views.dashboard.jobs.loading_title')">
         <el-row :gutter="20">
             <!-- AVATAR -->
             <el-col :span="4">
                 <el-card>
-                    <img :src="user_avatar + '?s=250'" class="image" style="max-width: 100%; max-height: 100%;" />
+                    <img :src="'https://backend.api.doom.xc/backend/user/avatar?id=' + user_id + '&size=256'" class="image" style="max-width: 100%; max-height: 100%;" />
                 </el-card>
             </el-col>
             <!-- ACTION BOXES -->
@@ -12,69 +12,39 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix"><span>Account information</span></div>
                     <div>
-                        <el-form ref="settingsAccountForm" label-width="120px">
+                        <el-form ref="settingsAccountForm" v-model="settingsForm" label-width="120px">
+                            <el-form-item label="Username">
+                                <el-input name="username" type="text" prop="username" v-model="settingsForm.username"></el-input>
+                            </el-form-item>
                             <el-form-item label="Email address">
-                                <el-input
-                                    name="email_adress"
-                                    type="text"
-                                    value=""
-                                    placeholder="unavaliable"
-                                    disabled
-                                ></el-input>
+                                <el-input name="email_adress" type="text" prop="email" v-model="settingsForm.email"></el-input>
                             </el-form-item>
                             <el-form-item label="Password">
-                                <el-input
-                                    name="password"
-                                    type="password"
-                                    value=""
-                                    placeholder="unavaliable"
-                                    disabled
-                                ></el-input>
+                                <el-input name="password" type="password" value="" disabled></el-input>
                             </el-form-item>
                         </el-form>
+                        <div style="text-align: right;">
+                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">Save</el-button>
+                        </div>
                     </div>
                 </el-card>
                 <el-card class="box-card" style="margin-top: 15px;">
                     <div slot="header" class="clearfix"><span>Profile information</span></div>
                     <div>
-                        <el-form ref="settingsProfileForm" label-width="120px">
+                        <el-form ref="settingsProfileForm" v-model="settingsForm" label-width="120px">
                             <el-form-item label="First name">
-                                <el-input
-                                    name="first_name"
-                                    type="text"
-                                    value=""
-                                    placeholder="unavaliable"
-                                    disabled
-                                ></el-input>
+                                <el-input name="first_name" type="text" prop="first_name" v-model="settingsForm.first_name"></el-input>
                             </el-form-item>
                             <el-form-item label="Last name">
-                                <el-input
-                                    name="last_name"
-                                    type="text"
-                                    value=""
-                                    placeholder="unavaliable"
-                                    disabled
-                                ></el-input>
-                            </el-form-item>
-                            <el-form-item label="Email address">
-                                <el-input
-                                    name="email_adress"
-                                    type="text"
-                                    value=""
-                                    placeholder="unavaliable"
-                                    disabled
-                                ></el-input>
+                                <el-input name="last_name" type="text" prop="last_name" v-model="settingsForm.last_name"></el-input>
                             </el-form-item>
                             <el-form-item label="Phone">
-                                <el-input
-                                    name="phone"
-                                    type="text"
-                                    value=""
-                                    placeholder="unavaliable"
-                                    disabled
-                                ></el-input>
+                                <el-input name="phone" type="text" prop="phone" v-model="settingsForm.phone"></el-input>
                             </el-form-item>
                         </el-form>
+                        <div style="text-align: right;">
+                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">Save</el-button>
+                        </div>
                     </div>
                 </el-card>
             </el-col>
@@ -83,24 +53,19 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix"><span>Change profile picture </span></div>
                     <div>
-                        Your Gravatar is an image that follows you from site to site appearing beside your name when you
-                        do things like comment or post on a blog.
+                        Your avatar is automatically generated, therefore unfortunately you cannot impact on avatar design.
                     </div>
                 </el-card>
                 <el-card class="box-card" style="margin-top: 15px;">
                     <div slot="header" class="clearfix"><span>Danger area</span></div>
-                    <div>
-                        <el-button
-                            :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true"
-                            type="error"
-                            >Delete your account</el-button
-                        >
+                    <div style="text-align: right;">
+                        <el-button type="danger" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">Delete your account</el-button>
                     </div>
                 </el-card>
             </el-col>
         </el-row>
 
-        <el-row>
+        <el-row style="position: fixed;bottom: 15px;right: 15px;">
             <el-col :span="24">
                 <div style="color: #781717;font-size: 13px;text-align: right;">
                     Version information:<br />
@@ -114,6 +79,7 @@
 <script>
 import NProgress from "nprogress"; // progress bar
 import { mapGetters } from "vuex";
+import { userDetials as ApiBackendUserDetails } from "@/api/backend";
 
 export default {
     name: "UserSettings",
@@ -126,23 +92,48 @@ export default {
     components: {},
     data() {
         return {
-            requestLoading: false
+            requestLoading: false,
+            settingsForm: {
+                username: null,
+                email_status: null,
+                created: null,
+                first_name: null,
+                last_name: null,
+                email: null,
+                phone: null,
+                profile_picture: null,
+                account_type: null,
+                oid: null
+            }
         };
     },
     mounted() {
         console.log("mounted: settings");
+        if (this.settingsForm.username === null) {
+            this.getUserDetails();
+        }
     },
     computed: {
-        ...mapGetters(["user_avatar", "packageVersion", "packageEnviroment"])
+        ...mapGetters(["packageVersion", "packageEnviroment", "user_id"])
     },
-    methods: {},
-    watch: {
-        requestLoading(value) {
-            if (value === true) {
-                NProgress.start();
-            } else {
-                NProgress.done();
-            }
+    methods: {
+        getUserDetails() {
+            this.requestLoading = true;
+            ApiBackendUserDetails()
+                .then(response => {
+                    if (response.data.success === true) {
+                        this.settingsForm = response.data.message;
+                        console.log("Setting values");
+                        console.log(this.settingsForm);
+                    } else {
+                        console.log("Could not get user details. Please try again latter.");
+                    }
+                    this.requestLoading = false;
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.requestLoading = false;
+                });
         }
     }
 };

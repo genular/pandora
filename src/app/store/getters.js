@@ -14,10 +14,9 @@ const getters = {
     /** user.js **/
     user_username: state => state.user.username,
     auth_token: state => state.user.auth_token,
-    user_uuid: state => state.user.uuid,
-
-    user_avatar: state => state.user.avatar,
-    user_roles: state => state.user.roles,
+    user_id: state => state.user.user_id,
+    user_role: state => state.user.role,
+    
     user_settings_server_address_analysis: state => state.user.settings.server.address.analysis,
     user_settings_server_address_backend: state => state.user.settings.server.address.backend,
     user_settings_server_address_plots: state => state.user.settings.server.address.plots,
