@@ -1,9 +1,10 @@
+$--color-primary:  #35224A;
+
 @import "~normalize.css/normalize.css";
 @import "~nprogress/nprogress.css";
 
 @import "~font-awesome/css/font-awesome.css";
 
-@import "./element-variables.scss";
 @import "~element-ui/packages/theme-chalk/src/index";
 
 @import "~dropzone/dist/dropzone.css";
