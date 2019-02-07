@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 11:52:45
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-03 10:29:42
+ * @Last Modified time: 2019-02-06 16:47:58
  */
 /*
  * @Author: LogIN-
@@ -42,7 +42,7 @@ const prepareMessagesPlugin = require(path.resolve(__dirname, `../src/app/transl
 
 module.exports = environment => {
     // Try to copy env template and add ENV variables to it
-    const envTemplateFinal = _.configureEnviroment(environment);
+    const envTemplateFinal = _.configureEnviroment(environment, argv);
 
     const config = {
         resolve: {
