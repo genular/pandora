@@ -2,16 +2,15 @@
 * @Author: LogIN-
 * @Date:   2019-01-14 16:20:23
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-02-06 19:05:47
+* @Last Modified time: 2019-02-07 10:57:03
 */
-import "whatwg-fetch";
-
-const accounting = require("accounting");
-
 import Vue from "vue";
 import env_vars from "env_vars";
 
 import Element from "element-ui";
+import locale from "element-ui/lib/locale/lang/en";
+import "@/styles/main.scss"; // require styles using webpack alias
+
 import VueParticles from "vue-particles";
 
 import VueHighlightJS from 'vue-highlight.js';
@@ -24,11 +23,7 @@ import App from "./App";
 import router from "./router";
 import store from "./store";
 
-import locale from "element-ui/lib/locale/lang/en";
-
 import i18n from "./translations"; // Internationalization
-
-import "@/styles/main.scss"; // require styles using webpack alias
 
 import "./errorLog"; // error log
 import "./routeguard"; // permission control
@@ -36,7 +31,6 @@ import "./routeguard"; // permission control
 env_vars.isDemoServer = (env_vars.name == 'production' && env_vars.isDemoServer == true);
 
 Vue.prototype.$config = env_vars;
-Vue.prototype.$accounting = accounting;
 
 import * as filters from "./filters"; // global filters
 

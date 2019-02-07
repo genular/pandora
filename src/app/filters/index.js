@@ -1,6 +1,3 @@
-const moment = require("moment");
-
-
 /**
  * Convert milliseconds to human readable string
  * @param  {string} milliseconds
@@ -25,6 +22,7 @@ export function millisecondsToStr(millisec) {
     return minutes + ":" + seconds;
 }
 
+
 /**
  * parses date time string and returns it in desired format
  * Example: parseTime(time, "{y}-{m}-{d} {h}:{i}")
@@ -33,22 +31,20 @@ export function millisecondsToStr(millisec) {
  * @returns {string}
  */
 export function parseTime(time, cFormat) {
-    time = moment(time).format("x");
-
     if (arguments.length === 0) {
         return null;
     }
-
+    
     if ((time + "").length === 10) {
         time = +time * 1000;
     }
 
     const format = cFormat || "{y}-{m}-{d} {h}:{i}:{s}";
     let date;
-    if (typeof time === "object") {
+    if (typeof time == "object") {
         date = time;
     } else {
-        date = new Date(parseInt(time));
+        date = new Date(Date.parse(time));
     }
     const formatObj = {
         y: date.getFullYear(),
@@ -61,6 +57,7 @@ export function parseTime(time, cFormat) {
     };
     const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
         let value = formatObj[key];
+        if (key === "a") return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][value - 1];
         if (result.length > 0 && value < 10) {
             value = "0" + value;
         }
@@ -68,6 +65,7 @@ export function parseTime(time, cFormat) {
     });
     return time_str;
 }
+
 
 /**
  * Truncates string and addds custom end to it

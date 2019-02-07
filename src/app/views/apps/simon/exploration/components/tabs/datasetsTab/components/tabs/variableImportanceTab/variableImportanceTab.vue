@@ -105,7 +105,8 @@
 import { getVariableImportance } from "@/api/backend";
 
 import waves from "@/directive/waves";
-import { parseTime, md5String } from "@/utils";
+import { md5String } from "@/utils";
+import { parseTime } from "@/filters";
 
 import varImpChart from "./charts/varImpChart";
 

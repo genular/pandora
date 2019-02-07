@@ -1,39 +1,39 @@
 <template>
     <div class="menu-wrapper">
-        <template v-for="item in routes" v-if="!item.hidden&&item.children">
-
+        <template v-for="item in routes" v-if="!item.hidden && item.children">
             <router-link
-                    v-if="item.children.length===1 && !item.children[0].children"
-                    :to="item.path+'/'+item.children[0].path"
-                    :key="item.children[0].name"
-                    :event="''"
-                    @click.native.prevent="checkRouteAction($event, { meta: item.children[0].meta, path: item.path+'/'+item.children[0].path })">
-
-                <el-menu-item :index="item.path+'/'+item.children[0].path" :class="{'submenu-title-noDropdown':!isNest}">
-                    <i v-if="item.children[0].meta&&item.children[0].meta.icon" :class="item.children[0].meta.icon" aria-hidden="true"></i>
-                    <span slot="title" v-if="item.children[0].meta&&item.children[0].meta.title">{{generateTitle(item.children[0].meta.title)}}</span>
+                v-if="item.children.length === 1 && !item.children[0].children"
+                :to="item.path + '/' + item.children[0].path"
+                :key="item.children[0].name"
+                :event="''"
+                @click.native.prevent="checkRouteAction($event, { meta: item.children[0].meta, path: item.path + '/' + item.children[0].path })"
+            >
+                <el-menu-item :index="item.path + '/' + item.children[0].path" :class="{ 'submenu-title-noDropdown': !isNest }">
+                    <i v-if="item.children[0].meta && item.children[0].meta.icon" :class="item.children[0].meta.icon" aria-hidden="true"></i>
+                    <span slot="title" v-if="item.children[0].meta && item.children[0].meta.title">{{ generateTitle(item.children[0].meta.title) }}</span>
                 </el-menu-item>
             </router-link>
 
-            <el-submenu v-else :index="item.name||item.path" :key="item.name">
+            <el-submenu v-else :index="item.name || item.path" :key="item.name">
                 <template slot="title">
-                    <i v-if="item.meta&&item.meta.icon" :class="item.meta.icon" aria-hidden="true"></i>
-                    <span v-if="item.meta&&item.meta.title" :title="generateTitle(item.meta.title)">{{generateTitle(item.meta.title)}}</span>
+                    <i v-if="item.meta && item.meta.icon" :class="item.meta.icon" aria-hidden="true"></i>
+                    <span v-if="item.meta && item.meta.title" :title="generateTitle(item.meta.title)">{{ generateTitle(item.meta.title) }}</span>
                 </template>
                 <template v-for="child in item.children" v-if="!child.hidden">
-                    <sidebar-item :is-nest="true" class="nest-menu" v-if="child.children&&child.children.length>0" :routes="[child]" :key="child.path"></sidebar-item>
+                    <sidebar-item :is-nest="true" class="nest-menu" v-if="child.children && child.children.length > 0" :routes="[child]" :key="child.path"></sidebar-item>
 
                     <router-link
-                    v-else :to="item.path+'/'+child.path"
-                    :key="child.name"
-                    :event="''"
-                    @click.native.prevent="checkRouteAction($event, { meta: child.meta, path: item.path+'/'+child.path })">
-                        <el-menu-item :index="item.path+'/'+child.path" :class="generateMenuClass(child)">
-                            <i v-if="child.meta&&child.meta.icon" :class="child.meta.icon" aria-hidden="true"></i>
-                            <span slot="title" v-if="child.meta&&child.meta.title">{{generateTitle(child.meta.title)}}</span>
+                        v-else
+                        :to="item.path + '/' + child.path"
+                        :key="child.name"
+                        :event="''"
+                        @click.native.prevent="checkRouteAction($event, { meta: child.meta, path: item.path + '/' + child.path })"
+                    >
+                        <el-menu-item :index="item.path + '/' + child.path" :class="generateMenuClass(child)">
+                            <i v-if="child.meta && child.meta.icon" :class="child.meta.icon" aria-hidden="true"></i>
+                            <span slot="title" v-if="child.meta && child.meta.title">{{ generateTitle(child.meta.title) }}</span>
                         </el-menu-item>
                     </router-link>
-
                 </template>
             </el-submenu>
         </template>
@@ -72,51 +72,28 @@ export default {
             let cssClass = "ready";
 
             // Check if there is any meta set for given route
-            if (
-                childItem.hasOwnProperty("meta") &&
-                childItem.meta.hasOwnProperty("restrictions")
-            ) {
+            if (childItem.hasOwnProperty("meta") && childItem.meta.hasOwnProperty("restrictions")) {
                 // Check if given meta contains any specific file restrictions
-                if (
-                    childItem.meta.restrictions.hasOwnProperty("file") &&
-                    childItem.meta.restrictions.file === true
-                ) {
+                if (childItem.meta.restrictions.hasOwnProperty("file") && childItem.meta.restrictions.file === true) {
                     cssClass = "notready";
 
                     for (const selectedFile of this.selectedFiles) {
-                        if (
-                            childItem.meta.restrictions.extension.includes(
-                                selectedFile.extension
-                            )
-                        ) {
+                        if (childItem.meta.restrictions.extension.includes(selectedFile.extension)) {
                             cssClass = "ready";
                         }
                     }
                 }
 
                 // Check if given meta contains any specific file restrictions
-                if (
-                    childItem.meta.restrictions.hasOwnProperty("action") &&
-                    childItem.meta.restrictions.action === true
-                ) {
+                if (childItem.meta.restrictions.hasOwnProperty("action") && childItem.meta.restrictions.action === true) {
                     cssClass = "notready";
-                    if (
-                        this.$store.getters.hasOwnProperty(
-                            childItem.meta.restrictions.actionType
-                        ) &&
-                        this.$store.getters[
-                            childItem.meta.restrictions.actionType
-                        ] !== ""
-                    ) {
+                    if (this.$store.getters.hasOwnProperty(childItem.meta.restrictions.actionType) && this.$store.getters[childItem.meta.restrictions.actionType] !== "") {
                         cssClass = "ready";
                     }
                 }
             }
             // If we are browsing current path but that path is not valid anymore lets redirect user to main page
-            if (
-                cssClass === "notready" &&
-                this.$router.currentRoute.name === childItem.name
-            ) {
+            if (cssClass === "notready" && this.$router.currentRoute.name === childItem.name) {
                 this.$router.push({
                     path: "/"
                 });
@@ -137,8 +114,7 @@ export default {
                 });
             } else {
                 this.$message({
-                    message:
-                        "You must satisfy specific module criteria to use it, like for example select from Workspace.",
+                    message: "You must satisfy specific module criteria to use it, like for example select from Workspace.",
                     type: "warning"
                 });
             }
@@ -150,24 +126,26 @@ export default {
 @import "~scss_vars";
 .menu-wrapper {
     .notready {
-        background: repeating-linear-gradient(
-            -55deg,
-            #222,
-            #222 10px,
-            #333 10px,
-            #333 29px
-        );
+        background: repeating-linear-gradient(-55deg, #222, #222 10px, #333 10px, #333 29px);
         opacity: 0.5;
         cursor: default;
         pointer-events: none;
     }
     .el-menu-item {
+        color: #FFFFFF;
         height: 50px;
         line-height: 50px;
     }
     .is-active {
-        color: #f3ecff !important;
-        background-color: rgb(42, 27, 59) !important;
+        &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 3px;
+            background-color: #e3006e;
+            height: 100%;
+            left: 0;
+        }
     }
 }
 </style>

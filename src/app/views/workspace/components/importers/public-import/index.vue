@@ -140,7 +140,7 @@
 <script>
 import waves from "@/directive/waves";
 import { getPublicDatasets as ApiGetPublicDatasets, importPublicDatasets as ApiImportPublicDatasets } from "@/api/backend";
-import { parseTime } from "@/utils";
+import { parseTime } from "@/filters";
 
 export default {
     name: "workspace-public-import",

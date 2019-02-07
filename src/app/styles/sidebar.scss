@@ -1,23 +1,23 @@
 #app {
-
-    .main-container{
+    .main-container {
         flex: 1;
         float: right;
         position: relative;
-        background-color: #EFF0F9;
+        background-color: #eff0f9;
         transition: all 0.28s;
         overflow: hidden;
     }
 
     .sidebar-container {
-        background-color: $ui-background;
         float: left;
+        background-color: #409EFF;
         a {
             display: inline-block;
             width: 100%;
         }
         .fa-icon {
-            margin-right: 16px;
+            margin-right: 15px;
+            color: #FFFFFF;
         }
         .el-menu {
             border: none;
@@ -25,16 +25,15 @@
             transition: width 0.25s;
         }
     }
+
     .hideSidebar {
         .sidebar-container,
         .sidebar-container .el-menu {
             width: 50px !important;
             transition: width 0.25s;
         }
-    }
-    .hideSidebar {
         .submenu-title-noDropdown {
-            padding-left: 10px!important;
+            padding-left: 10px !important;
             position: relative;
             span {
                 height: 0;
@@ -63,9 +62,9 @@
             }
         }
         .el-submenu {
-            &>.el-submenu__title {
+            & > .el-submenu__title {
                 padding-left: 20px !important;
-                &>span {
+                & > span {
                     display: none;
                 }
                 .el-submenu__icon-arrow {
@@ -74,28 +73,32 @@
             }
             .nest-menu {
                 .el-submenu__icon-arrow {
-                    display: block!important;
+                    display: block !important;
                 }
                 span {
-                    display: inline-block!important;
+                    display: inline-block !important;
                 }
             }
         }
     }
 
     .showSidebar {
-        .nest-menu .el-submenu>.el-submenu__title,
+        .nest-menu .el-submenu > .el-submenu__title,
         .el-submenu .el-menu-item {
             min-width: 180px;
         }
     }
+}
 
-    .nest-menu .el-submenu>.el-submenu__title,
-    .el-submenu .el-menu-item {
-
-        background-color: $subMenuBg;
-        &:hover {
-            background-color: $menuHover;
+.el-menu--vertical {
+    .el-menu--popup-right-start {
+        margin-left: 1px;
+        .fa-icon {
+            margin-right: 15px;
+            color: #FFFFFF;
+        }
+        span {
+            color: #FFFFFF;
         }
     }
 }

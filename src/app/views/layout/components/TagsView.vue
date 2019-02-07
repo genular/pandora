@@ -1,18 +1,27 @@
 <template>
     <div class="tags-view-container">
-
-        <scroll-pane class='tags-view-wrapper' ref='scrollPane'>
-            <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path" :key="tag.path" @contextmenu.prevent.native="openMenu(tag,$event)">
-                {{generateTitle(tag.title)}}
-              <span v-if="visitedViews.length > 1" class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag)'></span>
+        <scroll-pane class="tags-view-wrapper" ref="scrollPane">
+            <router-link
+                ref="tag"
+                class="tags-view-item"
+                :class="isActive(tag) ? 'active' : ''"
+                v-for="tag in Array.from(visitedViews)"
+                :to="tag.path"
+                :key="tag.path"
+                @contextmenu.prevent.native="openMenu(tag, $event)"
+            >
+                {{ generateTitle(tag.title) }}
+                <span v-if="visitedViews.length > 1" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"></span>
             </router-link>
         </scroll-pane>
 
-        <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
-            <li @click="closeSelectedTag(selectedTag)">Close</li>
-            <li @click="closeOthersTags">Close Others</li>
-            <li @click="closeAllTags">Close All</li>
-        </ul>
+        <div class="context-menu" v-show="visible" :style="{ left: left + 'px', top: top + 'px' }">
+            <ul class="menu-options">
+                <li class="menu-option" @click="closeSelectedTag(selectedTag)">Close</li>
+                <li class="menu-option" @click="closeOthersTags">Close Others</li>
+                <li class="menu-option" @click="closeAllTags">Close All</li>
+            </ul>
+        </div>
     </div>
 </template>
 <script>
@@ -61,10 +70,7 @@ export default {
             return false;
         },
         isActive(route) {
-            return (
-                route.path === this.$route.path ||
-                route.name === this.$route.name
-            );
+            return route.path === this.$route.path || route.name === this.$route.name;
         },
         addViewTags() {
             const route = this.generateRoute();
@@ -98,11 +104,9 @@ export default {
         },
         closeOthersTags() {
             this.$router.push(this.selectedTag.path);
-            this.$store
-                .dispatch("delOthersViews", this.selectedTag)
-                .then(() => {
-                    this.moveToCurrentTag();
-                });
+            this.$store.dispatch("delOthersViews", this.selectedTag).then(() => {
+                this.moveToCurrentTag();
+            });
         },
         closeAllTags() {
             this.$store.dispatch("delAllViews");
@@ -129,21 +133,19 @@ export default {
     float: left;
     height: 50px;
     line-height: 50px;
-    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.05);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.05);
 
     .tags-view-wrapper {
-        background: #fff;
+        background: #ffffff;
         height: 50px;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
-            0 0 3px 0 rgba(0, 0, 0, 0.04);
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
         .tags-view-item {
             display: inline-block;
             position: relative;
             height: 40px;
             line-height: 40px;
-            border: none;
-            color: #eff0f9;
-            background: #3d2d53;
+            color: #ffffff;
+            background: #409EFF;
             padding: 0 10px;
             font-size: 12px;
             margin-left: 5px;
@@ -151,40 +153,40 @@ export default {
                 margin-left: 5px;
             }
             &.active {
-                background-color: #e3006e;
-                color: #fff;
-                border-color: #e3006e;
+                background-color: #85ce61;
+                color: #ffffff;
                 &::before {
                     content: "";
-                    background: #fff;
-                    display: inline-block;
-                    width: 8px;
-                    height: 8px;
-                    border-radius: 50%;
-                    position: relative;
-                    margin-right: 2px;
+                    display: block;
+                    position: absolute;
+                    width: 3px;
+                    background-color: #e3006e;
+                    height: 100%;
+                    left: 0;
                 }
             }
         }
     }
-    .contextmenu {
-        margin: 0;
-        background: #fff;
-        z-index: 2;
-        position: absolute;
-        list-style-type: none;
-        padding: 5px 0;
-        border-radius: 0;
-        font-size: 12px;
-        font-weight: 400;
-        color: #333;
-        box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
-        li {
+    .context-menu {
+        box-shadow: 0 4px 5px 3px rgb(239, 240, 249);
+        position: fixed;
+        z-index: 1001;
+        background-color: #ffffff;
+
+        .menu-options {
+            list-style: none;
+            padding: 0;
             margin: 0;
-            padding: 7px 16px;
-            cursor: pointer;
-            &:hover {
-                background: #eee;
+
+            .menu-option {
+                font-size: 14px;
+                padding: 10px 40px 10px 20px;
+                line-height: 20px;
+                cursor: pointer;
+
+                &:hover {
+                    background: rgb(239, 240, 249);
+                }
             }
         }
     }

@@ -4,9 +4,7 @@
             mode="vertical" 
             :default-active="$route.path" 
             :collapse="isCollapse" 
-            background-color="#35224A" 
-            text-color="#EFF0F9" 
-            active-text-color="#FFFFFF">
+            background-color="#409EFF">
             <sidebar-item :routes="permission_routers"></sidebar-item>
         </el-menu>
         <genular-bottom></genular-bottom>

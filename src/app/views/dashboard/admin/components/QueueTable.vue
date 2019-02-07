@@ -44,7 +44,7 @@
             </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.jobs.table.header.submitted')">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.submitted | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
+                    <span>{{ scope.row.created | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.jobs.table.header.processing_time')">
@@ -263,7 +263,8 @@ import {
 
 import waves from "@/directive/waves";
 
-import { parseTime, md5String } from "@/utils";
+import { md5String } from "@/utils";
+import { parseTime } from "@/filters";
 import { sortAlphaNum } from "@/utils/helpers.js";
 import { downloadFileTemplate, downloadItemsTemplate } from "@/utils/templates.js";
 
