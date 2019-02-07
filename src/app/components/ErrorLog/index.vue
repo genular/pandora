@@ -52,11 +52,11 @@
                 <el-table-column label="Traceback">
                     <template slot-scope="scope">
                         <div class="error-description">
-                            <pre
-                                v-if="scope.row.err"
-                                class="code-output"
-                                v-highlightjs="scope.row.err.stack"
-                            ><code class="bash"></code></pre>
+                            <pre v-if="scope.row.err" class="code-output">
+                                <highlight-code lang="bash">
+                                    {{scope.row.err.stack}}
+                                </highlight-code>
+                            </pre>
                         </div>
                     </template>
                 </el-table-column>

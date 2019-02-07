@@ -136,7 +136,11 @@
                         <el-row v-if="resultsData.request">
                             <el-col :span="24" style="margin-top: 10px;">
                                 <div>Input parameters:</div>
-                                <pre class="code-output" v-highlightjs="resultsData.request"><code class="bash"></code></pre>
+                                <pre class="code-output">
+                                    <highlight-code lang="bash">
+                                        {{resultsData.request}}
+                                    </highlight-code>
+                                </pre>
                             </el-col>
                         </el-row>
                     </el-col>

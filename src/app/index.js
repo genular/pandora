@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2019-01-14 16:20:23
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-02-06 16:58:45
+* @Last Modified time: 2019-02-06 19:05:47
 */
 import "whatwg-fetch";
 
@@ -13,7 +13,9 @@ import env_vars from "env_vars";
 
 import Element from "element-ui";
 import VueParticles from "vue-particles";
-import VueHighlightJS from 'vue-highlightjs'
+
+import VueHighlightJS from 'vue-highlight.js';
+import bash from 'highlight.js/lib/languages/bash';
 
 import Database from "./utils/storage/index";
 Vue.prototype.$db = Database;
@@ -44,7 +46,12 @@ Vue.use(Element, {
 });
 
 Vue.use(VueParticles);
-Vue.use(VueHighlightJS);
+Vue.use(VueHighlightJS, {
+	// Register only languages that you want
+	languages: {
+		bash
+	}
+});
 
 Vue.config.productionTip = false;
 

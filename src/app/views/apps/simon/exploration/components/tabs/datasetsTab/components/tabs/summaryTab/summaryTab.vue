@@ -56,7 +56,11 @@
                         <el-button size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.differences, $event)"></el-button>
                     </el-col>
                 </el-row>
-                <pre class="code-output" v-highlightjs="summary.info.differences"><code class="bash"></code></pre>
+                <pre class="code-output">
+                    <highlight-code lang="bash">
+                        {{summary.info.differences}}
+                    </highlight-code>
+                </pre>
             </el-col>
             <el-col :span="12" v-if="summary.info.summary">
                 <el-row type="flex" align="top">
@@ -67,7 +71,11 @@
                         <el-button size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.summary, $event)"></el-button>
                     </el-col>
                 </el-row>
-                <pre class="code-output" v-highlightjs="summary.info.summary"><code class="bash"></code></pre>
+                <pre class="code-output">
+                    <highlight-code lang="bash">
+                        {{summary.info.summary}}
+                    </highlight-code>
+                </pre>
             </el-col>
         </el-row>
     </div>
