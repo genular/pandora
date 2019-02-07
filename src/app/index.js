@@ -2,11 +2,10 @@
 * @Author: LogIN-
 * @Date:   2019-01-14 16:20:23
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-02-06 14:03:55
+* @Last Modified time: 2019-02-06 16:58:45
 */
 import "whatwg-fetch";
 
-const isRenderer = require("is-electron-renderer");
 const accounting = require("accounting");
 
 import Vue from "vue";
@@ -48,15 +47,6 @@ Vue.use(VueParticles);
 Vue.use(VueHighlightJS);
 
 Vue.config.productionTip = false;
-
-if (isRenderer === true) {
-    // bind electron in VUE
-    Vue.use({
-        install: function(Vue) {
-            Vue.prototype.$electron = require("electron");
-        }
-    });
-}
 
 // Register global utility filters from  './filters'
 Object.keys(filters).forEach(key => {

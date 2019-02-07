@@ -1,8 +1,5 @@
 const childProcess = require("child_process");
-
-const electron = require("electron");
 const webpack = require("webpack");
-
 const env = process.env.NODE_ENV || "development";
 
 const argv = require("minimist")(process.argv.slice(2));
@@ -18,9 +15,9 @@ const watching = compiler.watch({}, (err, stats) => {
         appStarted = true;
 
         if (isWeb === false) {
-            childProcess.spawn(electron, ["."], { stdio: "inherit" }).on("close", () => {
-                watching.close();
-            });
+            // childProcess.spawn(electron, ["."], { stdio: "inherit" }).on("close", () => {
+            //     watching.close();
+            // });
         }else{
             watching.close();
         }

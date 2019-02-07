@@ -58,15 +58,11 @@ export default {
         },
         trayActions(action) {
             if (action === "quit") {
-                this.$electron.remote.app.quit();
+                
             } else if (action === "minimize") {
-                this.$electron.remote.BrowserWindow.getFocusedWindow().minimize();
+
             } else if (action === "toggle") {
-                if (!this.$electron.remote.BrowserWindow.getFocusedWindow().isMaximized()) {
-                    this.$electron.remote.BrowserWindow.getFocusedWindow().maximize();
-                } else {
-                    this.$electron.remote.BrowserWindow.getFocusedWindow().unmaximize();
-                }
+
             }
         }
     }

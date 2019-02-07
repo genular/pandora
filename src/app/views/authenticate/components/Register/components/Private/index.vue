@@ -171,12 +171,8 @@
     </div>
 </template>
 <script>
-import _ from "lodash";
-
 import { validateUsername, validateEmail, validatePassword } from "@/utils/validate";
-
 import { userRegister, checkDatabaseAvailability, searchAddressSuggest } from "@/api/backend";
-
 import { debounce } from "@/utils/helpers";
 
 export default {

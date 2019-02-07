@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 11:52:45
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-06 16:47:58
+ * @Last Modified time: 2019-02-06 18:18:51
  */
 /*
  * @Author: LogIN-
@@ -29,7 +29,7 @@ const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const argv = require("minimist")(process.argv.slice(2));
 const isWeb = argv && argv.target === "web";
 
-const output = isWeb ? "compiled/web" : "compiled/electron";
+const output = isWeb ? "compiled/web" : "compiled/other";
 
 const _ = require("./utils");
 

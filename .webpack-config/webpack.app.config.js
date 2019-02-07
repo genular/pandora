@@ -7,7 +7,7 @@ const argv = require("minimist")(process.argv.slice(2));
 const isWeb = argv && argv.target === "web";
 
 // Config directories
-const output = isWeb ? "compiled/web" : "compiled/electron";
+const output = isWeb ? "compiled/web" : "compiled/other";
 const OUTPUT_DIR = path.resolve(__dirname, "../" + output);
 
 module.exports = env => {
@@ -26,8 +26,8 @@ module.exports = env => {
         }
     };
     if (isWeb === false) {
-        config.entry.background = "./src/window/index.js";
-        config.output.libraryTarget = "commonjs2";
+        // config.entry.background = "./src/window/index.js";
+        // config.output.libraryTarget = "commonjs2";
     }
     return merge(base(env), config);
 };

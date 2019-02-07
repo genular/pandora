@@ -263,7 +263,6 @@ import { fetchJobDetails } from "@/api/analysis";
 import { deleteDatasetResampleTask as ApiDeleteDatasetResampleTask, genarateFileDownloadLink as ApiGenarateFileDownloadLink } from "@/api/backend";
 
 import clipboard from "@/utils/clipboard";
-import _ from "lodash";
 
 import subTabPane from "./components/subTabPane";
 import { downloadFileTemplate, downloadItemsTemplate } from "@/utils/templates.js";

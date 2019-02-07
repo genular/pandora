@@ -24,7 +24,7 @@
 <script>
 import { createHashFromArrayID } from "@/utils/helpers";
 import { FileDetails, PackageSelection, StartButton } from "./components";
-import escape from "lodash/escape";
+import { htmlentities } from "@/utils/3rdparty/htmlentities";
 
 export default {
     name: "layout",
@@ -143,7 +143,7 @@ export default {
                                 sliceEnd = response.length;
                             }
                             // Array of invalid features
-                            const featuresExample = escape(response.slice(0, sliceEnd).join(", "));
+                            const featuresExample = htmlentities(response.slice(0, sliceEnd).join(", "));
 
                             this.errorDialogVisible = true;
                             this.errorDialogMessage =
