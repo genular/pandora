@@ -1,5 +1,5 @@
 <template>
-    <el-col :xs="{span: 3}" :sm="{span: 2}" :md="{span: 3}" :lg="{span: 3}" :xl="{span: 2}">
+    <el-col :xs="{ span: 3 }" :sm="{ span: 2 }" :md="{ span: 3 }" :lg="{ span: 3 }" :xl="{ span: 2 }">
         <template v-if="Array.isArray(file)">
             <div class="file">
                 <div class="file-preview">
@@ -13,7 +13,7 @@
             </div>
         </template>
         <template v-else-if="!Array.isArray(file)">
-            <div class="file" :class="file.basename === '.processing' ? 'system-file':''">
+            <div class="file" :class="file.basename === '.processing' ? 'system-file' : ''">
                 <div class="file-preview">
                     <div class="icon">
                         <i class="fa fa-fw fa-file"></i>

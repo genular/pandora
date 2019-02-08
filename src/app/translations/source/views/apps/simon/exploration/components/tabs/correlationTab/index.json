@@ -1,0 +1,15 @@
+{
+	"views": {
+		"apps": {
+			"simon": {
+				"exploration": {
+					"components": {
+						"tabs": {
+							"correlationTab": {}
+						}
+					}
+				}
+			}
+		}
+	}
+}

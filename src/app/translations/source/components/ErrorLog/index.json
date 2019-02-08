@@ -1,0 +1,15 @@
+{
+    "components": {
+        "ErrorLog": {
+            "dialog": {
+                "title": "Error Log Overview",
+                "help-us": "Please help us improve SIMON and report following errors to our github tracker.",
+                "more-info": "More information here"
+            },
+            "table": {
+                "title": "General information",
+                "message": "Message"
+            }
+        }
+    }
+}

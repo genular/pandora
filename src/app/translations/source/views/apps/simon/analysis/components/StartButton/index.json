@@ -1,0 +1,13 @@
+{
+	"views": {
+		"apps": {
+			"simon": {
+				"analysis": {
+					"components": {
+						"StartButton": {}
+					}
+				}
+			}
+		}
+	}
+}

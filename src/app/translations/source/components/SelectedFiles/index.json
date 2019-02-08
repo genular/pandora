@@ -1,0 +1,7 @@
+{
+    "components": {
+        "SelectedFiles": {
+            "select_file": "Please select one file from Workspace"
+        }
+    }
+}

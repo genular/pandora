@@ -1,0 +1,9 @@
+{
+	"views": {
+		"authenticate": {
+			"components": {
+				"Reset": {}
+			}
+		}
+	}
+}

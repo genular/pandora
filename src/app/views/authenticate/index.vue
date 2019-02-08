@@ -122,6 +122,7 @@ export default {
     display: flex;
     height: 100%;
     justify-content: center;
+    background-color: #0a2626;
     #particles-js {
         background-size: cover;
         position: fixed;

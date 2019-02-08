@@ -1,0 +1,13 @@
+{
+	"views": {
+		"authenticate": {
+			"components": {
+				"Register": {
+					"components": {
+						"Organization": {}
+					}
+				}
+			}
+		}
+	}
+}

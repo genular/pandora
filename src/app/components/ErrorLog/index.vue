@@ -4,44 +4,28 @@
             <i class="fa fa-bug" aria-hidden="true"></i>
         </el-badge>
 
-        <el-dialog title="Error Log Overview" :visible.sync="errorDialog" width="80%" :lock-scroll="false">
+        <el-dialog :title="$t('components.ErrorLog.dialog.help-us')" :visible.sync="errorDialog" width="80%" :lock-scroll="false">
             <el-row type="flex" align="top">
                 <el-col class="help-us" :span="12">
-                    Please help us improve SIMON and report following errors to our github tracker. More information
-                    <a href="https://github.com/genular/simon-frontend#submitting-bugs-and-enhancements" target="_blank"
-                        >here</a
-                    >
+                    {{ $t('components.ErrorLog.dialog.help-us') }}
+                    <a href="https://github.com/genular/simon-frontend#submitting-bugs-and-enhancements" target="_blank">{{ $t('components.ErrorLog.dialog.more-info') }}</a>
                 </el-col>
                 <el-col class="actions" :span="12">
-                    <el-button
-                        size="mini"
-                        round
-                        type="primary"
-                        icon="el-icon-delete"
-                        @click="clearErrorLog()"
-                    ></el-button>
-                    <el-button
-                        size="mini"
-                        round
-                        type="primary"
-                        icon="el-icon-download"
-                        @click="copyToClipboard($event)"
-                    ></el-button>
+                    <el-button size="mini" round type="primary" icon="el-icon-delete" @click="clearErrorLog()"></el-button>
+                    <el-button size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard($event)"></el-button>
                 </el-col>
             </el-row>
 
             <el-table :data="errorLogs" class="errorLogTable" border>
-                <el-table-column label="General information">
+                <el-table-column :label="$t('components.ErrorLog.table.title')">
                     <template slot-scope="scope">
                         <div class="message-item">
-                            <span class="message-title">Msg:</span>
+                            <span class="message-title">{{ $t('components.ErrorLog.table.message') }}:</span>
                             <el-tag v-if="scope.row.err" type="danger">{{ scope.row.err.message }}</el-tag>
                         </div>
                         <div class="message-item">
                             <span class="message-title" style="padding-right: 10px;">Info: </span>
-                            <el-tag v-if="scope.row.vm" type="warning"
-                                >{{ scope.row.vm.$vnode.tag }} error in {{ scope.row.info }}</el-tag
-                            >
+                            <el-tag v-if="scope.row.vm" type="warning">{{ scope.row.vm.$vnode.tag }} error in {{ scope.row.info }}</el-tag>
                         </div>
                         <div class="message-item">
                             <span class="message-title" style="padding-right: 16px;">Url: </span>

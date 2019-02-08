@@ -1,22 +1,15 @@
 <template>
     <div class="app-container">
         <div v-if="selectedFiles.length > 0">
-                <file-details></file-details>
-                <package-selection></package-selection>
-                <start-button></start-button>
+            <file-details></file-details>
+            <package-selection></package-selection>
+            <start-button></start-button>
         </div>
-        <el-dialog
-            title="Warning"
-            :visible.sync="errorDialogVisible"
-            width="30%"
-            center
-            :close-on-click-modal="false"
-            :close-on-press-escape="false"
-            :show-close="false">
+        <el-dialog :title="$t('views.apps.simon.analysis.index.dialog.title')" :visible.sync="errorDialogVisible" width="30%" center :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
             <span v-html="errorDialogMessage"></span>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="cancelInitFeatures">Cancel</el-button>
-                <el-button type="primary" @click="reinitializeInitFeatures">Try again!</el-button>
+                <el-button @click="cancelInitFeatures">{{ $t('views.apps.simon.analysis.index.dialog.buttons.cancel') }}</el-button>
+                <el-button type="primary" @click="reinitializeInitFeatures">{{ $t('views.apps.simon.analysis.index.dialog.buttons.try_again') }}</el-button>
             </span>
         </el-dialog>
     </div>
@@ -118,7 +111,7 @@ export default {
                     console.log("Error Response: ", error);
                     this.loadingEnd();
                     this.errorDialogVisible = true;
-                    this.errorDialogMessage = "Error communication with back-end server. Please try again latter.";
+                    this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_server');
                 }
             );
             // }
@@ -146,11 +139,7 @@ export default {
                             const featuresExample = htmlentities(response.slice(0, sliceEnd).join(", "));
 
                             this.errorDialogVisible = true;
-                            this.errorDialogMessage =
-                                "Features are not named properly, please rename your Column fields and try again.<br />" +
-                                "Please ensure that your columns are named only in Alphanumeric format (0-9,A-Z,a-z), additional only underscore _ is supported.<br />" +
-                                'For example:<br />spaces, and all other characters like !"#$%&/()=?*+- etc. are not currently supported.<br /><br />Invalid: <br />' +
-                                featuresExample;
+                            this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_format') + featuresExample;
                         }
                     },
                     error => {
@@ -158,8 +147,7 @@ export default {
                         this.loadingEnd();
                         this.selectedFilesHash = "";
                         this.errorDialogVisible = true;
-                        this.errorDialogMessage =
-                            "File could not be read, so no columns can be detected. Please re-check your file, clear cache and try again";
+                        this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_read');
                     }
                 );
             }

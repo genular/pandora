@@ -1,0 +1,11 @@
+{
+	"views": {
+		"workspace": {
+			"components": {
+				"importers": {
+					"public-import": {}
+				}
+			}
+		}
+	}
+}

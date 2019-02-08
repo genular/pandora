@@ -143,7 +143,7 @@ export default {
             position: absolute;
             width: 3px;
             background-color: #e3006e;
-            height: 100%;
+            height: 50px;
             left: 0;
         }
     }

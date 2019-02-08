@@ -1,25 +1,23 @@
 <template>
     <div class="genular-bottom-buttons">
         <el-button-group>
-            <el-button @click.prevent.stop="navigateTo('https://github.com/genular/simon-frontend')" title="Star us on github!" type="primary" icon="fa fa-github"></el-button>
-            <el-button @click.prevent.stop="navigateTo('https://crowdin.com/project/genular')" title="Help us with translations" type="primary" icon="fa fa-language"></el-button>
-            <el-button title="About" @click.prevent.stop="navigateTo('about')" type="primary" icon="fa fa-info-circle"></el-button>
+            <el-button :title="$t('components.GenularBottom.buttons.star')" @click.prevent.stop="navigateTo('https://github.com/genular/simon-frontend')" type="primary" icon="fa fa-github"></el-button>
+            <el-button :title="$t('components.GenularBottom.buttons.help')"  @click.prevent.stop="navigateTo('https://crowdin.com/project/genular')" type="primary" icon="fa fa-language"></el-button>
+            <el-button :title="$t('components.GenularBottom.buttons.about')" @click.prevent.stop="navigateTo('about')" type="primary" icon="fa fa-info-circle"></el-button>
         </el-button-group>
 
-        <el-dialog class="about-dialog" title="about us" :visible.sync="centerDialogVisible" width="600px" center>
+        <el-dialog class="about-dialog" :title="$t('components.GenularBottom.dialog.title')" :visible.sync="centerDialogVisible" width="600px" center>
             <div class="about-container">
                 <div>
-                    We are open source company founded to promote science and research. We believe that everyone should have right to build highly accurate predictive models even if they would
-                    not usually have necessary skills.
+                    {{ $t('components.GenularBottom.dialog.title') }}
                 </div>
-                <blockquote cite="Albert Einstein">
-                    We can not solve our problems with the same level of thinking that created them
+                <blockquote :cite="$t('components.GenularBottom.dialog.citation.author')"> 
+                    {{ $t('components.GenularBottom.dialog.citation.text') }}
                 </blockquote>
                 <div>
-                    Instead of guessing which model will work the best for your data, our system automatically processes in parallel many different machine learning algorithms,
-                    testing millions of potential models per second, and suggests most accurate ones that fits your data.
+                    {{ $t('components.GenularBottom.dialog.ending') }}
                 </div>
-                <div><br />SIMON is made and maintained by Genular, a community working together to keep Science open, public and accessible to all.</div>
+                <div><br />{{ $t('components.GenularBottom.dialog.footer') }}</div>
             </div>
         </el-dialog>
     </div>

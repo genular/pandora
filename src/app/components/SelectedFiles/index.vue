@@ -1,6 +1,6 @@
 <template>
     <div class="selected-files-container">
-        <div v-if="selectedFiles.length < 1" class="files-view-item empty-selection">Please select one file from Workspace!</div>
+        <div v-if="selectedFiles.length < 1" class="files-view-item empty-selection">{{ $t('components.SelectedFiles.select_file') }}</div>
         <div v-for="file in selectedFiles" :key="file.id" class="files-view-item active">
             {{ file.basename }}
             <span class="close-container" @click="closeSelectedFile(file.id)">x</span>

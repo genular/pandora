@@ -1,0 +1,23 @@
+{
+	"views": {
+		"apps": {
+			"simon": {
+				"exploration": {
+					"components": {
+						"tabs": {
+							"datasetsTab": {
+								"components": {
+									"tabs": {
+										"variableImportanceTab": {
+											"charts": {}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

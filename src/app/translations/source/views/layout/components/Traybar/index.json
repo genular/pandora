@@ -1,0 +1,9 @@
+{
+	"views": {
+		"layout": {
+			"components": {
+				"Traybar": {}
+			}
+		}
+	}
+}

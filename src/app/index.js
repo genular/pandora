@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2019-01-14 16:20:23
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-02-07 10:57:03
+* @Last Modified time: 2019-02-07 15:14:58
 */
 import Vue from "vue";
 import env_vars from "env_vars";
@@ -35,19 +35,19 @@ Vue.prototype.$config = env_vars;
 import * as filters from "./filters"; // global filters
 
 Vue.use(Element, {
-    size: "medium", // set element-ui default size
+    size: "small", // set element-ui default size
     i18n: (key, value) => i18n.t(key, value)
 });
 
 Vue.use(VueParticles);
 Vue.use(VueHighlightJS, {
-	// Register only languages that you want
+	// Register only languages needed
 	languages: {
 		bash
 	}
 });
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = (env_vars.name == 'production');
 
 // Register global utility filters from  './filters'
 Object.keys(filters).forEach(key => {
