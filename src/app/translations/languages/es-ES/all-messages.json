@@ -50,9 +50,15 @@
   "views.apps.heatmap": {
 
   },
-  "views.apps.simon.analysis.components.FileDetails": {
-
-  },
+  "views.apps.simon.analysis.components.FileDetails.head.title": "Please select desired analysis properties",
+  "views.apps.simon.analysis.components.FileDetails.head.description": "only first 50 variables are shown, type to filter others or select ALL switch",
+  "views.apps.simon.analysis.components.FileDetails.head.clear": "clear",
+  "views.apps.simon.analysis.components.FileDetails.body.predictor.title": "Predictor variables",
+  "views.apps.simon.analysis.components.FileDetails.body.predictor.description": "A predictor variable is a variable used in ML to predict another variable",
+  "views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder": "Please select predictor variables, type to search...",
+  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.title": "Exclude predictors",
+  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description": "If you selected to use ALL Predictors in Select ALL switch, you can exclude some of them by selecting them here.<br />To use this function select ALL switch must be turned on!",
+  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.placeholder": "Exclude predictor variables",
   "views.apps.simon.analysis.components.PackageSelection": {
 
   },
