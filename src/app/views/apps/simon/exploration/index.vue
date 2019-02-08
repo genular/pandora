@@ -1,32 +1,35 @@
 <template>
-    <div class="app-container" v-loading.fullscreen.lock="loading" element-loading-text="Processing...">
-
+    <div class="app-container" v-loading.fullscreen.lock="loading" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="middle">
             <el-col :span="24">
                 <el-tooltip style="float: left;" placement="top" v-if="explorationJobId">
-                    <div slot="content">Copy</div>
-                    <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(explorationJobId, $event)">Queue: {{explorationJobId}}</el-button>
+                    <div slot="content">{{ $t('globals.buttons.copy') }}</div>
+                    <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(explorationJobId, $event)"
+                        >{{ $t('views.apps.simon.exploration.header.selected_queue') }}: {{ explorationJobId }}</el-button
+                    >
                 </el-tooltip>
                 <el-tooltip style="float: left;" placement="top" v-if="selectedFeatureSetId > 0">
-                    <div slot="content">Copy</div>
-                    <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(selectedFeatureSetId, $event)">Dataset ID: {{selectedFeatureSetId}}</el-button>
+                    <div slot="content">{{ $t('globals.buttons.copy') }}</div>
+                    <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(selectedFeatureSetId, $event)"
+                        >{{ $t('views.apps.simon.exploration.header.selected_dataset') }}: {{ selectedFeatureSetId }}</el-button
+                    >
                 </el-tooltip>
                 <el-tooltip style="float: right;" placement="top" v-if="selectedModelsIDs.length > 0">
-                    <div slot="content">Copy</div>
+                    <div slot="content">{{ $t("globals.buttons.copy") }}</div>
                     <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(JSON.stringify(selectedModelsIDs), $event)">
-                        Selected Model(s): {{selectedModelsIDs.join(", ")}}
+                        {{ $t('views.apps.simon.exploration.header.selected_models') }}: {{ selectedModelsIDs.join(", ") }}
                     </el-button>
                 </el-tooltip>
-                <el-select style="float: left; width: auto;min-width: 535px;margin-left: 10px;" v-model="jobDetailsData.performance" 
+                <el-select
+                    style="float: left; width: auto;min-width: 535px;margin-left: 10px;"
+                    v-model="jobDetailsData.performance"
                     multiple
                     filterable
                     size="small"
-                    placeholder="Select performace measurement">
-                    <el-option
-                        v-for="(item, index) in performaceVariables"
-                        :key="index"
-                        :label="item"
-                        :value="item">
+                    :placeholder="$t('views.apps.simon.exploration.header.performanceVariables.placeholder')"
+                >
+                    <el-option v-for="(item, index) in performaceVariables" :key="index" :value="item">
+                        <span>{{ $t('globals.performanceVariables.' + item) }}</span>
                     </el-option>
                 </el-select>
             </el-col>
@@ -34,13 +37,13 @@
 
         <br />
         <el-tabs v-model="activeTabName" v-if="jobDetailsData.resamplesList.length > 0" type="border-card" class="tab-container">
-          <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key='item.key' :name="item.key" :disabled="isTabDisabled(item)">
-            <span slot="label"><i :class="item.icon"></i> {{item.label}}</span>
-            <keep-alive>
-                <tab-pane v-if='activeTabName==item.key' :currentView='item.key' :jobDetailsData='jobDetailsData'></tab-pane>
-                <!-- inactive components will be cached! -->
-            </keep-alive>
-          </el-tab-pane>
+            <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key="item.key" :name="item.key" :disabled="isTabDisabled(item)">
+                <span slot="label"><i :class="item.icon"></i> {{ item.label }}</span>
+                <keep-alive>
+                    <tab-pane v-if="activeTabName == item.key" :currentView="item.key" :jobDetailsData="jobDetailsData"></tab-pane>
+                    <!-- inactive components will be cached! -->
+                </keep-alive>
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
@@ -71,7 +74,7 @@ export default {
                     restriction: "selectedFeatureSetId"
                 }
             ],
-            performaceVariables: [],
+            performanceVariables: [],
 
             loading: true,
             jobDetailsData: {
@@ -150,7 +153,7 @@ export default {
                         this.jobDetailsData.queueDetails = response.data.message.queueDetails;
                         this.jobDetailsData.modelsList = response.data.message.modelsList;
 
-                        this.performaceVariables = response.data.message.performaceVariables;
+                        this.performanceVariables = response.data.message.performaceVariables;
                         // Preselect if nothing selected.. eg. first run
                         if (this.jobDetailsData.performance.length < 1) {
                             this.jobDetailsData.performance = ["Accuracy", "PredictAUC", "Sensitivity", "Specificity", "Recall"];
@@ -165,16 +168,13 @@ export default {
                             this.selectedModelsIDs = [];
                         }
 
-                        this.jobDetailsData.resampleModels[
-                            this.selectedFeatureSetId
-                        ] = this.jobDetailsData.modelsList.filter(
+                        this.jobDetailsData.resampleModels[this.selectedFeatureSetId] = this.jobDetailsData.modelsList.filter(
                             modelItem => modelItem.resampleID === this.selectedFeatureSetId
                         );
                     } else {
                         // Something went wrong, cannot fetch details from Server
                         this.$message({
-                            message:
-                                "Cannot fetch Job details from the back-end server. Please try again latter or choose another Job!",
+                            message: this.$t('globals.errors.request_general'),
                             type: "error",
                             duration: 10000,
                             showClose: true
@@ -199,7 +199,7 @@ export default {
 };
 </script>
 
-<style rel='stylesheet/scss' lang='scss'>
+<style rel="stylesheet/scss" lang="scss">
 @import "~scss_vars";
 
 .tab-container {

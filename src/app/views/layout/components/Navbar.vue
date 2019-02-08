@@ -15,12 +15,12 @@
                 <el-dropdown-menu slot="dropdown">
                     <router-link to="/">
                         <el-dropdown-item>
-                            {{ $t("navbar.dashboard") }}
+                            {{ generateRouteTitle("dashboard") }}
                         </el-dropdown-item>
                     </router-link>
                     <router-link to="/settings/?startIndex=1">
                         <el-dropdown-item>
-                            {{ $t("navbar.settings") }}
+                            {{ generateRouteTitle("settings") }}
                         </el-dropdown-item>
                     </router-link>
                     <el-dropdown-item divided>
@@ -38,7 +38,7 @@ import Hamburger from "@/components/Hamburger";
 import ErrorLog from "@/components/ErrorLog";
 import LangSelect from "@/components/LangSelect";
 import SelectedFiles from "@/components/SelectedFiles";
-
+import { generateRouteTitle } from "@/utils/i18n";
 export default {
     components: {
         Breadcrumb,
@@ -51,6 +51,7 @@ export default {
         ...mapGetters(["sidebar", "errorLogs", "user_id"])
     },
     methods: {
+        generateRouteTitle,
         toggleSideBar() {
             this.$store.dispatch("toggleSideBar");
         },

@@ -1,0 +1,58 @@
+{
+	"sidebar": {
+		"dashboard": "Dashboard",
+		"settings": "Settings",
+		"workspace": "Workspace",
+		"simon": "SIMON",
+		"analysis": "Analysis",
+		"exploratory-analysis": "Exploration"
+	},
+	"globals": {
+		"page_loading": "Processing",
+		"buttons": {
+			"copy": "Copy"
+		},
+		"demo_server": {
+			"function_disabled": "This function is disabled on demo server"
+		},
+		"errors": {
+			"request_general": "There was an error processing your request. Please try again latter."
+		},
+		"performanceVariables": {
+			"Accuracy": "Accuracy",
+			"AccuracyLower": "AccuracyLower",
+			"AccuracyNull": "AccuracyNull",
+			"AccuracyPValue": "AccuracyPValue",
+			"AccuracyUpper": "AccuracyUpper",
+			"Balanced Accuracy": "Balanced Accuracy",
+			"Detection Prevalence": "Detection Prevalence",
+			"Detection Rate": "Detection Rate",
+			"F1": "F1",
+			"Kappa": "Kappa",
+			"McnemarPValue": "McnemarPValue",
+			"Neg Pred Value": "Neg Pred Value",
+			"Pos Pred Value": "Pos Pred Value",
+			"PositiveControl": "PositiveControl",
+			"Precision": "Precision",
+			"PredictAUC": "PredictAUC",
+			"Prevalence": "Prevalence",
+			"Recall": "Recall",
+			"Sensitivity": "Sensitivity",
+			"Specificity": "Specificity",
+			"TrainAccuracy": "TrainAccuracy",
+			"TrainAUC": "TrainAUC",
+			"TrainBalanced_Accuracy": "TrainBalanced_Accuracy",
+			"TrainDetection_Rate": "TrainDetection_Rate",
+			"TrainF1": "TrainF1",
+			"TrainKappa": "TrainKappa",
+			"TrainlogLoss": "TrainlogLoss",
+			"TrainNeg_Pred_Value": "TrainNeg_Pred_Value",
+			"TrainPos_Pred_Value": "TrainPos_Pred_Value",
+			"TrainprAUC": "TrainprAUC",
+			"TrainPrecision": "TrainPrecision",
+			"TrainRecall": "TrainRecall",
+			"TrainSensitivity": "TrainSensitivity",
+			"TrainSpecificity": "TrainSpecificity"
+		}
+	}
+}

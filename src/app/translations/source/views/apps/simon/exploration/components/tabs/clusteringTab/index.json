@@ -5,7 +5,85 @@
 				"exploration": {
 					"components": {
 						"tabs": {
-							"clusteringTab": {}
+							"clusteringTab": {
+								"form": {
+									"columns": {
+										"title": "Columns",
+										"placeholder": "Type to search"
+									},
+									"rows": {
+										"title": "Rows",
+										"placeholder": "Type to search"
+									},
+									"remove_na": "Remove NA?",
+									"scale": {
+										"label": "Scale",
+										"options": {
+											"row": "row",
+											"column": "column",
+											"none": "none"
+										}
+									},
+									"display": {
+										"label": "Display",
+										"options": {
+											"numbers": "Numbers",
+											"legend": "Legend",
+											"colnames": "Colnames",
+											"rownames": "Rownames"
+										}
+									},
+									"numbers_size": "Numbers size",
+									"colnames_size": "Colnames size",
+									"rownames_size": "Rownames size",
+									"plot_width": "Plot width",
+									"plot_ratio": "Plot ratio (height / width)",
+									"clust_distance": {
+										"label": "Clustering distance",
+										"placeholder": "Select",
+										"options": {
+											"correlation": "correlation",
+											"euclidean": "euclidean",
+											"maximum": "maximum",
+											"manhattan": "manhattan",
+											"canberra": "canberra",
+											"binary": "binary",
+											"minkowski": "minkowski"
+										}
+									},
+									"clust_method": {
+										"label": "Clustering method",
+										"placeholder": "Select",
+										"options": {
+											"single": "single",
+											"complete": "complete",
+											"average": "average",
+											"mcquitty": "mcquitty",
+											"median": "median",
+											"centroid": "centroid",
+											"ward.D2": "ward.D2",
+											"ward.D": "ward.D"
+										}
+									},
+									"tree_ordering": {
+										"label": "Tree ordering",
+										"placeholder": "Select",
+										"options": {
+											"1": "tightest cluster first",
+											"2": "higher median value first",
+											"3": "higher mean value first",
+											"4": "lower median value first",
+											"5": "original",
+											"6": "reverse original"
+										}
+									},
+									"font_size": "Overall font-size"
+								},
+								"buttons": {
+									"plot_image": "Plot image",
+									"download": "Download plot"
+								}
+							}
 						}
 					}
 				}

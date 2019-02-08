@@ -64,7 +64,7 @@
                         "
                         @focus="selectAvaliableFeaturesDisplay('selectedFeatures')"
                     >
-                        <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedFeatures'" :label="item.original" :value="item">
+                        <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedFeatures'" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
                             <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span>
                         </el-option>
@@ -112,9 +112,9 @@
                     <span class="field-title" style="width: 100%;float: none;">
                         <el-tooltip placement="bottom">
                             <div slot="content">
-                                {{ $t("views.apps.simon.analysis.components.FileDetails.body.partitions.title") }}
+                                {{ $t("views.apps.simon.analysis.components.FileDetails.body.partitions.description") }}
                             </div>
-                            <span class="field-title">{{ $t("views.apps.simon.analysis.components.FileDetails.body.partitions.description") }}</span>
+                            <span class="field-title">{{ $t("views.apps.simon.analysis.components.FileDetails.body.partitions.title") }}</span>
                         </el-tooltip>
                     </span>
                     <el-slider v-model="selectedPartitionSplit" height="200px" :step="5" :min="50" :max="95" show-input :format-tooltip="formatPartitionSplitTooltip" show-stops>

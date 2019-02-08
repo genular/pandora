@@ -26,12 +26,14 @@
             :before-close="handleSubmissionCancle"
         >
             <div class="tip">
-                <div style="float: left;">>Based on your current selection what we got following dataset(s):</div>
+                <div style="float: left;">{{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.header") }}:</div>
 
                 <el-tooltip placement="top">
-                    <div slot="content">This number tell you how many missing values occur across your dataset.</div>
+                    <div slot="content">
+                        {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description") }}
+                    </div>
                     <div style="float: right;">
-                        Data sparsity <span>{{ datasetQueueSparsity * 100 }}%</span>
+                        {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title") }} <span>{{ datasetQueueSparsity * 100 }}%</span>
                     </div>
                 </el-tooltip>
                 <br />
@@ -57,11 +59,28 @@
                         >
                             <el-table-column type="selection"> </el-table-column>
 
-                            <el-table-column property="totalFeatures" label="Features" sortable align="center"> </el-table-column>
+                            <el-table-column
+                                property="totalFeatures"
+                                :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.features')"
+                                sortable
+                                align="center"
+                            >
+                            </el-table-column>
 
-                            <el-table-column property="totalSamples" label="Samples" sortable align="center"> </el-table-column>
+                            <el-table-column
+                                property="totalSamples"
+                                :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.samples')"
+                                sortable
+                                align="center"
+                            >
+                            </el-table-column>
 
-                            <el-table-column property="totalDatapoints" label="Datapoints" align="center"> </el-table-column>
+                            <el-table-column
+                                property="totalDatapoints"
+                                :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.datapoints')"
+                                align="center"
+                            >
+                            </el-table-column>
 
                             <el-table-column align="center">
                                 <template slot-scope="scope">
@@ -78,14 +97,16 @@
                     </el-tab-pane>
                 </el-tabs>
                 <br />
-                <br />Now this data will be submitted for processing. You can track the progress of this task in your Dashboard panel. <br />
-                <br />Do you wish to proceed?
+                <br />{{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.footer_1") }} <br />
+                <br />{{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.footer_2") }}
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="info" size="medium" round icon="el-icon-caret-right" @click="handleSubmissionCancle">Cancel</el-button>
-                <el-button class="submit-analysis" type="primary" size="medium" round icon="el-icon-caret-right" :disabled="!processTaskVisible" @click="processTask"
-                    >Process</el-button
-                >
+                <el-button type="info" size="medium" round icon="el-icon-caret-right" @click="handleSubmissionCancle">{{
+                    $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.buttons.cancel")
+                }}</el-button>
+                <el-button class="submit-analysis" type="primary" size="medium" round icon="el-icon-caret-right" :disabled="!processTaskVisible" @click="processTask">{{
+                    $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.buttons.process")
+                }}</el-button>
             </span>
         </el-dialog>
         <!-- ERROR Alert Dialog -->
@@ -102,7 +123,7 @@
                 </p>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="danger" @click="messageWarnings = []">{{ $t('views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm') }}</el-button>
+                <el-button type="danger" @click="messageWarnings = []">{{ $t("views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm") }}</el-button>
             </span>
         </el-dialog>
         <div class="progress-circle" v-if="progressBar.percentage > 0 || progressBar.status != ''">
@@ -307,7 +328,7 @@ export default {
         handleSubmissionCancle(event) {
             this.startLoading();
 
-            this.$confirm(this.$t("views.simon.messages.confirm_close"))
+            this.$confirm(this.$t("views.apps.simon.analysis.components.StartButton.dialogs.cancel.message"))
                 .then(_ => {
                     this.submissionVisible = false;
                     this.processTaskVisible = false;
@@ -328,7 +349,7 @@ export default {
         },
         processTask() {
             return new Promise((resolve, reject) => {
-                this.loadingText = this.$t("views.simon.messages.loading_data");
+                this.loadingText = this.$t("views.apps.simon.analysis.components.StartButton.other.loading_data");
                 this.startLoading();
 
                 this.$store
@@ -364,23 +385,23 @@ export default {
             if (this.$config.isDemoServer) {
                 this.$message({
                     type: "warning",
-                    message: "This function is disabled on demo server"
+                    message: this.$t("globals.demo_server.function_disabled")
                 });
                 return;
             }
             const message_warnings = [];
             // Check if Features are selected
             if (this.selectedFeatures.length === 0) {
-                message_warnings.push(this.$t("views.simon.messages.misssing_features"));
+                message_warnings.push(this.$t("views.apps.simon.analysis.components.StartButton.other.misssing_features"));
             }
             // Check if Packages are selected
             //      if this is a demo server and more than five packages are selected warn the user!
             if (this.$store.getters.simonSelectedPackages.length === 0) {
-                message_warnings.push(this.$t("views.simon.messages.misssing_packages"));
+                message_warnings.push(this.$t("views.apps.simon.analysis.components.StartButton.other.misssing_packages"));
             }
 
             if (this.selectedOutcome.length === 0) {
-                message_warnings.push(this.$t("views.simon.messages.misssing_outcome"));
+                message_warnings.push(this.$t("views.apps.simon.analysis.components.StartButton.other.misssing_outcome"));
             }
 
             if (message_warnings.length > 0) {
@@ -442,7 +463,7 @@ export default {
                 .catch(error => {
                     this.stopLoading();
                     this.$message({
-                        message: "There was an error processing your request",
+                        message: this.$t("globals.errors.request_general"),
                         type: "warning"
                     });
                     console.log(error);

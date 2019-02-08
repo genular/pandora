@@ -2,7 +2,16 @@
 	"views": {
 		"apps": {
 			"simon": {
-				"exploration": {}
+				"exploration": {
+					"header": {
+						"selected_queue": "Queue",
+						"selected_dataset": "Dataset ID",
+						"selected_models": "Selected Model(s)",
+						"performanceVariables": {
+							"placeholder": "Select performance measurement"
+						}
+					}
+				}
 			}
 		}
 	}

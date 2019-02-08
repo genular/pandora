@@ -1,11 +1,8 @@
 <template>
     <div>
-
-        <component v-bind:is="currentView" :jobDetailsData='jobDetailsData'>
+        <component v-bind:is="currentView" :jobDetailsData="jobDetailsData">
             <!-- component changes when vm.currentView changes! -->
         </component>
-
-
     </div>
 </template>
 
@@ -28,11 +25,6 @@ export default {
         datasetsTab,
         correlationTab,
         clusteringTab
-    },
-    data() {
-        return {};
-    },
-    created() {},
-    methods: {}
+    }
 };
 </script>

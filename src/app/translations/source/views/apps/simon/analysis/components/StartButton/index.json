@@ -8,12 +8,37 @@
 							"title": "",
 							"dialogs": {
 								"confirm": {
-									"title": "Looks good! Please confirm task submission"
+									"title": "Looks good! Please confirm task submission",
+									"header": "Based on your current selection what we got following dataset(s)",
+									"sparsity": {
+										"title": "Data sparsity",
+										"description": ""
+									},
+									"table": {
+										"features": "Features",
+										"samples": "Samples",
+										"datapoints": "Datapoints"
+									},
+									"footer_1": "Now this data will be submitted for processing. You can track the progress of this task in your Dashboard panel.",
+									"footer_2": "Do you wish to proceed?",
+									"buttons": {
+										"cancel": "Cancel",
+										"process": "Process"
+									}
+								},
+								"cancel": {
+									"message": "Are you sure you want to close and cancel this submission?"
 								},
 								"errors": {
 									"title": "Following errors needs to be corrected",
 									"confirm": "Confirm"
 								}
+							},
+							"other": {
+								"loading_data": "Uploading data, please wait...",
+								"misssing_features": "Please select at least 2 Features to analyze",
+								"misssing_packages": "Invalid number of Packages selected",
+								"misssing_outcome": "Please select outcome field"
 							}
 						}
 					}
