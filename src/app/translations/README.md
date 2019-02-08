@@ -16,11 +16,11 @@ This is github plug-in configured via `Crowdin` (github integration)[https://sup
 
 1. Add translation in ./source
 2. Add them in the templates
-3. Build  `all-messages.json`
-3. Push code to github
-4. Wait for crowdin PR request and merge crowdin translations
-5. pull crowdin translations
-6. Compile them new translated files: yarn run translations
+3. Build  `all-messages.json` with webpack. `yarn run webpack:web:dev`
+4. Push code to github
+5. Wait for crowdin PR request and merge crowdin translations into repo
+6. pull crowdin translations
+7. Compile them new translated files into `translated-messages.json`: yarn run translations 
 
 ## Updating translations in the frontend
 Crowdin automatically creates a PR to this repo each time a translator finishes some translation work. Sync schedule is 10 minutes.

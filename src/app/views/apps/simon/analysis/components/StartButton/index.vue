@@ -19,7 +19,12 @@
             </el-col>
         </el-row>
         <!-- Confirm submission Alert Dialog -->
-        <el-dialog title="Looks good! Please confirm task submission" :visible.sync="submissionVisible" width="40%" :before-close="handleSubmissionCancle">
+        <el-dialog
+            :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.title')"
+            :visible.sync="submissionVisible"
+            width="40%"
+            :before-close="handleSubmissionCancle"
+        >
             <div class="tip">
                 <div style="float: left;">>Based on your current selection what we got following dataset(s):</div>
 
@@ -84,14 +89,20 @@
             </span>
         </el-dialog>
         <!-- ERROR Alert Dialog -->
-        <el-dialog title="Following errors needs to be corrected" :visible.sync="messageWarnings.length > 0" width="35%" :show-close="false" center>
+        <el-dialog
+            :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.errors.title')"
+            :visible.sync="messageWarnings.length > 0"
+            width="35%"
+            :show-close="false"
+            center
+        >
             <div class="tip">
                 <p>
                     <el-alert v-for="(item, index) in messageWarnings" :title="item" :key="index" type="error" :closable="false" show-icon></el-alert>
                 </p>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="danger" @click="messageWarnings = []">Confirm</el-button>
+                <el-button type="danger" @click="messageWarnings = []">{{ $t('views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm') }}</el-button>
             </span>
         </el-dialog>
         <div class="progress-circle" v-if="progressBar.percentage > 0 || progressBar.status != ''">

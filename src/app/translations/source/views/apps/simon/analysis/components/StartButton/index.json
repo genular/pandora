@@ -4,7 +4,18 @@
 			"simon": {
 				"analysis": {
 					"components": {
-						"StartButton": {}
+						"StartButton": {
+							"title": "",
+							"dialogs": {
+								"confirm": {
+									"title": "Looks good! Please confirm task submission"
+								},
+								"errors": {
+									"title": "Following errors needs to be corrected",
+									"confirm": "Confirm"
+								}
+							}
+						}
 					}
 				}
 			}

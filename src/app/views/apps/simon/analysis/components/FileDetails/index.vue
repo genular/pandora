@@ -4,28 +4,30 @@
             <div slot="header" class="clearfix">
                 <el-row type="flex" align="middle">
                     <el-col :span="24">
-                        <span>{{ $t('views.apps.simon.analysis.components.FileDetails.head.title') }}:</span>
+                        <span>{{ $t("views.apps.simon.analysis.components.FileDetails.head.title") }}:</span>
                     </el-col>
                 </el-row>
 
                 <el-row type="flex" align="bottom" class="stat-badges">
                     <el-col :span="20">
-                        <small>{{ $t('views.apps.simon.analysis.components.FileDetails.head.description') }}</small>
+                        <small>{{ $t("views.apps.simon.analysis.components.FileDetails.head.description") }}</small>
                         <div class="formula-placeholder" v-if="regressionFormula !== '' || classificationFormula.length > 0">
                             <div v-if="regressionFormula !== ''">
                                 <div class="formula-title">Regression</div>
-                                <el-tag class="formula-tag" type="info" size="mini">{{regressionFormula}}</el-tag>
+                                <el-tag class="formula-tag" type="info" size="mini">{{ regressionFormula }}</el-tag>
                             </div>
                             <div v-if="classificationFormula.length > 0">
-                                 <div class="formula-title">Classification</div>
-                                 <el-tag class="formula-tag" :key="index" v-for="(classificationFormula, index) in classificationFormula" type="info" size="mini">
-                                    {{classificationFormula}}
+                                <div class="formula-title">Classification</div>
+                                <el-tag class="formula-tag" :key="index" v-for="(classificationFormula, index) in classificationFormula" type="info" size="mini">
+                                    {{ classificationFormula }}
                                 </el-tag>
-                            </div> 
+                            </div>
                         </div>
                     </el-col>
                     <el-col :span="4">
-                        <el-button style="float: right" type="primary" size="small" @click="clearSelection">{{ $t('views.apps.simon.analysis.components.FileDetails.head.clear') }}</el-button>
+                        <el-button style="float: right" type="primary" size="small" @click="clearSelection">{{
+                            $t("views.apps.simon.analysis.components.FileDetails.head.clear")
+                        }}</el-button>
                     </el-col>
                 </el-row>
             </div>
@@ -34,30 +36,37 @@
                     <el-switch style="padding-top: 24px;" v-model="filterFeatures"></el-switch>
                 </el-col>
                 <el-col :span="14" class="analysis-option">
-                   <el-tooltip placement="top">
+                    <el-tooltip placement="top">
                         <div slot="content">
-                           {{ $t('views.apps.simon.analysis.components.FileDetails.body.predictor.description') }}
+                            {{ $t("views.apps.simon.analysis.components.FileDetails.body.predictor.description") }}
                         </div>
-                        <span class="field-title">{{ $t('views.apps.simon.analysis.components.FileDetails.body.predictor.title') }}</span>
+                        <span class="field-title">{{ $t("views.apps.simon.analysis.components.FileDetails.body.predictor.title") }}</span>
                     </el-tooltip>
-                    <el-select class="flud-selects" v-model="selectedFeatures"
+                    <el-select
+                        class="flud-selects"
+                        v-model="selectedFeatures"
                         multiple
                         filterable
                         remote
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder')"
                         size="large"
                         value-key="position"
-                        :remote-method="(userInput) => { filterAvaliableFeaturesDisplay(userInput, 'selectedFeatures') }"
+                        :remote-method="
+                            userInput => {
+                                filterAvaliableFeaturesDisplay(userInput, 'selectedFeatures');
+                            }
+                        "
                         :loading="loading['selectedFeatures']"
-                        @change="(selection) => { resampleSelectionChange(selection, 'selectedFeatures') }"
-                        @focus="selectAvaliableFeaturesDisplay('selectedFeatures')">
-                        <el-option
-                             v-for="item in avaliableFeaturesDisplay"
-                             :key="item.position + '_selectedFeatures'"
-                             :label="item.original"
-                             :value="item">
+                        @change="
+                            selection => {
+                                resampleSelectionChange(selection, 'selectedFeatures');
+                            }
+                        "
+                        @focus="selectAvaliableFeaturesDisplay('selectedFeatures')"
+                    >
+                        <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedFeatures'" :label="item.original" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">column: {{ item.position }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span>
                         </el-option>
                     </el-select>
                 </el-col>
@@ -65,44 +74,50 @@
                     <span class="field-title"></span>
                     <el-tooltip placement="bottom">
                         <div slot="content">
-                           {{ $t('views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description') }}
+                            {{ $t("views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description") }}
                         </div>
-                        <span class="field-title">{{ $t('views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.title') }}</span>
+                        <span class="field-title">{{ $t("views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.title") }}</span>
                     </el-tooltip>
-                    <el-select class="flud-selects" v-model="excludeFeatures"
+                    <el-select
+                        class="flud-selects"
+                        v-model="excludeFeatures"
                         multiple
                         filterable
                         remote
-                        placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.placeholder')"
+                        :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.placeholder')"
                         size="large"
                         value-key="position"
                         :disabled="!filterFeatures"
-                        :remote-method="(userInput) => { filterAvaliableFeaturesDisplay(userInput, 'excludeFeatures') }"
+                        :remote-method="
+                            userInput => {
+                                filterAvaliableFeaturesDisplay(userInput, 'excludeFeatures');
+                            }
+                        "
                         :loading="loading['excludeFeatures']"
-                        @change="(selection) => { resampleSelectionChange(selection, 'excludeFeatures') }"
-                        @focus="selectAvaliableFeaturesDisplay('excludeFeatures')">
-                        <el-option
-                             v-for="item in avaliableFeaturesDisplay"
-                             :key="item.position + '_excludeFeatures'"
-                             :label="item.original"
-                             :value="item">
+                        @change="
+                            selection => {
+                                resampleSelectionChange(selection, 'excludeFeatures');
+                            }
+                        "
+                        @focus="selectAvaliableFeaturesDisplay('excludeFeatures')"
+                    >
+                        <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_excludeFeatures'" :label="item.original" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">column: {{ item.position }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span>
                         </el-option>
                     </el-select>
                 </el-col>
 
                 <el-col :span="4" class="analysis-option" style="min-width: 235px;">
-                    <span class="field-title" style="width: 100%;float: none;">Training/Testing dataset partition (%)</span>
-                    <el-slider
-                        v-model="selectedPartitionSplit"
-                        height="200px"
-                        :step="5"
-                        :min="50"
-                        :max="95"
-                        show-input
-                        :format-tooltip="formatPartitionSplitTooltip"
-                        show-stops>
+                    <span class="field-title" style="width: 100%;float: none;">
+                        <el-tooltip placement="bottom">
+                            <div slot="content">
+                                {{ $t("views.apps.simon.analysis.components.FileDetails.body.partitions.title") }}
+                            </div>
+                            <span class="field-title">{{ $t("views.apps.simon.analysis.components.FileDetails.body.partitions.description") }}</span>
+                        </el-tooltip>
+                    </span>
+                    <el-slider v-model="selectedPartitionSplit" height="200px" :step="5" :min="50" :max="95" show-input :format-tooltip="formatPartitionSplitTooltip" show-stops>
                     </el-slider>
                 </el-col>
             </el-row>
@@ -111,28 +126,35 @@
                 <el-col :span="7" class="analysis-option">
                     <el-tooltip placement="bottom">
                         <div slot="content">
-                           The response variable is the focus of a question in a study or experiment.
+                            {{ $t("views.apps.simon.analysis.components.FileDetails.body.response.description") }}
                         </div>
-                        <span class="field-title">Response</span>
+                        <span class="field-title">{{ $t("views.apps.simon.analysis.components.FileDetails.body.response.title") }}</span>
                     </el-tooltip>
-                    <el-select class="flud-selects" v-model="selectedOutcome"
+                    <el-select
+                        class="flud-selects"
+                        v-model="selectedOutcome"
                         multiple
                         filterable
                         remote
-                        placeholder="Select response variable, type to search..."
+                        :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.response.placeholder')"
                         size="large"
                         value-key="position"
-                        :remote-method="(userInput) => { filterAvaliableFeaturesDisplay(userInput, 'selectedOutcome') }"
+                        :remote-method="
+                            userInput => {
+                                filterAvaliableFeaturesDisplay(userInput, 'selectedOutcome');
+                            }
+                        "
                         :loading="loading['selectedOutcome']"
-                        @change="(selection) => { resampleSelectionChange(selection, 'selectedOutcome') }"
-                        @focus="selectAvaliableFeaturesDisplay('selectedOutcome')">
-                        <el-option
-                             v-for="item in avaliableFeaturesDisplay"
-                             :key="item.position + '_selectedOutcome'"
-                             :label="item.original"
-                             :value="item">
+                        @change="
+                            selection => {
+                                resampleSelectionChange(selection, 'selectedOutcome');
+                            }
+                        "
+                        @focus="selectAvaliableFeaturesDisplay('selectedOutcome')"
+                    >
+                        <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedOutcome'" :label="item.original" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">column: {{ item.position }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span>
                         </el-option>
                     </el-select>
                 </el-col>
@@ -140,29 +162,36 @@
                 <el-col :span="7" class="analysis-option">
                     <el-tooltip placement="bottom">
                         <div slot="content">
-                           Response variable ∼ Predictor. As you select fields you will see formula example being constructed in upper left corner.<br />
-                           This field is unavailable if you are not processing any Regression algorithm.
+                            {{ $t("views.apps.simon.analysis.components.FileDetails.body.regression.description") }}
                         </div>
-                        <span class="field-title">Regression</span>
+                        <span class="field-title">{{ $t("views.apps.simon.analysis.components.FileDetails.body.regression.title") }}</span>
                     </el-tooltip>
-                     <el-select class="flud-selects" v-model="selectedFormula" :disabled="true"
+                    <el-select
+                        class="flud-selects"
+                        v-model="selectedFormula"
+                        :disabled="true"
                         multiple
                         filterable
                         remote
-                        placeholder="Regression dependents"
+                        :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.regression.placeholder')"
                         size="large"
                         value-key="position"
-                        :remote-method="(userInput) => { filterAvaliableFeaturesDisplay(userInput, 'selectedFormula') }"
+                        :remote-method="
+                            userInput => {
+                                filterAvaliableFeaturesDisplay(userInput, 'selectedFormula');
+                            }
+                        "
                         :loading="loading['selectedFormula']"
-                        @change="(selection) => { resampleSelectionChange(selection, 'selectedFormula') }"
-                        @focus="selectAvaliableFeaturesDisplay('selectedFormula')">
-                        <el-option
-                             v-for="item in avaliableFeaturesDisplay"
-                             :key="item.position + '_selectedFormula'"
-                             :label="item.original"
-                             :value="item">
+                        @change="
+                            selection => {
+                                resampleSelectionChange(selection, 'selectedFormula');
+                            }
+                        "
+                        @focus="selectAvaliableFeaturesDisplay('selectedFormula')"
+                    >
+                        <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedFormula'" :label="item.original" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">column: {{ item.position }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span>
                         </el-option>
                     </el-select>
                 </el-col>
@@ -171,29 +200,35 @@
                     <span class="field-title"></span>
                     <el-tooltip placement="bottom">
                         <div slot="content">
-                           Please select all fields that are not being used as Response nor Predictor variables.<br />
-                           This fields will be available to you in latter on Exploratory analysis, where you will be able to plot them against your results.
+                            {{ $t("views.apps.simon.analysis.components.FileDetails.body.classes.description") }}
                         </div>
-                        <span class="field-title">Additional Exploration Classes</span>
+                        <span class="field-title">{{ $t("views.apps.simon.analysis.components.FileDetails.body.classes.title") }}</span>
                     </el-tooltip>
-                    <el-select class="flud-selects" v-model="selectedClasses"
+                    <el-select
+                        class="flud-selects"
+                        v-model="selectedClasses"
                         multiple
                         filterable
                         remote
-                        placeholder="Select other exploration class properties"
+                        :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.classes.placeholder')"
                         size="large"
                         value-key="position"
-                        :remote-method="(userInput) => { filterAvaliableFeaturesDisplay(userInput, 'selectedClasses') }"
+                        :remote-method="
+                            userInput => {
+                                filterAvaliableFeaturesDisplay(userInput, 'selectedClasses');
+                            }
+                        "
                         :loading="loading['selectedClasses']"
-                        @change="(selection) => { resampleSelectionChange(selection, 'selectedClasses') }"
-                        @focus="selectAvaliableFeaturesDisplay('selectedClasses')">
-                        <el-option
-                             v-for="item in avaliableFeaturesDisplay"
-                             :key="item.position + '_selectedClasses'"
-                             :label="item.original"
-                             :value="item">
+                        @change="
+                            selection => {
+                                resampleSelectionChange(selection, 'selectedClasses');
+                            }
+                        "
+                        @focus="selectAvaliableFeaturesDisplay('selectedClasses')"
+                    >
+                        <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedClasses'" :label="item.original" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">column: {{ item.position }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span>
                         </el-option>
                     </el-select>
                 </el-col>
@@ -201,39 +236,37 @@
                 <el-col :span="4" class="analysis-option">
                     <el-tooltip placement="bottom">
                         <div slot="content">
-                           Selected preprocessing functions will be applied to your data before process building a models.<br />
-                           For example if you have a lot of predictor variables maybe you could do PCA on them as-well.
+                            {{ $t("views.apps.simon.analysis.components.FileDetails.body.preprocessing.description") }}
                         </div>
-                        <span class="field-title">Preprocessing</span>
+                        <span class="field-title">{{ $t("views.apps.simon.analysis.components.FileDetails.body.preprocessing.title") }}</span>
                     </el-tooltip>
-                    <el-select class="flud-selects"
+                    <el-select
+                        class="flud-selects"
                         v-model="selectedPreProcess"
                         clearable
-                        placeholder="data preprocessing?"
+                        :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.preprocessing.placeholder')"
                         size="large"
                         :loading="loading['selectedPreProcess']"
-                        multiple>
-                        <el-option
-                            v-for="item in selectedPreProcessOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                            :disabled="item.disabled">
-                              <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-                              <span style="float: right;">{{ item.label }}</span>
+                        multiple
+                    >
+                        <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
+                            <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                            <span style="float: right;">{{ $t("views.apps.simon.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}</span>
                         </el-option>
                     </el-select>
                 </el-col>
             </el-row>
         </el-card>
-        <el-dialog title="Warning!" :visible.sync="notEnoughSamplesDialog" width="35%" center>
+        <el-dialog :title="$t('views.apps.simon.analysis.components.FileDetails.dialog.title')" :visible.sync="notEnoughSamplesDialog" width="35%" center>
             <div class="tip">
                 <p>
-                    It seems that we cannot detect right amount of samples with your current file or your current selection selection that you could use!
-                    <br /> Selected columns: <strong>{{selectedFeatures.join(", ")}}</strong>
+                    {{ $t("views.apps.simon.analysis.components.FileDetails.dialog.head") }}
+                    <br />
+                    {{ $t("views.apps.simon.analysis.components.FileDetails.dialog.content_1") }}: <strong>{{ selectedFeatures.join(", ") }}</strong>
 
-                    <br /><br /> Values in your file needs to have numeric value. String values are not currently supported.
-                    <br /><br /> Please inspect the file you selected if its in correct CSV format and that it doesn't have missing (NA) values or select another file in order to proceed.
+                    <br /><br />
+                    {{ $t("views.apps.simon.analysis.components.FileDetails.dialog.content_2") }} <br /><br />
+                    {{ $t("views.apps.simon.analysis.components.FileDetails.dialog.content_3") }}
                 </p>
             </div>
             <span slot="footer" class="dialog-footer">
@@ -268,82 +301,66 @@ export default {
             selectedPreProcessOptions: [
                 {
                     value: "BoxCox",
-                    label: "Box–Cox transformation (values must be non-zero and positive)",
                     disabled: false
                 },
                 {
                     value: "YeoJohnson",
-                    label: "Yeo–Johnson transform (values can be negative)",
                     disabled: false
                 },
                 {
                     value: "expoTrans",
-                    label: "Apply a power transform",
                     disabled: false
                 },
                 {
                     value: "center",
-                    label: "Subtract mean from values",
                     disabled: false
                 },
                 {
                     value: "scale",
-                    label: "Divide by standard deviation",
                     disabled: false
                 },
                 {
                     value: "range",
-                    label: "Normalize values",
                     disabled: false
                 },
                 {
                     value: "knnImpute",
-                    label: "K-Nearest neighbors Imputation",
                     disabled: false
                 },
                 {
                     value: "bagImpute",
-                    label: "Bagging of regression trees",
                     disabled: false
                 },
                 {
                     value: "medianImpute",
-                    label: "Median Impute",
                     disabled: false
                 },
                 {
                     value: "pca",
-                    label: "Principal component analysis",
                     disabled: false
                 },
                 {
                     value: "ica",
-                    label: "Independent components",
                     disabled: true
                 },
                 {
                     value: "spatialSign",
-                    label: "Project data onto a unit circle",
                     disabled: false
                 },
                 {
                     value: "corr",
-                    label: "Correlation filtering",
                     disabled: false
                 },
                 {
                     value: "zv",
-                    label: "Remove Zero-Variance",
                     disabled: false
                 },
                 {
                     value: "nzv",
-                    label: "Remove near Zero-Variance",
                     disabled: false
                 },
                 {
                     value: "conditionalX",
-                    label: "Exclude predictors that have only 1 unique value",
                     disabled: false
                 }
             ]
@@ -430,13 +447,7 @@ export default {
     },
     mounted() {
         if (this.avaliableFeaturesDisplay.length === 0) {
-            const allSelectedFeatures = [
-                ...this.selectedFeatures,
-                ...this.excludeFeatures,
-                ...this.selectedOutcome,
-                ...this.selectedFormula,
-                ...this.selectedClasses
-            ];
+            const allSelectedFeatures = [...this.selectedFeatures, ...this.excludeFeatures, ...this.selectedOutcome, ...this.selectedFormula, ...this.selectedClasses];
             const allSelectedFeaturesUnique = removeDuplicateObjectsByKey(allSelectedFeatures, "position");
             this.avaliableFeaturesDisplay = allSelectedFeaturesUnique;
         }
@@ -446,8 +457,9 @@ export default {
         formatPartitionSplitTooltip(val) {
             const training = Math.round(val);
             const testing = Math.round(100 - training);
+            const message = this.$t("views.apps.simon.analysis.components.FileDetails.other.training") + ": " + training + "% - " + this.$t("views.apps.simon.analysis.components.FileDetails.other.testing") + ": " + testing + "%";
 
-            return "Training: " + training + "% - Testing: " + testing + "%";
+            return message;
         },
         /** On user Input search available Features and suggest some results */
         filterAvaliableFeaturesDisplay: debounce(function(userInput, inputType) {
@@ -471,13 +483,7 @@ export default {
             }
         },
         resampleSelectionChange(selected, variable) {
-            const selectors = [
-                "selectedFeatures",
-                "excludeFeatures",
-                "selectedOutcome",
-                "selectedFormula",
-                "selectedClasses"
-            ];
+            const selectors = ["selectedFeatures", "excludeFeatures", "selectedOutcome", "selectedFormula", "selectedClasses"];
 
             if (variable === "selectedFeatures") {
                 const selectedFeaturesIndex = findObjectIndexByKey(this.selectedFeatures, "remapped", "ALL");
@@ -486,13 +492,13 @@ export default {
                 } else if (this.filterFeatures === true && selectedFeaturesIndex > -1) {
                     this.selectedFeatures = [
                         {
-                            original: "All columns",
+                            original: this.$t("views.apps.simon.analysis.components.FileDetails.other.all_columns"),
                             position: false,
                             remapped: "ALL"
                         }
                     ];
                     this.$message({
-                        message: "Can't select desired variable, ALL switch is on!",
+                        message: this.$t("views.apps.simon.analysis.components.FileDetails.other.message_1"),
                         type: "warning"
                     });
                 }
@@ -517,19 +523,11 @@ export default {
             this.checkFormula();
         },
         checkFormula() {
-            const allExcludeFeatures = [
-                ...this.excludeFeatures,
-                ...this.selectedOutcome,
-                ...this.selectedFormula,
-                ...this.selectedClasses
-            ];
+            const allExcludeFeatures = [...this.excludeFeatures, ...this.selectedOutcome, ...this.selectedFormula, ...this.selectedClasses];
             const allExcludeFeaturesUnique = removeDuplicateObjectsByKey(allExcludeFeatures, "position");
             // Construct regression formula if any regression fields are selected
             if (this.selectedFeatures.length > 0 && this.selectedFormula.length > 0) {
-                this.regressionFormula =
-                    this.selectedFormula.map(i => i.original).join(" + ") +
-                    " ~ " +
-                    this.selectedFeatures.map(i => i.original).join(" + ");
+                this.regressionFormula = this.selectedFormula.map(i => i.original).join(" + ") + " ~ " + this.selectedFeatures.map(i => i.original).join(" + ");
             } else {
                 this.regressionFormula = "";
             }
@@ -543,12 +541,10 @@ export default {
                 this.classificationFormula = [];
                 let i = 0;
                 this.selectedOutcome.forEach(outcome => {
-                    this.classificationFormula[i] =
-                        outcome.original + " ~ " + this.selectedFeatures.map(i => i.original).join(" + ");
+                    this.classificationFormula[i] = outcome.original + " ~ " + this.selectedFeatures.map(i => i.original).join(" + ");
 
                     if (this.filterFeatures === true && allExcludeFeaturesUnique.length > 0) {
-                        this.classificationFormula[i] +=
-                            " - (-" + allExcludeFeaturesUnique.map(i => i.original).join(", -") + ")";
+                        this.classificationFormula[i] += " - (-" + allExcludeFeaturesUnique.map(i => i.original).join(", -") + ")";
                     }
                     i++;
                 });
@@ -589,7 +585,7 @@ export default {
 
             if (newVal === true) {
                 const allSwitch = {
-                    original: "All columns",
+                    original: this.$t("views.apps.simon.analysis.components.FileDetails.other.all_columns"),
                     position: false,
                     remapped: "ALL"
                 };

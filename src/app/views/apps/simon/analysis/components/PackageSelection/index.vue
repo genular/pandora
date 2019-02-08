@@ -11,7 +11,7 @@
             <el-col :span="11">
                 <el-card class="box-card">
                     <div slot="header">
-                        {{$t('views.simon.methods.available')}} <span class="track-count">{{selectedPackages.length}}/{{avaliablePackages.length + selectedPackages.length}}</span>
+                        {{ $t('views.apps.simon.analysis.components.PackageSelection.head.available.title') }} <span class="track-count">{{selectedPackages.length}}/{{avaliablePackages.length + selectedPackages.length}}</span>
                         <el-switch v-model="filter.allPackages"></el-switch>
                     </div>
                     <div class="box-item">
@@ -41,10 +41,16 @@
                                     <div class="draggable-item-content-wrap">
                                         <ul class="general_info">
                                             <li>
-                                                <span class="title">Method type:</span>
+                                                <span class="title">
+                                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.title') }}:
+                                                </span>
                                                 <span class="desc">
-                                                        <span v-if="item.classification == 1">Classification</span>
-                                                        <span v-if="item.regression == 1">Regression</span>
+                                                        <span v-if="item.classification == 1">
+                                                            {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.classification') }}
+                                                        </span>
+                                                        <span v-if="item.regression == 1">
+                                                            {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.regression') }}
+                                                        </span>
                                                 </span>
                                                 <el-tooltip placement="top">
                                                     <div slot="content">
@@ -56,7 +62,9 @@
                                                 </el-tooltip>
                                             </li>
                                             <li v-if="item.tuning_parameters.length > 0">
-                                                <span class="title">Tuning parameters:</span>
+                                                <span class="title">
+                                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title') }}:
+                                                </span>
                                             </li>
                                         </ul>
                                         <ul class="tuning_parameters" v-if="item.tuning_parameters.length > 0">
@@ -82,25 +90,24 @@
             <el-col :span="11" :push="2">
                 <el-card class="box-card">
                     <div slot="header">
-                        {{$t('views.simon.methods.selected')}} <span class="track-count">{{selectedPackages.length}}</span>
+                        {{ $t('views.apps.simon.analysis.components.PackageSelection.head.selected.title') }} <span class="track-count">{{selectedPackages.length}}</span>
                     </div>
                     <div class="box-item">
                         <div style="float: left; height: 36px; line-height: 36px;">
                             <el-tooltip placement="top">
                                 <div slot="content">
-                                    Multi-set intersection will be limited to 200 sets
+                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.head.selected.extraction.description') }} 
                                 </div>
-                                <span class="field-label">{{$t('views.simon.filters.extraction')}} </span>
+                                <span class="field-label">{{ $t('views.apps.simon.analysis.components.PackageSelection.head.selected.extraction.title') }} </span>
                             </el-tooltip>
                             <el-switch v-model="filterExtraction"></el-switch>
                         </div>
                         <div style="float: right; height: 36px; line-height: 36px;">
                             <el-tooltip placement="top">
                                 <div slot="content">
-                                    Backward predictor selection. Least significant variable is dropped, so long as it is not significant at our chosen critical level.<br />
-                                    Applying the same rule until all remaining variables are statistically significant
+                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.head.selected.feature_selection.description') }} 
                                 </div>
-                                <span class="field-label">{{$t('views.simon.filters.selection')}} </span>
+                                <span class="field-label">{{ $t('views.apps.simon.analysis.components.PackageSelection.head.selected.feature_selection.title') }}</span>
                             </el-tooltip>
                             <el-switch v-model="backwardSelection" :disabled="true"></el-switch>
                         </div>
@@ -115,10 +122,16 @@
                                     <div class="draggable-item-content-wrap">
                                         <ul class="general_info">
                                             <li>
-                                                <span class="title">Method type:</span>
+                                                <span class="title">
+                                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.title') }}:
+                                                </span>
                                                 <span class="desc">
-                                                        <span v-if="item.classification == 1">Classification</span>
-                                                        <span v-if="item.regression == 1">Regression</span>
+                                                        <span v-if="item.classification == 1">
+                                                            {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.classification') }}
+                                                        </span>
+                                                        <span v-if="item.regression == 1">
+                                                            {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.regression') }}
+                                                        </span>
                                                 </span>
                                                 <el-tooltip placement="top">
                                                     <div slot="content">
@@ -130,7 +143,9 @@
                                                 </el-tooltip>
                                             </li>
                                             <li v-if="item.tuning_parameters.length > 0">
-                                                <span class="title">Tuning parameters:</span>
+                                                <span class="title">
+                                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title') }}:
+                                                </span>
                                             </li>
                                         </ul>
                                         <ul class="tuning_parameters" v-if="item.tuning_parameters.length > 0">

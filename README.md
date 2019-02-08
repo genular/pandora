@@ -82,7 +82,6 @@ We would also gladly like to hear from you if you find this project useful and h
 If you discover a security vulnerability within `SIMON`, please send e-mail to me at [info@genular.com](mailto:info@genular.com). All security vulnerabilities will be promptly addressed. You are also welcome to open PR request.
 
 ## License
-This software is provided under the provisions of the `GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007`. 
 Please check `LICENCE` file for more information.
 
 This software can be used for research purposes, you should cite
