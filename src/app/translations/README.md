@@ -14,6 +14,13 @@ These are compiled automatically into JSON message file `all-messages.json` by c
 The auto-generated file `all-messges.json` is parsed by `Crowdin` each time it is pushed to a branch and new/edited messages are queued for translation.
 This is github plug-in configured via `Crowdin` (github integration)[https://support.crowdin.com/github-integration/]
 
+1. Add translation in ./source
+2. Add them in the templates
+3. Build  `all-messages.json`
+3. Push code to github
+4. Wait for crowdin PR request and merge crowdin translations
+5. pull crowdin translations
+6. Compile them new translated files: yarn run translations
 
 ## Updating translations in the frontend
 Crowdin automatically creates a PR to this repo each time a translator finishes some translation work. Sync schedule is 10 minutes.
