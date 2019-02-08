@@ -18,7 +18,7 @@ This is github plug-in configured via `Crowdin` (github integration)[https://sup
 2. Add them in the templates
 3. Build  `all-messages.json` with webpack. `yarn run webpack:web:dev`
 4. Push code to github
-5. Wait for crowdin PR request and merge crowdin translations into repo
+5. Wait for crowdin PR request and merge crowdin translations branch `crowdin` into repo
 6. pull newly added crowdin translations
 7. Compile them new translated files into `translated-messages.json`: `yarn run translations`
 

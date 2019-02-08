@@ -1,12 +1,4 @@
 {
-    "route": {
-        "dashboard": "Dashboard",
-        "settings": "Settings",
-        "workspace": "Workspace",
-        "simon": "SIMON",
-        "analysis": "Analysis",
-        "exploratory-analysis": "Exploration"
-    },
     "navbar": {
         "logOut": "Log Out",
         "dashboard": "Dashboard",
@@ -164,38 +156,6 @@
                 "invalid_data": "Detected invalid data in columns",
                 "invalid_outcome": "Detected invalid data in outcome column. Please note: outcome data needs to be in boolean format: 1 or 0",
                 "error_data_points": "We are sorry but your data (samples * features) has too much points. Please reduce number of features or number of samples. Maximum supported number of data points is 1000000."
-            }
-        },
-        "exploratory": {
-            "tabs": {
-                "correlationTab": {
-                    "settings": {
-                        "correlation_method": "Correlation Method",
-                        "na_action": "NA Action",
-                        "plot_method": "Plot Method",
-                        "plot_method_mixed": {
-                            "lower_method": "Lower Method",
-                            "upper_method": "Upper Method"
-                        },
-                        "plot_type": "Plot Type",
-                        "reorder_correlation": "Reorder Correlation",
-                        "reorder_correlation_hclust": {
-                            "method": "Method",
-                            "number_of_rectangles": "Number of Rectangles"
-                        },
-                        "text_size": "Text size:",
-                        "significance": {
-                            "enable": "Significance Test",
-                            "level": "Significance Level",
-                            "insignificant_action": "Insignificant Action"
-                        },
-                        "confidence": {
-                            "enable": "Confidence Interval",
-                            "ploting_method": "Plotting Method",
-                            "level": "Confidence Level"
-                        }
-                    }
-                }
             }
         }
     },

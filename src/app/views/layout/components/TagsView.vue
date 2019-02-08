@@ -10,7 +10,7 @@
                 :key="tag.path"
                 @contextmenu.prevent.native="openMenu(tag, $event)"
             >
-                {{ generateTitle(tag.title) }}
+                {{ generateRouteTitle(tag.title) }}
                 <span v-if="visitedViews.length > 1" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"></span>
             </router-link>
         </scroll-pane>
@@ -26,7 +26,7 @@
 </template>
 <script>
 import ScrollPane from "@/components/ScrollPane";
-import { generateTitle } from "@/utils/i18n";
+import { generateRouteTitle } from "@/utils/i18n";
 
 export default {
     components: {
@@ -62,7 +62,7 @@ export default {
         this.addViewTags();
     },
     methods: {
-        generateTitle, // generateTitle by vue-i18n
+        generateRouteTitle,
         generateRoute() {
             if (this.$route.name) {
                 return this.$route;

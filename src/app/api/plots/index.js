@@ -2,17 +2,10 @@
 * @Author: LogIN-
 * @Date:   2018-03-22 13:10:06
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-24 12:38:29
+* @Last Modified time: 2019-02-08 14:30:28
 */
 import request from "@/utils/request";
 const baseUrlPath = "/plots";
-
-export function fetchCorrPlotOptions() {
-    return request({
-        url: baseUrlPath + "/correlation/render-options",
-        method: "GET"
-    });
-}
 
 export function fetchCorrPlotImage(query) {
     return request({

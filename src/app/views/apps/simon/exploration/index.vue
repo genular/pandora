@@ -28,7 +28,7 @@
                     size="small"
                     :placeholder="$t('views.apps.simon.exploration.header.performanceVariables.placeholder')"
                 >
-                    <el-option v-for="(item, index) in performaceVariables" :key="index" :value="item">
+                    <el-option v-for="(item, index) in performanceVariables" :key="index" :value="item">
                         <span>{{ $t('globals.performanceVariables.' + item) }}</span>
                     </el-option>
                 </el-select>

@@ -1,142 +1,189 @@
 <template>
-    <div class="correlationTab-container" v-loading.fullscreen.lock="loadingPlot" element-loading-text="Processing...">
+    <div class="correlationTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row v-if="tabEnabled">
             <el-row type="flex" align="top">
                 <el-col :span="24" style="text-align: right;">
-                    <el-button type="primary" icon="el-icon-download" :disabled="renderedImage === '' || loadingPlot" @click="downloadPlotImage"></el-button>
+                    <el-button
+                        :title="$t('views.apps.simon.exploration.components.tabs.correlationTab.buttons.download')"
+                        type="primary"
+                        icon="el-icon-download"
+                        :disabled="renderedImage === '' || loadingPlot"
+                        @click="downloadPlotImage"
+                    ></el-button>
                 </el-col>
             </el-row>
             <el-row type="flex" align="top">
                 <el-col :span="9">
                     <el-form class="corrolation-form" ref="settingsForm" :model="settingsForm" label-width="200px">
-                        <el-form-item :label="$t('views.exploratory.tabs.correlationTab.settings.correlation_method')">
-                            <el-select v-model="settingsForm.correlation_method" placeholder="Select">
-                                <el-option
-                                    v-for="(item, index) in settingOptions.correlation_method"
-                                    :key="index"
-                                    :label="item"
-                                    :value="item">
+                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.correlation_method.label')">
+                            <el-select
+                                v-model="settingsForm.correlation_method"
+                                :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.correlation_method.placeholder')"
+                            >
+                                <el-option v-for="item in settingOptions.correlation_method" :key="item.id" :label="item.id">
+                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.correlation_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item :label="$t('views.exploratory.tabs.correlationTab.settings.na_action')">
-                            <el-select v-model="settingsForm.na_action" placeholder="Select">
-                                <el-option
-                                    v-for="(item, index) in settingOptions.na_action"
-                                    :key="index"
-                                    :label="item"
-                                    :value="item">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-
-                        <el-form-item v-if="settingsForm.confidence.enable === false" :label="$t('views.exploratory.tabs.correlationTab.settings.plot_method')">
-                            <el-select v-model="settingsForm.plot_method" placeholder="Select">
-                                <el-option
-                                    v-for="(item, index) in settingOptions.plot_method"
-                                    :key="index"
-                                    :label="item"
-                                    :value="item">
+                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.na_action.label')">
+                            <el-select v-model="settingsForm.na_action" :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.na_action.placeholder')">
+                                <el-option v-for="item in settingOptions.na_action" :key="item.id" :label="item.id">
+                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.na_action.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
 
-
-                        <el-form-item v-if="settingsForm.plot_method === 'mixed' && settingsForm.confidence.enable === false" :label="$t('views.exploratory.tabs.correlationTab.settings.plot_method_mixed.lower_method')">
-                            <el-select v-model="settingsForm.plot_method_mixed.lower_method" placeholder="Select">
-                                <el-option
-                                    v-for="(item, index) in settingOptions.plot_method_mixed.lower_method"
-                                    :key="index"
-                                    :label="item"
-                                    :value="item">
+                        <el-form-item
+                            v-if="settingsForm.confidence.enable === false"
+                            :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method.label')"
+                        >
+                            <el-select
+                                v-model="settingsForm.plot_method"
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method.placeholder')"
+                            >
+                                <el-option v-for="item in settingOptions.plot_method" :key="item.id" :label="item.id">
+                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item v-if="settingsForm.plot_method === 'mixed' && settingsForm.confidence.enable === false" :label="$t('views.exploratory.tabs.correlationTab.settings.plot_method_mixed.upper_method')">
-                            <el-select v-model="settingsForm.plot_method_mixed.upper_method" placeholder="Select">
-                                <el-option
-                                    v-for="(item, index) in settingOptions.plot_method_mixed.upper_method"
-                                    :key="index"
-                                    :label="item"
-                                    :value="item">
+                        <el-form-item
+                            v-if="settingsForm.plot_method === 'mixed' && settingsForm.confidence.enable === false"
+                            :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.lower_method.label')"
+                        >
+                            <el-select
+                                v-model="settingsForm.plot_method_mixed.lower_method"
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.lower_method.placeholder')"
+                            >
+                                <el-option v-for="item in settingOptions.plot_method_mixed.lower_method" :key="item.id" :label="item.id">
+                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.lower_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item  v-if="settingsForm.plot_method !== 'mixed'" :label="$t('views.exploratory.tabs.correlationTab.settings.plot_type')">
-                            <el-select v-model="settingsForm.plot_type" placeholder="Select">
-                                <el-option
-                                    v-for="(item, index) in settingOptions.plot_type"
-                                    :key="index"
-                                    :label="item"
-                                    :value="item">
+                        <el-form-item
+                            v-if="settingsForm.plot_method === 'mixed' && settingsForm.confidence.enable === false"
+                            :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.upper_method.label')"
+                        >
+                            <el-select
+                                v-model="settingsForm.plot_method_mixed.upper_method"
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.upper_method.placeholder')"
+                            >
+                                <el-option v-for="item in settingOptions.plot_method_mixed.upper_method" :key="item.id" :label="item.id">
+                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.upper_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.exploratory.tabs.correlationTab.settings.reorder_correlation')">
-                            <el-select v-model="settingsForm.reorder_correlation" placeholder="Select">
-                                <el-option
-                                    v-for="(item, index) in settingOptions.reorder_correlation"
-                                    :key="index"
-                                    :label="item"
-                                    :value="item">
+                        <el-form-item v-if="settingsForm.plot_method !== 'mixed'" :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_type.label')">
+                            <el-select v-model="settingsForm.plot_type" :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_type.placeholder')">
+                                <el-option v-for="item in settingOptions.plot_type" :key="item.id" :label="item.id">
+                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.plot_type.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item v-if="settingsForm.reorder_correlation === 'hclust'" :label="$t('views.exploratory.tabs.correlationTab.settings.reorder_correlation_hclust.method')">
-                            <el-select v-model="settingsForm.reorder_correlation_hclust.method" placeholder="Select">
-                                <el-option
-                                    v-for="(item, index) in settingOptions.reorder_correlation_hclust.method"
-                                    :key="index"
-                                    :label="item"
-                                    :value="item">
+
+                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation.label')">
+                            <el-select
+                                v-model="settingsForm.reorder_correlation"
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation.placeholder')"
+                            >
+                                <el-option v-for="item in settingOptions.reorder_correlation" :key="item.id" :label="item.id">
+                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item v-if="settingsForm.reorder_correlation === 'hclust'" :label="$t('views.exploratory.tabs.correlationTab.settings.reorder_correlation_hclust.number_of_rectangles')">
+                        <el-form-item
+                            v-if="settingsForm.reorder_correlation === 'hclust'"
+                            :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation_hclust.method.label')"
+                        >
+                            <el-select
+                                v-model="settingsForm.reorder_correlation_hclust.method"
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation_hclust.method.label')"
+                            >
+                                <el-option v-for="item in settingOptions.reorder_correlation_hclust.method" :key="item.id" :label="item.id">
+                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation_hclust.method.options." + item.id) }}</span>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item
+                            v-if="settingsForm.reorder_correlation === 'hclust'"
+                            :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation_hclust.number_of_rectangles')"
+                        >
                             <el-input-number v-model="settingsForm.reorder_correlation_hclust.number_of_rectangles" :min="1"></el-input-number>
                         </el-form-item>
-                        <el-form-item :label="$t('views.exploratory.tabs.correlationTab.settings.text_size')">
-                            <el-input-number v-model="settingsForm.text_size.value" :value="settingsForm.text_size.value" :min="settingOptions.text_size.min" :max="settingOptions.text_size.max" :step="settingOptions.text_size.step" controls-position="right"></el-input-number>
+                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.text_size')">
+                            <el-input-number
+                                v-model="settingsForm.text_size.value"
+                                :value="settingsForm.text_size.value"
+                                :min="settingOptions.text_size.min"
+                                :max="settingOptions.text_size.max"
+                                :step="settingOptions.text_size.step"
+                                controls-position="right"
+                            ></el-input-number>
                         </el-form-item>
-                        <el-form-item :label="$t('views.exploratory.tabs.correlationTab.settings.significance.enable')">
+                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.significance.enable')">
                             <el-checkbox v-model="settingsForm.significance.enable"></el-checkbox>
                         </el-form-item>
-                        <el-form-item :label="$t('views.exploratory.tabs.correlationTab.settings.significance.level')" v-if="settingsForm.significance.enable === true">
-                            <el-input-number v-model="settingsForm.significance.level.value" :value="settingsForm.significance.level.value" :min="settingOptions.significance.level.min" :max="settingOptions.significance.level.max" :step="settingOptions.significance.level.step" controls-position="right"></el-input-number>
+                        <el-form-item
+                            :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.significance.level')"
+                            v-if="settingsForm.significance.enable === true"
+                        >
+                            <el-input-number
+                                v-model="settingsForm.significance.level.value"
+                                :value="settingsForm.significance.level.value"
+                                :min="settingOptions.significance.level.min"
+                                :max="settingOptions.significance.level.max"
+                                :step="settingOptions.significance.level.step"
+                                controls-position="right"
+                            ></el-input-number>
                         </el-form-item>
-                        <el-form-item :label="$t('views.exploratory.tabs.correlationTab.settings.significance.insignificant_action')" v-if="settingsForm.significance.enable === true">
-                            <el-select v-model="settingsForm.significance.insignificant_action" placeholder="Select">
-                                <el-option
-                                    v-for="(item, index) in settingOptions.significance.insignificant_action"
-                                    :key="index"
-                                    :label="item"
-                                    :value="item">
+                        <el-form-item
+                            :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.significance.insignificant_action.label')"
+                            v-if="settingsForm.significance.enable === true"
+                        >
+                            <el-select
+                                v-model="settingsForm.significance.insignificant_action"
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.significance.insignificant_action.placeholder')"
+                            >
+                                <el-option v-for="item in settingOptions.significance.insignificant_action" :key="item.id" :label="item.id">
+                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.significance.insignificant_action.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.exploratory.tabs.correlationTab.settings.confidence.enable')">
+                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.confidence.enable')">
                             <el-checkbox v-model="settingsForm.confidence.enable"></el-checkbox>
                         </el-form-item>
-                        <el-form-item :label="$t('views.exploratory.tabs.correlationTab.settings.confidence.level')" v-if="settingsForm.confidence.enable === true">
-                            <el-input-number v-model="settingsForm.confidence.level.value" :min="settingOptions.confidence.level.min" :max="settingOptions.confidence.level.max" :step="settingOptions.confidence.level.step" controls-position="right"></el-input-number>
+                        <el-form-item
+                            :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.confidence.level')"
+                            v-if="settingsForm.confidence.enable === true"
+                        >
+                            <el-input-number
+                                v-model="settingsForm.confidence.level.value"
+                                :min="settingOptions.confidence.level.min"
+                                :max="settingOptions.confidence.level.max"
+                                :step="settingOptions.confidence.level.step"
+                                controls-position="right"
+                            ></el-input-number>
                         </el-form-item>
-                        <el-form-item :label="$t('views.exploratory.tabs.correlationTab.settings.confidence.ploting_method')" v-if="settingsForm.confidence.enable === true">
-                            <el-select v-model="settingsForm.confidence.ploting_method" placeholder="Select">
-                                <el-option
-                                    v-for="(item, index) in settingOptions.confidence.ploting_method"
-                                    :key="index"
-                                    :label="item"
-                                    :value="item">
+                        <el-form-item
+                            :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.confidence.ploting_method.label')"
+                            v-if="settingsForm.confidence.enable === true"
+                        >
+                            <el-select
+                                v-model="settingsForm.confidence.ploting_method"
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.confidence.ploting_method.placeholder')"
+                            >
+                                <el-option v-for="(item, index) in settingOptions.confidence.ploting_method" :key="item.id" :label="item.id">
+                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.confidence.ploting_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" round @click="redrawImage">Plot</el-button>
+                            <el-button type="primary" round @click="redrawImage">
+                                {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
+                            </el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -148,14 +195,21 @@
         <!-- ELSE if Tab is DISABLED -->
         <el-row v-else>
             <el-col :span="24">
-                <el-alert title="Notification:" description="This function is disabled for selected feature set since its still not supported to calculate correlation for sets that have more than 250 features." type="warning" style="margin-top: 20px;" show-icon :closable="false"> </el-alert>
+                <el-alert
+                    :title="$t('views.apps.simon.exploration.components.tabs.correlationTab.alerts.function_disabled.title')"
+                    :description="$t('views.apps.simon.exploration.components.tabs.correlationTab.alerts.function_disabled.description')"
+                    type="warning"
+                    style="margin-top: 20px;"
+                    show-icon
+                    :closable="false"
+                >
+                </el-alert>
             </el-col>
         </el-row>
-
     </div>
 </template>
 <script>
-import { fetchCorrPlotOptions, fetchCorrPlotImage } from "@/api/plots";
+import { fetchCorrPlotImage } from "@/api/plots";
 import { md5String } from "@/utils";
 
 import line_chart_404 from "@/assets/404_images/charts/line_chart.svg";
@@ -177,42 +231,45 @@ export default {
             renderedImage: "",
             renderedImageData: "",
             settingOptions: {
-                correlation_method: [],
-                na_action: [],
-                // Only if confidence.enable is false
-                plot_method: [],
+                correlation_method: [{ id: "pearson" }, { id: "kendall" }, { id: "spearman" }],
+                na_action: [{ id: "everything" }, { id: "all.obs" }, { id: "complete.obs" }, { id: "na.or.complete" }, { id: "pairwise.complete.obs" }],
+                plot_method: [{ id: "mixed" }, { id: "circle" }, { id: "square" }, { id: "ellipse" }, { id: "number" }, { id: "shade" }, { id: "color" }, { id: "pie" }],
                 plot_method_mixed: {
-                    lower_method: [],
-                    upper_method: []
+                    lower_method: [{ id: "circle" }, { id: "square" }, { id: "ellipse" }, { id: "number" }, { id: "shade" }, { id: "color" }, { id: "pie" }],
+                    upper_method: [{ id: "circle" }, { id: "square" }, { id: "ellipse" }, { id: "number" }, { id: "shade" }, { id: "color" }, { id: "pie" }]
                 },
-                // Only if plot_method is not mixed
-                plot_type: [],
-                reorder_correlation: [],
+                plot_type: [{ id: "full" }, { id: "lower" }, { id: "upper" }],
+                reorder_correlation: [{ id: "original" }, { id: "AOE" }, { id: "FPC" }, { id: "hclust" }, { id: "alphabet" }],
                 reorder_correlation_hclust: {
-                    method: [],
+                    method: [
+                        { id: "complete" },
+                        { id: "ward" },
+                        { id: "ward.D" },
+                        { id: "ward.D2" },
+                        { id: "single" },
+                        { id: "average" },
+                        { id: "mcquitty" },
+                        { id: "median" },
+                        { id: "centroid" }
+                    ],
                     number_of_rectangles: 3
                 },
                 text_size: {
-                    value: 0.4,
                     min: 0.2,
                     max: 3,
                     step: 0.2
                 },
                 significance: {
-                    enable: false,
                     level: {
-                        value: 0.05,
                         min: 0,
                         max: 1,
                         step: 0.05
                     },
-                    insignificant_action: []
+                    insignificant_action: [{ id: "pch" }, { id: "p-value" }, { id: "blank" }, { id: "n" }]
                 },
                 confidence: {
-                    enable: false,
-                    ploting_method: [],
+                    ploting_method: [{ id: "square" }, { id: "circle" }, { id: "rect" }],
                     level: {
-                        value: 0.95,
                         min: 0,
                         max: 1,
                         step: 0.05
@@ -279,21 +336,15 @@ export default {
 
         const featureSet = this.jobDetailsData.resamplesList.filter(resample => resample.resampleID === this.selectedFeatureSetId)[0];
 
-        if(featureSet.featuresTotal < 250){
+        if (featureSet.featuresTotal < 250) {
             this.tabEnabled = true;
-            if(this.settingOptions.correlation_method.length < 1){
-                this.handleFetchCorrPlotOptions();
-            }
-            if(this.renderedImage === ""){
+            if (this.renderedImage === "") {
                 this.handleFetchCorrPlotImage();
             }
-        }else{
-
         }
-
     },
-    methods:  {
-        redrawImage(){
+    methods: {
+        redrawImage() {
             this.handleFetchCorrPlotImage();
         },
         downloadPlotImage() {
@@ -306,44 +357,27 @@ export default {
             downloadLink.click();
             document.body.removeChild(downloadLink);
         },
-        handleFetchCorrPlotOptions() {
-            this.loadingOptions = true;
-            fetchCorrPlotOptions()
-                .then((response) => {
-                    if (response.data.status === "success") {
-                        this.settingOptions = response.data.data;
-                    } else {
-                        console.log(response.data);
-                    }
-                    this.loadingOptions = false;
-                })
-                .catch((error) => {
-                    console.log(error);
-                    this.loadingOptions = false;
-                });
-        },
         handleFetchCorrPlotImage() {
             this.loadingPlot = true;
 
             fetchCorrPlotImage({ resampleID: this.selectedFeatureSetId, settings: this.settingsForm })
-                .then((response) => {
+                .then(response => {
                     // Decode base64 encoded results
                     this.renderedImageData = window.atob(response.data.image);
 
                     this.renderedImage = "data:image/svg+xml;base64," + encodeURIComponent(response.data.image);
                     this.loadingPlot = false;
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log("Server error:");
                     this.renderedImage = line_chart_404;
                     this.loadingPlot = false;
                 });
-
         }
     }
 };
 </script>
-<style rel='stylesheet/scss' lang='scss'>
+<style rel="stylesheet/scss" lang="scss">
 .corrolation-form {
     .el-form-item {
         margin-bottom: 5px;

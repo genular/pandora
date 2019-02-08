@@ -19,9 +19,9 @@
 									"scale": {
 										"label": "Scale",
 										"options": {
-											"row": "row",
-											"column": "column",
-											"none": "none"
+											"row": "Row",
+											"column": "Column",
+											"none": "None"
 										}
 									},
 									"display": {
@@ -42,39 +42,39 @@
 										"label": "Clustering distance",
 										"placeholder": "Select",
 										"options": {
-											"correlation": "correlation",
-											"euclidean": "euclidean",
-											"maximum": "maximum",
-											"manhattan": "manhattan",
-											"canberra": "canberra",
-											"binary": "binary",
-											"minkowski": "minkowski"
+											"correlation": "Correlation",
+											"euclidean": "Euclidean",
+											"maximum": "Maximum",
+											"manhattan": "Manhattan",
+											"canberra": "Canberra",
+											"binary": "Binary",
+											"minkowski": "Minkowski"
 										}
 									},
 									"clust_method": {
 										"label": "Clustering method",
 										"placeholder": "Select",
 										"options": {
-											"single": "single",
-											"complete": "complete",
-											"average": "average",
+											"single": "Single",
+											"complete": "Complete",
+											"average": "Average",
 											"mcquitty": "mcquitty",
-											"median": "median",
-											"centroid": "centroid",
-											"ward.D2": "ward.D2",
-											"ward.D": "ward.D"
+											"median": "Median",
+											"centroid": "Centroid",
+											"ward.D2": "Ward.D2",
+											"ward.D": "Ward.D"
 										}
 									},
 									"tree_ordering": {
 										"label": "Tree ordering",
 										"placeholder": "Select",
 										"options": {
-											"1": "tightest cluster first",
-											"2": "higher median value first",
-											"3": "higher mean value first",
-											"4": "lower median value first",
-											"5": "original",
-											"6": "reverse original"
+											"1": "Tightest cluster first",
+											"2": "Higher median value first",
+											"3": "Higher mean value first",
+											"4": "Lower median value first",
+											"5": "Original",
+											"6": "Reverse original"
 										}
 									},
 									"font_size": "Overall font-size"
