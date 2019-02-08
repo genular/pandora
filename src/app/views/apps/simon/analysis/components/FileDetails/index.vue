@@ -4,13 +4,13 @@
             <div slot="header" class="clearfix">
                 <el-row type="flex" align="middle">
                     <el-col :span="24">
-                        <span>Please select desired analysis properties:</span>
+                        <span>{{ $t('views.apps.simon.analysis.components.FileDetails.head.title') }}:</span>
                     </el-col>
                 </el-row>
 
                 <el-row type="flex" align="bottom" class="stat-badges">
                     <el-col :span="20">
-                        <small>only first 50 variables are shown, type to filter others or select ALL switch</small>
+                        <small>{{ $t('views.apps.simon.analysis.components.FileDetails.head.description') }}</small>
                         <div class="formula-placeholder" v-if="regressionFormula !== '' || classificationFormula.length > 0">
                             <div v-if="regressionFormula !== ''">
                                 <div class="formula-title">Regression</div>
@@ -25,7 +25,7 @@
                         </div>
                     </el-col>
                     <el-col :span="4">
-                        <el-button style="float: right" type="primary" size="small" @click="clearSelection">clear</el-button>
+                        <el-button style="float: right" type="primary" size="small" @click="clearSelection">{{ $t('views.apps.simon.analysis.components.FileDetails.head.clear') }}</el-button>
                     </el-col>
                 </el-row>
             </div>
@@ -36,15 +36,15 @@
                 <el-col :span="14" class="analysis-option">
                    <el-tooltip placement="top">
                         <div slot="content">
-                           A predictor variable is a variable used in ML to predict another variable.
+                           {{ $t('views.apps.simon.analysis.components.FileDetails.body.predictor.description') }}
                         </div>
-                        <span class="field-title">Predictor variables</span>
+                        <span class="field-title">{{ $t('views.apps.simon.analysis.components.FileDetails.body.predictor.title') }}</span>
                     </el-tooltip>
                     <el-select class="flud-selects" v-model="selectedFeatures"
                         multiple
                         filterable
                         remote
-                        placeholder="Please select predictor variables, type to search..."
+                        :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder')"
                         size="large"
                         value-key="position"
                         :remote-method="(userInput) => { filterAvaliableFeaturesDisplay(userInput, 'selectedFeatures') }"
@@ -65,16 +65,15 @@
                     <span class="field-title"></span>
                     <el-tooltip placement="bottom">
                         <div slot="content">
-                           If you selected to use ALL Predictors in Select ALL switch, you can exclude some of them by selecting them here.<br />
-                           To use this function select ALL switch must be turned on!
+                           {{ $t('views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description') }}
                         </div>
-                        <span class="field-title">Exclude predictors</span>
+                        <span class="field-title">{{ $t('views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.title') }}</span>
                     </el-tooltip>
                     <el-select class="flud-selects" v-model="excludeFeatures"
                         multiple
                         filterable
                         remote
-                        placeholder="Exclude predictor variables"
+                        placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.placeholder')"
                         size="large"
                         value-key="position"
                         :disabled="!filterFeatures"

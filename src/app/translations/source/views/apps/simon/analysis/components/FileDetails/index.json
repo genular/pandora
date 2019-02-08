@@ -4,7 +4,24 @@
 			"simon": {
 				"analysis": {
 					"components": {
-						"FileDetails": {}
+						"FileDetails": {
+							"head": {
+								"title": "Please select desired analysis properties",
+								"description": "only first 50 variables are shown, type to filter others or select ALL switch",
+								"clear": "clear"
+							},
+							"body": {
+								"predictor": {
+									"title": "Predictor variables",
+									"description": "A predictor variable is a variable used in ML to predict another variable",
+									"placeholder": "Please select predictor variables, type to search..."
+								},
+								"predictor_exclude": {
+									"title": "Exclude predictors",
+									"description": "If you selected to use ALL Predictors in Select ALL switch, you can exclude some of them by selecting them here.<br />To use this function select ALL switch must be turned on!",
+									"placeholder": "Exclude predictor variables"
+								}
+							}
 					}
 				}
 			}
