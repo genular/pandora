@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 12:12:02
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-01-22 13:22:17
+ * @Last Modified time: 2019-02-07 16:44:45
  */
 const fs = require("fs");
 const glob = require("glob");
@@ -42,7 +42,7 @@ PrepareMessagesPlugin.prototype.apply = function(compiler) {
 						let defaultMessage = descriptors[transID];
 						if (collection.hasOwnProperty(transID)) {
 							stats.compilation.errors.push(
-								new Error(`ERROR compiling translation messages: Duplicate message id: ${id}`)
+								new Error(`Compiling translation messages: Duplicate message id: ${transID}`)
 							);
 						}
 						collection[transID] = defaultMessage;
@@ -50,10 +50,8 @@ PrepareMessagesPlugin.prototype.apply = function(compiler) {
 				}
 				return collection;
 			}, {});
-
 		if (!stats.compilation.errors.length) {
 			const translationsPath = outputDir + "/all-messages.json";
-			// console.log("Writing translation files: " + translationsPath);
 			// Write the messages to /translations/all-messages.json
 			fs.writeFileSync(translationsPath, JSON.stringify(defaultMessages, null, 2));
 		}

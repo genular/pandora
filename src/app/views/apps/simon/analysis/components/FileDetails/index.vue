@@ -21,7 +21,7 @@
                                  <el-tag class="formula-tag" :key="index" v-for="(classificationFormula, index) in classificationFormula" type="info" size="mini">
                                     {{classificationFormula}}
                                 </el-tag>
-                            </div>
+                            </div> 
                         </div>
                     </el-col>
                     <el-col :span="4">
