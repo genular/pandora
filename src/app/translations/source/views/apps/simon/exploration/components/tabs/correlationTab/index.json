@@ -82,7 +82,7 @@
 										"label": "Reorder Correlation",
 										"placeholder": "Select",
 										"options": {
-											"original": "original",
+											"original": "Original",
 											"AOE": "Angular order of the eigenvectors",
 											"FPC": "First principal component",
 											"hclust": "Hierarchical clustering",

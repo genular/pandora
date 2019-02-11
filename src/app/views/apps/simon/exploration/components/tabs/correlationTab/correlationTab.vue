@@ -20,14 +20,24 @@
                                 v-model="settingsForm.correlation_method"
                                 :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.correlation_method.placeholder')"
                             >
-                                <el-option v-for="item in settingOptions.correlation_method" :key="item.id" :label="item.id">
+                                <el-option
+                                    v-for="item in settingOptions.correlation_method"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.simon.exploration.components.tabs.correlationTab.form.correlation_method.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
                                     <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.correlation_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.na_action.label')">
                             <el-select v-model="settingsForm.na_action" :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.na_action.placeholder')">
-                                <el-option v-for="item in settingOptions.na_action" :key="item.id" :label="item.id">
+                                <el-option
+                                    v-for="item in settingOptions.na_action"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.simon.exploration.components.tabs.correlationTab.form.na_action.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
                                     <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.na_action.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
@@ -41,7 +51,12 @@
                                 v-model="settingsForm.plot_method"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method.placeholder')"
                             >
-                                <el-option v-for="item in settingOptions.plot_method" :key="item.id" :label="item.id">
+                                <el-option
+                                    v-for="item in settingOptions.plot_method"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
                                     <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
@@ -55,7 +70,12 @@
                                 v-model="settingsForm.plot_method_mixed.lower_method"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.lower_method.placeholder')"
                             >
-                                <el-option v-for="item in settingOptions.plot_method_mixed.lower_method" :key="item.id" :label="item.id">
+                                <el-option
+                                    v-for="item in settingOptions.plot_method_mixed.lower_method"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.lower_method.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
                                     <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.lower_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
@@ -69,7 +89,12 @@
                                 v-model="settingsForm.plot_method_mixed.upper_method"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.upper_method.placeholder')"
                             >
-                                <el-option v-for="item in settingOptions.plot_method_mixed.upper_method" :key="item.id" :label="item.id">
+                                <el-option
+                                    v-for="item in settingOptions.plot_method_mixed.upper_method"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.upper_method.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
                                     <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.upper_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
@@ -77,7 +102,12 @@
 
                         <el-form-item v-if="settingsForm.plot_method !== 'mixed'" :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_type.label')">
                             <el-select v-model="settingsForm.plot_type" :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_type.placeholder')">
-                                <el-option v-for="item in settingOptions.plot_type" :key="item.id" :label="item.id">
+                                <el-option
+                                    v-for="item in settingOptions.plot_type"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.simon.exploration.components.tabs.correlationTab.form.plot_type.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
                                     <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.plot_type.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
@@ -88,7 +118,12 @@
                                 v-model="settingsForm.reorder_correlation"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation.placeholder')"
                             >
-                                <el-option v-for="item in settingOptions.reorder_correlation" :key="item.id" :label="item.id">
+                                <el-option
+                                    v-for="item in settingOptions.reorder_correlation"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
                                     <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
@@ -101,7 +136,12 @@
                                 v-model="settingsForm.reorder_correlation_hclust.method"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation_hclust.method.label')"
                             >
-                                <el-option v-for="item in settingOptions.reorder_correlation_hclust.method" :key="item.id" :label="item.id">
+                                <el-option
+                                    v-for="item in settingOptions.reorder_correlation_hclust.method"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation_hclust.method.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
                                     <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation_hclust.method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
@@ -146,7 +186,12 @@
                                 v-model="settingsForm.significance.insignificant_action"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.significance.insignificant_action.placeholder')"
                             >
-                                <el-option v-for="item in settingOptions.significance.insignificant_action" :key="item.id" :label="item.id">
+                                <el-option
+                                    v-for="item in settingOptions.significance.insignificant_action"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.simon.exploration.components.tabs.correlationTab.form.significance.insignificant_action.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
                                     <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.significance.insignificant_action.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
@@ -175,7 +220,12 @@
                                 v-model="settingsForm.confidence.ploting_method"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.confidence.ploting_method.placeholder')"
                             >
-                                <el-option v-for="(item, index) in settingOptions.confidence.ploting_method" :key="item.id" :label="item.id">
+                                <el-option
+                                    v-for="(item, index) in settingOptions.confidence.ploting_method"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.simon.exploration.components.tabs.correlationTab.form.confidence.ploting_method.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
                                     <span>{{ $t("views.apps.simon.exploration.components.tabs.correlationTab.form.confidence.ploting_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
@@ -196,8 +246,8 @@
         <el-row v-else>
             <el-col :span="24">
                 <el-alert
-                    :title="$t('views.apps.simon.exploration.components.tabs.correlationTab.alerts.function_disabled.title')"
-                    :description="$t('views.apps.simon.exploration.components.tabs.correlationTab.alerts.function_disabled.description')"
+                    :title="$t('views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.title')"
+                    :description="$t('views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.description')"
                     type="warning"
                     style="margin-top: 20px;"
                     show-icon

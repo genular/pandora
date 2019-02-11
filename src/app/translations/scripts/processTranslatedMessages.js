@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 11:54:49
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-01-22 15:06:13
+ * @Last Modified time: 2019-02-11 07:32:57
  */
 const fs = require("fs");
 const glob = require("glob");
@@ -13,7 +13,7 @@ const translatedMessages = {};
 const unsupportedLocales = [];
 
 const filePattern = path.resolve(__dirname, "../") + "/languages/**/*.json";
-const outputDir = path.resolve(__dirname, "../");
+const outputDir = path.resolve(__dirname, "../compiled");
 
 glob.sync(filePattern).map(filePath => {
 	const file = fs.readFileSync(filePath, "utf8");
@@ -39,7 +39,13 @@ if (unsupportedLocales.length) {
 	unsupportedLocales.map(locale => console.info(`${locale} is not supported`));
 }
 
-const translationsPath = outputDir + "/translated-messages.json";
-fs.writeFileSync(translationsPath, JSON.stringify(translatedMessages, null, 2));
+for (let key in translatedMessages) {
+	if (translatedMessages.hasOwnProperty(key)) {
+		const locale = key;
+		const translation = translatedMessages[key];
+		const translationsPath = outputDir + "/" + locale + ".json";
 
-console.info("\nUpdated: " + translationsPath + "\n");
+		fs.writeFileSync(translationsPath, JSON.stringify(translation, null, 2));
+		console.info("\nUpdated: " + translationsPath + "\n");
+	}
+}

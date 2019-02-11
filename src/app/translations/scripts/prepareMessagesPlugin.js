@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 12:12:02
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-07 16:44:45
+ * @Last Modified time: 2019-02-11 07:58:21
  */
 const fs = require("fs");
 const glob = require("glob");
@@ -14,7 +14,7 @@ const flatten = require("flat");
  * This path are relative to webpack script located: .webpack-config/webpack.base.config.js
  */
 const filePattern = path.resolve(__dirname, "../") + "/source/**/*.json";
-const outputDir = path.resolve(__dirname, "../");
+const outputDir = path.resolve(__dirname, "../source");
 
 function PrepareMessagesPlugin(options) {
 	// JJ dev note: leaving this here in case we want to add options later
@@ -33,7 +33,7 @@ PrepareMessagesPlugin.prototype.apply = function(compiler) {
 			.reduce((collection, descriptors) => {
 				/**
 				 * Lets flatten the nested object in the following way
-				 *   'login.username': 'Username'
+				 *   'login.username': 'Username' 
 				 */
 				descriptors = flatten(descriptors);
 
@@ -51,8 +51,7 @@ PrepareMessagesPlugin.prototype.apply = function(compiler) {
 				return collection;
 			}, {});
 		if (!stats.compilation.errors.length) {
-			const translationsPath = outputDir + "/all-messages.json";
-			// Write the messages to /translations/all-messages.json
+			const translationsPath = outputDir + "/combined.json";
 			fs.writeFileSync(translationsPath, JSON.stringify(defaultMessages, null, 2));
 		}
 	});

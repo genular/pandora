@@ -58,7 +58,12 @@
                     </el-form-item>
                     <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.scale.label')">
                         <el-select v-model="settingsForm.scale" placeholder="Select">
-                            <el-option v-for="item in settingOptions.scale" :key="item.id" :value="item.id">
+                            <el-option
+                                v-for="item in settingOptions.scale"
+                                :key="item.id"
+                                :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.scale.options.', item.id].join(''))"
+                                :value="item.id"
+                            >
                                 <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.scale.options." + item.id) }}</span>
                             </el-option>
                         </el-select>
@@ -71,7 +76,8 @@
                                 v-for="(item, index) in settingOptions.displayOptions"
                                 :style="index !== 0 && index % 2 === 0 ? 'clear: left;float: left;margin-left: 0;' : ''"
                                 :key="item.id"
-                                :label="item.id"
+                                :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.display.options.', item.id].join(''))"
+                                :value="item.id"
                             >
                                 <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.display.options." + item.id) }}</span>
                             </el-checkbox>
@@ -149,8 +155,12 @@
                             v-model="settingsForm.clustDistance"
                             :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_distance.placeholder')"
                         >
-                            <el-option v-for="item in settingOptions.clustDistance" :key="item.id" :value="item.id"
-                                :label="item.id">
+                            <el-option
+                                v-for="item in settingOptions.clustDistance"
+                                :key="item.id"
+                                :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_distance.options.', item.id].join(''))"
+                                :value="item.id"
+                            >
                                 <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_distance.options." + item.id) }}</span>
                             </el-option>
                         </el-select>
@@ -160,8 +170,12 @@
                             v-model="settingsForm.clustLinkage"
                             :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.placeholder')"
                         >
-                            <el-option v-for="item in settingOptions.clustLinkage" :key="item.id" :value="item.id"
-                                :label="item.id">
+                            <el-option
+                                v-for="item in settingOptions.clustLinkage"
+                                :key="item.id"
+                                :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
+                                :value="item.id"
+                            >
                                 <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
                             </el-option>
                         </el-select>
@@ -171,8 +185,12 @@
                             v-model="settingsForm.clustOrdering"
                             :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.tree_ordering.placeholder')"
                         >
-                            <el-option v-for="item in settingOptions.clustOrdering" :key="item.id" :value="item.id"
-                                :label="item.id">
+                            <el-option
+                                v-for="item in settingOptions.clustOrdering"
+                                :key="item.id"
+                                :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.tree_ordering.options.', item.id].join(''))"
+                                :value="item.id"
+                            >
                                 <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.tree_ordering.options." + item.id) }}</span>
                             </el-option>
                         </el-select>
