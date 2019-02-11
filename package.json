@@ -52,8 +52,7 @@
     "scripts": {
         "start:web": "webpack-dev-server --progress --colors --config=.webpack-config/webpack.app.config.js --env=development --target=web",
         "webpack:web:dev": "webpack --config=.webpack-config/webpack.app.config.js --env=development --target=web",
-        "webpack:web:prod": "webpack --config=.webpack-config/webpack.app.config.js --env=production --target=web",
-        "translations": "node src/app/translations/scripts/processTranslatedMessages.js"
+        "webpack:web:prod": "webpack --config=.webpack-config/webpack.app.config.js --env=production --target=web"
     },
     "dependencies": {
         "axios": "^0.18.0",
