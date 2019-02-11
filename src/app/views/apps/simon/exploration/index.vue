@@ -3,21 +3,21 @@
         <el-row type="flex" align="middle">
             <el-col :span="24">
                 <el-tooltip style="float: left;" placement="top" v-if="explorationJobId">
-                    <div slot="content">{{ $t('globals.buttons.copy') }}</div>
+                    <div slot="content">{{ $t("globals.buttons.copy") }}</div>
                     <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(explorationJobId, $event)"
-                        >{{ $t('views.apps.simon.exploration.header.selected_queue') }}: {{ explorationJobId }}</el-button
+                        >{{ $t("views.apps.simon.exploration.header.selected_queue") }}: {{ explorationJobId }}</el-button
                     >
                 </el-tooltip>
                 <el-tooltip style="float: left;" placement="top" v-if="selectedFeatureSetId > 0">
-                    <div slot="content">{{ $t('globals.buttons.copy') }}</div>
+                    <div slot="content">{{ $t("globals.buttons.copy") }}</div>
                     <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(selectedFeatureSetId, $event)"
-                        >{{ $t('views.apps.simon.exploration.header.selected_dataset') }}: {{ selectedFeatureSetId }}</el-button
+                        >{{ $t("views.apps.simon.exploration.header.selected_dataset") }}: {{ selectedFeatureSetId }}</el-button
                     >
                 </el-tooltip>
                 <el-tooltip style="float: right;" placement="top" v-if="selectedModelsIDs.length > 0">
                     <div slot="content">{{ $t("globals.buttons.copy") }}</div>
                     <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(JSON.stringify(selectedModelsIDs), $event)">
-                        {{ $t('views.apps.simon.exploration.header.selected_models') }}: {{ selectedModelsIDs.join(", ") }}
+                        {{ $t("views.apps.simon.exploration.header.selected_models") }}: {{ selectedModelsIDs.join(", ") }}
                     </el-button>
                 </el-tooltip>
                 <el-select
@@ -28,11 +28,13 @@
                     size="small"
                     :placeholder="$t('globals.performanceVariables.placeholder')"
                 >
-                    <el-option v-for="(item, index) in performanceVariables" 
-                        :key="index" 
-                        :value="index"  
-                        :label="$t(['globals.performanceVariables.options.', index, '.title'].join(''))">
-                        <span>{{ $t('globals.performanceVariables.options.', index, '.title') }}</span>
+                    <el-option
+                        v-for="item in performanceVariables"
+                        :key="item"
+                        :value="item"
+                        :label="$t(['globals.performanceVariables.options.', item, '.title'].join(''))"
+                    >
+                        <span>{{ $t("globals.performanceVariables.options." + item + ".title") }}</span>
                     </el-option>
                 </el-select>
             </el-col>
@@ -177,7 +179,7 @@ export default {
                     } else {
                         // Something went wrong, cannot fetch details from Server
                         this.$message({
-                            message: this.$t('globals.errors.request_general'),
+                            message: this.$t("globals.errors.request_general"),
                             type: "error",
                             duration: 10000,
                             showClose: true

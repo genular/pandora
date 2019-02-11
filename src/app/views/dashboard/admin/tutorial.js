@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-25 17:05:53
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-11 13:31:47
+ * @Last Modified time: 2019-02-11 14:42:46
  */
 
 export function tutorial() {
@@ -73,9 +73,27 @@ export function tutorial() {
 			element: ".tags-view-container",
 			stageBackground: "transparent",
 			popover: {
-				title: "Opened pages",
+				title: "Opened tabs",
 				description: "Each page is opened in its own tab. Here you can easily switch between pages.",
 				position: "bottom"
+			}
+		},
+		{
+			element: ".selected-files-container",
+			stageBackground: "transparent",
+			popover: {
+				title: "Selected actions",
+				description: "When you select your working file from workspace or queue you wish to explore from dashboard it will be shown here.",
+				position: "bottom"
+			}
+		},
+		{
+			element: ".international",
+			stageBackground: "transparent",
+			popover: {
+				title: "Different language?",
+				description: "Here you can easily switch your interface language.",
+				position: "left"
 			}
 		}
 	];

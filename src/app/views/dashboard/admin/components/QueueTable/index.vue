@@ -124,9 +124,16 @@
                             multiple
                             filterable
                             size="small"
-                            placeholder="Select performace measurement"
+                            :placeholder="$t('globals.performanceVariables.placeholder')"
                         >
-                            <el-option v-for="item in performaceVariables[selectedResamplesID]" :key="item" :label="item" :value="item"> </el-option>
+                            <el-option
+                                v-for="item in performaceVariables[selectedResamplesID]"
+                                :key="item"
+                                :value="item"
+                                :label="$t(['globals.performanceVariables.options.', item, '.title'].join(''))"
+                            >
+                                <span>{{ $t("globals.performanceVariables.options." + item + ".title") }}</span>
+                            </el-option>
                         </el-select>
                     </el-col>
                 </el-row>
