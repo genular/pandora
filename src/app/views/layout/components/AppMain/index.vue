@@ -31,7 +31,7 @@ export default {
                 lock: true,
                 target: ".app-main-inner",
                 customClass: "lost-connectivity",
-                text: "Your device lost connection with server",
+                text: this.$t('views.layout.components.AppMain.connection_lost'),
                 spinner: "el-icon-loading",
                 background: "rgba(255, 255, 255, 0)"
             });

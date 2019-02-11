@@ -1,0 +1,68 @@
+{
+	"views": {
+		"dashboard": {
+			"admin": {
+				"components": {
+					"QueueTable": {
+						"no_data": "Looks like you did not submit any tasks. Please go to workspace upload and chhose file and create a new analasys task!",
+						"filters": {
+							"queue_id": {
+								"placeholder": "Please enter task ID",
+								"sorting": {
+									"descending": "Descending",
+									"ascending": "Ascending"
+								}
+							},
+							"buttons": {
+								"search": "Search",
+								"export": "Export table"
+							}
+						},
+						"table": {
+							"header": {
+								"queue_id": "ID",
+								"queue_name": "Name",
+								"created": "Created",
+								"queueProcessingTime": "Processing time",
+								"status": "Status",
+								"extraction": {
+									"title": "extraction",
+									"options": {
+										"yes": "Yes",
+										"no": "No",
+									}
+								},
+								"sparsity": "Sparsity (%)",
+								"resamples": "Resamples",
+								"modelsTotal": "Models processed",
+								"modelsSuccess": "Successful models",
+								"operations": "Operations"
+							},
+							"operations": {
+
+								"info": {
+									"title": "More information"
+								},
+								"download": {
+									"title": "Download dataset"
+								},
+								"delete": {
+									"title": "Delete dataset",
+									"dialog": {
+										"title": "",
+										"description": ""
+									}
+								}
+							}
+						},
+						"messages": {
+							"not_authorized": "You can analyze only your jobs.",
+							"in_progress": "Cannot select job. Job is not finished.",
+							"missing_models": "Cannot select job. All analysis exited with error."
+						}
+					}
+				}
+			}
+		}
+	}
+}

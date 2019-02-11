@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 11:52:45
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-11 08:32:57
+ * @Last Modified time: 2019-02-11 10:35:16
  */
 /*
  * @Author: LogIN-
@@ -107,7 +107,7 @@ module.exports = environment => {
                             img: "src",
                             image: "xlink:href"
                         },
-                        compilerOptions: { preserveWhitespace: false, whitespace: 'condense' }
+                        compilerOptions: { preserveWhitespace: false, whitespace: "condense" }
                     }
                 },
                 {
@@ -172,6 +172,7 @@ module.exports = environment => {
             }),
             // Prepare translations files
             new prepareMessagesPlugin(),
+            new webpack.WatchIgnorePlugin([/\langs\.json$/]),
             new HtmlWebpackPlugin({
                 title: "SIMON",
                 template: SRC_DIR + "/index.html",

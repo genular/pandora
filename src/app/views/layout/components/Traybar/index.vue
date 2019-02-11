@@ -2,25 +2,19 @@
     <el-header class="simon-header" height="30">
         <div class="traybar-dropdownmenu">
             <el-dropdown :hide-on-click="true" size="mini" :show-timeout="0" :hide-timeout="0" trigger="click" @command="handleCommand">
-                <el-button type="primary" size="mini">
-                    File<i class="el-icon-arrow-down el-icon--right"></i>
-                </el-button>
+                <el-button type="primary" size="mini"> File<i class="el-icon-arrow-down el-icon--right"></i> </el-button>
                 <el-dropdown-menu slot="dropdown" class="tray-navigation">
                     <el-dropdown-item command="quit" divided><i class="el-icon-arrow-down el-icon--left"></i> Quit</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
             <el-dropdown :hide-on-click="true" size="mini" :show-timeout="0" :hide-timeout="0" trigger="click" @command="handleCommand">
-                <el-button type="primary" size="mini">
-                    Edit<i class="el-icon-arrow-down el-icon--right"></i>
-                </el-button>
+                <el-button type="primary" size="mini"> Edit<i class="el-icon-arrow-down el-icon--right"></i> </el-button>
                 <el-dropdown-menu slot="dropdown" class="tray-navigation">
                     <el-dropdown-item command="settings"><i class="el-icon-arrow-down el-icon--left"></i> Settings...</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
             <el-dropdown :hide-on-click="true" size="mini" :show-timeout="0" :hide-timeout="0" trigger="click" @command="handleCommand">
-                <el-button type="primary" size="mini">
-                    Help<i class="el-icon-arrow-down el-icon--right"></i>
-                </el-button>
+                <el-button type="primary" size="mini"> Help<i class="el-icon-arrow-down el-icon--right"></i> </el-button>
                 <el-dropdown-menu slot="dropdown" class="tray-navigation">
                     <el-dropdown-item command="website">Website</el-dropdown-item>
                 </el-dropdown-menu>
@@ -58,11 +52,8 @@ export default {
         },
         trayActions(action) {
             if (action === "quit") {
-                
             } else if (action === "minimize") {
-
             } else if (action === "toggle") {
-
             }
         }
     }

@@ -1,0 +1,11 @@
+{
+	"views": {
+		"layout": {
+			"components": {
+				"Navbar": {
+					"logout": "Log out"
+				}
+			}
+		}
+	}
+}

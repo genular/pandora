@@ -1,26 +1,28 @@
 <template>
-    <div class="queue-list-container" v-loading="queueListLoading" :element-loading-text="$t('views.dashboard.jobs.loading_title')">
+    <div class="queue-list-container" v-loading="queueListLoading" :element-loading-text="$t('globals.page_loading')">
         <div class="filter-container">
             <el-input
                 @keyup.enter.native="handleFilter"
                 style="width: 300px;"
                 class="filter-item"
-                :placeholder="$t('views.dashboard.jobs.search.fields.job_id')"
+                :placeholder="$t('views.dashboard.admin.components.QueueTable.filters.queue_id.placeholder')"
                 v-model="queueFilterQuery.queueID"
             >
             </el-input>
             <el-select @change="handleFilter" style="width: 140px" class="filter-item" v-model="queueFilterQuery.sort">
                 <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"> </el-option>
             </el-select>
-            <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">{{ $t("views.dashboard.jobs.search.buttons.search") }}</el-button>
+            <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">
+                {{ $t("views.dashboard.admin.components.QueueTable.filters.buttons.search") }}
+            </el-button>
             <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">{{
-                $t("views.dashboard.jobs.search.buttons.export")
+                $t("views.dashboard.admin.components.QueueTable.filters.buttons.export")
             }}</el-button>
         </div>
         <el-table
             :data="queueList"
             ref="queueTable"
-            empty-text="Looks like you did not submit any tasks. Please go to workspace upload and chhose file and create a new analasys task!"
+            :empty-text="$t('views.dashboard.admin.components.QueueTable.no_data')"
             @select-all="selectJobID"
             @select="selectJobID"
             row-key="queueID"
@@ -32,60 +34,65 @@
         >
             <el-table-column type="selection" reserve-selection width="40" fixed> </el-table-column>
 
-            <el-table-column align="center" :label="$t('views.dashboard.jobs.table.header.id')" width="65">
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.queue_id')" width="65">
                 <template slot-scope="scope">
                     <span>{{ scope.row.queueID }}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="left" label="Name">
+            <el-table-column align="left" :label="$t('views.dashboard.admin.components.QueueTable.table.header.queue_name')">
                 <template slot-scope="scope">
                     <span class="queue-name" :title="scope.row.queueName">{{ scope.row.queueName }}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" :label="$t('views.dashboard.jobs.table.header.submitted')">
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.created')">
                 <template slot-scope="scope">
                     <span>{{ scope.row.created | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" :label="$t('views.dashboard.jobs.table.header.processing_time')">
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.queueProcessingTime')">
                 <template slot-scope="scope">
                     <span v-if="scope.row.queueProcessingTime">{{ scope.row.queueProcessingTime | millisecondsToStr }}</span>
                     <span v-else>N/A</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" class-name="status-col" :label="$t('views.dashboard.jobs.table.header.status')" width="175">
+            <el-table-column align="center" class-name="status-col" :label="$t('views.dashboard.admin.components.QueueTable.table.header.status')" width="175">
                 <template slot-scope="scope">
                     <el-tag :type="statusFilter(scope.row.status, 'class')">{{ statusFilter(scope.row.status, "value") }}</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="Extraction">
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.extraction.title')">
                 <template slot-scope="scope">
-                    <span v-if="scope.row.queueExtraction < 1">No</span> <span v-else>Yes</span>
+                    <span v-if="scope.row.queueExtraction < 1">
+                        {{ $t("views.dashboard.admin.components.QueueTable.table.header.extraction.options.no") }}
+                    </span>
+                    <span v-else>
+                        {{ $t("views.dashboard.admin.components.QueueTable.table.header.extraction.options.yes") }}
+                    </span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="Sparsity (%)">
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.sparsity')">
                 <template slot-scope="scope">
                     <span v-if="scope.row.sparsity < 0.5"> <span class="el-icon-success"></span> {{ scope.row.sparsity * 100 }}% </span>
                     <span v-else-if="scope.row.sparsity > 0.5 && scope.row.sparsity < 0.75"> <span class="el-icon-warning"></span> {{ scope.row.sparsity * 100 }}% </span>
                     <span v-else> <span class="el-icon-error"></span> {{ scope.row.sparsity * 100 }}% </span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="Resamples">
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.resamples')">
                 <template slot-scope="scope">
                     <span>{{ scope.row.resamplesTotal }}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="Models Processed">
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.modelsTotal')">
                 <template slot-scope="scope">
                     <span>{{ scope.row.modelsTotal }}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="Sucesfull">
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.modelsSuccess')">
                 <template slot-scope="scope">
                     <span>{{ scope.row.modelsSuccess }}</span>
                 </template>
             </el-table-column>
-            <el-table-column class-name="settings" fixed="right" label="Operations" width="180">
+            <el-table-column class-name="settings" fixed="right" :label="$t('views.dashboard.admin.components.QueueTable.table.header.operations')" width="180">
                 <template slot-scope="scope">
                     <el-button size="mini" type="success" round icon="el-icon-info" @click="handleOperations('info', scope.row)"></el-button>
                     <el-button size="mini" type="primary" plain icon="el-icon-download" @click="handleOperations('download', scope.row)"></el-button>
@@ -298,11 +305,11 @@ export default {
             },
             sortOptions: [
                 {
-                    label: this.$t("views.dashboard.jobs.search.fields.sort.id_asc"),
+                    label: this.$t("views.dashboard.admin.components.QueueTable.filters.queue_id.sorting.ascending"),
                     key: "+"
                 },
                 {
-                    label: this.$t("views.dashboard.jobs.search.fields.sort.id_desc"),
+                    label: this.$t("views.dashboard.admin.components.QueueTable.filters.queue_id.sorting.descending"),
                     key: "-"
                 }
             ],

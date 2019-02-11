@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-25 17:05:53
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-01-29 13:36:41
+ * @Last Modified time: 2019-02-11 13:31:47
  */
 
 export function tutorial() {
@@ -12,7 +12,7 @@ export function tutorial() {
 			stageBackground: "transparent",
 			popover: {
 				title: this.$t("Welcome to genular! Lets do some explanation.."),
-				description: "Here on the right you will find main navigation menu.",
+				description: "Here on the right you will find main navigation menu. Witch you will use to navigate the interface.",
 				// position can be left, left-center, left-bottom, top,
 				// top-center, top-right, right, right-center, right-bottom,
 				// bottom, bottom-center, bottom-right
@@ -20,7 +20,16 @@ export function tutorial() {
 			}
 		},
 		{
-			element: ".dashboard-container",
+			element: ".is-active",
+			stageBackground: "transparent",
+			popover: {
+				title: "Current page",
+				description: "Current page will always be marked with read vertical line, so you always know what is your current location",
+				position: "bottom-left"
+			}
+		},
+		{
+			element: ".dashboard-inner-container",
 			stageBackground: "#FFFFFF",
 			popover: {
 				title: "You are currently located in Dashboard",
@@ -34,7 +43,7 @@ export function tutorial() {
 		},
 		{
 			element: ".queue-list-container-table",
-			stageBackground: "#ffffff",
+			stageBackground: "#FFFFFF",
 			popover: {
 				title: "Processing Queue",
 				description:

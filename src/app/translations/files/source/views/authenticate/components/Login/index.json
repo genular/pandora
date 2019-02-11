@@ -2,7 +2,14 @@
 	"views": {
 		"authenticate": {
 			"components": {
-				"Login": {}
+				"Login": {
+					"username": "Username",
+					"password": "Password",
+					"reset_password": "Forgot password",
+					"sign_in": "Sign in",
+					"sign_up": "Sign up now",
+					"login_error": "Username, password or both are incorrect!"
+				}
 			}
 		}
 	}

@@ -24,7 +24,9 @@
                         </el-dropdown-item>
                     </router-link>
                     <el-dropdown-item divided>
-                        <span @click="logoutUser" style="display:block;">{{ $t("navbar.logOut") }}</span>
+                        <span @click="logoutUser" style="display:block;">
+                            {{ $t('views.layout.components.Navbar.logout') }}
+                        </span>
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>

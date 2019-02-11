@@ -17,6 +17,10 @@ service.interceptors.request.use(
         if (store.getters.auth_token) {
             config.headers["X-Token"] = store.getters.auth_token;
         }
+        
+        if (store.getters.language) {
+            config.headers["Accept-Language"] = store.getters.language;
+        }
 
         if (config.url.startsWith("/analysis")) {
             config.baseURL = store.getters.user_settings_server_address_analysis;

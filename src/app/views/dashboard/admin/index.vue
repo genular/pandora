@@ -6,7 +6,7 @@
                 <queue-table></queue-table>
             </el-col>
         </el-row>
-        <el-button class="tutorial_button" icon="el-icon-question" size="mini" type="primary" round @click.prevent.stop="startGuide">Guide</el-button>
+        <el-button class="tutorial_button" icon="el-icon-question" size="mini" type="primary" round @click.prevent.stop="startGuide">{{ $t("globals.buttons.guide.title") }}</el-button>
     </div>
 </template>
 <script>
@@ -14,9 +14,7 @@ import Driver from "driver.js";
 import "driver.js/dist/driver.min.css";
 
 import { tutorial } from "./tutorial";
-
-import PanelGroup from "./components/PanelGroup";
-import QueueTable from "./components/QueueTable";
+import { PanelGroup, QueueTable } from "./components";
 
 export default {
     name: "dashboard-admin",
@@ -26,8 +24,12 @@ export default {
     },
     mounted() {
         console.log("mounted: dashboard");
-        this.driver = new Driver();
-        // this.startGuide();
+        this.driver = new Driver({
+            doneBtnText: this.$t("globals.buttons.guide.doneBtnText"),
+            closeBtnText: this.$t("globals.buttons.guide.closeBtnText"),
+            nextBtnText: this.$t("globals.buttons.guide.nextBtnText"),
+            prevBtnText: this.$t("globals.buttons.guide.prevBtnText")
+        });
     },
     methods: {
         tutorial,
@@ -41,7 +43,7 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-.tutorial_button{
+.tutorial_button {
     position: fixed;
     right: 30px;
     bottom: 5px;

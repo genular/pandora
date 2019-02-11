@@ -47,10 +47,6 @@ const main = {
         },
         setLanguage({ commit }, language) {
             console.log("setting language: " + language);
-            this.$i18n.locale = language;
-            
-            axios.defaults.headers.common["Accept-Language"] = language;
-            document.querySelector("html").setAttribute("lang", language);
 
             commit("SET_LANGUAGE", language);
         },

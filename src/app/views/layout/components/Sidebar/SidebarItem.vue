@@ -114,7 +114,7 @@ export default {
                 });
             } else {
                 this.$message({
-                    message: "You must satisfy specific module criteria to use it, like for example select from Workspace.",
+                    message: this.$t('views.layout.components.Sidebar.action_not_allowed'),
                     type: "warning"
                 });
             }

@@ -10,49 +10,62 @@
 	"globals": {
 		"page_loading": "Processing",
 		"buttons": {
-			"copy": "Copy"
+			"copy": "Copy",
+			"ok": "OK",
+			"cancel": "Cancel",
+			"guide": {
+				"title": "Guide",
+				"doneBtnText": "Done",
+				"closeBtnText": "Close",
+				"nextBtnText": "Next",
+				"prevBtnText": "Previous"
+			}
 		},
 		"demo_server": {
 			"function_disabled": "This function is disabled on demo server"
 		},
 		"errors": {
-			"request_general": "There was an error processing your request. Please try again latter."
+			"request_general": "There was an error processing your request. Please try again latter.",
+			"unsupported_device": "Unfortunately your device is still unsupported. We are working on supporting smaller screen devices. Please visit us again with bigger screen 😞"
 		},
 		"performanceVariables": {
-			"Accuracy": "Accuracy",
-			"AccuracyLower": "Accuracy Lower",
-			"AccuracyNull": "Accuracy Null",
-			"AccuracyPValue": "Accuracy P-Value",
-			"AccuracyUpper": "Accuracy Upper",
-			"Balanced Accuracy": "Balanced Accuracy",
-			"Detection Prevalence": "Detection Prevalence",
-			"Detection Rate": "Detection Rate",
-			"F1": "F1",
-			"Kappa": "Kappa",
-			"McnemarPValue": "Mcnemar P-Value",
-			"Neg Pred Value": "Neg Pred Value",
-			"Pos Pred Value": "Pos Pred Value",
-			"PositiveControl": "Positive Control",
-			"Precision": "Precision",
-			"PredictAUC": "Predict AUC",
-			"Prevalence": "Prevalence",
-			"Recall": "Recall",
-			"Sensitivity": "Sensitivity",
-			"Specificity": "Specificity",
-			"TrainAccuracy": "Train Accuracy",
-			"TrainAUC": "Train AUC",
-			"TrainBalanced_Accuracy": "Train Balanced_Accuracy",
-			"TrainDetection_Rate": "Train Detection_Rate",
-			"TrainF1": "Train F1",
-			"TrainKappa": "Train Kappa",
-			"TrainlogLoss": "TrainlogLoss",
-			"TrainNeg_Pred_Value": "Train Neg Pred Value",
-			"TrainPos_Pred_Value": "Train Pos Pred Value",
-			"TrainprAUC": "Trainpr AUC",
-			"TrainPrecision": "Train Precision",
-			"TrainRecall": "Train Recall",
-			"TrainSensitivity": "Train Sensitivity",
-			"TrainSpecificity": "Train Specificity"
+			"placeholder": "Select performance measurement",
+			"options": {
+				"Accuracy": { "title": "Accuracy", "description": ""},
+				"AccuracyLower": { "title": "Accuracy Lower", "description": ""},
+				"AccuracyNull": { "title": "Accuracy Null", "description": ""},
+				"AccuracyPValue": { "title": "Accuracy P-Value", "description": ""},
+				"AccuracyUpper": { "title": "Accuracy Upper", "description": ""},
+				"Balanced Accuracy": { "title": "Balanced Accuracy", "description": ""},
+				"Detection Prevalence": { "title": "Detection Prevalence", "description": ""},
+				"Detection Rate": { "title": "Detection Rate", "description": ""},
+				"F1": { "title": "F1", "description": ""},
+				"Kappa": { "title": "Kappa", "description": ""},
+				"McnemarPValue": { "title": "Mcnemar P-Value", "description": ""},
+				"Neg Pred Value": { "title": "Neg Pred Value", "description": ""},
+				"Pos Pred Value": { "title": "Pos Pred Value", "description": ""},
+				"PositiveControl": { "title": "Positive Control", "description": ""},
+				"Precision": { "title": "Precision", "description": ""},
+				"PredictAUC": { "title": "Predict AUC", "description": ""},
+				"Prevalence": { "title": "Prevalence", "description": ""},
+				"Recall": { "title": "Recall", "description": ""},
+				"Sensitivity": { "title": "Sensitivity", "description": ""},
+				"Specificity": { "title": "Specificity", "description": ""},
+				"TrainAccuracy": { "title": "Train Accuracy", "description": ""},
+				"TrainAUC": { "title": "Train AUC", "description": ""},
+				"TrainBalanced_Accuracy": { "title": "Train Balanced_Accuracy", "description": ""},
+				"TrainDetection_Rate": { "title": "Train Detection_Rate", "description": ""},
+				"TrainF1": { "title": "Train F1", "description": ""},
+				"TrainKappa": { "title": "Train Kappa", "description": ""},
+				"TrainlogLoss": { "title": "TrainlogLoss", "description": ""},
+				"TrainNeg_Pred_Value": { "title": "Train Neg Pred Value", "description": ""},
+				"TrainPos_Pred_Value": { "title": "Train Pos Pred Value", "description": ""},
+				"TrainprAUC": { "title": "Trainpr AUC", "description": ""},
+				"TrainPrecision": { "title": "Train Precision", "description": ""},
+				"TrainRecall": { "title": "Train Recall", "description": ""},
+				"TrainSensitivity": { "title": "Train Sensitivity", "description": ""},
+				"TrainSpecificity": { "title": "Train Specificity", "description": ""}
+			}
 		}
 	}
 }

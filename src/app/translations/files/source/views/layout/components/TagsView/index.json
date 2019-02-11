@@ -1,0 +1,15 @@
+{
+	"views": {
+		"layout": {
+			"components": {
+				"TagsView": {
+					"context_menu": {
+						"close": "Close",
+						"close_others": "Close Others",
+						"close_all": "Close All"
+					}
+				}
+			}
+		}
+	}
+}

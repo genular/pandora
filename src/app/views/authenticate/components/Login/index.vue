@@ -4,28 +4,32 @@
             <el-col>
                 <el-form class="login-tab-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
                     <el-form-item prop="username">
-                        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="Username" />
+                        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" :placeholder="$t('views.authenticate.components.Login.username')" />
                     </el-form-item>
                     <el-form-item prop="password">
-                        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="Password" />
+                        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" :placeholder="$t('views.authenticate.components.Login.password')"  />
                         <span class="show-pwd" @click="showPassword">
                             <i class="fa fa-icon fa-eye"></i>
                         </span>
                     </el-form-item>
                     <el-row>
                         <el-col :span="24">
-                            <el-button style="float:right;" round @click.prevent.stop="navigateTo('reset')">Forgot password</el-button>
+                            <el-button style="float:right;" round @click.prevent.stop="navigateTo('reset')">{{ $t('views.authenticate.components.Login.reset_password') }}</el-button>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="24">
-                            <el-button class="button-login" :loading="loadingWizard" @click.native.prevent="handleLogin">Sign in</el-button>
+                            <el-button class="button-login" :loading="loadingWizard" @click.native.prevent="handleLogin">
+                                {{ $t('views.authenticate.components.Login.sign_in') }}
+                            </el-button>
                         </el-col>
                     </el-row>
                 </el-form>
                 <el-row class="bottom-info">
                     <el-col :span="24" class="info-button">
-                        <el-button class="button-register" style="height: 40px;" @click.prevent.stop="navigateTo('register&usertype=private&step=0')">Sign up now</el-button>
+                        <el-button class="button-register" style="height: 40px;" @click.prevent.stop="navigateTo('register&usertype=private&step=0')">
+                            {{ $t('views.authenticate.components.Login.sign_up') }}
+                        </el-button>
                     </el-col>
                 </el-row>
             </el-col>
@@ -87,7 +91,7 @@ export default {
             } else {
                 this.$message({
                     type: "warning",
-                    message: "This function is disabled on demo server"
+                    message: this.$t('globals.demo_server.function_disabled')
                 });
             }
         },
@@ -114,7 +118,7 @@ export default {
                         .catch(error => {
                             console.log(error);
                             this.$message({
-                                message: "Username password combination is not correct!",
+                                message: this.$t('views.authenticate.components.Login.login_error'),
                                 type: "error",
                                 duration: 2500,
                                 showClose: true

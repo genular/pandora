@@ -17,9 +17,9 @@
 
         <div class="context-menu" v-show="visible" :style="{ left: left + 'px', top: top + 'px' }">
             <ul class="menu-options">
-                <li class="menu-option" @click="closeSelectedTag(selectedTag)">Close</li>
-                <li class="menu-option" @click="closeOthersTags">Close Others</li>
-                <li class="menu-option" @click="closeAllTags">Close All</li>
+                <li class="menu-option" @click="closeSelectedTag(selectedTag)">{{ $t('views.layout.components.TagsView.context_menu.close') }}</li>
+                <li class="menu-option" @click="closeOthersTags">{{ $t('views.layout.components.TagsView.context_menu.close_others') }}</li>
+                <li class="menu-option" @click="closeAllTags">{{ $t('views.layout.components.TagsView.context_menu.close_all') }}</li>
             </ul>
         </div>
     </div>

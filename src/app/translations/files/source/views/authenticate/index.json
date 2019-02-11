@@ -1,0 +1,13 @@
+{
+	"views": {
+		"authenticate": {
+			"index": {
+				"dialog": {
+					"title": "Unfortunately server is currently temporarily unavailable",
+					"description": "Oooops! Sorry we cannot process your request at this moment. Please try again later.",
+					"button": "Go to homepage"
+				}
+			}
+		}
+	}
+}

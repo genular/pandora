@@ -2,7 +2,9 @@
 	"views": {
 		"layout": {
 			"components": {
-				"Sidebar": {}
+				"Sidebar": {
+					"action_not_allowed": "You must satisfy specific module criteria to use it, like for example select from Workspace."
+				}
 			}
 		}
 	}

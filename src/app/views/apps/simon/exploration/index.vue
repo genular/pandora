@@ -26,10 +26,13 @@
                     multiple
                     filterable
                     size="small"
-                    :placeholder="$t('views.apps.simon.exploration.header.performanceVariables.placeholder')"
+                    :placeholder="$t('globals.performanceVariables.placeholder')"
                 >
-                    <el-option v-for="(item, index) in performanceVariables" :key="index" :value="item">
-                        <span>{{ $t('globals.performanceVariables.' + item) }}</span>
+                    <el-option v-for="(item, index) in performanceVariables" 
+                        :key="index" 
+                        :value="index"  
+                        :label="$t(['globals.performanceVariables.options.', index, '.title'].join(''))">
+                        <span>{{ $t('globals.performanceVariables.options.', index, '.title') }}</span>
                     </el-option>
                 </el-select>
             </el-col>

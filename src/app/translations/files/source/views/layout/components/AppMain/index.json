@@ -1,0 +1,11 @@
+{
+	"views": {
+		"layout": {
+			"components": {
+				"AppMain": {
+					"connection_lost": "Your device lost connection with server"
+				}
+			}
+		}
+	}
+}

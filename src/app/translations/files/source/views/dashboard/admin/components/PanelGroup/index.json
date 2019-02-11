@@ -1,0 +1,24 @@
+{
+	"views": {
+		"dashboard": {
+			"admin": {
+				"components": {
+					"PanelGroup": {
+						"tasks": {
+							"title": "Tasks submitted"
+						},
+						"datasets": {
+							"title": "Datasets generated"
+						},
+						"models": {
+							"title": "Models processed"
+						},
+						"features": {
+							"title": "Features discovered"
+						}
+					}
+				}
+			}
+		}
+	}
+}

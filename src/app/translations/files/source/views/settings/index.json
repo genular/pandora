@@ -1,5 +1,28 @@
 {
 	"views": {
-		"settings": {}
+		"settings": {
+			"account_information": {
+				"title": "Account information",
+				"username": "Username",
+				"email_address": "Email address",
+				"password": "Password",
+				"save_button": "Save"
+			},
+			"profile_information": {
+				"title": "Profile information",
+				"first_name": "First name",
+				"last_name": "Last name",
+				"phone": "Phone",
+				"save_button": "Save"
+			},
+			"profile_picture": {
+				"title": "Change profile picture ",
+				"description": "Your avatar is automatically generated, therefore unfortunately you cannot impact on avatar design."
+			},
+			"danger_area": {
+				"title": "Danger area",
+				"delete_button": "Delete your account"
+			}
+		}
 	}
 }

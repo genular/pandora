@@ -1,6 +1,21 @@
 <template>
     <div class="authenticate-container">
-        <vue-particles color="#dedede" :particleOpacity="0.1" :particlesNumber="150" shapeType="polygon" :particleSize="4" linesColor="#dedede" :linesWidth="1" :lineLinked="true" :lineOpacity="0.075" :linesDistance="150" :moveSpeed="0.75" :hoverEffect="false" hoverMode="bubble" :clickEffect="false">
+        <vue-particles
+            color="#dedede"
+            :particleOpacity="0.1"
+            :particlesNumber="150"
+            shapeType="polygon"
+            :particleSize="4"
+            linesColor="#dedede"
+            :linesWidth="1"
+            :lineLinked="true"
+            :lineOpacity="0.075"
+            :linesDistance="150"
+            :moveSpeed="0.75"
+            :hoverEffect="false"
+            hoverMode="bubble"
+            :clickEffect="false"
+        >
         </vue-particles>
         <!-- <img class="logo" :src="genularLogo" @click="redirectToHomepage()" /> -->
         <lang-select class="set-language"></lang-select>
@@ -13,15 +28,14 @@
                 <reset :action="action" v-if="action === 'reset'"></reset>
             </div>
         </div>
-        <el-dialog title="Unfortunately server is currently temporarily unavailable" :visible.sync="backendServersError" :before-close="redirectToHomepage" center :close-on-click-modal="false">
-            <span>Oooops! Sorry we cannot process your request at this moment. Please try again later.</span>
+        <el-dialog :title="$t('views.authenticate.index.dialog.title')" :visible.sync="backendServersError" :before-close="redirectToHomepage" center :close-on-click-modal="false">
+            <span>{{ $t("views.authenticate.index.dialog.description") }}</span>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="redirectToHomepage">Go to homepage</el-button>
+                <el-button type="primary" @click="redirectToHomepage">{{ $t("views.authenticate.index.dialog.button") }}</el-button>
             </div>
         </el-dialog>
         <div class="unsupported_device">
-            <span>Unfortunately your device is still unsupported. 
-            We are working on supporting smaller screen devices. Please visit us again with bigger screen 😞</span>
+            <span>{{ $t("globals.errors.unsupported_device") }}</span>
         </div>
     </div>
 </template>
@@ -84,7 +98,7 @@ export default {
             this.loadingWizard = true;
             this.$store
                 .dispatch("configureBackendServers", this.$config.server.backend)
-                .then((status) => {
+                .then(status => {
                     if (status === true) {
                         this.isConfigured = true;
                         this.loadingWizard = false;
@@ -96,7 +110,7 @@ export default {
                         this.backendServersError = true;
                     }
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.log(error);
                     this.loadingWizard = false;
                     this.backendServersError = true;

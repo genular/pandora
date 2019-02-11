@@ -1,0 +1,17 @@
+{
+	"views": {
+		"dashboard": {
+			"admin": {
+				"index": {
+					"guide_button": "Guide"
+				},
+				"tutorial": {
+					"step_1": {
+						"title": "",
+						"description": ""
+					}
+				}
+			}
+		}
+	}
+}

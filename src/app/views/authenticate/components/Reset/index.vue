@@ -1,16 +1,16 @@
 <template>
     <div class="reset-tab-container">
-        <div class="title">Reset password</div>
-        <div class="lead">In order to reset your password please enter your email</div>
+        <div class="title">{{ $t("views.authenticate.components.Reset.title") }}</div>
+        <div class="lead">{{ $t("views.authenticate.components.Reset.description") }}</div>
         <el-row>
             <el-col>
                 <el-form class="reset-tab-form" autoComplete="on" :model="resetForm" ref="resetForm" label-position="left">
                     <el-form-item>
-                        <el-input name="email" type="email" v-model="resetForm.email" autoComplete="on" placeholder="email@example.com" />
+                        <el-input name="email" type="email" v-model="resetForm.email" autoComplete="on" :placeholder="$t('views.authenticate.components.Reset.placeholder')" />
                     </el-form-item>
                     <el-row>
                         <el-col :span="24">
-                            <el-button class="button-reset" :loading="loadingWizard" @click="resetPassword">Reset password</el-button>
+                            <el-button class="button-reset" :loading="loadingWizard" @click="resetPassword">{{ $t("views.authenticate.components.Reset.reset_button") }}</el-button>
                         </el-col>
                     </el-row>
                 </el-form>

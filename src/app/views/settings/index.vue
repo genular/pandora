@@ -10,40 +10,48 @@
             <!-- ACTION BOXES -->
             <el-col :span="10">
                 <el-card class="box-card">
-                    <div slot="header" class="clearfix"><span>Account information</span></div>
+                    <div slot="header" class="clearfix">
+                        <span>{{ $t("views.settings.account_information.title") }}</span>
+                    </div>
                     <div>
                         <el-form ref="settingsAccountForm" v-model="settingsForm" label-width="120px">
-                            <el-form-item label="Username">
+                            <el-form-item :label="$t('views.settings.account_information.username')">
                                 <el-input name="username" type="text" prop="username" v-model="settingsForm.username"></el-input>
                             </el-form-item>
-                            <el-form-item label="Email address">
+                            <el-form-item :label="$t('views.settings.account_information.email_address')">
                                 <el-input name="email_adress" type="text" prop="email" v-model="settingsForm.email"></el-input>
                             </el-form-item>
-                            <el-form-item label="Password">
+                            <el-form-item :label="$t('views.settings.account_information.password')">
                                 <el-input name="password" type="password" value="" disabled></el-input>
                             </el-form-item>
                         </el-form>
                         <div style="text-align: right;">
-                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">Save</el-button>
+                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">{{
+                                $t("views.settings.account_information.save_button")
+                            }}</el-button>
                         </div>
                     </div>
                 </el-card>
                 <el-card class="box-card" style="margin-top: 15px;">
-                    <div slot="header" class="clearfix"><span>Profile information</span></div>
+                    <div slot="header" class="clearfix">
+                        <span>{{ $t("views.settings.profile_information.title") }}</span>
+                    </div>
                     <div>
                         <el-form ref="settingsProfileForm" v-model="settingsForm" label-width="120px">
-                            <el-form-item label="First name">
+                            <el-form-item :label="$t('views.settings.profile_information.first_name')">
                                 <el-input name="first_name" type="text" prop="first_name" v-model="settingsForm.first_name"></el-input>
                             </el-form-item>
-                            <el-form-item label="Last name">
+                            <el-form-item :label="$t('views.settings.profile_information.last_name')">
                                 <el-input name="last_name" type="text" prop="last_name" v-model="settingsForm.last_name"></el-input>
                             </el-form-item>
-                            <el-form-item label="Phone">
+                            <el-form-item :label="$t('views.settings.profile_information.phone')">
                                 <el-input name="phone" type="text" prop="phone" v-model="settingsForm.phone"></el-input>
                             </el-form-item>
                         </el-form>
                         <div style="text-align: right;">
-                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">Save</el-button>
+                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">{{
+                                $t("views.settings.profile_information.save_button")
+                            }}</el-button>
                         </div>
                     </div>
                 </el-card>
@@ -51,15 +59,17 @@
             <!-- ACTION BOXES -->
             <el-col :span="10">
                 <el-card class="box-card">
-                    <div slot="header" class="clearfix"><span>Change profile picture </span></div>
+                    <div slot="header" class="clearfix"><span>{{ $t("views.settings.profile_picture.title") }}</span></div>
                     <div>
-                        Your avatar is automatically generated, therefore unfortunately you cannot impact on avatar design.
+                        {{ $t("views.settings.profile_picture.description") }}
                     </div>
                 </el-card>
                 <el-card class="box-card" style="margin-top: 15px;">
-                    <div slot="header" class="clearfix"><span>Danger area</span></div>
+                    <div slot="header" class="clearfix"><span>{{ $t("views.settings.danger_area.title") }}</span></div>
                     <div style="text-align: right;">
-                        <el-button type="danger" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">Delete your account</el-button>
+                        <el-button type="danger" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">
+                            {{ $t("views.settings.danger_area.delete_button") }}
+                        </el-button>
                     </div>
                 </el-card>
             </el-col>

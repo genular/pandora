@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 12:12:02
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-11 10:25:43
+ * @Last Modified time: 2019-02-11 10:31:42
  */
 const fs = require("fs");
 const glob = require("glob");
@@ -45,7 +45,7 @@ PrepareMessagesPlugin.prototype.apply = function(compiler) {
 						if (typeof defaultMessage === "string" || defaultMessage instanceof String) {
 							collection[transID] = defaultMessage;
 						} else {
-							console.log("Skipping untranslated key: " + transID);
+							// console.log("Skipping untranslated key: " + transID);
 						}
 					}
 				}

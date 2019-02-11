@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- <traybar></traybar> -->
         <div class="app-wrapper" :class="{ showSidebar: sidebar.opened, hideSidebar: !sidebar.opened }">
             <sidebar class="sidebar-container"></sidebar>
             <div class="main-container">
@@ -10,19 +9,17 @@
             </div>
         </div>
         <div class="unsupported_device">
-            <span>Unfortunately your device is still unsupported. 
-            We are working on supporting smaller screen devices. Please visit us again with bigger screen 😞</span>
+            <span>{{ $t("globals.errors.unsupported_device") }}</span>
         </div>
     </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { Traybar, Navbar, Sidebar, AppMain, TagsView } from "./components";
+import { Navbar, Sidebar, AppMain, TagsView } from "./components";
 
 export default {
     name: "layout",
     components: {
-        Traybar,
         Navbar,
         Sidebar,
         AppMain,

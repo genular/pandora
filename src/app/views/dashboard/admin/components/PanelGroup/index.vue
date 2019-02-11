@@ -1,12 +1,12 @@
 <template>
-    <el-row class="dashboard-inner-panel-group" :gutter="15" justify="center" v-loading="listLoading" :element-loading-text="$t('views.dashboard.server_stats.loading_title')">
+    <el-row class="dashboard-inner-panel-group" :gutter="15" justify="center" v-loading="listLoading" :element-loading-text="$t('globals.page_loading')">
         <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
             <div class="card-panel">
                 <div class="card-panel-icon-wrapper icon-1">
                     <i class="fa fa-icon fa-database card-panel-icon"></i>
                 </div>
                 <div class="card-panel-description">
-                    <div class="card-panel-text">Tasks submitted</div>
+                    <div class="card-panel-text">{{ $t("views.dashboard.admin.components.PanelGroup.tasks.title") }}</div>
                     <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_queue)" :duration="1500"></count-to>
                 </div>
             </div>
@@ -17,7 +17,7 @@
                     <i class="fa fa-icon fa-filter card-panel-icon"></i>
                 </div>
                 <div class="card-panel-description">
-                    <div class="card-panel-text">Datasets generated</div>
+                    <div class="card-panel-text">{{ $t("views.dashboard.admin.components.PanelGroup.datasets.title") }}</div>
                     <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_resamples)" :duration="2000"></count-to>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                     <i class="fa fa-icon fa-area-chart card-panel-icon"></i>
                 </div>
                 <div class="card-panel-description">
-                    <div class="card-panel-text">{{ $t("views.dashboard.server_stats.analysis") }}</div>
+                    <div class="card-panel-text">{{ $t("views.dashboard.admin.components.PanelGroup.models.title") }}</div>
                     <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_models)" :duration="2500"></count-to>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <i class="fa fa-icon fa-cog card-panel-icon"></i>
                 </div>
                 <div class="card-panel-description">
-                    <div class="card-panel-text">{{ $t("views.dashboard.server_stats.features") }}</div>
+                    <div class="card-panel-text">{{ $t("views.dashboard.admin.components.PanelGroup.features.title") }}</div>
                     <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_features)" :duration="3000"></count-to>
                 </div>
             </div>

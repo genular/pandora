@@ -2,7 +2,12 @@
 	"views": {
 		"authenticate": {
 			"components": {
-				"Reset": {}
+				"Reset": {
+					"title": "Reset password",
+					"description": "In order to reset your password please enter your email",
+					"placeholder": "email@example.com",
+					"reset_button": "Reset password"
+				}
 			}
 		}
 	}

@@ -24,18 +24,41 @@ export default {
     },
     mounted() {
         console.log("Detected languages: " + this.getLanguages());
+        console.log("Detected user language: " + this.language);
+        this.initUserLanguage();
     },
     methods: {
+        initUserLanguage() {
+            const loadedLanguages = Object.keys(this.$i18n.messages);
+            if (!loadedLanguages.includes(this.language)) {
+                this.handleSetLanguage(this.language);
+            }
+        },
         getLanguages() {
             return supportedLocales;
         },
-        handleSetLanguage(lang) {
+        setI18nLanguage(lang) {
+            this.$i18n.locale = lang;
+            document.querySelector("html").setAttribute("lang", lang);
             this.$store.dispatch("setLanguage", lang);
-
+            
             this.$message({
                 message: this.$t("components.LangSelect.language_changed"),
                 type: "success"
             });
+        },
+        handleSetLanguage(lang) {
+            if (!Object.keys(this.$i18n.messages).includes(lang)) {
+                import(/*   webpackMode:      "lazy",
+                                webpackChunkName: "language-`${lang}`" */
+                `@/translations/files/translated/${lang}.json`).then(msgs => {
+                    this.$i18n.setLocaleMessage(lang, msgs.default);
+
+                    this.setI18nLanguage(lang);
+                });
+            } else {
+                this.setI18nLanguage(lang);
+            }
         }
     }
 };
