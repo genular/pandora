@@ -21,9 +21,6 @@
   "components.LangSelect.language.ru": "Russisch",
   "components.LangSelect.language.fr": "Französisch",
   "components.SelectedFiles.select_file": "Bitte wählen Sie eine Datei aus dem Arbeitsbereich",
-  "views.apps.heatmap": {
-
-  },
   "views.apps.simon.analysis.components.FileDetails.head.title": "Bitte wählen Sie die gewünschten Analyseneigenschaften",
   "views.apps.simon.analysis.components.FileDetails.head.description": "nur die ersten 50 Variablen angezeigt werden, tippen, um andere zu filtern oder ALLE Schalter auswählen",
   "views.apps.simon.analysis.components.FileDetails.head.clear": "klar",
@@ -83,9 +80,6 @@
   "views.apps.simon.analysis.components.PackageSelection.containers.method_type.classification": "Klassifikation",
   "views.apps.simon.analysis.components.PackageSelection.containers.method_type.regression": "Regression",
   "views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title": "Parameter anpassen",
-  "views.apps.simon.analysis.components.PackageSelection.containers.tags": {
-
-  },
   "views.apps.simon.analysis.components.StartButton.title": "",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.title": "Sieht gut aus! Bitte bestätigen Sie die Einreichung der Aufgabe",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.header": "Basierend auf Ihrer aktuellen Auswahl, was wir erhalten folgende Datensätze(n)",
@@ -111,9 +105,6 @@
   "views.apps.simon.analysis.index.dialog.messages.error_read": "Datei konnte nicht gelesen werden, so dass keine Spalten erkannt werden können. Bitte überprüfen Sie Ihre Datei, löschen Sie den Cache und versuchen Sie es erneut",
   "views.apps.simon.analysis.index.dialog.buttons.cancel": "Abbrechen",
   "views.apps.simon.analysis.index.dialog.buttons.try_again": "Erneut versuchen",
-  "views.apps.simon.editing": {
-
-  },
   "views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.title": "Spalten",
   "views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder": "Suchbegriff eingeben",
   "views.apps.simon.exploration.components.tabs.clusteringTab.form.rows.title": "Zeilen",
@@ -247,52 +238,10 @@
   "views.apps.simon.exploration.components.tabs.correlationTab.buttons.download": "Grundstück herunterladen",
   "views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.title": "Benachrichtigung",
   "views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.description": "Diese Funktion ist für die ausgewählte Funktion deaktiviert, da sie immer noch nicht unterstützt wird, um Korrelationen für Sets mit mehr als 250 Funktionen zu berechnen",
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.booleanDistributionTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.catBoostTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.otherDistributionTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.samrAnalysisTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.summaryTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.variableImportanceTab.charts": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.variableImportanceTab": {
-
-  },
   "views.apps.simon.exploration.header.selected_queue": "Warteschlange",
   "views.apps.simon.exploration.header.selected_dataset": "Datensatz-ID",
   "views.apps.simon.exploration.header.selected_models": "Ausgewähltes Modell(e)",
   "views.apps.simon.exploration.header.performanceVariables.placeholder": "Leistungsmessung auswählen",
-  "views.authenticate.components.Login": {
-
-  },
-  "views.authenticate.components.Register.components.Organization": {
-
-  },
-  "views.authenticate.components.Register.components.Private": {
-
-  },
-  "views.authenticate.components.Register": {
-
-  },
-  "views.authenticate.components.Reset": {
-
-  },
-  "views.dashboard.admin.components": {
-
-  },
-  "views.errorPage": {
-
-  },
   "sidebar.dashboard": "Übersicht",
   "sidebar.settings": "Einstellungen",
   "sidebar.workspace": "Arbeitsbereich",
@@ -336,23 +285,5 @@
   "globals.performanceVariables.TrainPrecision": "Zuggenauigkeit",
   "globals.performanceVariables.TrainRecall": "Zugrückruf",
   "globals.performanceVariables.TrainSensitivity": "Zugempfindlichkeit",
-  "globals.performanceVariables.TrainSpecificity": "Zugspezifik",
-  "views.layout.components.Sidebar": {
-
-  },
-  "views.layout.components.Traybar": {
-
-  },
-  "views.permission": {
-
-  },
-  "views.settings": {
-
-  },
-  "views.workspace.components.importers.public-import": {
-
-  },
-  "views.workspace.components.importers.repository_finder": {
-
-  }
+  "globals.performanceVariables.TrainSpecificity": "Zugspezifik"
 }
