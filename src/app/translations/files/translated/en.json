@@ -21,9 +21,6 @@
   "components.LangSelect.language.ru": "Russian",
   "components.LangSelect.language.fr": "French",
   "components.SelectedFiles.select_file": "Please select one file from Workspace",
-  "views.apps.heatmap": {
-
-  },
   "views.apps.simon.analysis.components.FileDetails.head.title": "Please select desired analysis properties",
   "views.apps.simon.analysis.components.FileDetails.head.description": "only first 50 variables are shown, type to filter others or select ALL switch",
   "views.apps.simon.analysis.components.FileDetails.head.clear": "clear",
@@ -83,9 +80,6 @@
   "views.apps.simon.analysis.components.PackageSelection.containers.method_type.classification": "Classification",
   "views.apps.simon.analysis.components.PackageSelection.containers.method_type.regression": "Regression",
   "views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title": "Tuning parameters",
-  "views.apps.simon.analysis.components.PackageSelection.containers.tags": {
-
-  },
   "views.apps.simon.analysis.components.StartButton.title": "",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.title": "Looks good! Please confirm task submission",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.header": "Based on your current selection what we got following dataset(s)",
@@ -111,9 +105,6 @@
   "views.apps.simon.analysis.index.dialog.messages.error_read": "File could not be read, so no columns can be detected. Please re-check your file, clear cache and try again",
   "views.apps.simon.analysis.index.dialog.buttons.cancel": "Cancel",
   "views.apps.simon.analysis.index.dialog.buttons.try_again": "Try again",
-  "views.apps.simon.editing": {
-
-  },
   "views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.title": "Columns",
   "views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder": "Type to search",
   "views.apps.simon.exploration.components.tabs.clusteringTab.form.rows.title": "Rows",
@@ -247,52 +238,10 @@
   "views.apps.simon.exploration.components.tabs.correlationTab.buttons.download": "Download plot",
   "views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.title": "Notification",
   "views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.description": "This function is disabled for selected feature set since its still not supported to calculate correlation for sets that have more than 250 features",
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.booleanDistributionTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.catBoostTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.otherDistributionTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.samrAnalysisTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.summaryTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.variableImportanceTab.charts": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.variableImportanceTab": {
-
-  },
   "views.apps.simon.exploration.header.selected_queue": "Queue",
   "views.apps.simon.exploration.header.selected_dataset": "Dataset ID",
   "views.apps.simon.exploration.header.selected_models": "Selected Model(s)",
   "views.apps.simon.exploration.header.performanceVariables.placeholder": "Select performance measurement",
-  "views.authenticate.components.Login": {
-
-  },
-  "views.authenticate.components.Register.components.Organization": {
-
-  },
-  "views.authenticate.components.Register.components.Private": {
-
-  },
-  "views.authenticate.components.Register": {
-
-  },
-  "views.authenticate.components.Reset": {
-
-  },
-  "views.dashboard.admin.components": {
-
-  },
-  "views.errorPage": {
-
-  },
   "sidebar.dashboard": "Dashboard",
   "sidebar.settings": "Settings",
   "sidebar.workspace": "Workspace",
@@ -336,23 +285,5 @@
   "globals.performanceVariables.TrainPrecision": "Train Precision",
   "globals.performanceVariables.TrainRecall": "Train Recall",
   "globals.performanceVariables.TrainSensitivity": "Train Sensitivity",
-  "globals.performanceVariables.TrainSpecificity": "Train Specificity",
-  "views.layout.components.Sidebar": {
-
-  },
-  "views.layout.components.Traybar": {
-
-  },
-  "views.permission": {
-
-  },
-  "views.settings": {
-
-  },
-  "views.workspace.components.importers.public-import": {
-
-  },
-  "views.workspace.components.importers.repository_finder": {
-
-  }
+  "globals.performanceVariables.TrainSpecificity": "Train Specificity"
 }
