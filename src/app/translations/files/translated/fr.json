@@ -21,9 +21,6 @@
   "components.LangSelect.language.ru": "Russe",
   "components.LangSelect.language.fr": "Français",
   "components.SelectedFiles.select_file": "Veuillez sélectionner un fichier à partir de l'espace de travail",
-  "views.apps.heatmap": {
-
-  },
   "views.apps.simon.analysis.components.FileDetails.head.title": "Veuillez sélectionner les propriétés d'analyse",
   "views.apps.simon.analysis.components.FileDetails.head.description": "seulement 50 premières variables sont indiqués, le type de filtre à autrui ou de sélectionner TOUS les switch",
   "views.apps.simon.analysis.components.FileDetails.head.clear": "claire",
@@ -83,9 +80,6 @@
   "views.apps.simon.analysis.components.PackageSelection.containers.method_type.classification": "Classification",
   "views.apps.simon.analysis.components.PackageSelection.containers.method_type.regression": "Régression",
   "views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title": "Paramètres de réglage",
-  "views.apps.simon.analysis.components.PackageSelection.containers.tags": {
-
-  },
   "views.apps.simon.analysis.components.StartButton.title": "",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.title": "Il semble bien ! Veuillez confirmer l'envoi de la tâche",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.header": "Basé sur votre sélection actuelle ce que nous avons obtenu les jeux de données suivants (s)",
@@ -111,9 +105,6 @@
   "views.apps.simon.analysis.index.dialog.messages.error_read": "Le fichier n'a pas pu être lu, aucune colonne ne peut être détectée. Veuillez vérifier votre fichier, vider le cache et réessayer",
   "views.apps.simon.analysis.index.dialog.buttons.cancel": "Annuler",
   "views.apps.simon.analysis.index.dialog.buttons.try_again": "Réessayer",
-  "views.apps.simon.editing": {
-
-  },
   "views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.title": "Colonnes",
   "views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder": "Tapez pour rechercher",
   "views.apps.simon.exploration.components.tabs.clusteringTab.form.rows.title": "Lignes",
@@ -247,52 +238,10 @@
   "views.apps.simon.exploration.components.tabs.correlationTab.buttons.download": "Télécharger le graphique",
   "views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.title": "Notification",
   "views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.description": "Cette fonction est désactivée pour l'ensemble de fonctionnalités sélectionné car elle n'est toujours pas prise en charge pour calculer la corrélation pour les ensembles qui ont plus de 250 fonctionnalités",
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.booleanDistributionTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.catBoostTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.otherDistributionTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.samrAnalysisTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.summaryTab": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.variableImportanceTab.charts": {
-
-  },
-  "views.apps.simon.exploration.components.tabs.datasetsTab.components.tabs.variableImportanceTab": {
-
-  },
   "views.apps.simon.exploration.header.selected_queue": "File",
   "views.apps.simon.exploration.header.selected_dataset": "ID Dataset",
   "views.apps.simon.exploration.header.selected_models": "Modèle(s) sélectionné",
   "views.apps.simon.exploration.header.performanceVariables.placeholder": "Choisir la mesure de performance",
-  "views.authenticate.components.Login": {
-
-  },
-  "views.authenticate.components.Register.components.Organization": {
-
-  },
-  "views.authenticate.components.Register.components.Private": {
-
-  },
-  "views.authenticate.components.Register": {
-
-  },
-  "views.authenticate.components.Reset": {
-
-  },
-  "views.dashboard.admin.components": {
-
-  },
-  "views.errorPage": {
-
-  },
   "sidebar.dashboard": "Tableau de bord",
   "sidebar.settings": "Paramètres",
   "sidebar.workspace": "Espace de travail",
@@ -336,23 +285,5 @@
   "globals.performanceVariables.TrainPrecision": "Entraîner la Précision",
   "globals.performanceVariables.TrainRecall": "Rappel de train",
   "globals.performanceVariables.TrainSensitivity": "Sensibilité de la formation",
-  "globals.performanceVariables.TrainSpecificity": "Spécificité du train",
-  "views.layout.components.Sidebar": {
-
-  },
-  "views.layout.components.Traybar": {
-
-  },
-  "views.permission": {
-
-  },
-  "views.settings": {
-
-  },
-  "views.workspace.components.importers.public-import": {
-
-  },
-  "views.workspace.components.importers.repository_finder": {
-
-  }
+  "globals.performanceVariables.TrainSpecificity": "Spécificité du train"
 }
