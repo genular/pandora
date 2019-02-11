@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 11:52:45
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-06 18:18:51
+ * @Last Modified time: 2019-02-11 08:32:57
  */
 /*
  * @Author: LogIN-
@@ -38,7 +38,7 @@ const SRC_DIR = path.resolve(__dirname, "../src");
 
 const packageInfo = require(path.resolve(__dirname, `../package.json`));
 
-const prepareMessagesPlugin = require(path.resolve(__dirname, `../src/app/translations/scripts/prepareMessagesPlugin.js`));
+const prepareMessagesPlugin = require(path.resolve(__dirname, `../src/app/translations/plugins/prepareMessagesPlugin.js`));
 
 module.exports = environment => {
     // Try to copy env template and add ENV variables to it
