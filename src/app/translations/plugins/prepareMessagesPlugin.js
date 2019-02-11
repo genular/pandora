@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 12:12:02
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-11 10:31:42
+ * @Last Modified time: 2019-02-11 14:24:47
  */
 const fs = require("fs");
 const glob = require("glob");
@@ -27,8 +27,12 @@ PrepareMessagesPlugin.prototype.apply = function(compiler) {
 		// The result is a flat collection of `id: message` pairs.
 		const defaultMessages = glob
 			.sync(filePatternSource)
-			.map(filename => fs.readFileSync(filename, "utf8"))
-			.map(file => JSON.parse(file))
+			.map(function(filename) {
+				return fs.readFileSync(filename, "utf8");
+			})
+			.map(function(file){
+				return JSON.parse(file)
+			})
 			.reduce((collection, descriptors) => {
 				/**
 				 * Lets flatten the nested object in the following way
@@ -56,7 +60,11 @@ PrepareMessagesPlugin.prototype.apply = function(compiler) {
 			filename
 				.split(".")
 				.slice(0, -1)
-				.join(".").split('\\').pop().split('/').pop()
+				.join(".")
+				.split("\\")
+				.pop()
+				.split("/")
+				.pop()
 		);
 
 		if (!stats.compilation.errors.length) {

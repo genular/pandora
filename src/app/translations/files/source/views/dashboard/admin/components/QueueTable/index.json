@@ -29,7 +29,7 @@
 									"title": "extraction",
 									"options": {
 										"yes": "Yes",
-										"no": "No",
+										"no": "No"
 									}
 								},
 								"sparsity": "Sparsity (%)",
@@ -39,7 +39,6 @@
 								"operations": "Operations"
 							},
 							"operations": {
-
 								"info": {
 									"title": "More information"
 								},
