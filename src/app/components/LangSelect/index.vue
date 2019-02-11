@@ -10,7 +10,11 @@
 </template>
 <script>
 import { sortAlphaNum } from "@/utils/helpers.js";
-import supportedLocales from "@/translations/lang.json";
+/**
+ * This file is auto-generated via webpack plug-in:
+ * src/app/translations/plugins/prepareMessagesPlugin.js
+ */
+import supportedLocales from "@/translations/files/langs.json";
 
 export default {
     computed: {

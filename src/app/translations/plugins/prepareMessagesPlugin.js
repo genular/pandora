@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 12:12:02
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-11 09:24:57
+ * @Last Modified time: 2019-02-11 10:25:43
  */
 const fs = require("fs");
 const glob = require("glob");
@@ -13,6 +13,8 @@ const flatten = require("flat");
 /**
  * This path are relative to webpack script located: .webpack-config/webpack.base.config.js
  */
+const filePatternSource = path.resolve(__dirname, "../") + "/files/source/**/*.json";
+const filePatternDest = path.resolve(__dirname, "../") + "/files/translated/**/*.json";
 const filePattern = path.resolve(__dirname, "../") + "/files/source/**/*.json";
 const outputDir = path.resolve(__dirname, "../files");
 
@@ -24,7 +26,7 @@ PrepareMessagesPlugin.prototype.apply = function(compiler) {
 	compiler.plugin("done", function(stats) {
 		// The result is a flat collection of `id: message` pairs.
 		const defaultMessages = glob
-			.sync(filePattern)
+			.sync(filePatternSource)
 			.map(filename => fs.readFileSync(filename, "utf8"))
 			.map(file => JSON.parse(file))
 			.reduce((collection, descriptors) => {
@@ -40,14 +42,27 @@ PrepareMessagesPlugin.prototype.apply = function(compiler) {
 						if (collection.hasOwnProperty(transID)) {
 							stats.compilation.errors.push(new Error(`Compiling translation messages: Duplicate message id: ${transID}`));
 						}
-						collection[transID] = defaultMessage;
+						if (typeof defaultMessage === "string" || defaultMessage instanceof String) {
+							collection[transID] = defaultMessage;
+						} else {
+							console.log("Skipping untranslated key: " + transID);
+						}
 					}
 				}
 				return collection;
 			}, {});
+
+		const defaultLanguages = glob.sync(filePatternDest).map(filename =>
+			filename
+				.split(".")
+				.slice(0, -1)
+				.join(".").split('\\').pop().split('/').pop()
+		);
+
 		if (!stats.compilation.errors.length) {
-			fs.writeFileSync(outputDir + "/combined.do_not_edit.json", JSON.stringify(defaultMessages, null, 2));
+			fs.writeFileSync(outputDir + "/translations.json", JSON.stringify(defaultMessages, null, 2));
 		}
+		fs.writeFileSync(outputDir + "/langs.json", JSON.stringify(defaultLanguages, null, 2));
 	});
 };
 
