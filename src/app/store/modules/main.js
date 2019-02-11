@@ -1,4 +1,5 @@
 import estore from "@/utils/storage/settings";
+import axios from "axios";
 
 const main = {
     state: {
@@ -6,7 +7,7 @@ const main = {
             opened: !+estore.get("main-sidebar-opened")
         },
         is_online: false,
-        language: estore.get("main-language") || "en-US",
+        language: estore.get("main-language") || "en",
         is_configured: estore.get("main-is_configured") || false,
         selectedFiles: estore.get("main-selectedFiles") || [],
         packageVersion: packageInfo.version || "N/A",
@@ -46,6 +47,11 @@ const main = {
         },
         setLanguage({ commit }, language) {
             console.log("setting language: " + language);
+            this.$i18n.locale = language;
+            
+            axios.defaults.headers.common["Accept-Language"] = language;
+            document.querySelector("html").setAttribute("lang", language);
+
             commit("SET_LANGUAGE", language);
         },
         setIsConfigured({ commit }, status) {

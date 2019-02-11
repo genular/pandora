@@ -2,7 +2,7 @@
     <el-dropdown trigger="click" class="international" @command="handleSetLanguage">
         <i class="fa fa-globe" aria-hidden="true"></i>
         <el-dropdown-menu slot="dropdown" class="language-dropdown">
-            <el-dropdown-item v-for="lang in languages" :key="lang" :command="lang" :disabled="language === lang">
+            <el-dropdown-item v-for="lang in getLanguages()" :key="lang" :command="lang" :disabled="language === lang">
                 {{ $t("components.LangSelect.language." + lang) }}
             </el-dropdown-item>
         </el-dropdown-menu>
@@ -10,21 +10,22 @@
 </template>
 <script>
 import { sortAlphaNum } from "@/utils/helpers.js";
+import supportedLocales from "@/translations/lang.json";
+
 export default {
     computed: {
-        languages() {
-            return Object.keys(this.$i18n.messages).sort(sortAlphaNum);
-        },
         language() {
             return this.$store.getters.language;
         }
     },
     mounted() {
-        console.log("Detected languages: " + this.languages);
+        console.log("Detected languages: " + this.getLanguages());
     },
     methods: {
+        getLanguages() {
+            return supportedLocales;
+        },
         handleSetLanguage(lang) {
-            this.$i18n.locale = lang;
             this.$store.dispatch("setLanguage", lang);
 
             this.$message({
