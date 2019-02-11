@@ -101,7 +101,7 @@
   "views.apps.simon.analysis.components.StartButton.other.misssing_outcome": "Bitte wählen Sie das Ergebnisfeld",
   "views.apps.simon.analysis.index.dialog.title": "Warnung",
   "views.apps.simon.analysis.index.dialog.messages.error_server": "Fehler bei der Kommunikation mit Backend-Server. Bitte versuchen Sie es erneut",
-  "views.apps.simon.analysis.index.dialog.messages.error_format": "Features are not named properly, please rename your Column fields and try again.<br /> Please ensure that your columns are named only in Alphanumeric format (0-9,A-Z,a-z), additional only underscore _ is supported.<br /> For example:<br />spaces, and all other characters like !#$%&/()=?*+- etc. are not currently supported.<br /><br />Invalid: <br />",
+  "views.apps.simon.analysis.index.dialog.messages.error_format": "Funktionen nicht den richtigen Namen, bitte benennen Sie Ihre Spalte-Felder und versuchen Sie es erneut.<br /> stellen Sie Bitte sicher, dass Ihre Spalten benannt sind, nur im Alphanumerischen format (0-9,A-Z,a-z), zusätzliche nur der Unterstrich _ wird unterstützt.<br /> Zum Beispiel:<br />Räume, und alle anderen Zeichen wie !#$%&/()=?*+- etc. werden derzeit nicht unterstützt.<br /><br />Ungültig: <br />",
   "views.apps.simon.analysis.index.dialog.messages.error_read": "Datei konnte nicht gelesen werden, so dass keine Spalten erkannt werden können. Bitte überprüfen Sie Ihre Datei, löschen Sie den Cache und versuchen Sie es erneut",
   "views.apps.simon.analysis.index.dialog.buttons.cancel": "Abbrechen",
   "views.apps.simon.analysis.index.dialog.buttons.try_again": "Erneut versuchen",

@@ -101,7 +101,7 @@
   "views.apps.simon.analysis.components.StartButton.other.misssing_outcome": "Veuillez sélectionner le champ résultat",
   "views.apps.simon.analysis.index.dialog.title": "Avertissement",
   "views.apps.simon.analysis.index.dialog.messages.error_server": "Erreur de communication avec le serveur back-end. Veuillez réessayer plus tard",
-  "views.apps.simon.analysis.index.dialog.messages.error_format": "Features are not named properly, please rename your Column fields and try again.<br /> Please ensure that your columns are named only in Alphanumeric format (0-9,A-Z,a-z), additional only underscore _ is supported.<br /> For example:<br />spaces, and all other characters like !#$%&/()=?*+- etc. are not currently supported.<br /><br />Invalid: <br />",
+  "views.apps.simon.analysis.index.dialog.messages.error_format": "Les fonctionnalités ne sont pas nommés correctement, veuillez renommer vos champs de Colonne et essayez de nouveau.<br /> Veuillez vous assurer que votre colonnes sont nommées uniquement en format Alphanumérique (0-9,A-Z,a-z), d'autres soulignent _ est pris en charge.<br /> Par exemple:<br />espaces, et tous les autres caractères comme !#$%&/()=?*+- etc. ne sont pas pris en charge actuellement.<br /><br />Invalide: <br />",
   "views.apps.simon.analysis.index.dialog.messages.error_read": "Le fichier n'a pas pu être lu, aucune colonne ne peut être détectée. Veuillez vérifier votre fichier, vider le cache et réessayer",
   "views.apps.simon.analysis.index.dialog.buttons.cancel": "Annuler",
   "views.apps.simon.analysis.index.dialog.buttons.try_again": "Réessayer",
