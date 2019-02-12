@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container" v-loading.fullscreen.lock="loading" :element-loading-text="$t('globals.page_loading')">
+    <div class="app-container" v-loading="loading" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="middle">
             <el-col :span="24">
                 <el-tooltip style="float: left;" placement="top" v-if="explorationJobId">

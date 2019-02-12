@@ -116,7 +116,7 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-inner-panel-group {
-    padding-bottom: 20px;
+    margin-bottom: 20px;
     .card-panel {
         height: 108px;
         cursor: pointer;

@@ -27,7 +27,7 @@
 			"canceled": "canceled",
 			"deleted": "deleted",
 			"upload_sucessfull": "uploaded successfully",
-			"not_implemented": "Function is still not implemented"
+			"not_implemented": "Function is still not available in this version"
 		},
 		"demo_server": {
 			"function_disabled": "This function is disabled on demo server"

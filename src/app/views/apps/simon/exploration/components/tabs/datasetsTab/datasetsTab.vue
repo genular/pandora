@@ -4,7 +4,7 @@
             <el-col :span="24">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <div class="card_intro">1. Please select one dataset for exploration</div>
+                        <div class="card_intro">{{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.title") }}</div>
                         <div class="models_actions" v-if="jobClassesDisaply.length > 0">
                             <el-select
                                 style="min-width: 350px;"
@@ -13,12 +13,18 @@
                                 filterable
                                 remote
                                 default-first-option
-                                placeholder="Please select exploration classes"
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.filters.exploration_classes.placeholder')"
                                 size="large"
                                 :remote-method="filterAvaliableClasses"
                                 @change="selectChangeClasses"
-                                @focus="selectSuggestClasses">
-                                <el-option v-for="(classItem, index) in jobClassesDisaply" :key="classItem.remapped" :label="classItem.original" :value="classItem.remapped"></el-option>
+                                @focus="selectSuggestClasses"
+                            >
+                                <el-option
+                                    v-for="(classItem, index) in jobClassesDisaply"
+                                    :key="classItem.remapped"
+                                    :label="classItem.original"
+                                    :value="classItem.remapped"
+                                ></el-option>
                             </el-select>
                         </div>
                     </div>
@@ -46,26 +52,41 @@
                             <template slot-scope="scope">
                                 <div v-if="(scope.row.dataSource = 1)">
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">Initial</div>
+                                        <div slot="content">
+                                            {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.initial") }}
+                                        </div>
                                         <span class="el-icon-more"></span>
                                     </el-tooltip>
                                 </div>
                                 <div v-else>
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">Predicted</div>
+                                        <div slot="content">
+                                            {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.predicted") }}
+                                        </div>
                                         <span class="el-icon-more-outline"></span>
                                     </el-tooltip>
                                 </div>
                             </template>
                         </el-table-column>
 
-                        <el-table-column align="center" width="100" label="ID" prop="resampleID" sortable="custom">
+                        <el-table-column
+                            align="center"
+                            width="100"
+                            :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.resample_id')"
+                            prop="resampleID"
+                            sortable="custom"
+                        >
                             <template slot-scope="scope">
                                 <span>{{ scope.row.resampleID }}</span>
                             </template>
                         </el-table-column>
 
-                        <el-table-column align="center" width="125" label="Features" sortable="custom">
+                        <el-table-column
+                            align="center"
+                            width="125"
+                            :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_features')"
+                            sortable="custom"
+                        >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.featuresTotal">{{ scope.row.featuresTotal }}</span>
                                 <span v-else>N/A</span>
@@ -76,7 +97,7 @@
                             v-for="(performanceItem, performanceIndex) in jobDetailsData.performance"
                             :prop="'performance|' + performanceItem"
                             :key="performanceItem + '_' + performanceIndex"
-                            :label="performanceItem"
+                            :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))"
                             sortable="custom"
                             @sort-orders="['ascending', 'descending']"
                             align="center"
@@ -90,38 +111,67 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column align="center" width="150" label="Total samples" prop="samplesTotal" sortable="custom">
+                        <el-table-column
+                            align="center"
+                            width="150"
+                            :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_total')"
+                            prop="samplesTotal"
+                            sortable="custom"
+                        >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" width="170" label="Samples Training" prop="samplesTraining" sortable="custom">
+                        <el-table-column
+                            align="center"
+                            width="170"
+                            :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_training')"
+                            prop="samplesTraining"
+                            sortable="custom"
+                        >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" width="170" label="Samples Testing" prop="samplesTesting" sortable="custom">
+                        <el-table-column
+                            align="center"
+                            width="170"
+                            :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_testing')"
+                            prop="samplesTesting"
+                            sortable="custom"
+                        >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
 
-                        <el-table-column align="center" width="175" label="Models submitted" prop="modelsTotal" sortable="custom">
+                        <el-table-column
+                            align="center"
+                            width="175"
+                            :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_models')"
+                            prop="modelsTotal"
+                            sortable="custom"
+                        >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.modelsTotal">{{ scope.row.modelsTotal }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
 
-                        <el-table-column class-name="settings" fixed="right" label="Operations" width="120">
+                        <el-table-column
+                            class-name="settings"
+                            fixed="right"
+                            :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.actions')"
+                            width="120"
+                        >
                             <template slot-scope="scope">
                                 <el-button-group>
                                     <el-button
                                         size="mini"
-                                        title="Download resample datasets"
+                                        :title="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.operations.download.title')"
                                         style="float: left;"
                                         type="primary"
                                         icon="el-icon-download"
@@ -129,7 +179,7 @@
                                     ></el-button>
                                     <el-button
                                         size="mini"
-                                        title="Delete resample"
+                                        :title="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.title')"
                                         style="float: right;"
                                         type="danger"
                                         icon="el-icon-delete"
@@ -156,12 +206,30 @@
             <el-col :span="24">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <div class="card_intro">2. Please select as much as models you wish to compare</div>
+                        <div class="card_intro">{{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.title") }}</div>
                         <div class="models_actions" v-if="selectedModelsIDs.length > 0">
                             <el-button-group>
-                                <el-button size="small" title="Download selected model(s)" type="danger" icon="el-icon-download" @click="handleOperations('downloadModels', null)"></el-button>
-                                <el-button size="small" title="Deploy selected model(s)" type="success" icon="el-icon-share" @click="handleOperations('deployModels', null)"></el-button>
-                                <el-button size="small" title="Delete selected model(s)" type="danger" icon="el-icon-delete" @click="handleOperations('deleteModels', null)"></el-button>
+                                <el-button
+                                    size="small"
+                                    :title="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.download.title')"
+                                    type="danger"
+                                    icon="el-icon-download"
+                                    @click="handleOperations('downloadModels', null)"
+                                ></el-button>
+                                <el-button
+                                    size="small"
+                                    :title="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.deploy.title')"
+                                    type="success"
+                                    icon="el-icon-share"
+                                    @click="handleOperations('deployModels', null)"
+                                ></el-button>
+                                <el-button
+                                    size="small"
+                                    :title="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.title')"
+                                    type="danger"
+                                    icon="el-icon-delete"
+                                    @click="handleOperations('deleteModels', null)"
+                                ></el-button>
                             </el-button-group>
                         </div>
                     </div>
@@ -177,20 +245,28 @@
                             }
                         "
                         row-key="modelID"
-                        empty-text="Nothing to display"
+                        :empty-text="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.no_data')"
                         height="300"
                         max-height="300"
                     >
                         <el-table-column type="selection" reserve-selection @selectable="checkModelsSelectionChange" width="40" fixed> </el-table-column>
 
-                        <el-table-column fixed width="150" prop="modelName" sortable :label="$t('views.dashboard.jobs.table.modal_info.methods.method')">
+                        <el-table-column
+                            fixed
+                            width="150"
+                            prop="modelName"
+                            sortable
+                            :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.header.model_name')"
+                        >
                             <template slot-scope="scope">
                                 <div v-if="scope.row.status > 0" style="float: left;">
                                     <span class="el-icon-success"></span>
                                 </div>
                                 <div v-else style="float: left;">
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content" v-html="$t('views.dashboard.jobs.table.modal_info.methods.model_error_info')"></div>
+                                        <div slot="content">
+                                            {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.messages.failed_model") }}
+                                        </div>
                                         <span class="el-icon-warning"></span>
                                     </el-tooltip>
                                 </div>
@@ -203,7 +279,7 @@
                             v-for="(performanceItem, performanceIndex) in jobDetailsData.performance"
                             :prop="'performance|' + performanceItem"
                             :key="performanceItem + '_' + performanceIndex"
-                            :label="performanceItem"
+                            :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))"
                             sortable="custom"
                             @sort-orders="['ascending', 'descending']"
                         >
@@ -215,9 +291,14 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column align="center" prop="processing_time" show-overflow-tooltip :label="$t('views.dashboard.jobs.table.modal_info.methods.time')">
+                        <el-table-column
+                            align="center"
+                            prop="processing_time"
+                            show-overflow-tooltip
+                            :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.header.processing_time')"
+                        >
                             <template slot-scope="scope">
-                                <span v-if="scope.row.processing_time">{{ (scope.row.processing_time ) | millisecondsToStr }}</span>
+                                <span v-if="scope.row.processing_time">{{ scope.row.processing_time | millisecondsToStr }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
@@ -297,7 +378,7 @@ export default {
             selectedModels: [],
             datasetsTabMapOptionsTemplate: [
                 {
-                    label: "Variable Importance",
+                    label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.variableImportanceTab.title"),
                     view: "variableImportanceTab",
                     key: "varImp",
                     icon: "fa fa-balance-scale",
@@ -306,7 +387,7 @@ export default {
                     // If restriction (selectedModels) is array this is more or eq.. >=1 it will pass
                 },
                 {
-                    label: "Summary",
+                    label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title"),
                     view: "summaryTab",
                     key: "summaryTab",
                     icon: "fa fa-balance-scale",
@@ -314,14 +395,14 @@ export default {
                     restriction_details: "2"
                 },
                 {
-                    label: "SAM",
+                    label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title"),
                     view: "samrAnalysisTab",
                     key: "samrAnalysisTab",
                     icon: "fa fa-balance-scale",
                     restriction: "selectedFeatureSetId"
                 },
                 {
-                    label: "CatBoost",
+                    label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title"),
                     view: "catBoostTab",
                     key: "catBoostTab",
                     icon: "fa fa-balance-scale",
@@ -437,9 +518,13 @@ export default {
                         downloadWindow.close();
                     });
             } else if (clickAction === "deleteResample") {
-                this.$confirm("This will permanently delete everything on the system related to selected resample. Continue?", "Warning", {
-                    type: "warning"
-                })
+                this.$confirm(
+                    this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.dialog.description"),
+                    this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.dialog.title"),
+                    {
+                        type: "warning"
+                    }
+                )
                     .then(_ => {
                         ApiDeleteDatasetResampleTask({ resampleID: rowInfo.resampleID })
                             .then(response => {
@@ -447,7 +532,7 @@ export default {
                                     this.getDatasetQueueList();
                                     this.$message({
                                         type: "success",
-                                        message: "Resample successfully deleted!"
+                                        message: this.$t("globals.messages.success")
                                     });
                                 }
                             })
@@ -458,13 +543,17 @@ export default {
                     .catch(_ => {
                         this.$message({
                             type: "info",
-                            message: "Delete resample error, operation canceled!"
+                            message: this.$t("globals.messages.canceled")
                         });
                     });
             } else if (clickAction === "deleteModels") {
-                this.$confirm("This will permanently delete everything on the system related to selected model(s). Continue?", "Warning", {
-                    type: "warning"
-                })
+                this.$confirm(
+                    this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.description"),
+                    this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.title"),
+                    {
+                        type: "warning"
+                    }
+                )
                     .then(_ => {
                         ApiDeleteDatasetResampleTask({ modelIDs: this.selectedModelsIDs })
                             .then(response => {
@@ -472,7 +561,7 @@ export default {
                                     this.getDatasetQueueList();
                                     this.$message({
                                         type: "success",
-                                        message: "Models successfully deleted!"
+                                        message: this.$t("globals.messages.success")
                                     });
                                 }
                             })
@@ -483,18 +572,18 @@ export default {
                     .catch(_ => {
                         this.$message({
                             type: "info",
-                            message: "Delete Models error, operation canceled!"
+                            message: this.$t("globals.messages.canceled")
                         });
                     });
             } else if (clickAction === "downloadModels") {
                 this.$message({
                     type: "info",
-                    message: "Not implemented in this version, operation canceled!"
+                    message: this.$t("globals.messages.not_implemented")
                 });
             } else if (clickAction === "deployModels") {
                 this.$message({
                     type: "info",
-                    message: "Not implemented in this version, operation canceled!"
+                    message: this.$t("globals.messages.not_implemented")
                 });
             }
         },
@@ -533,7 +622,7 @@ export default {
             if (selected.length > 0) {
                 if (selected.length > 5) {
                     this.$message({
-                        message: "Selection of maximum 5 classes is currently supported",
+                        message: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.messages.max_classes"),
                         type: "warning"
                     });
                     return;

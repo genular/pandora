@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container workspace-container" v-loading.fullscreen.lock="loading" :element-loading-text="$t('globals.page_loading')" @click="closeContextMenus">
+    <div class="app-container workspace-container" v-loading="loading" :element-loading-text="$t('globals.page_loading')" @click="closeContextMenus">
         <el-row type="flex" align="top">
             <el-col :span="24">
                 <public-import style="float:left;" ref="publicImporte" v-on:refresh-items="refreshFilesInDirectory"></public-import>

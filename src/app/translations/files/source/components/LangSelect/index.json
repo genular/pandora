@@ -10,7 +10,11 @@
                 "ru": "Russian",
                 "fr": "French",
                 "ar": "Arabic",
-                "zh": "Chinese"
+                "zh": "Chinese",
+                "pt": "Portuguese",
+                "id": "Indonesian",
+                "ja": "Japanese",
+                "fa": "Persian"
             }
         }
     }

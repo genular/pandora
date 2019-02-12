@@ -48,7 +48,7 @@ If you believe you don't have necessarily skills to do so, you could always ask 
 Please **do not post** usage questions to GitHub Issues. For these types of questions use our [forum](https://community.genular.org) or please post questions with the [`simon` tag on Stack Overflow](http://stackoverflow.com/questions/tagged/simon)..
 
 ### Submitting Bugs and Enhancements
-[GitHub Issues](https://github.com/genular) is for suggesting enhancements and reporting bugs.
+[GitHub Issues](https://github.com/genular/simon-frontend/issues) is for suggesting enhancements and reporting bugs.
 We appreciate all enhancements ideas and bug reports. Additionally if you think you can help us with suggesting new useful features we will gladly accept it.
 Here you can find [bug report template](.github/ISSUE_TEMPLATE/bug_report.md) and [feature request template](.github/ISSUE_TEMPLATE/feature_request.md).
 
@@ -59,9 +59,9 @@ In addition to contributing, optimizing and reviewing code, writing bug and feat
 
 Project | How To Help | Next Step
 --- | --- | --- |
-Localization | Help us translate `SIMON` into your language | [Join our Translation Community](https://crowdin.com/project/genular)
-Tutorials | Help others use `SIMON` | Write a tutorial or record it, with examples
-Organizing | Ask clarifying questions on recently opened issues to move the discussion forward | [Here](https://github.com/genular/simon-frontend/blob/master/)
+Localization | Help us translate `SIMON` into your language. If some translation is missing or incorrect you can easily help us by correcting it. | [Join our Translation Community](https://crowdin.com/project/genular)
+Tutorials | Help others use `SIMON` | Write a tutorial or record it, with usage examples
+Organizing | Ask clarifying questions on recently opened issues to move the discussion forward | [Here](https://github.com/genular/simon-frontend/issues)
 
 ## Browser Support
 Tested on `Firefox Quantum 64` or above. As much as we like other browsers we are focusing here to primary provide support for open source ones.
@@ -76,20 +76,18 @@ Become a sponsor and get your logo on our README on Github with a link to your s
 
 ### Reaching Out
 If you'd like to start a conversation feel free to e-mail me at [info@genular.com](mailto:info@genular.com)
-We would also gladly like to hear from you if you find this project useful and helpful.
+I would also gladly like to hear from you if you find this project useful and helpful.
 
 ## Security Vulnerabilities
 If you discover a security vulnerability within `SIMON`, please send e-mail to me at [info@genular.com](mailto:info@genular.com). All security vulnerabilities will be promptly addressed. You are also welcome to open PR request.
 
 ## License
 Please check `LICENCE` file for more information.
-
-This software can be used for research purposes, you should cite
-the aforementioned papers in any resulting publication.
-
 The Software is provided "as is", without warranty of any kind.
 
 ## Citation
+This software can be used for research purposes, you should cite
+the aforementioned papers in any resulting publication.
 ```
 @article {Tomic545186,
     author = {Tomic, Adriana and Tomic, Ivan and Rosenberg-Hasson, Yael and Dekker, Cornelia L. and Maecker, Holden T. and Davis, Mark M.},
