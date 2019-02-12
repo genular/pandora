@@ -20,6 +20,8 @@
   "components.LangSelect.language.it": "Italian",
   "components.LangSelect.language.ru": "Russian",
   "components.LangSelect.language.fr": "French",
+  "components.LangSelect.language.ar": "Arabic",
+  "components.LangSelect.language.zh": "Chinese",
   "components.SelectedFiles.select_file": "Please select one file from Workspace",
   "views.apps.simon.analysis.components.FileDetails.head.title": "Please select desired analysis properties",
   "views.apps.simon.analysis.components.FileDetails.head.description": "only first 50 variables are shown, type to filter others or select ALL switch",
