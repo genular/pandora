@@ -1,6 +1,6 @@
 <template>
     <div class="samrAnalysisTab-container">
-        <el-row v-if="tabEnabled">
+        <div v-if="!isTabDisabled">
             <el-row type="flex" align="top" :gutter="20">
                 <el-col :span="7" v-loading="loadingOptions" element-loading-text="Processing">
                     <el-form ref="settingsForm" :model="settingsForm" label-width="200px">
@@ -50,18 +50,12 @@
                     </el-row>
                 </el-col>
             </el-row>
-        </el-row>
+        </div>
         <!-- ELSE if Tab is DISABLED -->
-        <el-row v-else>
-            <el-col :span="24">
-                <el-alert title="Notification" 
-                    description="Unfortionatly this function is currently disabled" type="warning" 
-                    style="margin-top: 20px;" 
-                    show-icon 
-                    :closable="false">
-                </el-alert>
-            </el-col>
-        </el-row>
+        <div v-else>
+            <el-alert title="Notification" description="Unfortionatly this function is currently disabled" type="warning" style="margin-top: 20px;" show-icon :closable="false">
+            </el-alert>
+        </div>
     </div>
 </template>
 <script>
@@ -69,10 +63,18 @@ import { fetchCatBoostFormOptions, submitCatBoostJob } from "@/api/analysis";
 
 export default {
     name: "catBoostTab",
-
+    props: {
+        columnName: {
+            type: String,
+            default: ""
+        },
+        isTabDisabled: {
+            type: Boolean,
+            default: true
+        }
+    },
     data() {
         return {
-            tabEnabled: false,
             loadingOptions: true,
             loadingResults: false,
             settingOptions: {
@@ -112,11 +114,8 @@ export default {
     },
     mounted() {
         console.log("mounted: catBoostTab");
-        // TODO: Check if we can use SAM for this dataset and enable this tab
-        this.tabEnabled = false;
-
-        if(this.tabEnabled === true){
-            this.handleFetchFormOptions();    
+        if (!this.isTabDisabled) {
+            this.handleFetchFormOptions();
         }
     },
     computed: {

@@ -41,6 +41,7 @@
                         highlight-current-row
                         height="300"
                         max-height="300"
+                        style="width: 100%"
                     >
                         <el-table-column type="expand" style="padding: 0;">
                             <template slot-scope="props">
@@ -48,7 +49,7 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column align="center" width="30">
+                        <el-table-column align="center" fixed width="30">
                             <template slot-scope="scope">
                                 <div v-if="(scope.row.dataSource = 1)">
                                     <el-tooltip class="item" effect="dark" placement="top-start">
@@ -71,10 +72,10 @@
 
                         <el-table-column
                             align="center"
-                            width="100"
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.resample_id')"
                             prop="resampleID"
                             sortable="custom"
+                            min-width="75"
                         >
                             <template slot-scope="scope">
                                 <span>{{ scope.row.resampleID }}</span>
@@ -83,9 +84,9 @@
 
                         <el-table-column
                             align="center"
-                            width="125"
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_features')"
                             sortable="custom"
+                            min-width="115"
                         >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.featuresTotal">{{ scope.row.featuresTotal }}</span>
@@ -101,7 +102,7 @@
                             sortable="custom"
                             @sort-orders="['ascending', 'descending']"
                             align="center"
-                            width="150"
+                            min-width="150"
                         >
                             <template slot-scope="scope">
                                 <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">{{
@@ -113,10 +114,10 @@
 
                         <el-table-column
                             align="center"
-                            width="150"
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_total')"
                             prop="samplesTotal"
                             sortable="custom"
+                            min-width="175"
                         >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span>
@@ -125,10 +126,10 @@
                         </el-table-column>
                         <el-table-column
                             align="center"
-                            width="170"
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_training')"
                             prop="samplesTraining"
                             sortable="custom"
+                            min-width="175"
                         >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span>
@@ -137,10 +138,10 @@
                         </el-table-column>
                         <el-table-column
                             align="center"
-                            width="170"
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_testing')"
                             prop="samplesTesting"
                             sortable="custom"
+                            min-width="175"
                         >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span>
@@ -150,10 +151,10 @@
 
                         <el-table-column
                             align="center"
-                            width="175"
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_models')"
                             prop="modelsTotal"
                             sortable="custom"
+                            min-width="175"
                         >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.modelsTotal">{{ scope.row.modelsTotal }}</span>
@@ -162,10 +163,11 @@
                         </el-table-column>
 
                         <el-table-column
+                            align="center"
                             class-name="settings"
                             fixed="right"
+                            min-width="125"
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.actions')"
-                            width="120"
                         >
                             <template slot-scope="scope">
                                 <el-button-group>
@@ -253,9 +255,9 @@
 
                         <el-table-column
                             fixed
-                            width="150"
                             prop="modelName"
                             sortable
+                            min-width="125"
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.header.model_name')"
                         >
                             <template slot-scope="scope">
@@ -282,6 +284,8 @@
                             :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))"
                             sortable="custom"
                             @sort-orders="['ascending', 'descending']"
+                            align="center"
+                            min-width="150"
                         >
                             <template slot-scope="scope">
                                 <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">{{
@@ -293,6 +297,7 @@
 
                         <el-table-column
                             align="center"
+                            min-width="125"
                             prop="processing_time"
                             show-overflow-tooltip
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.header.processing_time')"
@@ -325,12 +330,16 @@
                         :label="item.label"
                         :key="item.key"
                         :name="item.key"
-                        v-if="!isTabDisabled(item)"
                         :disabled="isTabDisabled(item)"
                     >
                         <span slot="label"><i :class="item.icon"></i> {{ item.label }}</span>
                         <keep-alive>
-                            <sub-tab-pane v-if="activeDatasetSubTabName == item.key" :currentView="item.view" :columnName="item.key"></sub-tab-pane>
+                                <sub-tab-pane 
+                                v-if="activeDatasetSubTabName == item.key" 
+                                :currentView="item.view" 
+                                :columnName="item.key" 
+                                :isTabDisabled="isTabDisabled(item)">
+                            </sub-tab-pane>
                             <!-- inactive components will be cached! -->
                         </keep-alive>
                     </el-tab-pane>
@@ -863,6 +872,13 @@ export default {
         },
         copyToClipboard(content, event) {
             clipboard(content, event);
+        }
+    },
+    watch: {
+        "jobDetailsData.performance": function(newVal, oldVal) {
+            console.log("redrawing tables");
+            //this.$refs.resamplesTable.doLayout();
+            //this.$refs.modelDetailsTable.doLayout();
         }
     }
 };

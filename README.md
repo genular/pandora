@@ -18,22 +18,21 @@
 
 <h1 align="center">Introduction</h1>
 
-`SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application.
+`SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. [(click here for demo)](https://dashboard.genular.org)
 
 Currently `SIMON` implements automated machine learning and statistical data discovery features
 that will help you to easily illustrate dynamic relationships and provide you with a structural sense of your data.
 
-Goal of this project is to make unified user interface that will empower anyone to extract meaningful information from their data and enable them to rapidly use machine learning algorithms. `It gives you freedom and control over your own data.`
+Goal of this project is to make unified user interface that will empower anyone to extract meaningful information from their data and enable them to rapidly use machine learning algorithms. `It gives you freedom and control over your own models.`
 
 While `SIMON` can be used in across many different fields, 
 our focus here is scientific community so we can enable scientist and other researchers in the field to quickly prototype around their data and get meaningful results out of it.
 
 ## Why is this so awesome?
 * :file_folder: **Feature learning** You can discover relevant trends and patterns with ease, that would usually take years of manual handcrafting.
-* :package: **Visualize & analyze** Exploratory analysis will give you instant insights with help of many different algorithms.
-* :arrows_counterclockwise: **Share your Data** You share your results with others
-* :cloud: **All Benefits of the Cloud** ...on your own Server, in your own control.
-* :lock: **Encryption** You can encrypt data in transit with secure https connections.
+* :package: **Visualize & analyze** Exploratory analysis of machine learning results will give you instant insights with help of many different visualization algorithms.
+* :arrows_counterclockwise: **Share your Data** You can share your results with others, or download them for external use
+* :lock: **Encryption** You can encrypt data in transit with secure https connections or use it in dedicated private environment
 * :lock: **Privacy** Since data is hosted on your own servers you don't have to worry about someone else is looking after your data
 
 
@@ -45,7 +44,8 @@ If you believe you don't have necessarily skills to do so, you could always ask 
 ## Community
 
 ### Getting Help
-Please **do not post** usage questions to GitHub Issues. For these types of questions use our [forum](https://community.genular.org) or please post questions with the [`simon` tag on Stack Overflow](http://stackoverflow.com/questions/tagged/simon)..
+Please **do not post** usage questions to GitHub Issues pages. 
+For these types of questions use our [forum](https://community.genular.org)
 
 ### Submitting Bugs and Enhancements
 [GitHub Issues](https://github.com/genular/simon-frontend/issues) is for suggesting enhancements and reporting bugs.

@@ -1,83 +1,71 @@
 <template>
     <div class="summaryTab-container" v-loading.fullscreen.lock="loading" element-loading-text="Processing...">
-        <el-row type="flex" align="top">
-            <el-col :span="12">
-                <el-row type="flex" align="top">
-                    <el-col :span="12" style="text-align: right;">
-                        <span>Model comparison</span>
-                    </el-col>
-                    <el-col :span="12" style="text-align: right;">
-                        <el-button
-                            size="mini"
-                            round
-                            type="primary"
-                            icon="el-icon-download"
-                            :disabled="summary.boxplot === false"
-                            @click="downloadPlotImage('boxplot')"
-                        >
-                        </el-button>
-                    </el-col>
-                </el-row>
-                <object
-                    id="summary-boxplot" 
-                    style="margin: 0 auto;" 
-                    :data="summary.boxplot" 
-                    type="image/svg+xml">
-                </object>
-            </el-col>
-            <el-col :span="12">
-                <el-row type="flex" align="top">
-                    <el-col :span="12" style="text-align: right;">
-                        <span>ROC summary</span>
-                    </el-col>
-                    <el-col :span="12" style="text-align: right;">
-                        <el-button
-                            size="mini"
-                            round
-                            type="primary"
-                            icon="el-icon-download"
-                            :disabled="summary.rocplot === false"
-                            @click="downloadPlotImage('rocplot')"
-                        >
-                        </el-button>
-                    </el-col>
-                </el-row>
-                <object id="summary-rocplot" style="margin: 0 auto;" :data="summary.rocplot" type="image/svg+xml"></object>
-            </el-col>
-        </el-row>
+        <div v-if="!isTabDisabled">
+            <el-row type="flex" align="top">
+                <el-col :span="12">
+                    <el-row type="flex" align="top">
+                        <el-col :span="12" style="text-align: right;">
+                            <span>Model comparison</span>
+                        </el-col>
+                        <el-col :span="12" style="text-align: right;">
+                            <el-button size="mini" round type="primary" icon="el-icon-download" :disabled="summary.boxplot === false" @click="downloadPlotImage('boxplot')">
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                    <object id="summary-boxplot" style="margin: 0 auto;" :data="summary.boxplot" type="image/svg+xml"> </object>
+                </el-col>
+                <el-col :span="12">
+                    <el-row type="flex" align="top">
+                        <el-col :span="12" style="text-align: right;">
+                            <span>ROC summary</span>
+                        </el-col>
+                        <el-col :span="12" style="text-align: right;">
+                            <el-button size="mini" round type="primary" icon="el-icon-download" :disabled="summary.rocplot === false" @click="downloadPlotImage('rocplot')">
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                    <object id="summary-rocplot" style="margin: 0 auto;" :data="summary.rocplot" type="image/svg+xml"></object>
+                </el-col>
+            </el-row>
 
-        <el-row type="flex" align="top" v-if="summary.info.differences || summary.info.summary">
-            <el-col :span="12" v-if="summary.info.differences">
-                <el-row type="flex" align="top">
-                    <el-col :span="12" style="text-align: left;">
-                        <span>Statistics</span>
-                    </el-col>
-                    <el-col :span="12" style="text-align: right;">
-                        <el-button size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.differences, $event)"></el-button>
-                    </el-col>
-                </el-row>
-                <pre class="code-output">
-                    <highlight-code lang="bash">
-                        {{summary.info.differences}}
-                    </highlight-code>
-                </pre>
-            </el-col>
-            <el-col :span="12" v-if="summary.info.summary">
-                <el-row type="flex" align="top">
-                    <el-col :span="12" style="text-align: left;">
-                        <span>Raw data</span>
-                    </el-col>
-                    <el-col :span="12" style="text-align: right;">
-                        <el-button size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.summary, $event)"></el-button>
-                    </el-col>
-                </el-row>
-                <pre class="code-output">
-                    <highlight-code lang="bash">
-                        {{summary.info.summary}}
-                    </highlight-code>
-                </pre>
-            </el-col>
-        </el-row>
+            <el-row type="flex" align="top" v-if="summary.info.differences || summary.info.summary">
+                <el-col :span="12" v-if="summary.info.differences">
+                    <el-row type="flex" align="top">
+                        <el-col :span="12" style="text-align: left;">
+                            <span>Statistics</span>
+                        </el-col>
+                        <el-col :span="12" style="text-align: right;">
+                            <el-button size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.differences, $event)"></el-button>
+                        </el-col>
+                    </el-row>
+                    <pre class="code-output">
+                        <highlight-code lang="bash">
+                            {{summary.info.differences}}
+                        </highlight-code>
+                    </pre>
+                </el-col>
+                <el-col :span="12" v-if="summary.info.summary">
+                    <el-row type="flex" align="top">
+                        <el-col :span="12" style="text-align: left;">
+                            <span>Raw data</span>
+                        </el-col>
+                        <el-col :span="12" style="text-align: right;">
+                            <el-button size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.summary, $event)"></el-button>
+                        </el-col>
+                    </el-row>
+                    <pre class="code-output">
+                        <highlight-code lang="bash">
+                            {{summary.info.summary}}
+                        </highlight-code>
+                    </pre>
+                </el-col>
+            </el-row>
+        </div>
+        <!-- ELSE if Tab is DISABLED -->
+        <div v-else>
+            <el-alert title="Notification" description="Unfortionatly this function is currently disabled" type="warning" style="margin-top: 20px;" show-icon :closable="false">
+            </el-alert>
+        </div>
     </div>
 </template>
 <script>
@@ -89,7 +77,16 @@ import line_chart_404 from "@/assets/404_images/charts/line_chart.svg";
 
 export default {
     name: "summaryTab",
-
+    props: {
+        columnName: {
+            type: String,
+            default: ""
+        },
+        isTabDisabled: {
+            type: Boolean,
+            default: true
+        }
+    },
     data() {
         return {
             loading: true,
@@ -105,7 +102,9 @@ export default {
     },
     mounted() {
         console.log("mounted: summaryTab");
-        this.handleFetchSummaryPlots();
+        if(!this.isTabDisabled){
+            this.handleFetchSummaryPlots();
+        }
     },
     computed: {
         selectedFeatureSetId: {

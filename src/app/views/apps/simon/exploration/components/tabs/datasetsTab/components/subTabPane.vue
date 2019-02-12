@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <component v-bind:is="currentView" :columnName="columnName">
+        <component v-bind:is="currentView" :columnName="columnName" :isTabDisabled="isTabDisabled">
             <!-- component changes when vm.currentView changes! -->
         </component>
 
@@ -22,6 +22,10 @@ export default {
         columnName: {
             type: String,
             default: ""
+        },
+        isTabDisabled: {
+            type: Boolean,
+            default: true
         }
     },
     components: {
