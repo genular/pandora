@@ -7,7 +7,7 @@
     "author": "Ivan Tomic <info@genular.com>",
     "copyright": "Copyright © 2018 Ivan Tomic <info@genular.com> All rights reserved.",
     "homepage": "http://genular.com",
-    "repository": "https://github.com/LogIN-/genular-frontend",
+    "repository": "https://github.com/genular/simon-frontend",
     "browserslist": "since 2018",
     "build": {
         "compression": "store",
@@ -50,7 +50,7 @@
         }
     },
     "scripts": {
-        "start:web": "webpack-dev-server --progress --colors --config=.webpack-config/webpack.app.config.js --env=development --target=web",
+        "start": "webpack-dev-server --progress --colors --config=.webpack-config/webpack.app.config.js --env=development --target=web",
         "webpack:web:dev": "webpack --config=.webpack-config/webpack.app.config.js --env=development --target=web",
         "webpack:web:prod": "webpack --config=.webpack-config/webpack.app.config.js --env=production --target=web"
     },

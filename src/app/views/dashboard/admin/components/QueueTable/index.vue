@@ -22,7 +22,7 @@
         <el-table
             :data="queueList"
             ref="queueTable"
-            :empty-text="$t('views.dashboard.admin.components.QueueTable.no_data')"
+            :empty-text="$t('views.dashboard.admin.components.QueueTable.table.no_data')"
             @select-all="selectJobID"
             @select="selectJobID"
             row-key="queueID"
@@ -94,9 +94,33 @@
             </el-table-column>
             <el-table-column class-name="settings" fixed="right" :label="$t('views.dashboard.admin.components.QueueTable.table.header.operations')" width="180">
                 <template slot-scope="scope">
-                    <el-button size="mini" type="success" round icon="el-icon-info" @click="handleOperations('info', scope.row)"></el-button>
-                    <el-button size="mini" type="primary" plain icon="el-icon-download" @click="handleOperations('download', scope.row)"></el-button>
-                    <el-button size="mini" type="danger" plain icon="el-icon-delete" @click="handleOperations('delete', scope.row)"></el-button>
+                    <el-button
+                        size="mini"
+                        :title="$t('views.dashboard.admin.components.QueueTable.table.operations.info.title')"
+                        type="success"
+                        round
+                        icon="el-icon-info"
+                        @click="handleOperations('info', scope.row)"
+                    >
+                    </el-button>
+                    <el-button
+                        size="mini"
+                        :title="$t('views.dashboard.admin.components.QueueTable.table.operations.download.title')"
+                        type="primary"
+                        plain
+                        icon="el-icon-download"
+                        @click="handleOperations('download', scope.row)"
+                    >
+                    </el-button>
+                    <el-button
+                        size="mini"
+                        :title="$t('views.dashboard.admin.components.QueueTable.table.operations.delete.title')"
+                        type="danger"
+                        plain
+                        icon="el-icon-delete"
+                        @click="handleOperations('delete', scope.row)"
+                    >
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -113,10 +137,12 @@
             >
             </el-pagination>
         </div>
-        <el-dialog title="Reading statistics" :visible.sync="dialogQueueDetails" width="75%">
+        <el-dialog :visible.sync="dialogQueueDetails" width="75%">
             <span slot="title">
                 <el-row type="flex" align="top">
-                    <el-col :span="12"> <span>Reading statistics</span> </el-col>
+                    <el-col :span="12">
+                        <span>{{ $t("views.dashboard.admin.components.QueueTable.dialog.title") }}</span>
+                    </el-col>
                     <el-col :span="12" style="text-align: right;" v-if="performaceVariables[selectedResamplesID]">
                         <el-select
                             style="padding-right: 25px;width: 100%;"
@@ -144,54 +170,74 @@
                     <el-table
                         ref="resamplesDetailsTable"
                         :data="resamplesList[selectedQueueID]"
-                        empty-text="Nothing to display"
+                        :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')"
                         @row-click="getDatasetResamplesModels"
                         highlight-current-row
                         style="width: 100%"
                         height="250"
                     >
-                        <el-table-column align="center" label="Resample ID">
+                        <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.resample_id')">
                             <template slot-scope="scope">
                                 <span>{{ scope.row.resampleID }}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column fixed align="center" :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.source')" width="75">
+                        <el-table-column fixed align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.title')" width="75">
                             <template slot-scope="scope">
                                 <div v-if="(scope.row.dataSource = 1)">
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">{{ $t("views.dashboard.jobs.table.modal_info.feature_sets.initial") }}</div>
+                                        <div slot="content">{{ $t("views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.initial") }}</div>
                                         <span class="el-icon-more"></span>
                                     </el-tooltip>
                                 </div>
                                 <div v-else>
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">{{ $t("views.dashboard.jobs.table.modal_info.feature_sets.predicted") }}</div>
+                                        <div slot="content">{{ $t("views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.predicted") }}</div>
                                         <span class="el-icon-more-outline"></span>
                                     </el-tooltip>
                                 </div>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" prop="samplesTotal" sortable :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.samples')">
+                        <el-table-column
+                            align="center"
+                            prop="samplesTotal"
+                            sortable
+                            :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples')"
+                        >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" prop="featuresTotal" sortable :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.features')">
+                        <el-table-column
+                            align="center"
+                            prop="featuresTotal"
+                            sortable
+                            :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_features')"
+                        >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.featuresTotal">{{ scope.row.featuresTotal }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" prop="samplesTraining" sortable :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.samples_training')">
+                        <el-table-column
+                            align="center"
+                            prop="samplesTraining"
+                            sortable
+                            :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples_training')"
+                        >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" prop="samplesTesting" sortable :label="$t('views.dashboard.jobs.table.modal_info.feature_sets.samples_testing')">
+                        <el-table-column
+                            align="center"
+                            prop="samplesTesting"
+                            sortable
+                            :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples_testing')"
+                        >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" label="Models Processed">
+                        <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_models_processed')">
                             <template slot-scope="scope">
                                 <span>{{ scope.row.modelsTotal }}</span>
                             </template>
@@ -211,7 +257,7 @@
                             }
                         "
                         :data="modelsList[selectedResamplesID]"
-                        empty-text="Nothing to display"
+                        :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')"
                         :row-class-name="modelDetailsTableRowClassName"
                         style="width: 100%"
                         height="300"
@@ -221,23 +267,35 @@
                                 <div v-if="scope.row.status > 0"><span class="el-icon-success"></span></div>
                                 <div v-else>
                                     <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content" v-html="$t('views.dashboard.jobs.table.modal_info.methods.model_error_info')"></div>
+                                        <div slot="content">
+                                            {{ $t("views.dashboard.admin.components.QueueTable.dialog.models_table.header.status.options.error") }}
+                                        </div>
                                         <span class="el-icon-warning"></span>
                                     </el-tooltip>
                                 </div>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" label="Model ID">
+                        <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.model_id')">
                             <template slot-scope="scope">
                                 <span>{{ scope.row.modelID }}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="left" prop="modelName" sortable :label="$t('views.dashboard.jobs.table.modal_info.methods.method')">
+                        <el-table-column
+                            align="left"
+                            prop="modelName"
+                            sortable
+                            :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.analasys_method')"
+                        >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.modelName">{{ scope.row.modelName }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" prop="processing_time" sortable :label="$t('views.dashboard.jobs.table.modal_info.methods.time')">
+                        <el-table-column
+                            align="center"
+                            prop="processing_time"
+                            sortable
+                            :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.processing_time')"
+                        >
                             <template slot-scope="scope">
                                 <span v-if="scope.row.processing_time">{{ scope.row.processing_time | millisecondsToStr }}</span> <span v-else>N/A</span>
                             </template>
@@ -251,9 +309,9 @@
                             @sort-orders="['ascending', 'descending']"
                         >
                             <template slot-scope="scope">
-                                <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">{{
-                                    scope.row.performance[performanceItem]
-                                }}</span>
+                                <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">
+                                    {{ $t("globals.performanceVariables.options." + scope.row.performance[performanceItem] + ".title") }}
+                                </span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
@@ -261,7 +319,7 @@
                 </el-col>
             </el-row>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogQueueDetails = false">{{ $t("views.dashboard.jobs.table.modal_info.buttons.close") }}</el-button>
+                <el-button type="primary" @click="dialogQueueDetails = false">{{ $t("globals.buttons.close") }}</el-button>
             </span>
         </el-dialog>
     </div>
@@ -407,14 +465,19 @@ export default {
                         });
                 } else if (clickAction === "delete") {
                     const queueID = rowInfo.queueID;
-                    this.$confirm("This will permanently delete everything on the system related to selected queue. Continue?", "Warning", {
-                        type: "warning"
-                    })
+
+                    this.$confirm(
+                        this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.description"),
+                        this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.title"),
+                        {
+                            type: "warning"
+                        }
+                    )
                         .then(_ => {
                             if (this.$config.isDemoServer) {
                                 this.$message({
                                     type: "warning",
-                                    message: "This function is disabled on demo server"
+                                    message: this.$t("globals.demo_server.function_disabled")
                                 });
                                 return;
                             }
@@ -428,7 +491,7 @@ export default {
                                     }
                                     this.$message({
                                         type: "success",
-                                        message: "Success!"
+                                        message: this.$t("globals.messages.success")
                                     });
                                 })
                                 .catch(error => {
@@ -439,7 +502,7 @@ export default {
                         .catch(_ => {
                             this.$message({
                                 type: "info",
-                                message: "Canceled!"
+                                message: this.$t("globals.messages.canceled")
                             });
                         });
                 }
@@ -449,7 +512,7 @@ export default {
                     this.getDatasetResamplesList(queueID, rowInfo.status);
                 } else {
                     this.$message({
-                        message: "You cannot view detail information for this submission since task is not processed",
+                        message: this.$t("views.dashboard.admin.components.QueueTable.messages.in_progress"),
                         type: "warning"
                     });
                 }
@@ -457,13 +520,13 @@ export default {
         },
         statusFilter(status, type) {
             const statusMap = {
-                0: { class: "success", value: "Created" },
-                1: { class: "success", value: "Confirmed" },
-                2: { class: "warning", value: "Canceled" },
-                3: { class: "info", value: "Processing" },
-                4: { class: "info", value: "Processing" },
-                5: { class: "success", value: "Completed" },
-                6: { class: "danger", value: "Completed/Errors" }
+                0: { class: "success", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.0") },
+                1: { class: "success", value:this.$t("views.dashboard.admin.components.QueueTable.status_map.1") },
+                2: { class: "warning", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.2") },
+                3: { class: "info", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.3") },
+                4: { class: "info", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.4") },
+                5: { class: "success", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.5") },
+                6: { class: "danger", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.6") }
             };
             return statusMap[status][type];
         },
@@ -504,7 +567,7 @@ export default {
                                 this.dialogQueueDetails = true;
                             } else {
                                 this.$message({
-                                    message: "Cannot fetch Job details from the back-end server. Please try again latter or choose another Job!",
+                                    message: this.$t("globals.errors.request_general"),
                                     type: "error",
                                     duration: 5000,
                                     showClose: true
@@ -537,7 +600,7 @@ export default {
                             }
                         } else {
                             this.$message({
-                                message: "Cannot fetch Job details from the back-end server. Please try again latter or choose another Job!",
+                                message: this.$t("globals.errors.request_general"),
                                 type: "error",
                                 duration: 5000,
                                 showClose: true
@@ -588,7 +651,7 @@ export default {
                 // Allow selection only of jobs that have at least one model processed!
                 if (row.modelsTotal < 1) {
                     this.$message({
-                        message: this.$t("views.dashboard.jobs.table.messages.in_progress"),
+                        message: this.$t("views.dashboard.admin.components.QueueTable.messages.in_progress"),
                         type: "warning"
                     });
                     return;
@@ -597,7 +660,7 @@ export default {
             // Job should have at least one model processed successfully
             if (row.modelsSuccess < 1) {
                 this.$message({
-                    message: this.$t("views.dashboard.jobs.table.messages.missing_models"),
+                    message: this.$t("views.dashboard.admin.components.QueueTable.messages.missing_models"),
                     type: "warning"
                 });
                 return;

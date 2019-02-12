@@ -13,6 +13,7 @@
 			"copy": "Copy",
 			"ok": "OK",
 			"cancel": "Cancel",
+			"close": "Close",
 			"guide": {
 				"title": "Guide",
 				"doneBtnText": "Done",
@@ -20,6 +21,10 @@
 				"nextBtnText": "Next",
 				"prevBtnText": "Previous"
 			}
+		},
+		"messages": {
+			"success": "Success",
+			"canceled": "Canceled"
 		},
 		"demo_server": {
 			"function_disabled": "This function is disabled on demo server"

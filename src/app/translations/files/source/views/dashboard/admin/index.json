@@ -7,8 +7,40 @@
 				},
 				"tutorial": {
 					"step_1": {
-						"title": "",
-						"description": ""
+						"title": "Welcome to genular! Lets do some explanation..",
+						"description": "Here on the right you will find main navigation menu. Witch you will use to navigate the interface"
+					},
+					"step_2": {
+						"title": "Current page",
+						"description": "Current page will always be marked with read vertical line, so you always know what is your current location"
+					},
+					"step_3": {
+						"title": "You are currently located in Dashboard",
+						"description": "Thats it the place where you can track your job progresses, and view statistics about your application usage. Most importantly here you can select job items that are already finished and afterwards do additional exploratory analysis on them."
+					},
+					"step_4": {
+						"title": "Processing Queue",
+						"description": " you can find list of current and future submitted processing jobs. Once item is processed you can find more details about it by clicking on Info button on the right. You can also use search and export functions to easily find specific queue item."
+					},
+					"step_5": {
+						"title": "Queue filters",
+						"description": "You can also use search and export functions to easily find specific queue item"
+					},
+					"step_6": {
+						"title": "Main usage statistics",
+						"description": "Contains number of total tasks/jobs submitted. Number of datasets generated. Total number of models processed. And overall features extracted"
+					},
+					"step_7": {
+						"title": "Opened tabs",
+						"description": "Each page is opened in its own tab. Here you can easily switch between pages"
+					},
+					"step_8": {
+						"title": "Selected actions",
+						"description": "When you select your working file from workspace or queue you wish to explore from dashboard it will be shown here"
+					},
+					"step_9": {
+						"title": "Different language?",
+						"description": "Here you can easily switch your interface language"
 					}
 				}
 			}

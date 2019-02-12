@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-25 17:05:53
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-11 14:42:46
+ * @Last Modified time: 2019-02-12 10:26:55
  */
 
 export function tutorial() {
@@ -11,8 +11,8 @@ export function tutorial() {
 			element: ".sidebar-container",
 			stageBackground: "transparent",
 			popover: {
-				title: this.$t("Welcome to genular! Lets do some explanation.."),
-				description: "Here on the right you will find main navigation menu. Witch you will use to navigate the interface.",
+				title: this.$t("views.dashboard.admin.tutorial.step_1.title"),
+				description: this.$t("views.dashboard.admin.tutorial.step_1.description"),
 				// position can be left, left-center, left-bottom, top,
 				// top-center, top-right, right, right-center, right-bottom,
 				// bottom, bottom-center, bottom-right
@@ -23,8 +23,8 @@ export function tutorial() {
 			element: ".is-active",
 			stageBackground: "transparent",
 			popover: {
-				title: "Current page",
-				description: "Current page will always be marked with read vertical line, so you always know what is your current location",
+				title: this.$t("views.dashboard.admin.tutorial.step_2.title"),
+				description: this.$t("views.dashboard.admin.tutorial.step_2.description"),
 				position: "bottom-left"
 			}
 		},
@@ -32,9 +32,8 @@ export function tutorial() {
 			element: ".dashboard-inner-container",
 			stageBackground: "#FFFFFF",
 			popover: {
-				title: "You are currently located in Dashboard",
-				description:
-					"Thats it the place where you can track your job progresses, and view statistics about your application usage. Most importantly here you can select job items that are already finished and afterwards do additional exploratory analysis on them.",
+				title: this.$t("views.dashboard.admin.tutorial.step_3.title"),
+				description: this.$t("views.dashboard.admin.tutorial.step_3.description"),
 				position: "bottom-center",
 				// Will show it 20 pixels away from the actual position of popover
 				// You may also provide the negative values
@@ -45,9 +44,8 @@ export function tutorial() {
 			element: ".queue-list-container-table",
 			stageBackground: "#FFFFFF",
 			popover: {
-				title: "Processing Queue",
-				description:
-					"Here you can find list of current and future submitted processing jobs. Once item is processed you can find more details about it by clicking on Info button on the right. You can also use search and export functions to easily find specific queue item.",
+				title: this.$t("views.dashboard.admin.tutorial.step_4.title"),
+				description: this.$t("views.dashboard.admin.tutorial.step_4.description"),
 				position: "bottom"
 			}
 		},
@@ -55,8 +53,8 @@ export function tutorial() {
 			element: ".filter-container",
 			stageBackground: "transparent",
 			popover: {
-				title: "Queue filters",
-				description: "You can also use search and export functions to easily find specific queue item.",
+				title: this.$t("views.dashboard.admin.tutorial.step_5.title"),
+				description: this.$t("views.dashboard.admin.tutorial.step_5.description"),
 				position: "bottom"
 			}
 		},
@@ -64,8 +62,8 @@ export function tutorial() {
 			element: ".dashboard-inner-panel-group",
 			stageBackground: "transparent",
 			popover: {
-				title: "Main statistics",
-				description: "Contains number of total tasks/jobs submitted. Number of datasets generated. Total number of models processed. And overall features extracted.",
+				title: this.$t("views.dashboard.admin.tutorial.step_6.title"),
+				description: this.$t("views.dashboard.admin.tutorial.step_6.description"),
 				position: "bottom"
 			}
 		},
@@ -73,8 +71,8 @@ export function tutorial() {
 			element: ".tags-view-container",
 			stageBackground: "transparent",
 			popover: {
-				title: "Opened tabs",
-				description: "Each page is opened in its own tab. Here you can easily switch between pages.",
+				title: this.$t("views.dashboard.admin.tutorial.step_7.title"),
+				description: this.$t("views.dashboard.admin.tutorial.step_7.description"),
 				position: "bottom"
 			}
 		},
@@ -82,8 +80,8 @@ export function tutorial() {
 			element: ".selected-files-container",
 			stageBackground: "transparent",
 			popover: {
-				title: "Selected actions",
-				description: "When you select your working file from workspace or queue you wish to explore from dashboard it will be shown here.",
+				title: this.$t("views.dashboard.admin.tutorial.step_8.title"),
+				description: this.$t("views.dashboard.admin.tutorial.step_8.description"),
 				position: "bottom"
 			}
 		},
@@ -91,8 +89,8 @@ export function tutorial() {
 			element: ".international",
 			stageBackground: "transparent",
 			popover: {
-				title: "Different language?",
-				description: "Here you can easily switch your interface language.",
+				title: this.$t("views.dashboard.admin.tutorial.step_9.title"),
+				description: this.$t("views.dashboard.admin.tutorial.step_9.description"),
 				position: "left"
 			}
 		}

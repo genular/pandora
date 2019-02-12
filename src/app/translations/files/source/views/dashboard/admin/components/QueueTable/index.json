@@ -4,7 +4,15 @@
 			"admin": {
 				"components": {
 					"QueueTable": {
-						"no_data": "Looks like you did not submit any tasks. Please go to workspace upload and chhose file and create a new analasys task!",
+						"status_map": {
+							"0": "Created",
+							"1": "Confirmed",
+							"2": "Canceled",
+							"3": "Processing",
+							"4": "Processing",
+							"5": "Completed",
+							"6": "Completed/Errors"
+						},
 						"filters": {
 							"queue_id": {
 								"placeholder": "Please enter task ID",
@@ -19,6 +27,7 @@
 							}
 						},
 						"table": {
+							"no_data": "Looks like you did not submit any tasks. Please go to workspace upload and chose file and create a new analysis task!",
 							"header": {
 								"queue_id": "ID",
 								"queue_name": "Name",
@@ -48,16 +57,49 @@
 								"delete": {
 									"title": "Delete dataset",
 									"dialog": {
-										"title": "",
-										"description": ""
+										"title": "Warning",
+										"description": "This will permanently delete everything on the system related to selected queue. Continue?"
 									}
 								}
 							}
 						},
 						"messages": {
-							"not_authorized": "You can analyze only your jobs.",
-							"in_progress": "Cannot select job. Job is not finished.",
-							"missing_models": "Cannot select job. All analysis exited with error."
+							"in_progress": "Cannot select queue task. It is still not finished.",
+							"missing_models": "Cannot select queue task. All analysis finished with an error."
+						},
+						"dialog": {
+							"no_data": "Nothing to display",
+							"title": "Processing statistics for selected queue",
+							"resamples_table": {
+								"header": {
+									"source": {
+										"title": "Source",
+										"options": {
+											"initial": "Initial",
+											"predicted": "Predicted"
+										}
+									},
+									"resample_id": "Resample ID",
+									"total_samples": "Samples",
+									"total_features": "Features",
+									"total_samples_training": "Samples training",
+									"total_samples_testing": "Samples testing",
+									"total_models_processed": "Models processed"
+								}
+							},
+							"models_table": {
+								"header": {
+									"status": {
+										"options": {
+											"success": "Success",
+											"error": "Error"
+										}
+									},
+									"model_id": "Model ID",
+									"analasys_method": "Method",
+									"processing_time": "Processing time"
+								}
+							}
 						}
 					}
 				}
