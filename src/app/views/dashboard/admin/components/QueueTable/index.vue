@@ -304,13 +304,13 @@
                             v-for="(performanceItem, performanceIndex) in selectedPerformace"
                             :prop="'performance|' + performanceItem"
                             :key="performanceItem + '_' + performanceIndex"
-                            :label="performanceItem"
+                            :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))"
                             sortable="custom"
                             @sort-orders="['ascending', 'descending']"
                         >
                             <template slot-scope="scope">
                                 <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">
-                                    {{ $t("globals.performanceVariables.options." + scope.row.performance[performanceItem] + ".title") }}
+                                    {{ scope.row.performance[performanceItem] }}
                                 </span>
                                 <span v-else>N/A</span>
                             </template>

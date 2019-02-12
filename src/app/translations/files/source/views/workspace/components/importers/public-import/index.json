@@ -3,7 +3,58 @@
 		"workspace": {
 			"components": {
 				"importers": {
-					"public-import": {}
+					"public_import": {
+						"button": "Public Import",
+						"dialog": {
+							"title": "Please choose dataset you wish to import",
+							"filters": {
+								"full_text": {
+									"placeholder": "Search by keyword"
+								},
+								"buttons": {
+									"search": "Search",
+									"export": "Export table"
+								}
+							},
+							"table": {
+								"no_data": "If some datasets are found it will appear here",
+								"header": {
+									"dataset_id": "ID",
+									"title": "Title",
+									"total_rows": "Rows",
+									"total_columns": "Columns",
+									"sparsity": "Sparsity",
+									"updated": "Updated",
+									"actions": "Actions"
+								},
+								"expand": {
+									"headings": {
+										"description": "Description",
+										"format": "Data format",
+										"source": "Source",
+										"references": "References"
+									}
+								},
+								"operations": {
+									"preview": {
+										"title": "More information",
+										"dialog": {
+											"error": "Cannot display preview of the dataset. Please download it manually",
+											"download_link": "here",
+											"title": "Dataset preview"
+										}
+									},
+									"import": {
+										"title": "Import dataset into workspace",
+										"dialog": {
+											"title": "Info",
+											"message": "Are you sure you want to import this dataset(s) into your workspace?"
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}

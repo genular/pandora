@@ -17,7 +17,6 @@ export default {
         };
     },
     mounted() {
-
         const element = document.getElementById(this.id);
         const vm = this;
 
@@ -28,7 +27,7 @@ export default {
             thumbnailHeight: this.thumbnailHeight,
             maxFiles: this.maxFiles,
             maxFilesize: this.maxFilesize,
-            dictRemoveFile: "Delete",
+            dictRemoveFile: this.$t("views.workspace.components.dropzone.buttons.delete_file"),
             addRemoveLinks: this.showRemoveLink,
             acceptedFiles: this.acceptedFiles,
             ignoreHiddenFiles: true,
@@ -41,7 +40,10 @@ export default {
             retryChunksLimit: 3,
             createImageThumbnails: false,
             timeout: 50000,
-            dictDefaultMessage: '<i style="display: table-cell; vertical-align: middle;" class="el-icon-upload">  ' + this.defaultMsg + "</i>",
+            dictDefaultMessage:
+                '<i style="display: table-cell; vertical-align: middle;" class="el-icon-upload">  ' +
+                this.$t("views.workspace.components.dropzone.messages.upload_placeholder") +
+                "</i>",
             headers: {
                 "X-Token": this.authToken || "failed"
             },
@@ -79,8 +81,8 @@ export default {
             }
         });
 
-        if(this.$config.isDemoServer){
-            this.dropzone.disable();    
+        if (this.$config.isDemoServer) {
+            this.dropzone.disable();
         }
 
         if (this.couldPaste) {
@@ -182,10 +184,6 @@ export default {
         clickable: {
             type: Boolean,
             default: true
-        },
-        defaultMsg: {
-            type: String,
-            default: "Upload File"
         },
         acceptedFiles: {
             type: String

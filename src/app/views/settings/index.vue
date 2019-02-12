@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container settings-container" v-loading="requestLoading" :element-loading-text="$t('views.dashboard.jobs.loading_title')">
+    <div class="app-container settings-container" v-loading="requestLoading" :element-loading-text="$t('globals.page_loading')">
         <el-row :gutter="20">
             <!-- AVATAR -->
             <el-col :span="4">

@@ -1,0 +1,16 @@
+{
+	"views": {
+		"workspace": {
+			"components": {
+				"dropzone": {
+					"messages": {
+						"upload_placeholder": "Drop files here or click to upload"
+					},
+					"buttons": {
+						"delete_file": "Delete"
+					}
+				}
+			}
+		}
+	}
+}

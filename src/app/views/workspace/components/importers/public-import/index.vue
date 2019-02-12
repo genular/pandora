@@ -1,16 +1,24 @@
 <template>
     <div class="workspace-public-import">
-        <el-button icon="el-icon-question" size="mini" type="primary" round v-waves :loading="datasetsLoading" @click.prevent.stop="fetchDatasets">Public Import</el-button>
+        <el-button icon="el-icon-question" size="mini" type="primary" round v-waves :loading="datasetsLoading" @click.prevent.stop="fetchDatasets">
+            {{ $t("views.workspace.components.importers.public_import.button") }}
+        </el-button>
 
-        <el-dialog title="Please choose dataset you wish to import" :visible.sync="datasetsDialog" :close-on-click-modal="false">
+        <el-dialog :title="$t('views.workspace.components.importers.public_import.dialog.title')" :visible.sync="datasetsDialog" :close-on-click-modal="false">
             <div class="filter-container">
-                <el-input style="width: 300px;" class="filter-item" @keyup.enter.native="filterUpdate(1, 'page')" placeholder="Search by keyword" v-model="filterQuery.custom">
+                <el-input
+                    style="width: 300px;"
+                    class="filter-item"
+                    @keyup.enter.native="filterUpdate(1, 'page')"
+                    :placeholder="$t('views.workspace.components.importers.public_import.dialog.filters.full_text.placeholder')"
+                    v-model="filterQuery.custom"
+                >
                 </el-input>
                 <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click.prevent.stop="filterUpdate(1, 'page')">{{
-                    $t("views.dashboard.jobs.search.buttons.search")
+                    $t("views.workspace.components.importers.public_import.dialog.filters.buttons.search")
                 }}</el-button>
                 <el-button class="filter-item" type="primary" v-waves icon="el-icon-download" @click.prevent.stop="exportData">{{
-                    $t("views.dashboard.jobs.search.buttons.export")
+                    $t("views.workspace.components.importers.public_import.dialog.filters.buttons.export")
                 }}</el-button>
             </div>
 
@@ -21,7 +29,7 @@
                 row-key="datasetID"
                 v-loading="datasetsLoading"
                 ref="datasetGenularImport"
-                empty-text="Finding datasets for import"
+                :empty-text="$t('views.workspace.components.importers.public_import.dialog.table.no_data')"
                 stripe
                 fit
                 style="width: 100%"
@@ -30,26 +38,27 @@
                     <template slot-scope="props">
                         <div class="inline_preview">
                             <div v-if="props.row.description">
-                                <h4 class="data_headings">Description</h4>
+                                <h4 class="data_headings">{{ $t("views.workspace.components.importers.public_import.dialog.table.expand.headings.description") }}</h4>
                                 <div v-html="props.row.description"></div>
                             </div>
                             <div v-if="props.row.format">
-                                <h4 class="data_headings">Data format</h4>
+                                <h4 class="data_headings">{{ $t("views.workspace.components.importers.public_import.dialog.table.expand.headings.format") }}</h4>
                                 <div v-html="props.row.format"></div>
                             </div>
                             <div v-if="props.row.source">
-                                <h4 class="data_headings">Source</h4>
+                                <h4 class="data_headings">{{ $t("views.workspace.components.importers.public_import.dialog.table.expand.headings.source") }}</h4>
                                 <div v-html="props.row.source"></div>
                             </div>
                             <div v-if="props.row.references">
-                                <h4 class="data_headings">References</h4>
+                                <h4 class="data_headings">{{ $t("views.workspace.components.importers.public_import.dialog.table.expand.headings.references") }}</h4>
                                 <div v-html="props.row.references"></div>
                             </div>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column property="datasetID" label="ID" width="60" align="center"> </el-table-column>
-                <el-table-column label="Title" align="left" width="275">
+                <el-table-column property="datasetID" :label="$t('views.workspace.components.importers.public_import.dialog.table.header.dataset_id')" width="60" align="center">
+                </el-table-column>
+                <el-table-column :label="$t('views.workspace.components.importers.public_import.dialog.table.header.title')" align="left" width="275">
                     <template slot-scope="scope">
                         <div class="title_box">
                             <div class="title_box_title" :title="scope.row.title">{{ scope.row.title | truncateString(25) }}</div>
@@ -60,31 +69,35 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="Rows" width="75" align="center">
+                <el-table-column :label="$t('views.workspace.components.importers.public_import.dialog.table.header.total_rows')" width="75" align="center">
                     <template slot-scope="scope">
                         {{ scope.row.rows }}
                     </template>
                 </el-table-column>
-                <el-table-column label="Columns" width="85" align="center">
+                <el-table-column :label="$t('views.workspace.components.importers.public_import.dialog.table.header.total_columns')" width="85" align="center">
                     <template slot-scope="scope">
                         {{ scope.row.columns }}
                     </template>
                 </el-table-column>
-                <el-table-column label="Sparsity" width="85" align="center">
+                <el-table-column :label="$t('views.workspace.components.importers.public_import.dialog.table.header.sparsity')" width="85" align="center">
                     <template slot-scope="scope">
                         <span v-if="scope.row.sparsity < 50"> <span class="el-icon-success"></span> {{ scope.row.sparsity }}% </span>
                         <span v-else-if="scope.row.sparsity > 50 && scope.row.sparsity < 75"> <span class="el-icon-warning"></span> {{ scope.row.sparsity }}% </span>
                         <span v-else> <span class="el-icon-error"></span> {{ scope.row.sparsity }}% </span>
                     </template>
                 </el-table-column>
-                <el-table-column label="Updated" align="center">
+                <el-table-column :label="$t('views.workspace.components.importers.public_import.dialog.table.header.updated')" align="center">
                     <template slot-scope="scope">
                         {{ scope.row.updated | parseTime("{y}-{m}-{d}") }}
                     </template>
                 </el-table-column>
-                <el-table-column label="Actions" width="110" align="center">
+                <el-table-column :label="$t('views.workspace.components.importers.public_import.dialog.table.header.actions')" width="110" align="center">
                     <template slot-scope="scope">
-                        <el-popover placement="bottom" title="Dataset preview" trigger="click">
+                        <el-popover
+                            placement="bottom"
+                            :title="$t('views.workspace.components.importers.public_import.dialog.table.operations.preview.dialog.title')"
+                            trigger="click"
+                        >
                             <div class="preview_container">
                                 <div v-if="scope.row.example.length > 2">
                                     <el-table :data="scope.row.example" size="mini">
@@ -97,9 +110,24 @@
                                         </el-table-column>
                                     </el-table>
                                 </div>
-                                <div v-else>Cannot display preview of the dataset. Please download it manually <a :href="scope.row.downloadLink" target="_blank">here</a>.</div>
+                                <div v-else>
+                                    {{ $t("views.workspace.components.importers.public_import.dialog.table.operations.preview.dialog.error") }}
+                                    <a :href="scope.row.downloadLink" target="_blank">
+                                        {{ $t("views.workspace.components.importers.public_import.dialog.table.operations.preview.dialog.download_link") }} </a
+                                    >.
+                                </div>
                             </div>
-                            <el-button style="float: left;" round plain type="info" size="mini" icon="el-icon-info" slot="reference" title="Preview"></el-button>
+                            <el-button
+                                style="float: left;"
+                                round
+                                plain
+                                type="info"
+                                size="mini"
+                                icon="el-icon-info"
+                                slot="reference"
+                                :title="$t('views.workspace.components.importers.public_import.dialog.table.operations.preview.title')"
+                            >
+                            </el-button>
                         </el-popover>
                         <el-button
                             round
@@ -107,7 +135,7 @@
                             type="success"
                             size="mini"
                             icon="el-icon-download"
-                            title="Import"
+                            :title="$t('views.workspace.components.importers.public_import.dialog.table.operations.import.title')"
                             @click.prevent.stop="importDatasets([scope.row.datasetID])"
                         ></el-button>
                     </template>
@@ -169,14 +197,18 @@ export default {
 
     methods: {
         importDatasets(datasetIDs) {
-            this.$confirm("Are you sure you want to import this dataset(s) into your workspace?", "Info", {
-                type: "info"
-            })
+            this.$confirm(
+                this.$t("views.workspace.components.importers.public_import.dialog.table.operations.import.dialog.message"),
+                this.$t("views.workspace.components.importers.public_import.dialog.table.operations.import.dialog.title"),
+                {
+                    type: "info"
+                }
+            )
                 .then(_ => {
                     if (this.$config.isDemoServer) {
                         this.$message({
                             type: "warning",
-                            message: "This function is disabled on demo server"
+                            message: this.$t("globals.demo_server.function_disabled")
                         });
                         return;
                     }
@@ -203,7 +235,7 @@ export default {
                 .catch(_ => {
                     this.$message({
                         type: "info",
-                        message: "Action canceled"
+                        message: this.$t("globals.messages.canceled")
                     });
                 });
         },

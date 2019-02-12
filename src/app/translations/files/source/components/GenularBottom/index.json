@@ -8,13 +8,13 @@
             },
             "dialog": {
                 "title": "about us",
-                "intro": "We are open source company founded to promote science and research. We believe that everyone should have right to build highly accurate predictive models even if they would not usually have necessary skills.",
+                "intro": "We are open source organization founded to promote science and research. We believe that everyone should have right to build highly accurate predictive models even if they would not usually have necessary skills.",
                 "citation": {
                     "author": "Albert Einstein",
                     "text": "We can not solve our problems with the same level of thinking that created them"
                 },
                 "ending": "Instead of guessing which model will work the best for your data, our system automatically processes in parallel many different machine learning algorithms, testing millions of potential models per second, and suggests most accurate ones that fits your data.",
-                "footer": "SIMON is made and maintained by Genular, a community working together to keep Science open, public and accessible to all."
+                "footer": "SIMON is made and maintained by genular, a community working together to keep Science open, public and accessible to all."
             }
         }
     }

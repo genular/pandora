@@ -1,0 +1,26 @@
+{
+	"views": {
+		"workspace": {
+			"index": {
+				"context_menu": {
+					"select": "select",
+					"download": "download",
+					"delete": "delete",
+					"preview": "preview",
+					"stats": "stats"
+				},
+				"buttons": {
+					"delete_all": "Delete all"
+				},
+				"operations": {
+					"delete_all": {
+						"dialog": {
+							"title": "Warning",
+							"description": "This will delete all files. Do you wish to proceed?"
+						}
+					}
+				}
+			}
+		}
+	}
+}

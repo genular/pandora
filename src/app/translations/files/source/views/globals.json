@@ -23,8 +23,11 @@
 			}
 		},
 		"messages": {
-			"success": "Success",
-			"canceled": "Canceled"
+			"success": "success",
+			"canceled": "canceled",
+			"deleted": "deleted",
+			"upload_sucessfull": "uploaded successfully",
+			"not_implemented": "Function is still not implemented"
 		},
 		"demo_server": {
 			"function_disabled": "This function is disabled on demo server"

@@ -9,7 +9,7 @@
         <el-dialog class="about-dialog" :title="$t('components.GenularBottom.dialog.title')" :visible.sync="centerDialogVisible" width="600px" center>
             <div class="about-container">
                 <div>
-                    {{ $t('components.GenularBottom.dialog.title') }}
+                    {{ $t('components.GenularBottom.dialog.intro') }}
                 </div>
                 <blockquote :cite="$t('components.GenularBottom.dialog.citation.author')"> 
                     {{ $t('components.GenularBottom.dialog.citation.text') }}

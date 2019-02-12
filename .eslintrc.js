@@ -13,7 +13,7 @@ module.exports = {
     extends: [
         // add more generic rulesets here, such as:
         "eslint:recommended",
-        "plugin:vue/essential",
+        "plugin:vue/essential"
         // "plugin:prettier/recommended"
     ],
     // required to lint *.vue files
@@ -243,15 +243,7 @@ module.exports = {
             2,
             "always",
             {
-                markers: [
-                    "global",
-                    "globals",
-                    "eslint",
-                    "eslint-disable",
-                    "*package",
-                    "!",
-                    ","
-                ]
+                markers: ["global", "globals", "eslint", "eslint-disable", "*package", "!", ","]
             }
         ],
         "template-curly-spacing": [2, "never"],
