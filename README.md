@@ -1,5 +1,6 @@
 <p align="center">
-    <img width="200" src="https://github.com/genular/simon-frontend/raw/master/src/app/assets/logo/png/dark_logo_transparent@2x.png">         
+    <a href="https://genular.org" target="_blank">
+        <img width="200" src="https://github.com/genular/simon-frontend/raw/master/src/app/assets/logo/png/dark_logo_transparent@2x.png"></a>
 </p>
 <p align="center">
     <a href="https://crowdin.com/project/genular" alt="Help us translate">
@@ -18,8 +19,7 @@
 
 <h1 align="center">Introduction</h1>
 
-`SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. [(click here for demo)](https://dashboard.genular.org)
-
+`SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. <a href="https://dashboard.genular.org" target="_blank">(click here for demo)</a>
 Currently `SIMON` implements automated machine learning and statistical data discovery features
 that will help you to easily illustrate dynamic relationships and provide you with a structural sense of your data.
 

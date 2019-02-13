@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2018-04-13 10:25:25
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-02-03 11:00:32
+* @Last Modified time: 2019-02-12 17:03:26
 */
 
 @font-face {
@@ -13,22 +13,4 @@
         url("~@/styles/fonts/reislust/Reislust.eot?#iefix") format("embedded-opentype");
     font-weight: normal;
     font-style: normal;
-}
-
-/* roboto-regular - cyrillic_latin_greek_vietnamese */
-@font-face {
-    font-family: "Roboto";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Roboto"), local("Roboto-Regular"), url("~@/styles/fonts/roboto/roboto-v18-cyrillic_latin_greek_vietnamese-regular.woff2") format("woff2"),
-        /* Chrome 26+, Opera 23+, Firefox 39+ */ url("~@/styles/fonts/roboto/roboto-v18-cyrillic_latin_greek_vietnamese-regular.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-
-/* roboto-500 - cyrillic_latin_greek_vietnamese */
-@font-face {
-    font-family: "Roboto";
-    font-style: normal;
-    font-weight: 500;
-    src: local("Roboto Medium"), local("Roboto-Medium"), url("~@/styles/fonts/roboto/roboto-v18-cyrillic_latin_greek_vietnamese-500.woff2") format("woff2"),
-        /* Chrome 26+, Opera 23+, Firefox 39+ */ url("~@/styles/fonts/roboto/roboto-v18-cyrillic_latin_greek_vietnamese-500.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
