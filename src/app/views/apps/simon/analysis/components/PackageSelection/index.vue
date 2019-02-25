@@ -11,7 +11,8 @@
             <el-col :span="11">
                 <el-card class="box-card">
                     <div slot="header">
-                        {{ $t('views.apps.simon.analysis.components.PackageSelection.head.available.title') }} <span class="track-count">{{selectedPackages.length}}/{{avaliablePackages.length + selectedPackages.length}}</span>
+                        {{ $t("views.apps.simon.analysis.components.PackageSelection.head.available.title") }}
+                        <span class="track-count">{{ selectedPackages.length }}/{{ avaliablePackages.length + selectedPackages.length }}</span>
                         <el-switch v-model="filter.allPackages"></el-switch>
                     </div>
                     <div class="box-item">
@@ -23,62 +24,71 @@
                                 v-model="search.available"
                                 :fetch-suggestions="querySearchAvaliable"
                                 @select="handleAutoselectClick"
-                                size="medium">
-                                    <template slot-scope="props">
-                                        <div class="name" style="float: left;">{{ props.item.label }}</div>
-                                        <span class="label" style="float: right;">{{ props.item.internal_id }}</span>
-                                    </template>
+                            >
+                                <template slot-scope="props">
+                                    <div class="name" style="float: left;">{{ props.item.label }}</div>
+                                    <span class="label" style="float: right;">{{ props.item.internal_id }}</span>
+                                </template>
                             </el-autocomplete>
                         </div>
                         <div class="draggable-containers">
-                            <draggable class="draggable-items" element="el-collapse" :component-data="getComponentData('handleAvaliableChange')" v-model="avaliablePackages" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-                                <el-collapse-item :class="item.disabled ? 'draggable-item disabled':'draggable-item'" v-for="(item, index) in avaliablePackages" :name="index" :key="item.id">
+                            <draggable
+                                class="draggable-items"
+                                element="el-collapse"
+                                :component-data="getComponentData('handleAvaliableChange')"
+                                v-model="avaliablePackages"
+                                :options="dragOptions"
+                                :move="onMove"
+                                @start="isDragging = true"
+                                @end="isDragging = false"
+                            >
+                                <el-collapse-item
+                                    :class="item.disabled ? 'draggable-item disabled' : 'draggable-item'"
+                                    v-for="(item, index) in avaliablePackages"
+                                    :name="index"
+                                    :key="item.id"
+                                >
                                     <template slot="title">
-                                        <span :class="item.disabled ? 'item-icon fa fa-pause':'item-icon fa fa-play'" aria-hidden="true"></span>
-                                        <span class="item-title">{{item.label}}</span>
-                                        <span class="item-library">{{item.internal_id}}</span>
+                                        <span :class="item.disabled ? 'item-icon fa fa-pause' : 'item-icon fa fa-play'" aria-hidden="true"></span>
+                                        <span class="item-title">{{ item.label }}</span>
+                                        <span class="item-library">{{ item.internal_id }}</span>
                                     </template>
                                     <div class="draggable-item-content-wrap">
                                         <ul class="general_info">
                                             <li>
-                                                <span class="title">
-                                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.title') }}:
-                                                </span>
+                                                <span class="title"> {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.title") }}: </span>
                                                 <span class="desc">
-                                                        <span v-if="item.classification == 1">
-                                                            {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.classification') }}
-                                                        </span>
-                                                        <span v-if="item.regression == 1">
-                                                            {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.regression') }}
-                                                        </span>
+                                                    <span v-if="item.classification == 1">
+                                                        {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.classification") }}
+                                                    </span>
+                                                    <span v-if="item.regression == 1">
+                                                        {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.regression") }}
+                                                    </span>
                                                 </span>
                                                 <el-tooltip placement="top">
                                                     <div slot="content">
                                                         <span v-for="(key, value) in item.citations" :key="key" class="item">
-                                                          <span>{{ value }} - {{ key }}</span><br /><br />
+                                                            <span>{{ value }} - {{ key }}</span
+                                                            ><br /><br />
                                                         </span>
                                                     </div>
                                                     <el-button style="float: right;padding: 0;" type="info" icon="el-icon-info" circle></el-button>
                                                 </el-tooltip>
                                             </li>
                                             <li v-if="item.tuning_parameters.length > 0">
-                                                <span class="title">
-                                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title') }}:
-                                                </span>
+                                                <span class="title"> {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title") }}: </span>
                                             </li>
                                         </ul>
                                         <ul class="tuning_parameters" v-if="item.tuning_parameters.length > 0">
                                             <li v-for="(tun_parm, index) in item.tuning_parameters" :key="index">
-                                                <span class="title">{{tun_parm.label}}</span>
+                                                <span class="title">{{ tun_parm.label }}</span>
                                                 <span class="desc">
-                                                    <el-input
-                                                        placeholder="N/A" size="mini" disabled>
-                                                    </el-input>
+                                                    <el-input placeholder="N/A" size="mini" disabled> </el-input>
                                                 </span>
                                             </li>
                                         </ul>
                                         <div class="tag-container">
-                                            <el-tag :key="index" v-for="(tag, index) in item.tags" :disable-transitions="false" type="info"> {{tag}} </el-tag>
+                                            <el-tag :key="index" v-for="(tag, index) in item.tags" :disable-transitions="false" type="info"> {{ tag }} </el-tag>
                                         </div>
                                     </div>
                                 </el-collapse-item>
@@ -90,76 +100,85 @@
             <el-col :span="11" :push="2">
                 <el-card class="box-card">
                     <div slot="header">
-                        {{ $t('views.apps.simon.analysis.components.PackageSelection.head.selected.title') }} <span class="track-count">{{selectedPackages.length}}</span>
+                        {{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.title") }} <span class="track-count">{{ selectedPackages.length }}</span>
                     </div>
                     <div class="box-item">
                         <div style="float: left; height: 36px; line-height: 36px;">
                             <el-tooltip placement="top">
                                 <div slot="content">
-                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.head.selected.extraction.description') }} 
+                                    {{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.extraction.description") }}
                                 </div>
-                                <span class="field-label">{{ $t('views.apps.simon.analysis.components.PackageSelection.head.selected.extraction.title') }} </span>
+                                <span class="field-label">{{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.extraction.title") }} </span>
                             </el-tooltip>
                             <el-switch v-model="filterExtraction"></el-switch>
                         </div>
                         <div style="float: right; height: 36px; line-height: 36px;">
                             <el-tooltip placement="top">
                                 <div slot="content">
-                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.head.selected.feature_selection.description') }} 
+                                    {{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.feature_selection.description") }}
                                 </div>
-                                <span class="field-label">{{ $t('views.apps.simon.analysis.components.PackageSelection.head.selected.feature_selection.title') }}</span>
+                                <span class="field-label">{{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.feature_selection.title") }}</span>
                             </el-tooltip>
                             <el-switch v-model="backwardSelection" :disabled="true"></el-switch>
                         </div>
                         <div class="draggable-containers">
-                            <draggable class="draggable-items" element="el-collapse" :component-data="getComponentData('handleSelectedChange')" v-model="selectedPackages" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-                                <el-collapse-item :class="item.disabled ? 'draggable-item disabled':'draggable-item'" v-for="(item, index) in selectedPackages" :name="index" :key="item.id">
+                            <draggable
+                                class="draggable-items"
+                                element="el-collapse"
+                                :component-data="getComponentData('handleSelectedChange')"
+                                v-model="selectedPackages"
+                                :options="dragOptions"
+                                :move="onMove"
+                                @start="isDragging = true"
+                                @end="isDragging = false"
+                            >
+                                <el-collapse-item
+                                    :class="item.disabled ? 'draggable-item disabled' : 'draggable-item'"
+                                    v-for="(item, index) in selectedPackages"
+                                    :name="index"
+                                    :key="item.id"
+                                >
                                     <template slot="title">
-                                        <span :class="item.disabled ? 'item-icon fa fa-pause':'item-icon fa fa-play'" aria-hidden="true"></span>
-                                        <span class="item-title">{{item.label}}</span>
-                                        <span class="item-library">{{item.internal_id}}</span>
+                                        <span :class="item.disabled ? 'item-icon fa fa-pause' : 'item-icon fa fa-play'" aria-hidden="true"></span>
+                                        <span class="item-title">{{ item.label }}</span>
+                                        <span class="item-library">{{ item.internal_id }}</span>
                                     </template>
                                     <div class="draggable-item-content-wrap">
                                         <ul class="general_info">
                                             <li>
-                                                <span class="title">
-                                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.title') }}:
-                                                </span>
+                                                <span class="title"> {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.title") }}: </span>
                                                 <span class="desc">
-                                                        <span v-if="item.classification == 1">
-                                                            {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.classification') }}
-                                                        </span>
-                                                        <span v-if="item.regression == 1">
-                                                            {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.method_type.regression') }}
-                                                        </span>
+                                                    <span v-if="item.classification == 1">
+                                                        {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.classification") }}
+                                                    </span>
+                                                    <span v-if="item.regression == 1">
+                                                        {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.regression") }}
+                                                    </span>
                                                 </span>
                                                 <el-tooltip placement="top">
                                                     <div slot="content">
                                                         <span v-for="(key, value) in item.citations" :key="key" class="item">
-                                                          <span>{{ value }} - {{ key }}</span><br /><br />
+                                                            <span>{{ value }} - {{ key }}</span
+                                                            ><br /><br />
                                                         </span>
                                                     </div>
                                                     <el-button style="float: right;padding: 0;" type="info" icon="el-icon-info" circle></el-button>
                                                 </el-tooltip>
                                             </li>
                                             <li v-if="item.tuning_parameters.length > 0">
-                                                <span class="title">
-                                                    {{ $t('views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title') }}:
-                                                </span>
+                                                <span class="title"> {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title") }}: </span>
                                             </li>
                                         </ul>
                                         <ul class="tuning_parameters" v-if="item.tuning_parameters.length > 0">
                                             <li v-for="(tun_parm, index) in item.tuning_parameters" :key="index">
-                                                <span class="title">{{tun_parm.label}}</span>
+                                                <span class="title">{{ tun_parm.label }}</span>
                                                 <span class="desc">
-                                                    <el-input
-                                                        placeholder="N/A" size="mini" disabled>
-                                                    </el-input>
+                                                    <el-input placeholder="N/A" size="mini" disabled> </el-input>
                                                 </span>
                                             </li>
                                         </ul>
                                         <div class="tag-container">
-                                            <el-tag :key="index" v-for="(tag, index) in item.tags" :disable-transitions="false" type="info"> {{tag}} </el-tag>
+                                            <el-tag :key="index" v-for="(tag, index) in item.tags" :disable-transitions="false" type="info"> {{ tag }} </el-tag>
                                         </div>
                                     </div>
                                 </el-collapse-item>

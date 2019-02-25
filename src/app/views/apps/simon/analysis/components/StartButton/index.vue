@@ -4,14 +4,7 @@
             <el-col :offset="13" :span="11">
                 <el-row type="flex" align="middle">
                     <el-col :span="24">
-                        <el-button
-                            class="validate-analysis"
-                            type="primary"
-                            size="medium"
-                            round
-                            icon="el-icon-caret-right"
-                            :disabled="isValidateDisabled == true"
-                            @click="validateJob"
+                        <el-button class="validate-analysis" type="primary" round icon="el-icon-caret-right" :disabled="isValidateDisabled == true" @click="validateJob"
                             >Validate data</el-button
                         >
                     </el-col>
@@ -101,10 +94,10 @@
                 <br />{{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.footer_2") }}
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="info" size="medium" round icon="el-icon-caret-right" @click="handleSubmissionCancle">{{
+                <el-button type="info" round icon="el-icon-caret-right" @click="handleSubmissionCancle">{{
                     $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.buttons.cancel")
                 }}</el-button>
-                <el-button class="submit-analysis" type="primary" size="medium" round icon="el-icon-caret-right" :disabled="!processTaskVisible" @click="processTask">{{
+                <el-button class="submit-analysis" type="primary" round icon="el-icon-caret-right" :disabled="!processTaskVisible" @click="processTask">{{
                     $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.buttons.process")
                 }}</el-button>
             </span>

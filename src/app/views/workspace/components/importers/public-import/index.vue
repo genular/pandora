@@ -30,6 +30,8 @@
                 v-loading="datasetsLoading"
                 ref="datasetGenularImport"
                 :empty-text="$t('views.workspace.components.importers.public_import.dialog.table.no_data')"
+                :default-sort="{ prop: 'datasetID', order: 'ascending' }"
+                @sort-change="sortDatasetResults"
                 stripe
                 fit
                 style="width: 100%"
@@ -56,9 +58,22 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column property="datasetID" :label="$t('views.workspace.components.importers.public_import.dialog.table.header.dataset_id')" width="60" align="center">
+                <el-table-column
+                    prop="datasetID"
+                    sortable="custom"
+                    :sort-orders="['ascending', 'descending']"
+                    :label="$t('views.workspace.components.importers.public_import.dialog.table.header.dataset_id')"
+                    min-width="60"
+                    align="center"
+                >
                 </el-table-column>
-                <el-table-column :label="$t('views.workspace.components.importers.public_import.dialog.table.header.title')" align="left" width="275">
+                <el-table-column
+                    sortable="custom"
+                    :sort-orders="['ascending', 'descending']"
+                    :label="$t('views.workspace.components.importers.public_import.dialog.table.header.title')"
+                    align="left"
+                    min-width="275"
+                >
                     <template slot-scope="scope">
                         <div class="title_box">
                             <div class="title_box_title" :title="scope.row.title">{{ scope.row.title | truncateString(25) }}</div>
@@ -69,24 +84,52 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column :label="$t('views.workspace.components.importers.public_import.dialog.table.header.total_rows')" width="75" align="center">
+                <el-table-column
+                    prop="rows"
+                    sortable="custom"
+                    :sort-orders="['ascending', 'descending']"
+                    :label="$t('views.workspace.components.importers.public_import.dialog.table.header.total_rows')"
+                    min-width="100"
+                    align="center"
+                >
                     <template slot-scope="scope">
                         {{ scope.row.rows }}
                     </template>
                 </el-table-column>
-                <el-table-column :label="$t('views.workspace.components.importers.public_import.dialog.table.header.total_columns')" width="85" align="center">
+                <el-table-column
+                    prop="columns"
+                    sortable="custom"
+                    :sort-orders="['ascending', 'descending']"
+                    :label="$t('views.workspace.components.importers.public_import.dialog.table.header.total_columns')"
+                    min-width="100"
+                    align="center"
+                >
                     <template slot-scope="scope">
                         {{ scope.row.columns }}
                     </template>
                 </el-table-column>
-                <el-table-column :label="$t('views.workspace.components.importers.public_import.dialog.table.header.sparsity')" width="85" align="center">
+                <el-table-column
+                    prop="sparsity"
+                    sortable="custom"
+                    :sort-orders="['ascending', 'descending']"
+                    :label="$t('views.workspace.components.importers.public_import.dialog.table.header.sparsity')"
+                    min-width="100"
+                    align="center"
+                >
                     <template slot-scope="scope">
                         <span v-if="scope.row.sparsity < 50"> <span class="el-icon-success"></span> {{ scope.row.sparsity }}% </span>
                         <span v-else-if="scope.row.sparsity > 50 && scope.row.sparsity < 75"> <span class="el-icon-warning"></span> {{ scope.row.sparsity }}% </span>
                         <span v-else> <span class="el-icon-error"></span> {{ scope.row.sparsity }}% </span>
                     </template>
                 </el-table-column>
-                <el-table-column :label="$t('views.workspace.components.importers.public_import.dialog.table.header.updated')" align="center">
+                <el-table-column
+                    prop="updated"
+                    sortable="custom"
+                    :sort-orders="['ascending', 'descending']"
+                    min-width="100"
+                    :label="$t('views.workspace.components.importers.public_import.dialog.table.header.updated')"
+                    align="center"
+                >
                     <template slot-scope="scope">
                         {{ scope.row.updated | parseTime("{y}-{m}-{d}") }}
                     </template>
@@ -155,7 +198,7 @@
                         }
                     "
                     :current-page.sync="filterQuery.page"
-                    :page-sizes="[5, 10]"
+                    :page-sizes="[5, 25, 50]"
                     :page-size="filterQuery.limit"
                     :total="itemsTotal"
                     layout="total, sizes, prev, pager, next, jumper"
@@ -188,6 +231,7 @@ export default {
             filterQuery: {
                 page: 1,
                 limit: 5,
+                sort_by: "id",
                 sort: "+",
                 custom: ""
             },
@@ -228,6 +272,10 @@ export default {
                             }
                         })
                         .catch(error => {
+                            this.$message({
+                                message: this.$t("globals.errors.request_general"),
+                                type: "error"
+                            });
                             this.datasetsLoading = false;
                             console.log(error);
                         });
@@ -245,6 +293,34 @@ export default {
                 this.fetchDatasets();
             }
         },
+        sortDatasetResults({ column, prop, order }) {
+            let sortColumn = "";
+            let sortOrdering = "+";
+            if (typeof prop !== "undefined") {
+                if (prop == "datasetID") {
+                    sortColumn = "id";
+                } else {
+                    sortColumn = prop;
+                }
+            }
+
+            if (order === "descending") {
+                sortOrdering = "-";
+            }
+
+            if (prop === null) {
+                sortColumn = "id";
+            }
+            if (order === null) {
+                sortOrdering = "+";
+            }
+
+            if (this.filterQuery.sort_by !== sortColumn || this.filterQuery.sort !== sortOrdering) {
+                this.filterQuery.sort_by = sortColumn;
+                this.filterQuery.sort = sortOrdering;
+                this.fetchDatasets();
+            }
+        },
         fetchDatasets() {
             this.datasetsLoading = true;
             ApiGetPublicDatasets(this.filterQuery)
@@ -258,6 +334,10 @@ export default {
                 })
                 .catch(error => {
                     console.log("==> Cannot get ApiGetPublicDatasets stats: " + error);
+                    this.$message({
+                        message: this.$t("globals.errors.request_general"),
+                        type: "error"
+                    });
                     this.datasetsLoading = false;
                     this.datasetsDialog = false;
                 });

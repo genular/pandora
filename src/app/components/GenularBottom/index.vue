@@ -1,23 +1,52 @@
 <template>
     <div class="genular-bottom-buttons">
         <el-button-group>
-            <el-button :title="$t('components.GenularBottom.buttons.star')" @click.prevent.stop="navigateTo('https://github.com/genular/simon-frontend')" type="primary" icon="fa fa-github"></el-button>
-            <el-button :title="$t('components.GenularBottom.buttons.help')"  @click.prevent.stop="navigateTo('https://crowdin.com/project/genular')" type="primary" icon="fa fa-language"></el-button>
+            <el-button
+                :title="$t('components.GenularBottom.buttons.star')"
+                @click.prevent.stop="navigateTo('https://github.com/genular/simon-frontend')"
+                type="primary"
+                icon="fa fa-github"
+            ></el-button>
+            <el-button
+                :title="$t('components.GenularBottom.buttons.help')"
+                @click.prevent.stop="navigateTo('https://crowdin.com/project/genular')"
+                type="primary"
+                icon="fa fa-language"
+            ></el-button>
             <el-button :title="$t('components.GenularBottom.buttons.about')" @click.prevent.stop="navigateTo('about')" type="primary" icon="fa fa-info-circle"></el-button>
         </el-button-group>
 
         <el-dialog class="about-dialog" :title="$t('components.GenularBottom.dialog.title')" :visible.sync="centerDialogVisible" width="600px" center>
             <div class="about-container">
                 <div>
-                    {{ $t('components.GenularBottom.dialog.intro') }}
+                    {{ $t("components.GenularBottom.dialog.intro") }}
                 </div>
-                <blockquote :cite="$t('components.GenularBottom.dialog.citation.author')"> 
-                    {{ $t('components.GenularBottom.dialog.citation.text') }}
+                <blockquote :cite="$t('components.GenularBottom.dialog.citation.author')">
+                    {{ $t("components.GenularBottom.dialog.citation.text") }}
                 </blockquote>
                 <div>
-                    {{ $t('components.GenularBottom.dialog.ending') }}
+                    {{ $t("components.GenularBottom.dialog.ending") }}
                 </div>
-                <div><br />{{ $t('components.GenularBottom.dialog.footer') }}</div>
+                <div>
+                    <br />
+                    {{ $t("components.GenularBottom.dialog.footer") }}
+                </div>
+                <div>
+                    <br />
+                    {{ $t("components.GenularBottom.dialog.links.title") }}:
+                    <ul>
+                    <li><a href="https://genular.org/" target="_blank">genular website</a></li>
+                    <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.forums')" placement="left">
+                        <li><a href="https://community.genular.org/" target="_blank">community forums</a></li>
+                    </el-tooltip>
+                    <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.github')" placement="left">
+                        <li><a href="https://github.com/genular/" target="_blank">github development page</a></li>
+                    </el-tooltip>
+                    <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.translation')" placement="left">
+                        <li><a href="https://crowdin.com/project/genular" target="_blank">translation community</a></li>
+                    </el-tooltip>
+                    </ul>
+                </div>
             </div>
         </el-dialog>
     </div>
@@ -43,7 +72,7 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
 .hideSidebar {
     .genular-bottom-buttons {
         .el-button-group {
@@ -83,10 +112,8 @@ export default {
             letter-spacing: 1px;
             blockquote {
                 display: block;
-                border-bottom: 1px dashed black;
                 margin-top: 25px;
                 position: relative;
-                border-top: 1px dashed black;
                 padding-top: 25px;
                 padding-bottom: 10px;
                 font-size: 16px;
@@ -96,7 +123,6 @@ export default {
 
                 color: #191919;
                 font-weight: bold;
-                line-height: 35px;
 
                 &:before {
                     content: "\201C";
@@ -106,7 +132,7 @@ export default {
                     transform: translate(-50%, -50%);
                     width: 4rem;
                     height: 3rem;
-                    font: 72px "PT Sans", sans-serif;
+                    font-size: 72px;
                     color: #593e4b;
                     text-align: center;
                 }

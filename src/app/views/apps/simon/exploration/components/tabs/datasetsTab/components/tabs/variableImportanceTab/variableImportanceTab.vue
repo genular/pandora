@@ -1,5 +1,5 @@
 <template>
-    <div class="variableImportanceTab-container">
+    <div class="variableImportanceTab-container" v-loading="listLoading" element-loading-text="Processing...">
         <div v-if="!isTabDisabled">
             <el-row style="height: 50px;" align="top">
                 <el-col :span="10">
@@ -16,9 +16,7 @@
                             <el-button size="mini" class="filter-item" type="primary" v-waves @click="handleTableFilter">Sort</el-button>
                         </el-form-item>
                         <el-form-item style="float: right;">
-                            <el-button size="mini" class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">
-                                {{ $t("views.dashboard.jobs.search.buttons.export") }}
-                            </el-button>
+                            <el-button size="mini" class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload"></el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -45,7 +43,6 @@
                         ref="variableImpTable"
                         :data="displayVariableImp"
                         :row-class-name="tableVariableImpClass"
-                        v-loading="listLoading"
                         row-key="id"
                         @select-all="handleVarImpSelection"
                         @select="handleVarImpSelection"
@@ -89,18 +86,20 @@
                     </div>
                 </el-col>
                 <el-col :span="14">
-                    <div v-if="selectedVariableImp.length > 0 && selectedVariableImp.length <= 15">
-                        <var-imp-chart :selectedVariableImp="selectedVariableImp"></var-imp-chart>
-                    </div>
-                    <div v-else>
-                        <el-alert
-                            title="Notification:"
-                            description="Please select at least one Feature to display Graphs.. You can select maximum of 15 Features."
-                            type="warning"
-                            show-icon
-                            :closable="false"
-                        >
-                        </el-alert>
+                    <div v-if="displayVariableImp.length > 0">
+                        <div v-if="selectedVariableImp.length > 0 && selectedVariableImp.length <= 15">
+                            <var-imp-chart :selectedVariableImp="selectedVariableImp"></var-imp-chart>
+                        </div>
+                        <div v-else>
+                            <el-alert
+                                title="Notification:"
+                                description="Please select at least one Feature to display Graphs.. You can select maximum of 15 Features."
+                                type="warning"
+                                show-icon
+                                :closable="false"
+                            >
+                            </el-alert>
+                        </div>
                     </div>
                 </el-col>
             </el-row>
@@ -139,7 +138,7 @@ export default {
     },
     data() {
         return {
-            listLoading: true,
+            listLoading: false,
             displayVariableImp: [],
             selectedVariableImp: [],
 
@@ -194,11 +193,7 @@ export default {
         }
     },
     mounted() {
-        console.log("mounted: variableImportanceTab");
-        if(!this.isTabDisabled){
-            this.handleFetchVariableImp();    
-        }
-        
+        console.log("mounted: variableImportanceTab: " + this.isTabDisabled);
     },
     methods: {
         deselectVariableImp(feature) {
@@ -238,8 +233,6 @@ export default {
                 ...this.paginateVariableImpData
             })
                 .then(response => {
-                    console.log("fetchVariableImp");
-
                     if (response.data.success === true) {
                         this.displayVariableImp = response.data.data;
                         this.paginateVariableImpData.total_items = response.data.total;
@@ -249,6 +242,10 @@ export default {
                     this.listLoading = false;
                 })
                 .catch(error => {
+                    this.$message({
+                        message: this.$t("globals.errors.request_general"),
+                        type: "error"
+                    });
                     console.log(error);
                 });
         },
@@ -282,6 +279,19 @@ export default {
                     }
                 })
             );
+        }
+    },
+    watch: {
+        /**
+         * Once tab is enabled lets load the data
+         * @param  boolean  newVal New item value
+         * @param  boolean  oldVal Old item value
+         * @return null
+         */
+        isTabDisabled: function(newVal, oldVal) {
+            if (newVal === false) {
+                this.handleFetchVariableImp();
+            }
         }
     }
 };

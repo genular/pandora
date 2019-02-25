@@ -25,9 +25,7 @@
                         </div>
                     </el-col>
                     <el-col :span="4">
-                        <el-button style="float: right" type="primary" size="small" @click="clearSelection">{{
-                            $t("views.apps.simon.analysis.components.FileDetails.head.clear")
-                        }}</el-button>
+                        <el-button style="float: right" type="primary" @click="clearSelection">{{ $t("views.apps.simon.analysis.components.FileDetails.head.clear") }}</el-button>
                     </el-col>
                 </el-row>
             </div>
@@ -49,7 +47,6 @@
                         filterable
                         remote
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder')"
-                        size="large"
                         value-key="position"
                         :remote-method="
                             userInput => {
@@ -64,9 +61,11 @@
                         "
                         @focus="selectAvaliableFeaturesDisplay('selectedFeatures')"
                     >
-                        <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedFeatures'" :value="item">
+                        <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedFeatures'" :label="item.original" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">
+                                {{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}
+                            </span>
                         </el-option>
                     </el-select>
                 </el-col>
@@ -85,7 +84,6 @@
                         filterable
                         remote
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.placeholder')"
-                        size="large"
                         value-key="position"
                         :disabled="!filterFeatures"
                         :remote-method="
@@ -103,7 +101,9 @@
                     >
                         <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_excludeFeatures'" :label="item.original" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;"
+                                >{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span
+                            >
                         </el-option>
                     </el-select>
                 </el-col>
@@ -137,7 +137,6 @@
                         filterable
                         remote
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.response.placeholder')"
-                        size="large"
                         value-key="position"
                         :remote-method="
                             userInput => {
@@ -154,7 +153,9 @@
                     >
                         <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedOutcome'" :label="item.original" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;"
+                                >{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span
+                            >
                         </el-option>
                     </el-select>
                 </el-col>
@@ -174,7 +175,6 @@
                         filterable
                         remote
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.regression.placeholder')"
-                        size="large"
                         value-key="position"
                         :remote-method="
                             userInput => {
@@ -191,7 +191,9 @@
                     >
                         <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedFormula'" :label="item.original" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;"
+                                >{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span
+                            >
                         </el-option>
                     </el-select>
                 </el-col>
@@ -211,7 +213,6 @@
                         filterable
                         remote
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.classes.placeholder')"
-                        size="large"
                         value-key="position"
                         :remote-method="
                             userInput => {
@@ -228,7 +229,9 @@
                     >
                         <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedClasses'" :label="item.original" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;"
+                                >{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span
+                            >
                         </el-option>
                     </el-select>
                 </el-col>
@@ -245,7 +248,6 @@
                         v-model="selectedPreProcess"
                         clearable
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.preprocessing.placeholder')"
-                        size="large"
                         :loading="loading['selectedPreProcess']"
                         multiple
                     >
@@ -457,7 +459,15 @@ export default {
         formatPartitionSplitTooltip(val) {
             const training = Math.round(val);
             const testing = Math.round(100 - training);
-            const message = this.$t("views.apps.simon.analysis.components.FileDetails.other.training") + ": " + training + "% - " + this.$t("views.apps.simon.analysis.components.FileDetails.other.testing") + ": " + testing + "%";
+            const message =
+                this.$t("views.apps.simon.analysis.components.FileDetails.other.training") +
+                ": " +
+                training +
+                "% - " +
+                this.$t("views.apps.simon.analysis.components.FileDetails.other.testing") +
+                ": " +
+                testing +
+                "%";
 
             return message;
         },
@@ -493,7 +503,7 @@ export default {
                     this.selectedFeatures = [
                         {
                             original: this.$t("views.apps.simon.analysis.components.FileDetails.other.all_columns"),
-                            position: false,
+                            position: -1,
                             remapped: "ALL"
                         }
                     ];
@@ -586,7 +596,7 @@ export default {
             if (newVal === true) {
                 const allSwitch = {
                     original: this.$t("views.apps.simon.analysis.components.FileDetails.other.all_columns"),
-                    position: false,
+                    position: -1,
                     remapped: "ALL"
                 };
                 if (avaliableIndex === -1) {

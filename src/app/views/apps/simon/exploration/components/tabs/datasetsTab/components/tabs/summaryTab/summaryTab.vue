@@ -1,5 +1,5 @@
 <template>
-    <div class="summaryTab-container" v-loading.fullscreen.lock="loading" element-loading-text="Processing...">
+    <div class="summaryTab-container" v-loading="loading" element-loading-text="Processing...">
         <div v-if="!isTabDisabled">
             <el-row type="flex" align="top">
                 <el-col :span="12">
@@ -89,7 +89,7 @@ export default {
     },
     data() {
         return {
-            loading: true,
+            loading: false,
             summary: {
                 boxplot: false,
                 rocplot: false,
@@ -102,9 +102,6 @@ export default {
     },
     mounted() {
         console.log("mounted: summaryTab");
-        if(!this.isTabDisabled){
-            this.handleFetchSummaryPlots();
-        }
     },
     computed: {
         selectedFeatureSetId: {
@@ -168,9 +165,26 @@ export default {
                     this.loading = false;
                 })
                 .catch(error => {
+                    this.$message({
+                        message: this.$t("globals.errors.request_general"),
+                        type: "error"
+                    });
                     console.log(error);
                     this.loading = false;
                 });
+        }
+    },
+    watch: {
+        /**
+         * Once tab is enabled lets load the data
+         * @param  boolean  newVal New item value
+         * @param  boolean  oldVal Old item value
+         * @return null
+         */
+        isTabDisabled: function(newVal, oldVal) {
+            if (newVal === false) {
+                this.handleFetchSummaryPlots();
+            }
         }
     }
 };

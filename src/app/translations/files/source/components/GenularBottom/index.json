@@ -8,13 +8,21 @@
             },
             "dialog": {
                 "title": "about us",
-                "intro": "We are open source organization founded to promote science and research. We believe that everyone should have right to build highly accurate predictive models even if they would not usually have necessary skills.",
+                "intro": "We are open source community existing to promote science and research. We believe that everyone should have right to build highly accurate predictive models even if they would not usually have necessary skills.",
                 "citation": {
                     "author": "Albert Einstein",
                     "text": "We can not solve our problems with the same level of thinking that created them"
                 },
-                "ending": "Instead of guessing which model will work the best for your data, our system automatically processes in parallel many different machine learning algorithms, testing millions of potential models per second, and suggests most accurate ones that fits your data.",
-                "footer": "SIMON is made and maintained by genular, a community working together to keep Science open, public and accessible to all."
+                "ending": "To work towards a better future, we all need to understand how and why complex mechanisms are changing and whats impacting that change",
+                "footer": "SIMON is made and maintained by @genular, a community working together to keep science a public good accessible to everyone. We are welcoming participation from organizations and individuals committed to advancing open tools for science. Visit our <a href='https://genular.org' target='_blank'>website</a> for instructions on how you and/or your project/organization can join us.",
+                "links": {
+                    "title": "Other resources",
+                    "tooltip": {
+                        "forums": "Discuss with our community possible bugs & feature requests, or just write a usage tutorial",
+                        "github": "Take part in development progress or report bugs you discovered",
+                        "translation": "Join our Translation Community, add new or correct existing translations"
+                    }
+                }
             }
         }
     }

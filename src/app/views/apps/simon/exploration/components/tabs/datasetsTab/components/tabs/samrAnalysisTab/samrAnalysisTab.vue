@@ -173,9 +173,6 @@ export default {
     },
     mounted() {
         console.log("mounted: samrAnalysisTab");
-        if(!this.isTabDisabled){
-            this.handleFetchFormOptions();
-        }
     },
     computed: {
         selectedFeatureSetId: {
@@ -207,24 +204,36 @@ export default {
                     console.log(error);
                     this.loadingResults = false;
                 });
-        },
-        handleFetchFormOptions() {
-            this.loadingOptions = true;
-            fetchSamrFormOptions()
-                .then(response => {
-                    if (response.data.status === "success") {
-                        console.log(response.data.message);
-
-                        this.settingOptions = response.data.message;
-                    } else {
-                        console.log(response.data);
-                    }
-                    this.loadingOptions = false;
-                })
-                .catch(error => {
-                    console.log(error);
-                    this.loadingOptions = false;
-                });
+        }
+        // ,handleFetchFormOptions() {
+        //     this.loadingOptions = true;
+        //     fetchSamrFormOptions()
+        //         .then(response => {
+        //             if (response.data.status === "success") {
+        //                 console.log(response.data.message);
+        //                 this.settingOptions = response.data.message;
+        //             } else {
+        //                 console.log(response.data);
+        //             }
+        //             this.loadingOptions = false;
+        //         })
+        //         .catch(error => {
+        //             console.log(error);
+        //             this.loadingOptions = false;
+        //         });
+        // }
+    },
+    watch: {
+        /**
+         * Once tab is enabled lets load the data
+         * @param  boolean  newVal New item value
+         * @param  boolean  oldVal Old item value
+         * @return null
+         */
+        isTabDisabled: function(newVal, oldVal) {
+            if (newVal === false) {
+                // this.handleFetchFormOptions();
+            }
         }
     }
 };
