@@ -18,7 +18,8 @@ const user = {
                 address: {
                     analysis: estore.get("user-settings-server-address-analysis") || "",
                     backend: estore.get("user-settings-server-address-backend") || "",
-                    plots: estore.get("user-settings-server-address-plots") || ""
+                    plots: estore.get("user-settings-server-address-plots") || "",
+                    frontend: estore.get("user-settings-server-address-frontend") || ""
                 }
             }
         }
@@ -52,6 +53,10 @@ const user = {
         SET_SETTING_SERVER_ADDRESS_PLOTS: (state, plotsServer) => {
             estore.set("user-settings-server-address-plots", plotsServer);
             state.settings.server.address.plots = plotsServer;
+        },
+        SET_SETTING_SERVER_ADDRESS_FRONTEND: (state, frontendServer) => {
+            estore.set("user-settings-server-address-frontend", frontendServer);
+            state.settings.server.address.frontend = frontendServer;
         }
     },
 
@@ -83,10 +88,11 @@ const user = {
             return new Promise((resolve, reject) => {
                 ApiBackendUserLogin(user.username, user.password)
                     .then(response => {
-                        console.log(response);
                         let status = false;
                         if (response.data.success === true) {
                             console.log("logging in user");
+                            console.log(response.data);
+
                             commit("SET_USERNAME", user.username);
                             commit("SET_AUTH_TOKEN", response.data.auth_token);
                             status = true;

@@ -20,6 +20,7 @@ const getters = {
     user_settings_server_address_analysis: state => state.user.settings.server.address.analysis,
     user_settings_server_address_backend: state => state.user.settings.server.address.backend,
     user_settings_server_address_plots: state => state.user.settings.server.address.plots,
+    user_settings_server_address_frontend: state => state.user.settings.server.address.frontend,
 
     /** permission.js **/
     permission_routers: state => state.permission.routers,

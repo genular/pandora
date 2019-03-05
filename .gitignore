@@ -20,3 +20,7 @@ Thumbs.db
 
 env_development.json
 env_production.json
+
+*.ignore
+*.bak
+*.gitignore

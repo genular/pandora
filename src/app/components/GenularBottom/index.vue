@@ -29,22 +29,22 @@
                 </div>
                 <div>
                     <br />
-                    {{ $t("components.GenularBottom.dialog.footer") }}
+                    <div v-html="$t('components.GenularBottom.dialog.footer')"></div>
                 </div>
                 <div>
                     <br />
                     {{ $t("components.GenularBottom.dialog.links.title") }}:
                     <ul>
-                    <li><a href="https://genular.org/" target="_blank">genular website</a></li>
-                    <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.forums')" placement="left">
-                        <li><a href="https://community.genular.org/" target="_blank">community forums</a></li>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.github')" placement="left">
-                        <li><a href="https://github.com/genular/" target="_blank">github development page</a></li>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.translation')" placement="left">
-                        <li><a href="https://crowdin.com/project/genular" target="_blank">translation community</a></li>
-                    </el-tooltip>
+                        <li><a href="https://genular.org/" target="_blank">genular website</a></li>
+                        <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.forums')" placement="left">
+                            <li><a href="https://community.genular.org/" target="_blank">community forums</a></li>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.github')" placement="left">
+                            <li><a href="https://github.com/genular/" target="_blank">github development page</a></li>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.translation')" placement="left">
+                            <li><a href="https://crowdin.com/project/genular" target="_blank">translation community</a></li>
+                        </el-tooltip>
                     </ul>
                 </div>
             </div>
@@ -88,6 +88,9 @@ export default {
 }
 
 .genular-bottom-buttons {
+    a {
+        width: auto !important;
+    }
     .el-button-group {
         position: absolute;
         left: 0;

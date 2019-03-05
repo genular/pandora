@@ -23,7 +23,7 @@
 Currently `SIMON` implements automated machine learning and statistical data discovery features
 that will help you to easily illustrate dynamic relationships and provide you with a structural sense of your data.
 
-Goal of this project is to make unified user interface that will empower anyone to extract meaningful information from their data and enable them to rapidly use machine learning algorithms. `It gives you freedom and control over your own models.`
+Goal of this project is to make unified user interface that will empower anyone to extract meaningful information from their data and enable them to rapidly use machine learning algorithms. `It gives you freedom and control over your own models.` genular is an entirely open source organization, if you wish to learn more visit us [here](https://genular.org)
 
 While `SIMON` can be used in across many different fields, 
 our focus here is scientific community so we can enable scientist and other researchers in the field to quickly prototype around their data and get meaningful results out of it.
@@ -51,6 +51,24 @@ For these types of questions use our [forum](https://community.genular.org)
 [GitHub Issues](https://github.com/genular/simon-frontend/issues) is for suggesting enhancements and reporting bugs.
 We appreciate all enhancements ideas and bug reports. Additionally if you think you can help us with suggesting new useful features we will gladly accept it.
 Here you can find [bug report template](.github/ISSUE_TEMPLATE/bug_report.md) and [feature request template](.github/ISSUE_TEMPLATE/feature_request.md).
+
+#### Contributing, writing code
+Contributions are very much welcome!
+
+If you need any help, please contact us at info@genular.com.
+
+1. Check out our [public issues board][0]. If your issue isn't on the board, [open a new one][1].
+2. Pick an issue that nobody has claimed and start working on it.
+3. Fork the project ([Need help forking a project?][3]). You'll do all of your work on your forked copy.
+4. Create a branch specific to the issue or feature you are working on. Push your work on that branch ([Need help with branching?][4]).
+5. Name the branch something like `fixes-xxx-issue` or `add-xxx-feature` where `xxx` is a short description of the changes or feature you are adding.
+6. Once your code is ready, submit a pull request from your branch to Hack Club's `master` branch. We'll do a quick review and give you feedback.
+
+[0]: https://github.com/genular/simon-frontend/issues
+[1]: https://github.com/genular/simon-frontend/issues/new
+[3]: https://help.github.com/articles/fork-a-repo/
+[4]: https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches
+
 
 ### Places to Help
 We're looking for co-maintainers! If you want to become one please write to [LogIN-](https://github.com/LogIN-).
@@ -80,6 +98,14 @@ I would also gladly like to hear from you if you find this project useful and he
 
 ## Security Vulnerabilities
 If you discover a security vulnerability within `SIMON`, please send e-mail to me at [info@genular.com](mailto:info@genular.com). All security vulnerabilities will be promptly addressed. You are also welcome to open PR request.
+
+## Additional Links
+| Resource      | Link                                               |
+| ------------- | -------------------------------------------------- |
+| File an issue | https://github.com/genular/simon-frontend/issues        |
+| Blog          | https://genular.org/blog/                      |
+| Twitter       | https://twitter.com/genular                       |
+
 
 ## License
 Please check `LICENCE` file for more information.

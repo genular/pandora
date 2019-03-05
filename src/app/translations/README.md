@@ -23,9 +23,7 @@ This is github plug-in configured via `Crowdin` (github integration)[https://sup
 - Build  `translations.json` with webpack. `yarn run webpack:web:dev`
 - Push code to github
 - Wait for crowdin PR request and merge crowdin translations branch `crowdin` into repo
-- pull newly added crowdin translations. If new locale was added run  `yarn run webpack:web:dev` so `src/app/translations/files/langs.json` is regenerated
-
-If new locale is added on `Crowdin` please make sure to also include it here: `src/app/translations/files/source/components/LangSelect/index.json`
+- pull newly added crowdin translations. If completely new locale/language translation was added run  `yarn run webpack:web:dev` so `src/app/translations/files/langs.json` is regenerated so it can be include it here: `src/app/translations/files/source/components/LangSelect/index.json`
 
 ### Updating translations in the frontend
 Crowdin automatically creates a PR to this repo each time a translator finishes some translation work. Sync schedule is 10 minutes.

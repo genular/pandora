@@ -9,7 +9,7 @@
             <lang-select class="right-menu-item international "></lang-select>
             <el-dropdown class="avatar-container right-menu-item" trigger="click">
                 <div class="avatar-wrapper">
-                    <img class="user-avatar" :src="'https://backend.api.doom.xc/backend/user/avatar?id=' + user_id + '&size=64'" />
+                    <img class="user-avatar" :src="user_settings_server_address_backend + '/backend/user/avatar?id=' + user_id + '&size=64'" />
                     <i class="el-icon-caret-bottom"></i>
                 </div>
                 <el-dropdown-menu slot="dropdown">
@@ -50,7 +50,7 @@ export default {
         LangSelect
     },
     computed: {
-        ...mapGetters(["sidebar", "errorLogs", "user_id"])
+        ...mapGetters(["sidebar", "errorLogs", "user_id", "user_settings_server_address_backend"])
     },
     methods: {
         generateRouteTitle,
