@@ -467,8 +467,8 @@ export default {
                     const queueID = rowInfo.queueID;
 
                     this.$confirm(
-                        this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.description"),
-                        this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.title"),
+                        this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.dialog.description"), 
+                        this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.dialog.title"),
                         {
                             type: "warning"
                         }

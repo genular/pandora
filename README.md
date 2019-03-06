@@ -11,8 +11,10 @@
         <img src="https://img.shields.io/github/repo-size/genular/simon-frontend.svg" /></a>
     <a href="https://twitter.com/intent/follow?screen_name=genular" alt="Follow us on twitter">
         <img src="https://img.shields.io/twitter/follow/genular.svg?label=Follow&style=social&logo=twitter" alt="Follow us on twitter"></a>
-    <a href="https://app.netlify.com/sites/genular/deploys" alt="Netlify Status">
-        <img src="https://api.netlify.com/api/v1/badges/c8574166-e345-4296-8875-820f219f7a3c/deploy-status" alt="Netlify Status"></a>
+    <a href="http://webchat.freenode.net/?randomnick=1&channels=genular&uio=d4" alt="chat on freenode">
+        <img src="https://img.shields.io/badge/chat-on%20freenode-brightgreen.svg" alt="chat on freenode"></a>
+    <a href="https://app.netlify.com/sites/genular/deploys" alt="netlify status">
+        <img src="https://api.netlify.com/api/v1/badges/c8574166-e345-4296-8875-820f219f7a3c/deploy-status" alt="netlify status"></a>
 </p>
 
 > Front-end interface for SIMON

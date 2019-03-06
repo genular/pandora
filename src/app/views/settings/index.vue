@@ -4,7 +4,7 @@
             <!-- AVATAR -->
             <el-col :span="4">
                 <el-card>
-                    <img :src="'https://backend.api.doom.xc/backend/user/avatar?id=' + user_id + '&size=256'" class="image" style="max-width: 100%; max-height: 100%;" />
+                    <img :src="user_settings_server_address_backend + '/backend/user/avatar?id=' + user_id + '&size=256'" class="image" style="max-width: 100%; max-height: 100%;" />
                 </el-card>
             </el-col>
             <!-- ACTION BOXES -->
@@ -124,7 +124,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["packageVersion", "packageEnviroment", "user_id"])
+        ...mapGetters(["packageVersion", "packageEnviroment", "user_id", "user_settings_server_address_backend"])
     },
     methods: {
         getUserDetails() {
