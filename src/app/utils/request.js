@@ -9,7 +9,8 @@ import * as dataReceiver from "crypto-js";
 // Create new axios instance
 const service = axios.create({
     crossDomain: true,
-    timeout: 10 * 3600
+    // 10 min request timeout
+    timeout: 600000
 });
 
 // Request interceptor
