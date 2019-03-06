@@ -16,7 +16,6 @@ const service = axios.create({
 service.interceptors.request.use(
     function(config) {
         if (store.getters.auth_token) {
-            console.log("binding token to request: " + store.getters.auth_token);
             config.headers["X-Token"] = store.getters.auth_token;
         }
         

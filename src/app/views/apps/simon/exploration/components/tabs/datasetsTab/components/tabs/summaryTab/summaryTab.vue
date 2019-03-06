@@ -102,6 +102,9 @@ export default {
     },
     mounted() {
         console.log("mounted: summaryTab");
+        if (this.isTabDisabled === false) {
+            this.handleFetchSummaryPlots();
+        }
     },
     computed: {
         selectedFeatureSetId: {
