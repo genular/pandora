@@ -19,7 +19,7 @@
                     </el-row>
                     <el-row>
                         <el-col :span="24">
-                            <el-button class="button-login" :loading="loadingWizard" @click.native.prevent="handleLogin">
+                            <el-button  type="primary" class="button-login" :loading="loadingWizard" @click.native.prevent="handleLogin">
                                 {{ $t('views.authenticate.components.Login.sign_in') }}
                             </el-button>
                         </el-col>
@@ -27,7 +27,7 @@
                 </el-form>
                 <el-row class="bottom-info">
                     <el-col :span="24" class="info-button">
-                        <el-button class="button-register" style="height: 40px;" @click.prevent.stop="navigateTo('register&usertype=private&step=0')">
+                        <el-button plain round @click.prevent.stop="navigateTo('register&usertype=private&step=0')">
                             {{ $t('views.authenticate.components.Login.sign_up') }}
                         </el-button>
                     </el-col>
@@ -151,16 +151,12 @@ export default {
             margin-right: 0;
             height: 75px;
             font-size: 18px;
-            background-color: #4d4d50;
-            border: 3px solid #343436;
-            color: #ffffff;
         }
     }
     .bottom-info {
-        background-color: #1d1f20;
-        padding: 15px;
         vertical-align: middle;
-        height: 70px;
+        padding-right: 15px;
+        padding-bottom: 15px;
         .info-text {
             text-align: left;
             height: 40px;
@@ -171,10 +167,6 @@ export default {
             text-align: right;
             height: 40px;
             line-height: 40px;
-            .button-register {
-                background-color: #4d4d50;
-                color: #ffffff;
-            }
         }
     }
     .el-form-item {

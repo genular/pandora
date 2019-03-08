@@ -1,12 +1,12 @@
 <template>
     <div class="authenticate-container">
         <vue-particles
-            color="#dedede"
+            color="#ffffff"
             :particleOpacity="0.1"
             :particlesNumber="150"
             shapeType="polygon"
             :particleSize="4"
-            linesColor="#dedede"
+            linesColor="#ffffff"
             :linesWidth="1"
             :lineLinked="true"
             :lineOpacity="0.075"
@@ -136,7 +136,6 @@ export default {
     display: flex;
     height: 100%;
     justify-content: center;
-    background-color: #0a2626;
     #particles-js {
         background-size: cover;
         position: fixed;

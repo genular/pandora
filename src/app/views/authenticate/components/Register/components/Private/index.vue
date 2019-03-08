@@ -394,9 +394,6 @@ export default {
     .el-step__icon-inner {
         font-size: 48px !important;
     }
-    .is-process {
-        color: red !important;
-    }
 }
 
 .welcome_text {
