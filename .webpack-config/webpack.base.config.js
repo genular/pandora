@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 11:52:45
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-11 10:35:16
+ * @Last Modified time: 2019-03-07 10:17:30
  */
 /*
  * @Author: LogIN-
@@ -310,7 +310,7 @@ module.exports = environment => {
             historyApiFallback: true,
             noInfo: false,
             clientLogLevel: "warning",
-            https: true,
+            https: false,
             hot: false,
             contentBase: path.join(__dirname, output),
             inline: false,

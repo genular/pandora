@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Message } from "element-ui";
+import { Notification } from "element-ui";
 
 import { store } from "@/store";
 import { IsJsonString } from "@/utils/helpers";
@@ -99,10 +99,10 @@ service.interceptors.response.use(
         }
 
         if (errorMessage !== "") {
-            Message({
+            Notification({
+                title: 'Request error',
                 message: errorMessage,
                 type: "error",
-                showClose: true,
                 duration: 5000
             });
         }

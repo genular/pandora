@@ -98,6 +98,8 @@ Become a sponsor and get your logo on our README on Github with a link to your s
 If you'd like to start a conversation feel free to e-mail me at [info@genular.com](mailto:info@genular.com)
 I would also gladly like to hear from you if you find this project useful and helpful.
 
+ * Join us on `#genular` on `freenode.net` (or use the [web client](https://webchat.freenode.net/?channels=genular)).
+
 ## Security Vulnerabilities
 If you discover a security vulnerability within `SIMON`, please send e-mail to me at [info@genular.com](mailto:info@genular.com). All security vulnerabilities will be promptly addressed. You are also welcome to open PR request.
 
