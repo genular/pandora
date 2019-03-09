@@ -111,19 +111,23 @@ export default {
                         .dispatch("userLogin", this.loginForm)
                         .then(status => {
                             this.loadingWizard = false;
-                            this.$router.push({
-                                path: "/"
-                            });
+                            if(status === true){
+                                this.$router.push({
+                                    path: "/"
+                                });
+                            }else{
+                                console.log("Cannot login user!")
+                            }
                         })
                         .catch(error => {
                             console.log(error);
+                            this.loadingWizard = false;
                             this.$message({
                                 message: this.$t('views.authenticate.components.Login.login_error'),
                                 type: "error",
                                 duration: 2500,
                                 showClose: true
                             });
-                            this.loadingWizard = false;
                         });
                 } else {
                     return false;

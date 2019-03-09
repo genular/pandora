@@ -88,18 +88,13 @@ const user = {
             return new Promise((resolve, reject) => {
                 ApiBackendUserLogin(user.username, user.password)
                     .then(response => {
-                        let status = false;
                         if (response.data.success === true) {
-                            console.log("logging in user");
-                            console.log(response.data);
-
                             commit("SET_USERNAME", user.username);
                             commit("SET_AUTH_TOKEN", response.data.auth_token);
-                            status = true;
+                            resolve(true);
                         } else {
-                            status = false;
+                            reject(false);
                         }
-                        resolve(status);
                     })
                     .catch(error => {
                         console.log(error);
@@ -115,7 +110,7 @@ const user = {
                             commit("SET_ROLE", response.data.message.account_type);
                             commit("SET_USERID", response.data.message.id);
                             resolve(response.data.message);
-                        }else{
+                        } else {
                             resolve(false);
                         }
                     })
