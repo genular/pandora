@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 11:52:45
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-03-07 10:17:30
+ * @Last Modified time: 2019-03-08 18:06:32
  */
 /*
  * @Author: LogIN-
@@ -20,7 +20,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const { VueLoaderPlugin } = require("vue-loader");
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
@@ -333,17 +333,17 @@ module.exports = environment => {
     } else {
         config.optimization.minimize = true;
         config.optimization.minimizer = [
-            new UglifyJsPlugin({
+            new TerserPlugin({
                 cache: true,
                 parallel: true,
                 extractComments: true,
                 sourceMap: true,
-                uglifyOptions: {
+                terserOptions: {
+                    warnings: false,
+                    ecma: 6,
                     output: {
                         comments: false
-                    },
-                    ecma: 8,
-                    warnings: false
+                    }
                 }
             })
         ];
