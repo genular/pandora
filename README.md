@@ -39,8 +39,42 @@ our focus here is scientific community so we can enable scientist and other rese
 
 
 ## Installation Quickstart
-To install and configure `SIMON` you will need basic knowledge of Linux, how to set up databases (MySQL) and web server (Apache, nginx) together with R and PHP configuration.
-Installation instructions are located in [this](INSTALL.md) file.
+
+### Easy
+This section describes the process of pulling a pre-built version of `SIMON` from [DockerHub](https://hub.docker.com/).
+This can be very handy for development and testing in different environments without polluting the host machine with different versions of dependencies.
+The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon-backend/blob/master/documentation/docker_images/Dockerfile).
+
+#### Requirements
+[Docker](https://docs.docker.com/engine/installation/) (`version 17.05` or later is required for building the image).
+
+#### Running SIMON Container
+In order to run a test instance of `SIMON` we first need to prepare the environment. 
+Lets pull the [genular/simon](https://cloud.docker.com/u/genular/repository/docker/genular/simon) image from DockerHub. Then run a Docker container with appropriately mounted volumes and port mapping. By default the container would run with a local file-system inside of it.
+
+```bash
+docker container pull genular/simon
+docker run --rm \
+    --detach \
+    --network=host \
+    --name genular \
+    --tty \
+    --interactive \
+    --env IS_DOCKER='true' \
+    --volume /mnt/genular/simon-backend/SHARED_DATA:/tmp/genular \
+    --publish 3010:3010 \
+    --publish 3011:3011 \
+    --publish 3012:3012 \
+    --publish 3013:3013 \
+    genular:simon
+```
+Once the container is started you can open SIMON on `http://localhost:3010` and create your account. 
+
+### Advanced
+To install and configure `SIMON` from source you will need basic knowledge of Linux, how to set up databases (MySQL) and web server (Apache, nginx) together with R and PHP configuration.
+> Installation instructions are located in [this file](https://github.com/genular/simon-frontend/blob/master/INSTALL.md). 
+> You can find semi-automated bash installation script [here](https://github.com/genular/simon-backend/blob/master/documentation/installation/install_dependencies.sh), that can also help you to get started.
+> 
 If you believe you don't have necessarily skills to do so, you could always ask a friend to help you or check out our [demo](https://dashboard.genular.org)
 
 ## Community
@@ -57,14 +91,14 @@ Here you can find [bug report template](.github/ISSUE_TEMPLATE/bug_report.md) an
 #### Contributing, writing code
 Contributions are very much welcome!
 
-If you need any help, please contact us at info@genular.com.
+If you need any help, please contact us [via email](mailto:info@genular.com).
 
 1. Check out our [public issues board][0]. If your issue isn't on the board, [open a new one][1].
 2. Pick an issue that nobody has claimed and start working on it.
 3. Fork the project ([Need help forking a project?][3]). You'll do all of your work on your forked copy.
 4. Create a branch specific to the issue or feature you are working on. Push your work on that branch ([Need help with branching?][4]).
 5. Name the branch something like `fixes-xxx-issue` or `add-xxx-feature` where `xxx` is a short description of the changes or feature you are adding.
-6. Once your code is ready, submit a pull request from your branch to Hack Club's `master` branch. We'll do a quick review and give you feedback.
+6. Once your code is ready, submit a pull request from your branch to SIMON `master` branch. We'll do a quick review and give you feedback.
 
 [0]: https://github.com/genular/simon-frontend/issues
 [1]: https://github.com/genular/simon-frontend/issues/new
@@ -73,35 +107,28 @@ If you need any help, please contact us at info@genular.com.
 
 
 ### Places to Help
-We're looking for co-maintainers! If you want to become one please write to [LogIN-](https://github.com/LogIN-).
+We're looking for co-maintainers! If you want to become one please write to [LogIN-](https://github.com/LogIN-) or drop us [email](mailto:info@genular.com).
 
 In addition to contributing, optimizing and reviewing code, writing bug and feature requests you can help with following:
 
 Project | How To Help | Next Step
 --- | --- | --- |
 Localization | Help us translate `SIMON` into your language. If some translation is missing or incorrect you can easily help us by correcting it. | [Join our Translation Community](https://crowdin.com/project/genular)
-Tutorials | Help others use `SIMON` | Write a tutorial or record it, with usage examples
-Organizing | Ask clarifying questions on recently opened issues to move the discussion forward | [Here](https://github.com/genular/simon-frontend/issues)
+Tutorials | Help others use and understand `SIMON` | Write a tutorial or record it, with usage examples
+Organizing | Ask clarifying questions on recently opened GitHub issues to move the discussion forward | [Here](https://github.com/genular/simon-frontend/issues)
 
 ## Browser Support
 Tested on `Firefox Quantum 64` or above. As much as we like other browsers we are focusing here to primary provide support for open source ones.
 
-<!---
-## Backers
-Support us with a monthly donation and help us continue our activities. [[Become a backer](https://opencollective.com/genular#backer)]
-
-## Sponsors
-Become a sponsor and get your logo on our README on Github with a link to your site. [[Become a sponsor](https://opencollective.com/genular#sponsor)]
--->
-
 ### Reaching Out
-If you'd like to start a conversation feel free to e-mail me at [info@genular.com](mailto:info@genular.com)
-I would also gladly like to hear from you if you find this project useful and helpful.
+If you'd like to start a conversation feel free to [e-mail us](mailto:info@genular.com).
+I would also gladly like to hear from you if you find this project useful and helpful!
 
  * Join us on `#genular` on `freenode.net` (or use the [web client](https://webchat.freenode.net/?channels=genular)).
+ * Find us [on Twitter](https://twitter.com/genular) under @genular
 
 ## Security Vulnerabilities
-If you discover a security vulnerability within `SIMON`, please send e-mail to me at [info@genular.com](mailto:info@genular.com). All security vulnerabilities will be promptly addressed. You are also welcome to open PR request.
+If you discover a security vulnerability within `SIMON`, please [e-mail us](mailto:info@genular.com). All security vulnerabilities will be promptly addressed. You are also welcome to open PR request.
 
 ## Additional Links
 | Resource      | Link                                               |
