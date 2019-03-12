@@ -22,7 +22,6 @@ export function millisecondsToStr(millisec) {
     return minutes + ":" + seconds;
 }
 
-
 /**
  * parses date time string and returns it in desired format
  * Example: parseTime(time, "{y}-{m}-{d} {h}:{i}")

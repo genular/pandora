@@ -160,8 +160,8 @@ export default {
             settingsForm: {
                 dotsize: 0.5,
                 fontSize: 12,
-                theme: "theme_gray",
-                colorPalette: "RdPu"
+                theme: "theme_minimal",
+                colorPalette: "Purples"
             }
         };
     },
@@ -195,7 +195,7 @@ export default {
             this.handleFetchGraphVariableImportance();
         },
         downloadPlotImage() {
-            const svgBlob = new Blob([this.renderedImageData], { type: "image/svg+xml;charset=utf-8" });
+            const svgBlob = new Blob([this.renderedImageData + "<!-- created by SIMON: https://genular.org -->"], { type: "image/svg+xml;charset=utf-8" });
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
