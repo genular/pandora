@@ -140,7 +140,6 @@ If you discover a security vulnerability within `SIMON`, please [e-mail us](mail
 
 ## License
 Please check `LICENCE` file for more information.
-The Software is provided "as is", without warranty of any kind.
 
 ## Citation
 This software can be used for research purposes, you should cite

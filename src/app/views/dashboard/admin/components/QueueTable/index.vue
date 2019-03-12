@@ -486,9 +486,7 @@ export default {
                             ApiDeleteDatasetQueueTask({ queueID: queueID })
                                 .then(response => {
                                     this.queueListLoading = false;
-                                    if (response.data.success === true) {
-                                        this.getDatasetQueueList();
-                                    }
+                                    this.getDatasetQueueList();
                                     this.$message({
                                         type: "success",
                                         message: this.$t("globals.messages.success")

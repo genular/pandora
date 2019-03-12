@@ -141,7 +141,7 @@ export default {
             content: "";
             display: block;
             position: absolute;
-            width: 3px;
+            width: 5px;
             background-color: #e3006e;
             height: 50px;
             left: 0;

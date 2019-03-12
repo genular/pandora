@@ -369,6 +369,15 @@ export default {
         };
     },
     computed: {
+         /** All available Features */
+        avaliableFeatures: {
+            get() {
+                return this.$store.getters.simonAnalysisAvaliableFeatures;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonAnalysisAvaliableFeatures", value);
+            }
+        },
         /** Current Selected Features */
         selectedFeatures: {
             get() {
@@ -449,8 +458,17 @@ export default {
     },
     mounted() {
         if (this.avaliableFeaturesDisplay.length === 0) {
-            const allSelectedFeatures = [...this.selectedFeatures, ...this.excludeFeatures, ...this.selectedOutcome, ...this.selectedFormula, ...this.selectedClasses];
-            const allSelectedFeaturesUnique = removeDuplicateObjectsByKey(allSelectedFeatures, "position");
+            let allSelectedFeatures = [...this.selectedFeatures, ...this.excludeFeatures, ...this.selectedOutcome, ...this.selectedFormula, ...this.selectedClasses];
+            let allSelectedFeaturesUnique = [];
+
+            if(allSelectedFeatures.length === 0){
+                allSelectedFeatures = this.avaliableFeatures;
+            }
+
+            if(allSelectedFeatures.length > 0){
+                allSelectedFeaturesUnique = removeDuplicateObjectsByKey(allSelectedFeatures, "position");
+            }
+            console.log("Found total of:  " + allSelectedFeaturesUnique.length + " unique features");
             this.avaliableFeaturesDisplay = allSelectedFeaturesUnique;
         }
         this.checkFormula();
