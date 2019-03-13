@@ -94,7 +94,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.title": "Il semble bien ! Veuillez confirmer l'envoi de la tâche",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.header": "Basé sur votre sélection actuelle ce que nous avons obtenu les jeux de données suivants (s)",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title": "Épaisseur de données",
-  "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description": "",
+  "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description": "Percentage of missing data",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.features": "Fonctionnalités",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.samples": "Exemples",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.datapoints": "Points de données",
