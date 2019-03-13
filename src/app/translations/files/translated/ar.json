@@ -94,7 +94,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.title": "تبدو جيدة! يرجى تأكيد مهمة تقديم",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.header": "استنادا إلى التحديد الحالي ما لدينا البيانات التالية(s)",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title": "البيانات تبعثر",
-  "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description": "Percentage of missing data",
+  "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description": "النسبة المئوية من البيانات المفقودة",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.features": "الميزات",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.samples": "عينات",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.datapoints": "Datapoints",
