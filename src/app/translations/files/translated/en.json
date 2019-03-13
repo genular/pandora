@@ -94,7 +94,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.title": "Looks good! Please confirm task submission",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.header": "Based on your current selection what we got following dataset(s)",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title": "Data sparsity",
-  "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description": "",
+  "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description": "Percentage of missing data",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.features": "Features",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.samples": "Samples",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.datapoints": "Datapoints",
