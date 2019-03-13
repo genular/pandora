@@ -94,7 +94,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.title": "Sieht gut aus! Bitte bestätigen Sie die Einreichung der Aufgabe",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.header": "Basierend auf Ihrer aktuellen Auswahl, was wir erhalten folgende Datensätze(n)",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title": "Datensparsamkeit",
-  "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description": "Percentage of missing data",
+  "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description": "Prozentsatz von fehlenden Daten",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.features": "Funktionen",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.samples": "Beispiele",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.datapoints": "Datenpunkte",
