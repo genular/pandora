@@ -443,12 +443,17 @@ export default {
                         this.datasetResamples = response.data.message.resamples;
                         this.datasetQueueID = response.data.message.queueID;
 
-                        this.datasetQueueSparsity = response.data.message.sparsity * 100;
-
-                        this.submissionVisible = true;
-                        this.isValidateDisabled = true;
-
-                        this.preSelectDatasetResamples();
+                        if (this.datasetResamples.length > 0) {
+                            this.datasetQueueSparsity = response.data.message.sparsity;
+                            this.submissionVisible = true;
+                            this.isValidateDisabled = true;
+                            this.preSelectDatasetResamples();
+                        } else {
+                            this.$message({
+                                message: this.$t("globals.errors.request_general"),
+                                type: "warning"
+                            });
+                        }
                     }
 
                     this.stopLoading();

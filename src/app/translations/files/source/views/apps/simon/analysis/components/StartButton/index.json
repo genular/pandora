@@ -12,7 +12,7 @@
 									"header": "Based on your current selection what we got following dataset(s)",
 									"sparsity": {
 										"title": "Data sparsity",
-										"description": ""
+										"description": "Percentage of missing data"
 									},
 									"table": {
 										"features": "Features",
