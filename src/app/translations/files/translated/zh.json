@@ -94,7 +94,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.title": "看起来不错! 请确认的任务提交",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.header": "基于你的前的选择什么我们得到了以下数据集(s)",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title": "数据稀疏",
-  "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description": "",
+  "views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description": "百分比的缺失的数据",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.features": "功能",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.samples": "样本",
   "views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.datapoints": "数据点",
