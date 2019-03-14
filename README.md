@@ -19,7 +19,7 @@
 
 > Front-end interface for SIMON
 
-<h1 align="center">Introduction</h1>
+## Intro
 
 `SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. <a href="https://dashboard.genular.org" target="_blank">(click here for demo)</a>
 Currently `SIMON` implements automated machine learning (autoML) and statistical data discovery features
@@ -38,16 +38,19 @@ our focus here is scientific community so we can enable scientist and other rese
 * :closed_lock_with_key: **privacy and security** By hosting `SIMON` on your own dedicated servers you don't have to worry about someone else is looking after your data
 
 ## Features
-* 200+ automated machine learning algorithms to choose from
-* nicely designed drag&drop user interface to easily apply data modeling techniques
-* supports *local* and *cloud* backend storage architecture
-* for-each model you can compare between 34 model performance measures
-* visual *data analysis* that supports clustering and correlation graphs
-* visual *feature analysis* with dot-plots that supports 280 visual styles
-* visual *model comparison* with box-and-whisker style plots
-* public dataset repository import function to easily import and analyze pre-published data
-* Integrated SAM (Significance Analysis of Microarrays) technique for finding significant genes in a set of microarray experiments
-* Supports translation to multiple languages
+
+<img alt="SIMON UI screenshot" src="static/simon_analysis.png" align="right" width="500px"/>
+
+* **200+** automated machine learning algorithms to choose from
+* nicely designed **drag&drop** user interface to easily apply data modeling techniques
+* supports **local** and **cloud** backend storage architecture
+* for-each model you can compare between **34 model performance measures**
+* visual **data analysis** that supports *clustering* and *correlation graphs*
+* visual **feature analysis** with dot-plots that supports **280 visual styles**
+* visual **model comparison** with *box-and-whisker* style plots
+* public dataset repository import to **easily import** and analyze pre-published data
+* Integrated **SAM (Significance Analysis of Microarrays)** technique for finding significant genes in a set of microarray experiments
+* Supports translation to **multiple languages**
 
 ## Installation Quickstart
 
