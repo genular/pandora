@@ -52,6 +52,8 @@ our focus here is scientific community so we can enable scientist and other rese
 * Integrated **SAM (Significance Analysis of Microarrays)** technique for finding significant genes in a set of microarray experiments
 * Supports translation to **multiple languages**
 
+---
+
 ## Installation Quickstart
 
 ### Easy
