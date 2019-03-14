@@ -1,7 +1,7 @@
 <div align="center">
     <p align="center">
         <a href="https://genular.org" target="_blank">
-            <img width="200" src="https://github.com/genular/simon-frontend/raw/master/src/app/assets/logo/png/dark_logo_transparent@2x.png"></a>
+            <img width="200" src="https://github.com/genular/simon-frontend/raw/master/.github/static/black_logo_notext_transparent@2x.png"></a>
     </p>
     <h1>SIMON<br/><sub>automated machine learning and feature discovery platform.</sub></h1>
     <p align="center">
