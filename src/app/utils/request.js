@@ -87,7 +87,7 @@ service.interceptors.response.use(
             if (error.response.status === 401) {
                 errorMessage = "You are logged out. Please login again using Settings panel.";
                 setTimeout(function() {
-                    window.location.href = [location.protocol, "//", location.host, location.pathname].join("") + "#/settings/?startIndex=1x";
+                    window.location.href = [location.protocol, "//", location.host, location.pathname].join("") + "#/authenticate/?action=login";
                 }, 5000);
             }
             // The request was made but no response was received
