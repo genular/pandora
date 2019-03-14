@@ -39,7 +39,7 @@ our focus here is scientific community so we can enable scientist and other rese
 
 ## Features
 
-<img alt="SIMON UI screenshot" src="static/simon_analysis.png" align="right" width="500px"/>
+<img alt="SIMON UI screenshot" src=".github/static/simon_analysis.png" align="right" width="500px"/>
 
 * **200+** automated machine learning algorithms to choose from
 * nicely designed **drag&drop** user interface to easily apply data modeling techniques
