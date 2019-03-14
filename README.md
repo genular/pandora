@@ -1,23 +1,24 @@
-<p align="center">
-    <a href="https://genular.org" target="_blank">
-        <img width="200" src="https://github.com/genular/simon-frontend/raw/master/src/app/assets/logo/png/dark_logo_transparent@2x.png"></a>
-</p>
-<p align="center">
-    <a href="https://crowdin.com/project/genular" alt="Help us translate">
-        <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
-    <a href="https://app.fossa.io/projects/git%2Bgithub.com%2Fgenular%2Fsimon-frontend?ref=badge_small" alt="Licence">
-        <img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Fgenular%2Fsimon-frontend.svg?type=small" /></a>
-    <a href="#reposize">
-        <img src="https://img.shields.io/github/repo-size/genular/simon-frontend.svg" /></a>
-    <a href="https://twitter.com/intent/follow?screen_name=genular" alt="Follow us on twitter">
-        <img src="https://img.shields.io/twitter/follow/genular.svg?label=Follow&style=social&logo=twitter" alt="Follow us on twitter"></a>
-    <a href="http://webchat.freenode.net/?randomnick=1&channels=genular&uio=d4" alt="chat on freenode">
-        <img src="https://img.shields.io/badge/chat-on%20freenode-brightgreen.svg" alt="chat on freenode"></a>
-    <a href="https://app.netlify.com/sites/genular/deploys" alt="netlify status">
-        <img src="https://api.netlify.com/api/v1/badges/c8574166-e345-4296-8875-820f219f7a3c/deploy-status" alt="netlify status"></a>
-</p>
-
-> Front-end interface for SIMON
+<div align="center">
+    <p align="center">
+        <a href="https://genular.org" target="_blank">
+            <img width="200" src="https://github.com/genular/simon-frontend/raw/master/src/app/assets/logo/png/dark_logo_transparent@2x.png"></a>
+    </p>
+    <h1>SIMON<br/><sub>automated machine learning and feature discovery platform.</sub></h1>
+    <p align="center">
+        <a href="https://crowdin.com/project/genular" alt="Help us translate">
+            <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
+        <a href="https://app.fossa.io/projects/git%2Bgithub.com%2Fgenular%2Fsimon-frontend?ref=badge_small" alt="Licence">
+            <img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Fgenular%2Fsimon-frontend.svg?type=small" /></a>
+        <a href="#reposize">
+            <img src="https://img.shields.io/github/repo-size/genular/simon-frontend.svg" /></a>
+        <a href="https://twitter.com/intent/follow?screen_name=genular" alt="Follow us on twitter">
+            <img src="https://img.shields.io/twitter/follow/genular.svg?label=Follow&style=social&logo=twitter" alt="Follow us on twitter"></a>
+        <a href="http://webchat.freenode.net/?randomnick=1&channels=genular&uio=d4" alt="chat on freenode">
+            <img src="https://img.shields.io/badge/chat-on%20freenode-brightgreen.svg" alt="chat on freenode"></a>
+        <a href="https://app.netlify.com/sites/genular/deploys" alt="netlify status">
+            <img src="https://api.netlify.com/api/v1/badges/c8574166-e345-4296-8875-820f219f7a3c/deploy-status" alt="netlify status"></a>
+    </p>
+</div>
 
 ## Intro
 
