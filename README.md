@@ -22,7 +22,7 @@
 <h1 align="center">Introduction</h1>
 
 `SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. <a href="https://dashboard.genular.org" target="_blank">(click here for demo)</a>
-Currently `SIMON` implements automated machine learning and statistical data discovery features
+Currently `SIMON` implements automated machine learning (autoML) and statistical data discovery features
 that will help you to easily illustrate dynamic relationships and provide you with a structural sense of your data.
 
 Goal of this project is to make unified user interface that will empower anyone to extract meaningful information from their data and enable them to rapidly use machine learning algorithms. `It gives you freedom and control over your own models.` genular is an entirely open source organization, if you wish to learn more visit us [here](https://genular.org)
@@ -31,18 +31,29 @@ While `SIMON` can be used in across many different fields,
 our focus here is scientific community so we can enable scientist and other researchers in the field to quickly prototype around their data and get meaningful results out of it.
 
 ## Why is this so awesome?
-* :file_folder: **Feature learning** You can discover relevant trends and patterns with ease, that would usually take years of manual handcrafting.
-* :package: **Visualize & analyze** Exploratory analysis of machine learning results will give you instant insights with help of many different visualization algorithms.
-* :arrows_counterclockwise: **Share your Data** You can share your results with others, or download them for external use
-* :lock: **Encryption** You can encrypt data in transit with secure https connections or use it in dedicated private environment
-* :lock: **Privacy** Since data is hosted on your own servers you don't have to worry about someone else is looking after your data
+* :chart: **automated machine learning** Automation of machine learning process for predictive analytics
+* :file_folder: **feature discovery** You can discover relevant trends and patterns inside your data with ease, that would usually take years of manual handcrafting
+* :package: **exploratory data analysis** Visual analysis of automated machine learning results will give you instant insights with help of many different visualization algorithms
+* :arrows_counterclockwise: **sharing is caring** You can share your results with others, deploy your models instantly or download your data for external use
+* :closed_lock_with_key: **privacy and security** By hosting `SIMON` on your own dedicated servers you don't have to worry about someone else is looking after your data
 
+## Features
+* 200+ automated machine learning algorithms to choose from
+* nicely designed drag&drop user interface to easily apply data modeling techniques
+* supports *local* and *cloud* backend storage architecture
+* for-each model you can compare between 34 model performance measures
+* visual *data analysis* that supports clustering and correlation graphs
+* visual *feature analysis* with dot-plots that supports 280 visual styles
+* visual *model comparison* with box-and-whisker style plots
+* public dataset repository import function to easily import and analyze pre-published data
+* Integrated SAM (Significance Analysis of Microarrays) technique for finding significant genes in a set of microarray experiments
+* Supports translation to multiple languages
 
 ## Installation Quickstart
 
 ### Easy
 This section describes the process of pulling a pre-built version of `SIMON` from [DockerHub](https://hub.docker.com/).
-This can be very handy for development and testing in different environments without polluting the host machine with different versions of dependencies.
+If you are beginner this is recommended way to start `SIMON`. This can also be very handy for developers for development without polluting the host machine.
 The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon-backend/blob/master/documentation/docker_images/Dockerfile).
 
 #### Requirements
@@ -61,14 +72,23 @@ docker run --rm \
     --tty \
     --interactive \
     --env IS_DOCKER='true' \
-    --volume /mnt/genular/simon-backend/SHARED_DATA:/tmp/genular \
     --publish 3010:3010 \
     --publish 3011:3011 \
     --publish 3012:3012 \
     --publish 3013:3013 \
     genular:simon
 ```
-Once the container is started you can open SIMON on `http://localhost:3010` and create your account. 
+Once the container is started you can open SIMON on `http://localhost:3010` and create your account.
+
+##### Important
+To exit/shutdown `SIMON` you must use following command when you are finished with your analytical work, otherwise all your current session data will be lost:
+
+```bash
+# Then get the docker container id using this command
+docker ps
+# Commit changes to the container
+docker commit <container_id> genular:simon
+```
 
 ### Advanced
 To install and configure `SIMON` from source you will need basic knowledge of Linux, how to set up databases (MySQL) and web server (Apache, nginx) together with R and PHP configuration.
@@ -144,17 +164,10 @@ Please check `LICENCE` file for more information.
 ## Citation
 This software can be used for research purposes, you should cite
 the aforementioned papers in any resulting publication.
-```
-@article {Tomic545186,
-    author = {Tomic, Adriana and Tomic, Ivan and Rosenberg-Hasson, Yael and Dekker, Cornelia L. and Maecker, Holden T. and Davis, Mark M.},
-    title = {SIMON, an automated machine learning system reveals immune signatures of influenza vaccine responses},
-    elocation-id = {545186},
-    year = {2019},
-    doi = {10.1101/545186},
-    publisher = {Cold Spring Harbor Laboratory},
-    abstract = {Machine learning holds considerable promise for understanding complex biological processes such as vaccine responses. Capturing interindividual variability is essential to increase the statistical power necessary for building more accurate predictive models. However, available approaches have difficulty coping with incomplete datasets which is often the case when combining studies. Additionally, there are hundreds of algorithms available and no simple way to find the optimal one. Here, we developed Sequential Iterative Modelling "OverNight" or SIMON, an automated machine learning system that compares results from 128 different algorithms and is particularly suitable for datasets containing many missing values. We applied SIMON to data from five clinical studies of seasonal influenza vaccination. The results reveal previously unrecognized CD4+ and CD8+ T cell subsets strongly associated with a robust antibody response to influenza antigens. These results demonstrate that SIMON can greatly speed up the choice of analysis modalities. Hence, it is a highly useful approach for data-driven hypothesis generation from disparate clinical datasets. Our strategy could be used to gain biological insight from ever-expanding heterogeneous datasets that are publicly available.},
-    URL = {https://www.biorxiv.org/content/early/2019/02/10/545186},
-    eprint = {https://www.biorxiv.org/content/early/2019/02/10/545186.full.pdf},
-    journal = {bioRxiv}
-}
+
+```bash
+    Adriana Tomic, Ivan Tomic, Yael Rosenberg-Hasson, Cornelia L. Dekker, Holden T. Maecker, Mark M. Davis.
+    SIMON, an automated machine learning system reveals immune signatures of influenza vaccine responses.
+    Preprint available from bioRxiv 545186
+    doi: https://doi.org/10.1101/545186
 ```

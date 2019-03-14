@@ -617,7 +617,7 @@ export default {
             }
         },
         checkselectJobID(row, index) {
-            if (row.modelsTotal < 1 || row.modelsSuccess < 1 || row.status < 4) {
+            if (row.modelsSuccess < 1) {
                 return false;
             } else {
                 return true;
