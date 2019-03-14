@@ -152,6 +152,7 @@ I would also gladly like to hear from you if you find this project useful and he
 
  * Join us on `#genular` on `freenode.net` (or use the [web client](https://webchat.freenode.net/?channels=genular)).
  * Find us [on Twitter](https://twitter.com/genular) under @genular
+ * Check out [community forums](https://community.genular.org)
 
 ## Security Vulnerabilities
 If you discover a security vulnerability within `SIMON`, please [e-mail us](mailto:info@genular.com). All security vulnerabilities will be promptly addressed. You are also welcome to open PR request.
