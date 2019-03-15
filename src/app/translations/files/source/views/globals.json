@@ -9,7 +9,7 @@
 	},
 	"globals": {
 		"page_loading": "Processing",
-		"page_loading_slow": "please be patient this may take awhile...",
+		"page_loading_slow": "please be patient this may take a while...",
 		"buttons": {
 			"copy": "Copy",
 			"ok": "OK",

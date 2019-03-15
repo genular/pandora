@@ -44,9 +44,10 @@
                             :ref="'datasetResamplesTable_' + item.outcome.remapped"
                             height="250"
                             style="width: 100%"
+                            @select="selectResampleItem"
                             @selection-change="
                                 selection => {
-                                    resampleSelectionChange(selection, index);
+                                    resampleSelectionChange(selection, index, item.outcome.remapped);
                                 }
                             "
                         >
@@ -83,19 +84,16 @@
                                     ></el-button>
                                     <el-popover
                                         placement="top-start"
+                                        v-if="!scope.row.isValid"
                                         :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title')"
                                         width="200"
-                                        trigger="hover">
+                                        style="margin-left: 5px;"
+                                        trigger="hover"
+                                    >
                                         <div v-for="(message, messageIndex) in scope.row.message">
-                                            {{ $t('views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.' + message.msg_info) }} - {{ message.data }}
+                                            {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages." + message.msg_info) }} {{ message.data }}
                                         </div>
-                                       <el-button
-                                            slot="reference"
-                                            type="danger"
-                                            size="mini"
-                                            icon="el-icon-error"
-                                            circle>
-                                        </el-button>
+                                        <el-button slot="reference" type="danger" size="mini" icon="el-icon-warning" circle> </el-button>
                                     </el-popover>
                                 </template>
                             </el-table-column>
@@ -435,7 +433,7 @@ export default {
             ApiGetSimonPreAnalysisDetails(this.submitJobForm)
                 .then(response => {
                     if (response.data.success === true) {
-                        this.datasetResamples = response.data.details.resamples;
+                        this.datasetResamples = response.data.details.dataset_queues;
                         this.datasetQueueID = response.data.details.queueID;
 
                         if (this.datasetResamples.length > 0) {
@@ -444,7 +442,9 @@ export default {
                             this.submissionVisible = true;
                             this.isValidateDisabled = true;
                             // Automatically preselect valid re-samples
-                            this.preSelectDatasetResamples();
+                            this.$nextTick(() => {
+                                this.preSelectDatasetResamples();
+                            });
                         } else {
                             this.$message({
                                 message: this.$t("globals.errors.request_general"),
@@ -465,22 +465,37 @@ export default {
                 });
         },
         preSelectDatasetResamples() {
-            this.$nextTick(() => {
-                // Loop all created tables and preselect all rows
-                this.datasetResamples.forEach((resample, resampleIndex) => {
-                    const tableReference = "datasetResamplesTable_" + resample.outcome.remapped;
-                    if (resample.data.length > 0) {
-                        this.processTaskVisible = true;
-                    }
-                    resample.data.forEach((row, rowIndex) => {
-                        if (row.isSelected === true) {
-                            if (typeof this.$refs[tableReference][0] !== "undefined") {
-                                this.$refs[tableReference][0].toggleRowSelection(row, true);
-                            }
-                        }
-                    });
-                });
+            // Loop all created tables and preselect all rows
+            this.datasetResamples.forEach((queue, resampleIndex) => {
+                const tableReference = "datasetResamplesTable_" + queue.outcome.remapped;
+
+                if (queue.data.length > 0) {
+                    this.processTaskVisible = true;
+                }
+                this.$refs[tableReference][0].toggleAllSelection();
             });
+        },
+        /**
+         * Check if we can select specific resample when user clicks check-box next to it!
+         * @param  {[type]} selection [description]
+         * @param  {[type]} row       [description]
+         * @return {[type]}           [description]
+         */
+        selectResampleItem(selection, row) {
+            // In-case select all check-box is pressed, row is than undefined
+            if (typeof row !== "undefined") {
+                if (row.isValid === false) {
+                    row.message.forEach((message, messageIndex) => {
+                        this.$message({
+                            message: this.$t("views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages." + message.msg_info),
+                            type: "warning"
+                        });
+                    });
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
         /**
          * On each selection change check if we need to adjust isSelected variable in datasetResamples and
@@ -489,17 +504,26 @@ export default {
          * @param  {[type]} index     [description]
          * @return {[type]}           [description]
          */
-        resampleSelectionChange(selection, index) {
+        resampleSelectionChange(selection, index, tableTab) {
+            const tableReference = "datasetResamplesTable_" + tableTab;
+
+            console.log("resampleSelectionChange");
+            // For each resample lets check if it selected in user side table
             this.datasetResamples[index].data.forEach((row, rowIndex) => {
-                let selected = false;
+                let isSelected = false;
                 selection.forEach((selectedRow, selectedRowIndex) => {
                     if (selectedRow.id === row.id) {
-                        selected = true;
+                        // Never mark row for processing if its not valid
+                        if (selectedRow.isValid === true) {
+                            isSelected = true;
+                        } else {
+                            this.$refs[tableReference][0].toggleRowSelection(selectedRow, false);
+                        }
                     }
                 });
-                this.datasetResamples[index].data[rowIndex].isSelected = selected;
+                this.datasetResamples[index].data[rowIndex].isSelected = isSelected;
             });
-            const resampleIndex = findObjectIndexByKey(this.datasetResamples[index].data, "selected", true);
+            const resampleIndex = findObjectIndexByKey(this.datasetResamples[index].data, "isSelected", true);
             // Enable final Process button if there are some resamples selected
             if (resampleIndex !== -1 && this.processTaskVisible !== true) {
                 this.processTaskVisible = true;
