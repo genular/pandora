@@ -468,10 +468,6 @@ export default {
             // Loop all created tables and preselect all rows
             this.datasetResamples.forEach((queue, resampleIndex) => {
                 const tableReference = "datasetResamplesTable_" + queue.outcome.remapped;
-
-                if (queue.data.length > 0) {
-                    this.processTaskVisible = true;
-                }
                 this.$refs[tableReference][0].toggleAllSelection();
             });
         },
@@ -504,28 +500,37 @@ export default {
          * @param  {[type]} index     [description]
          * @return {[type]}           [description]
          */
-        resampleSelectionChange(selection, index, tableTab) {
+        resampleSelectionChange(selection, queueIndex, tableTab) {
             const tableReference = "datasetResamplesTable_" + tableTab;
+            // Unselect following rows
+            let unselectRows = [];
+            // Total active selected rows
+            let totalSelectedRows = 0;
 
             console.log("resampleSelectionChange");
             // For each resample lets check if it selected in user side table
-            this.datasetResamples[index].data.forEach((row, rowIndex) => {
-                let isSelected = false;
-                selection.forEach((selectedRow, selectedRowIndex) => {
-                    if (selectedRow.id === row.id) {
-                        // Never mark row for processing if its not valid
-                        if (selectedRow.isValid === true) {
-                            isSelected = true;
-                        } else {
-                            this.$refs[tableReference][0].toggleRowSelection(selectedRow, false);
-                        }
+            selection.forEach((selectedRow, selectedRowIndex) => {
+                // Never mark row for processing if its not valid
+                if (selectedRow.isValid === true) {
+                    totalSelectedRows++;
+                } else {
+                    if (typeof unselectRows[selectedRow.id] === "undefined") {
+                        unselectRows.push(selectedRow);
                     }
-                });
-                this.datasetResamples[index].data[rowIndex].isSelected = isSelected;
+                }
             });
-            const resampleIndex = findObjectIndexByKey(this.datasetResamples[index].data, "isSelected", true);
+            for (let indexUnselect = 0; indexUnselect < unselectRows.length; indexUnselect++) {
+                for (let indexResamples = 0; indexResamples < this.datasetResamples[queueIndex].data.length; indexResamples++) {
+                    if (unselectRows[indexUnselect].id === this.datasetResamples[queueIndex].data[indexResamples].id) {
+                        this.$refs[tableReference][0].toggleRowSelection(unselectRows[indexUnselect], false);
+                        continue;
+                    }
+                }
+            }
+
+            console.log("Found " + totalSelectedRows + " selected resamples!");
             // Enable final Process button if there are some resamples selected
-            if (resampleIndex !== -1 && this.processTaskVisible !== true) {
+            if (totalSelectedRows > 0) {
                 this.processTaskVisible = true;
             } else {
                 this.processTaskVisible = false;
