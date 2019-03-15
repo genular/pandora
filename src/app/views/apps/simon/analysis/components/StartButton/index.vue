@@ -51,7 +51,6 @@
                             "
                         >
                             <el-table-column type="selection"> </el-table-column>
-
                             <el-table-column
                                 property="totalFeatures"
                                 :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.features')"
@@ -59,7 +58,6 @@
                                 align="center"
                             >
                             </el-table-column>
-
                             <el-table-column
                                 property="totalSamples"
                                 :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.samples')"
@@ -67,14 +65,13 @@
                                 align="center"
                             >
                             </el-table-column>
-
                             <el-table-column
                                 property="totalDatapoints"
                                 :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.datapoints')"
+                                sortable
                                 align="center"
                             >
                             </el-table-column>
-
                             <el-table-column align="center">
                                 <template slot-scope="scope">
                                     <el-button
@@ -84,6 +81,22 @@
                                         icon="el-icon-download"
                                         circle
                                     ></el-button>
+                                    <el-popover
+                                        placement="top-start"
+                                        :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title')"
+                                        width="200"
+                                        trigger="hover">
+                                        <div v-for="(message, messageIndex) in scope.row.message">
+                                            {{ $t('views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.' + message.msg_info) }} - {{ message.data }}
+                                        </div>
+                                       <el-button
+                                            slot="reference"
+                                            type="danger"
+                                            size="mini"
+                                            icon="el-icon-error"
+                                            circle>
+                                        </el-button>
+                                    </el-popover>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -145,7 +158,7 @@ export default {
                 status: ""
             },
             loadingInstance: null,
-            loadingText: "please wait...",
+            loadingText: this.$t("globals.page_loading_slow"),
 
             submissionVisible: false,
             processTaskVisible: false,
@@ -270,24 +283,6 @@ export default {
                     this.stopLoading();
                     downloadWindow.close();
                 });
-        },
-        resampleSelectionChange(selection, index) {
-            this.datasetResamples[index].data.forEach((row, rowIndex) => {
-                let selected = false;
-                selection.forEach((selectedRow, selectedRowIndex) => {
-                    if (selectedRow.id === row.id) {
-                        selected = true;
-                    }
-                });
-                this.datasetResamples[index].data[rowIndex].selected = selected;
-            });
-
-            const resampleIndex = findObjectIndexByKey(this.datasetResamples[index].data, "selected", true);
-            if (resampleIndex !== -1) {
-                this.processTaskVisible = true;
-            } else {
-                this.processTaskVisible = false;
-            }
         },
         progressStatus(percentage, status = "") {
             this.progressBar.percentage = percentage;
@@ -440,13 +435,15 @@ export default {
             ApiGetSimonPreAnalysisDetails(this.submitJobForm)
                 .then(response => {
                     if (response.data.success === true) {
-                        this.datasetResamples = response.data.message.resamples;
-                        this.datasetQueueID = response.data.message.queueID;
+                        this.datasetResamples = response.data.details.resamples;
+                        this.datasetQueueID = response.data.details.queueID;
 
                         if (this.datasetResamples.length > 0) {
-                            this.datasetQueueSparsity = response.data.message.sparsity;
+                            this.datasetQueueSparsity = response.data.details.sparsity;
+
                             this.submissionVisible = true;
                             this.isValidateDisabled = true;
+                            // Automatically preselect valid re-samples
                             this.preSelectDatasetResamples();
                         } else {
                             this.$message({
@@ -476,12 +473,39 @@ export default {
                         this.processTaskVisible = true;
                     }
                     resample.data.forEach((row, rowIndex) => {
-                        if (typeof this.$refs[tableReference][0] !== "undefined") {
-                            this.$refs[tableReference][0].toggleRowSelection(row, true);
+                        if (row.isSelected === true) {
+                            if (typeof this.$refs[tableReference][0] !== "undefined") {
+                                this.$refs[tableReference][0].toggleRowSelection(row, true);
+                            }
                         }
                     });
                 });
             });
+        },
+        /**
+         * On each selection change check if we need to adjust isSelected variable in datasetResamples and
+         * enable/disable main task process button
+         * @param  {[type]} selection Whole current selection of the complete table
+         * @param  {[type]} index     [description]
+         * @return {[type]}           [description]
+         */
+        resampleSelectionChange(selection, index) {
+            this.datasetResamples[index].data.forEach((row, rowIndex) => {
+                let selected = false;
+                selection.forEach((selectedRow, selectedRowIndex) => {
+                    if (selectedRow.id === row.id) {
+                        selected = true;
+                    }
+                });
+                this.datasetResamples[index].data[rowIndex].isSelected = selected;
+            });
+            const resampleIndex = findObjectIndexByKey(this.datasetResamples[index].data, "selected", true);
+            // Enable final Process button if there are some resamples selected
+            if (resampleIndex !== -1 && this.processTaskVisible !== true) {
+                this.processTaskVisible = true;
+            } else {
+                this.processTaskVisible = false;
+            }
         },
         copyToClipboard(content, event) {
             clipboard(content, event);

@@ -32,6 +32,13 @@
 								"errors": {
 									"title": "Following errors needs to be corrected",
 									"confirm": "Confirm"
+								},
+								"errors_resample": {
+									"title": "Resample have following errors",
+									"messages": {
+										"invalid_sample_count_main": "Not enough samples found (min 10)",
+										"invalid_sample_count_test": "Not enough samples found to make test set"
+									}
 								}
 							},
 							"other": {
