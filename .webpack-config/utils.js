@@ -25,7 +25,7 @@ _.configureEnviroment = (environment, argv) => {
 		let updatedVars = 0;
 
 		if (typeof argv.isDemoServer !== "undefined") {
-			envTemplate.isDemoServer = argv.isDemoServer;
+			envTemplate.isDemoServer = (argv.isDemoServer == 'true');
 			updatedVars++;
 		}
 		if (typeof argv.server_frontend !== "undefined") {
