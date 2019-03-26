@@ -3,14 +3,15 @@
         flex: 1;
         float: right;
         position: relative;
-        background-color: #eff0f9;
+        background-color: #f2f2f3;
         transition: all 0.28s;
         overflow: hidden;
     }
 
     .sidebar-container {
-        float: left;
-        background-color: #409EFF;
+        float: left;        
+        // Main background color #409EFF
+        background-color: $ui-background;
         a {
             display: inline-block;
             width: 100%;
@@ -23,6 +24,9 @@
             border: none;
             width: 100%;
             transition: width 0.25s;
+        }
+        .el-submenu__title {
+            color: #FFFFFF;
         }
     }
 
@@ -64,6 +68,7 @@
         .el-submenu {
             & > .el-submenu__title {
                 padding-left: 20px !important;
+
                 & > span {
                     display: none;
                 }

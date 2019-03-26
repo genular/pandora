@@ -48,7 +48,6 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import "~scss_vars";
 .app-wrapper {
     height: 100%;
     display: flex;

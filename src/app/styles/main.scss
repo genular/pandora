@@ -4,13 +4,14 @@
 @import "~dropzone/dist/dropzone.css";
 @import "~highlight.js/styles/github.css";
 
-@import "~element-ui/lib/theme-chalk/index.css";
-
 @import "./fonts.scss";
-/* variables.scss includes mixins.scss */
+/* variables include mixins */
 @import "./variables.scss";
 @import "./transition.scss";
 @import "./sidebar.scss";
+
+/* @import "~element-ui/lib/theme-chalk/index.css"; */
+@import "~element-ui/packages/theme-chalk/src/index";
 
 *,
 *:before,

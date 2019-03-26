@@ -1,8 +1,11 @@
 @import './mixins.scss';
 
+$--color-primary: #35224a;
+// Main background color #409EFF
+$ui-background: #35224a;
 
-$ui-background: #409EFF;
 $ui-background-secondary: #EFF0F9;
+
 // #3D2D53
 // #4C3B63
 // #CFBEE3
@@ -26,6 +29,7 @@ $yellow:#FEC171;
 $panGreen: #30B08F;
 
 //sidebar
-$subMenuBg:#409EFF;
+// Main background color #409EFF
+$subMenuBg: $ui-background;
 $menuHover:#FFFFFF;
 

@@ -128,6 +128,7 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+@import "~scss_vars";
 .tags-view-container {
     width: 100%;
     float: left;
@@ -145,7 +146,7 @@ export default {
             height: 40px;
             line-height: 40px;
             color: #ffffff;
-            background: #409EFF;
+            background: $ui-background;
             padding: 0 10px;
             font-size: 12px;
             margin-left: 5px;
@@ -153,7 +154,7 @@ export default {
                 margin-left: 5px;
             }
             &.active {
-                background-color: #85ce61;
+                background-color: $ui-background;
                 color: #ffffff;
                 &::before {
                     content: "";
@@ -202,14 +203,15 @@ export default {
             text-align: center;
             transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             transform-origin: 100% 50%;
+            font-weight: bold;
             &:before {
                 transform: scale(0.6);
                 display: inline-block;
                 vertical-align: -3px;
             }
             &:hover {
-                background-color: #b4bccc;
-                color: #fff;
+                background-color: #e3006e;
+                color: #FFFFFF;
             }
         }
     }
