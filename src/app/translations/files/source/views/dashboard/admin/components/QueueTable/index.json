@@ -35,7 +35,7 @@
 								"queueProcessingTime": "Processing time",
 								"status": "Status",
 								"extraction": {
-									"title": "extraction",
+									"title": "Extraction",
 									"options": {
 										"yes": "Yes",
 										"no": "No"
@@ -65,7 +65,7 @@
 						},
 						"messages": {
 							"in_progress": "Cannot select queue task. It is still not finished.",
-							"missing_models": "Cannot select queue task. All analysis finished with an error."
+							"missing_models": "Cannot select queue task. All analysis algorithms finished with an error."
 						},
 						"dialog": {
 							"no_data": "Nothing to display",
@@ -80,11 +80,13 @@
 										}
 									},
 									"resample_id": "Resample ID",
+									"processingTime": "Processing time",
 									"total_samples": "Samples",
 									"total_features": "Features",
 									"total_samples_training": "Samples training",
 									"total_samples_testing": "Samples testing",
-									"total_models_processed": "Models processed"
+									"total_models_processed": "Models processed",
+									"hide_failed": "Hide failed?"
 								}
 							},
 							"models_table": {

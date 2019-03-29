@@ -28,6 +28,7 @@
                             </el-select>
                         </div>
                     </div>
+                    <!-- Main queue Resamples Table -->
                     <el-table
                         ref="resamplesTable"
                         @sort-change="
@@ -37,36 +38,33 @@
                         "
                         :data="displayResamples"
                         :row-class-name="resamplesTableRowClass"
-                        @row-click="selectResample"
+                        @select-all="selectResample"
+                        @select="selectResample"
+                        row-key="resampleID"
                         highlight-current-row
                         height="300"
                         max-height="300"
-                        style="width: 100%"
-                    >
+                        style="width: 100%">
                         <el-table-column type="expand" style="padding: 0;">
                             <template slot-scope="props">
                                 <span>TODO!</span>
                             </template>
                         </el-table-column>
+                        <el-table-column type="selection" reserve-selection width="40" fixed> </el-table-column>
 
-                        <el-table-column align="center" fixed width="30">
+                        <el-table-column
+                            align="center"
+                            :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.title')"
+                            prop="dataSource"
+                            sortable="custom"
+                            min-width="75"
+                        >
                             <template slot-scope="scope">
-                                <div v-if="(scope.row.dataSource = 1)">
-                                    <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">
-                                            {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.initial") }}
-                                        </div>
-                                        <span class="el-icon-more"></span>
-                                    </el-tooltip>
-                                </div>
-                                <div v-else>
-                                    <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">
-                                            {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.predicted") }}
-                                        </div>
-                                        <span class="el-icon-more-outline"></span>
-                                    </el-tooltip>
-                                </div>
+                                <span>
+                                    {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.initial") }}
+                                    {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.predicted") }}
+
+                                </span>
                             </template>
                         </el-table-column>
 
@@ -480,9 +478,6 @@ export default {
                     arrayData = this[dataArray];
                 }
 
-                console.log(pref);
-                console.log(order);
-
                 let arraySorted = arrayData.sort(function(obj1, obj2) {
                     // Ascending
                     return obj1.performance[pref] - obj2.performance[pref];
@@ -704,7 +699,7 @@ export default {
         },
         // Restore user selection of models for specific feature set!
         initSelectedModels() {
-            console.log("initSelectedModels: ", this.selectedModelsIDs);
+            console.log("initPreSelectedModels: ", this.selectedModelsIDs);
             if (this.selectedModelsIDs.length > 0 && this.selectedModels.length === 0) {
                 if (this.selectedFeatureSetId > 0) {
                     if (this.jobDetailsData.resampleModels[this.selectedFeatureSetId].length > 0) {
@@ -811,14 +806,24 @@ export default {
                 (pageNumber + 1) * this.paginateModelsData.page_size
             );
         },
-        selectResample(row, event, column) {
-            console.log("Feature set change: " + row.resampleID + " " + this.selectedFeatureSetId);
-
-            if (row.modelsTotal < 1) {
-                console.log("No models processed in selected resample..");
+        selectResample(selection, row) {
+            // In-case "select all" check-box is pressed, row is than undefined
+            if (typeof row === "undefined") {
+                console.log("selectResample: reseting feature set!");
+                this.selectedFeatureSetId = 0;
+                this.displayModels = [];
+                this.selectedModelsIDs = [];
+                this.$refs.resamplesTable.setCurrentRow();
                 return;
             }
-            if (column.className === "settings") {
+
+            console.log("Feature set change: " + row.resampleID + " " + this.selectedFeatureSetId);
+
+            if(row.modelsTotal === 0){
+                this.$message({
+                    message: this.$t("views.dashboard.admin.components.QueueTable.messages.missing_models"),
+                    type: "warning"
+                });
                 return;
             }
 

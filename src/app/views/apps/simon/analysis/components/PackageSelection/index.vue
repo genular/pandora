@@ -119,7 +119,7 @@
                                 </div>
                                 <span class="field-label">{{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.feature_selection.title") }}</span>
                             </el-tooltip>
-                            <el-switch v-model="backwardSelection" :disabled="true"></el-switch>
+                            <el-switch v-model="backwardSelection"></el-switch>
                         </div>
                         <div class="draggable-containers">
                             <draggable
