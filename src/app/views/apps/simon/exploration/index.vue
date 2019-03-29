@@ -28,12 +28,7 @@
                     size="small"
                     :placeholder="$t('globals.performanceVariables.placeholder')"
                 >
-                    <el-option
-                        v-for="item in performanceVariables"
-                        :key="item"
-                        :value="item"
-                        :label="$t(['globals.performanceVariables.options.', item, '.title'].join(''))"
-                    >
+                    <el-option v-for="item in performanceVariables" :key="item" :value="item" :label="$t(['globals.performanceVariables.options.', item, '.title'].join(''))">
                         <span>{{ $t("globals.performanceVariables.options." + item + ".title") }}</span>
                     </el-option>
                 </el-select>
@@ -97,13 +92,34 @@ export default {
     },
     mounted() {
         console.log("mounted: exploration");
-        this.handleFetchJobDetails();
     },
     activated() {
-        console.log("activated: exploration");
-        console.log(this.jobDetailsData.resamplesList.length);
-        if (this.jobDetailsData.resamplesList.length < 1) {
-            // this.handleFetchJobDetails();
+        console.log("activated: exploration, reseting variables");
+        // Always reset on activation variables
+        // Reset any previusly selected resample
+        this.selectedFeatureSetId = 0;
+        this.jobDetailsData = {
+            //feature_sets: [],
+            resamplesList: [],
+            //model_details: [],
+            resampleModels: [],
+            //all_models: [],
+            modelsList: [],
+            //process_queue: []
+            queueDetails: {},
+            performance: []
+        };
+        // Reset any models for the resample
+        this.displayModels = [];
+        // Reset any selected models for the resample
+        this.selectedModelsIDs = [];
+
+        // On initial opening fetch resamples from server
+        if (this.jobDetailsData.resamplesList.length === 0) {
+            this.handleFetchJobDetails();
+        } else {
+            console.log("New selected queue detected, refreshing resample data");
+            this.handleFetchJobDetails();
         }
     },
     computed: {
@@ -151,6 +167,8 @@ export default {
             return check;
         },
         handleFetchJobDetails() {
+            console.log("handleFetchJobDetails: " + this.explorationJobId);
+
             ApiFetchQueueExplorationDetails({ queueID: this.explorationJobId, measurements: this.measurements })
                 .then(response => {
                     if (response.data.success === true) {
@@ -163,19 +181,6 @@ export default {
                         if (this.jobDetailsData.performance.length < 1) {
                             this.jobDetailsData.performance = ["Accuracy", "PredictAUC", "Sensitivity", "Specificity", "Recall"];
                         }
-
-                        const prevSelectedFeatureSetId = this.selectedFeatureSetId;
-
-                        // Preselect 1st resample dataset:
-                        this.selectedFeatureSetId = this.jobDetailsData.resamplesList[0].resampleID;
-                        // Clear selected models if new Feature Set is selected
-                        if (prevSelectedFeatureSetId !== this.selectedFeatureSetId) {
-                            this.selectedModelsIDs = [];
-                        }
-
-                        this.jobDetailsData.resampleModels[this.selectedFeatureSetId] = this.jobDetailsData.modelsList.filter(
-                            modelItem => modelItem.resampleID === this.selectedFeatureSetId
-                        );
                     } else {
                         // Something went wrong, cannot fetch details from Server
                         this.$message({
@@ -184,8 +189,11 @@ export default {
                             duration: 10000,
                             showClose: true
                         });
+
                         this.explorationJobId = "";
                         this.jobDetailsData.resamplesList = [];
+                        this.selectedFeatureSetId = 0;
+                        this.selectedModelsIDs = [];
 
                         this.$router.push({
                             path: "/dashboard"

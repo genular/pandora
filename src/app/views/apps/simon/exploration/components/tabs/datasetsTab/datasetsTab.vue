@@ -41,10 +41,10 @@
                         @select-all="selectResample"
                         @select="selectResample"
                         row-key="resampleID"
-                        highlight-current-row
                         height="300"
                         max-height="300"
-                        style="width: 100%">
+                        style="width: 100%"
+                    >
                         <el-table-column type="expand" style="padding: 0;">
                             <template slot-scope="props">
                                 <span>TODO!</span>
@@ -57,13 +57,16 @@
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.title')"
                             prop="dataSource"
                             sortable="custom"
-                            min-width="75"
+                            min-width="100"
                         >
                             <template slot-scope="scope">
                                 <span>
-                                    {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.initial") }}
-                                    {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.predicted") }}
-
+                                    <span v-if="scope.row.dataSource == 1">
+                                        {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.initial") }}
+                                    </span>
+                                    <span v-else>
+                                        {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.predicted") }}
+                                    </span>
                                 </span>
                             </template>
                         </el-table-column>
@@ -323,20 +326,10 @@
             <el-col :span="24" style="margin-top: 15px;">
                 <el-tabs v-model="activeDatasetSubTabName" v-if="selectedFeatureSetId > 0" type="card">
                     <!-- Don't display Tab Pane if we have only one Tab to display and he doesn't satisfy display criteria -->
-                    <el-tab-pane
-                        v-for="item in datasetsTabMapOptions"
-                        :label="item.label"
-                        :key="item.key"
-                        :name="item.key"
-                        :disabled="isTabDisabled(item)"
-                    >
+                    <el-tab-pane v-for="item in datasetsTabMapOptions" :label="item.label" :key="item.key" :name="item.key" :disabled="isTabDisabled(item)">
                         <span slot="label"><i :class="item.icon"></i> {{ item.label }}</span>
                         <keep-alive>
-                                <sub-tab-pane 
-                                v-if="activeDatasetSubTabName == item.key" 
-                                :currentView="item.view" 
-                                :columnName="item.key" 
-                                :isTabDisabled="isTabDisabled(item)">
+                            <sub-tab-pane v-if="activeDatasetSubTabName == item.key" :currentView="item.view" :columnName="item.key" :isTabDisabled="isTabDisabled(item)">
                             </sub-tab-pane>
                             <!-- inactive components will be cached! -->
                         </keep-alive>
@@ -451,15 +444,11 @@ export default {
 
         this.jobClassesDisaply = this.jobDetailsData.queueDetails.selectedOptions.classes;
 
-        // Paginate Features and Models
-        this.initPagination();
+        // Paginate Resample
+        this.paginateResamples(1);
 
-        // Lets try to restore Models selection from previous user session
         this.$nextTick(() => {
-            this.initSelectedModels();
-            //if(this.datasetsTabMapOptions.length === 0){
             this.datasetsTabMapOptions = this.datasetsTabMapOptionsTemplate;
-            //}
         });
     },
     methods: {
@@ -777,11 +766,6 @@ export default {
                 });
             }
         },
-        // Initialize Pagination of Features and Models Tables
-        initPagination() {
-            this.paginateResamples(1);
-            this.paginateModels(1);
-        },
         // Initialize Pagination of Features
         paginateResamples(pageNumber) {
             this.paginateResamplesData.currentPage = pageNumber;
@@ -813,13 +797,15 @@ export default {
                 this.selectedFeatureSetId = 0;
                 this.displayModels = [];
                 this.selectedModelsIDs = [];
+
                 this.$refs.resamplesTable.setCurrentRow();
+                this.$refs.resamplesTable.clearSelection();
                 return;
             }
 
             console.log("Feature set change: " + row.resampleID + " " + this.selectedFeatureSetId);
 
-            if(row.modelsTotal === 0){
+            if (row.modelsTotal === 0) {
                 this.$message({
                     message: this.$t("views.dashboard.admin.components.QueueTable.messages.missing_models"),
                     type: "warning"
@@ -828,6 +814,8 @@ export default {
             }
 
             if (row.resampleID !== this.selectedFeatureSetId) {
+                console.log("Filtering models for new resample!");
+
                 this.selectedFeatureSetId = row.resampleID;
                 // Select only models with that feature set ID
                 this.jobDetailsData.resampleModels[this.selectedFeatureSetId] = this.jobDetailsData.modelsList.filter(model => model.resampleID === this.selectedFeatureSetId);

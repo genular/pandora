@@ -16,7 +16,15 @@
                             <el-button size="mini" class="filter-item" type="primary" v-waves @click="handleTableFilter">Sort</el-button>
                         </el-form-item>
                         <el-form-item style="float: right;">
-                            <el-button size="mini" class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload"></el-button>
+                            <el-button
+                                size="mini"
+                                class="filter-item"
+                                type="primary"
+                                :loading="downloadLoading"
+                                v-waves
+                                icon="el-icon-download"
+                                @click="handleDownload"
+                            ></el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -52,18 +60,24 @@
                     >
                         <el-table-column type="selection" reserve-selection width="35" fixed> </el-table-column>
 
-                        <el-table-column fixed label="Feature">
+                        <el-table-column fixed label="Model">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.original">{{ scope.row.original }}</span> <span v-else>N/A</span>
+                                <span>{{ scope.row.model_internal_id }}</span>
                             </template>
                         </el-table-column>
 
-                        <el-table-column width="125px" align="center" label="Rank" prop="rank" sortable>
+                        <el-table-column fixed label="Feature">
+                            <template slot-scope="scope">
+                                <span>{{ scope.row.original }}</span>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column width="125px" align="center" label="Rank" prop="rank">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.rank">{{ scope.row.rank }}</span> <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column width="125px" align="center" label="Score" prop="score_perc" sortable>
+                        <el-table-column width="125px" align="center" label="Score" prop="score_perc">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.score_perc">{{ scope.row.score_perc }}</span> <span v-else>N/A</span>
                             </template>
@@ -146,7 +160,7 @@ export default {
                 page: 1,
                 page_size: 20,
                 sort: false,
-                sort_by: "feature_name",
+                sort_by: "score_perc",
                 total_items: null
             },
             tableSortOptions: [
@@ -161,6 +175,10 @@ export default {
                 {
                     label: "Score",
                     key: "score_perc"
+                },
+                {
+                    label: "Model",
+                    key: "model_internal_id"
                 }
             ],
             downloadLoading: false
@@ -283,12 +301,25 @@ export default {
     },
     watch: {
         /**
+         * Watch for model selection change
+         * @param  {[type]} newVal [description]
+         * @param  {[type]} oldVal [description]
+         * @return {[type]}        [description]
+         */
+        selectedModelsIDs: function(newVal, oldVal) {
+            console.log("variableImportanceTab getting new variables based on model change");
+            if (this.isTabDisabled === false) {
+                this.handleFetchVariableImp();
+            }
+        },
+        /**
          * Once tab is enabled lets load the data
          * @param  boolean  newVal New item value
          * @param  boolean  oldVal Old item value
          * @return null
          */
         isTabDisabled: function(newVal, oldVal) {
+            console.log("variableImportanceTab isTabDisabled: " + newVal);
             if (newVal === false) {
                 this.handleFetchVariableImp();
             }
