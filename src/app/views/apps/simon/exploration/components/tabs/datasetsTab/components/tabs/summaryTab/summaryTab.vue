@@ -179,6 +179,19 @@ export default {
     },
     watch: {
         /**
+         * Watch for model selection change
+         * @param  {[type]} newVal [description]
+         * @param  {[type]} oldVal [description]
+         * @return {[type]}        [description]
+         */
+        selectedModelsIDs: function(newVal, oldVal) {
+            console.log("summaryTab getting new handleFetchSummaryPlots based on model change");
+            if (this.isTabDisabled === false) {
+                // Remove any previously selected variables
+                this.handleFetchSummaryPlots();
+            }
+        },
+        /**
          * Once tab is enabled lets load the data
          * @param  boolean  newVal New item value
          * @param  boolean  oldVal Old item value

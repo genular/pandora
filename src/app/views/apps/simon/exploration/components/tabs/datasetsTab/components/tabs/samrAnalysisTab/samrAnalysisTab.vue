@@ -166,7 +166,7 @@ export default {
                 },
                 random_seed: 6187
             },
-            loadingOptions: true,
+            loadingOptions: false,
             loadingResults: false,
             resultsData: []
         };

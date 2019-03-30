@@ -225,9 +225,17 @@ export default {
         },
         handleVarImpSelection(selection, row) {
             console.log("handleVarImpSelection");
-            console.log(selection);
+            // select unique objects by key value
+            const selectionCheck = new Set();
+            const uniqueSelection = selection.filter(entry => {
+                if (selectionCheck.has(entry.feature_name)) {
+                    return false;
+                }
+                selectionCheck.add(entry.feature_name);
+                return true;
+            });
 
-            this.selectedVariableImp = selection;
+            this.selectedVariableImp = uniqueSelection;
         },
         handleTableFilter() {
             this.paginateVariableImpData.page = 1;
@@ -309,6 +317,8 @@ export default {
         selectedModelsIDs: function(newVal, oldVal) {
             console.log("variableImportanceTab getting new variables based on model change");
             if (this.isTabDisabled === false) {
+                // Remove any previously selected variables
+                this.selectedVariableImp = [];
                 this.handleFetchVariableImp();
             }
         },
@@ -321,6 +331,8 @@ export default {
         isTabDisabled: function(newVal, oldVal) {
             console.log("variableImportanceTab isTabDisabled: " + newVal);
             if (newVal === false) {
+                // Remove any previously selected variables
+                this.selectedVariableImp = [];
                 this.handleFetchVariableImp();
             }
         }
