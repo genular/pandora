@@ -348,7 +348,7 @@ import waves from "@/directive/waves";
 import { md5String } from "@/utils";
 import { parseTime } from "@/filters";
 import { sortAlphaNum } from "@/utils/helpers.js";
-import { downloadFileTemplate, downloadItemsTemplate } from "@/utils/templates.js";
+import { downloadItemsTemplate } from "@/utils/templates.js";
 
 export default {
     name: "QueueTable",
@@ -477,19 +477,20 @@ export default {
         handleOperations(clickAction, rowInfo) {
             if (clickAction === "download" || clickAction === "delete") {
                 if (clickAction === "download") {
-                    const downloadWindow = window.open("", "_blank");
-                    downloadWindow.document.write(downloadFileTemplate());
+                    this.queueListLoading = true;
                     ApiGenarateFileDownloadLink({ downloadType: "queue", recordID: rowInfo.queueID })
                         .then(response => {
                             if (response.data.success === true && response.data.message.length > 0) {
-                                downloadWindow.document.getElementById("download_links").innerHTML = downloadItemsTemplate(response.data.message);
-                            } else {
-                                downloadWindow.close();
+                                this.$alert(downloadItemsTemplate(response.data.message), "Download links", {
+                                    dangerouslyUseHTMLString: true,
+                                    callback: action => {}
+                                });
                             }
+                            this.queueListLoading = false;
                         })
                         .catch(error => {
                             console.log(error);
-                            downloadWindow.close();
+                            this.queueListLoading = false;
                         });
                 } else if (clickAction === "delete") {
                     const queueID = rowInfo.queueID;

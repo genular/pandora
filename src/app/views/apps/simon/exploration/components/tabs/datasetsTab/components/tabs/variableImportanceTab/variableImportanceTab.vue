@@ -159,7 +159,7 @@ export default {
             paginateVariableImpData: {
                 page: 1,
                 page_size: 20,
-                sort: false,
+                sort: true,
                 sort_by: "score_perc",
                 total_items: null
             },
@@ -283,17 +283,49 @@ export default {
             }
             return "";
         },
+        // Export all features for selected models in Excel table
         handleDownload() {
             this.downloadLoading = true;
-            import("@/vendor/Export2Excel").then(excel => {
-                const tHeader = ["Feature", "Rank", "Score"];
-                const filterVal = ["original", "rank", "score_perc"];
 
-                const data = this.formatJson(filterVal, this.displayVariableImp);
+            getVariableImportance({
+                pqid: this.explorationJobId,
+                resampleID: this.selectedFeatureSetId,
+                modelsID: this.selectedModelsIDs,
+                page: 1,
+                page_size: 10000,
+                sort: true,
+                sort_by: "score_perc",
+                total_items: 10000
+            })
+                .then(response => {
+                    if (response.data.success === true) {
+                        import("@/vendor/Export2Excel").then(excel => {
+                            const filterVal = ["model_id", "model_internal_id", "original", "score_perc", "score_no"];
+                            const tHeader = ["model_id", "model_name", "feature", "score_percentage", "score_numeric"];
 
-                excel.export_json_to_excel(tHeader, data, "table-list");
-                this.downloadLoading = false;
-            });
+                            const modelsValues = response.data.data.map(item => item.model_internal_id);
+                            // Get unique models and format for display
+                            let models = modelsValues.filter((value, index, self) => {
+                                return self.indexOf(value) === index;
+                            });
+                            models = models.join('_');
+
+                            excel.export_json_to_excel(tHeader, this.formatJson(filterVal, response.data.data), "varImp_resampleID_" + this.selectedFeatureSetId + "_" + models);
+                            this.downloadLoading = false;
+                        });
+                    } else {
+                        console.log(response.data);
+                    }
+                    this.downloadLoading = false;
+                })
+                .catch(error => {
+                    this.$message({
+                        message: this.$t("globals.errors.request_general"),
+                        type: "error"
+                    });
+                    console.log(error);
+                    this.downloadLoading = false;
+                });
         },
         formatJson(filterVal, jsonData) {
             return jsonData.map(v =>

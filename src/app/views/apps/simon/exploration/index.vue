@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container" v-loading="loading" :element-loading-text="$t('globals.page_loading')">
+    <div class="app-container" v-loading="explorationLoading" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="middle">
             <el-col :span="24">
                 <el-tooltip style="float: left;" placement="top" v-if="explorationJobId">
@@ -59,6 +59,7 @@ export default {
     components: { tabPane },
     data() {
         return {
+            explorationLoading: true,
             tabMapOptions: [
                 { label: "Datasets", key: "datasetsTab", icon: "el-icon-date" },
                 {
@@ -76,7 +77,6 @@ export default {
             ],
             performanceVariables: [],
 
-            loading: true,
             jobDetailsData: {
                 //feature_sets: [],
                 resamplesList: [],
@@ -199,7 +199,7 @@ export default {
                             path: "/dashboard"
                         });
                     }
-                    this.loading = false;
+                    this.explorationLoading = false;
                 })
                 .catch(error => {
                     console.log(error);

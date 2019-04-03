@@ -206,6 +206,13 @@ div:focus {
     margin: 20px 0;
 }
 
+.alert_download_item {
+    width: 100%;
+    float: left;
+    color: $ui-background;
+    text-align: center;
+}
+
 .unsupported_device {
     display: none;
     @media screen and (max-width: 1024px) {

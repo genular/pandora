@@ -31,6 +31,7 @@
                     <!-- Main queue Resamples Table -->
                     <el-table
                         ref="resamplesTable"
+                        v-loading="resamplesTableLoading"
                         @sort-change="
                             ({ column, prop, order }) => {
                                 deepSort({ column, prop, order }, 'jobDetailsData', null, 'resamplesList', null, 'paginateResamples');
@@ -45,7 +46,7 @@
                         max-height="300"
                         style="width: 100%"
                     >
-                        <el-table-column type="expand" style="padding: 0;">
+                        <el-table-column fixed type="expand" style="padding: 0;">
                             <template slot-scope="props">
                                 <span>TODO!</span>
                             </template>
@@ -53,6 +54,7 @@
                         <el-table-column type="selection" reserve-selection width="40" fixed> </el-table-column>
 
                         <el-table-column
+                            fixed
                             align="center"
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.title')"
                             prop="dataSource"
@@ -72,6 +74,7 @@
                         </el-table-column>
 
                         <el-table-column
+                            fixed
                             align="center"
                             :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.resample_id')"
                             prop="resampleID"
@@ -239,6 +242,7 @@
                     <!-- Model Details data -->
                     <el-table
                         ref="modelDetailsTable"
+                        v-loading="modelDetailsTableLoading"
                         :data="displayModels"
                         @select-all="handleModelsSelectionChange"
                         @select="handleModelsSelectionChange"
@@ -253,6 +257,19 @@
                         max-height="300"
                     >
                         <el-table-column type="selection" reserve-selection @selectable="checkModelsSelectionChange" width="40" fixed> </el-table-column>
+
+                        <el-table-column
+                            fixed
+                            align="center"
+                            :label="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.resample_id')"
+                            prop="modelID"
+                            sortable="custom"
+                            min-width="75"
+                        >
+                            <template slot-scope="scope">
+                                <span>{{ scope.row.modelID }}</span>
+                            </template>
+                        </el-table-column>
 
                         <el-table-column
                             fixed
@@ -346,7 +363,7 @@ import { deleteDatasetResampleTask as ApiDeleteDatasetResampleTask, genarateFile
 import clipboard from "@/utils/clipboard";
 
 import subTabPane from "./components/subTabPane";
-import { downloadFileTemplate, downloadItemsTemplate } from "@/utils/templates.js";
+import { downloadItemsTemplate } from "@/utils/templates.js";
 
 export default {
     name: "datasetsTab",
@@ -361,7 +378,9 @@ export default {
     components: { subTabPane },
     data() {
         return {
-            loading: true,
+            datasetsTabLoading: false,
+            resamplesTableLoading: false,
+            modelDetailsTableLoading: false,
             activeDatasetSubTabName: "varImp",
             paginateResamplesData: {
                 currentPage: 1,
@@ -496,19 +515,20 @@ export default {
         // Download and delete resample actions
         handleOperations(clickAction, rowInfo) {
             if (clickAction === "downloadResample") {
-                const downloadWindow = window.open("", "_blank");
-                downloadWindow.document.write(downloadFileTemplate());
+                this.resamplesTableLoading = true;
                 ApiGenarateFileDownloadLink({ downloadType: "resample", recordID: rowInfo.resampleID })
                     .then(response => {
                         if (response.data.success === true && response.data.message.length > 0) {
-                            downloadWindow.document.getElementById("download_links").innerHTML = downloadItemsTemplate(response.data.message);
-                        } else {
-                            downloadWindow.close();
+                            this.$alert(downloadItemsTemplate(response.data.message), "Download links", {
+                                dangerouslyUseHTMLString: true,
+                                callback: action => {}
+                            });
                         }
+                        this.resamplesTableLoading = false;
                     })
                     .catch(error => {
                         console.log(error);
-                        downloadWindow.close();
+                        this.resamplesTableLoading = false;
                     });
             } else if (clickAction === "deleteResample") {
                 this.$confirm(
@@ -519,6 +539,7 @@ export default {
                     }
                 )
                     .then(_ => {
+                        this.resamplesTableLoading = true;
                         ApiDeleteDatasetResampleTask({ resampleID: rowInfo.resampleID })
                             .then(response => {
                                 if (response.data.success === true) {
@@ -528,9 +549,11 @@ export default {
                                         message: this.$t("globals.messages.success")
                                     });
                                 }
+                                this.resamplesTableLoading = false;
                             })
                             .catch(error => {
                                 console.log(error);
+                                this.resamplesTableLoading = false;
                             });
                     })
                     .catch(_ => {
@@ -569,10 +592,29 @@ export default {
                         });
                     });
             } else if (clickAction === "downloadModels") {
-                this.$message({
-                    type: "info",
-                    message: this.$t("globals.messages.not_implemented")
-                });
+                this.modelDetailsTableLoading = true;
+                ApiGenarateFileDownloadLink({ downloadType: "models", recordID: this.selectedModelsIDs })
+                    .then(response => {
+                        if (response.data.success === true && response.data.message.length > 0) {
+                            this.$confirm(downloadItemsTemplate(response.data.message), "Download links", {
+                                dangerouslyUseHTMLString: true,
+                                distinguishCancelAndClose: true,
+                                confirmButtonText: "Close",
+                                cancelButtonText: "Export table",
+                                callback: action => {
+                                    // Export table is clicked, make the export!
+                                    if (action == "cancel") {
+                                        this.exportModelsTable();
+                                    }
+                                }
+                            });
+                        }
+                        this.modelDetailsTableLoading = false;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        this.modelDetailsTableLoading = false;
+                    });
             } else if (clickAction === "deployModels") {
                 this.$message({
                     type: "info",
@@ -764,6 +806,8 @@ export default {
                         check = true;
                     }
                 });
+            } else if (this.selectedModels.length === 1) {
+                this.activeDatasetSubTabName = "varImp";
             }
         },
         // Initialize Pagination of Features
@@ -852,12 +896,49 @@ export default {
 
             return cssClass;
         },
+        // Export all models to Excel file
+        exportModelsTable() {
+            this.modelDetailsTableLoading = true;
+
+            import("@/vendor/Export2Excel").then(excel => {
+                const exportData = JSON.parse(JSON.stringify(this.jobDetailsData.resampleModels[this.selectedFeatureSetId]));
+                // Filter models based on selection
+                const filteredArray = exportData.filter(({ modelID }) => this.selectedModelsIDs.includes(modelID));
+
+                // Map performance variables to root node
+                const flattenData = filteredArray.map(function(item) {
+                    let itemFlat = item;
+                    itemFlat = Object.assign(itemFlat, item.performance);
+                    delete itemFlat.performance;
+
+                    return itemFlat;
+                });
+                let filterVal = Object.keys(flattenData[0]);
+                let tHeader = filterVal;
+                const formattedData = this.formatJson(filterVal, flattenData);
+
+                excel.export_json_to_excel(tHeader, formattedData, "models_resampleID_" + this.selectedFeatureSetId);
+
+                this.modelDetailsTableLoading = false;
+            });
+        },
+        formatJson(filterVal, jsonData) {
+            return jsonData.map(v =>
+                filterVal.map(j => {
+                    if (j === "submitted") {
+                        return parseTime(v[j]);
+                    } else {
+                        return v[j];
+                    }
+                })
+            );
+        },
         fetchJobDetails(pqid) {
-            this.loading = true;
+            this.datasetsTabLoading = true;
             fetchJobDetails(pqid)
                 .then(response => {
                     this.datasets = response.data.data;
-                    this.loading = false;
+                    this.datasetsTabLoading = false;
                 })
                 .catch(error => {
                     console.log(error);
@@ -878,6 +959,11 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
+/* Mark active tab in bold */
+.el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+    font-weight: bold;
+}
+
 .card_intro {
     float: left;
     height: 40px;

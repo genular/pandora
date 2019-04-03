@@ -303,66 +303,82 @@ export default {
             selectedPreProcessOptions: [
                 {
                     value: "BoxCox",
+                    incompatible: [],
                     disabled: false
                 },
                 {
                     value: "YeoJohnson",
+                    incompatible: [],
                     disabled: false
                 },
                 {
                     value: "expoTrans",
+                    incompatible: [],
                     disabled: false
                 },
                 {
                     value: "center",
+                    incompatible: [],
                     disabled: false
                 },
                 {
                     value: "scale",
+                    incompatible: [],
                     disabled: false
                 },
                 {
                     value: "range",
+                    incompatible: ["scale"],
                     disabled: false
                 },
                 {
                     value: "knnImpute",
+                    incompatible: ["scale", "center"],
                     disabled: false
                 },
                 {
                     value: "bagImpute",
+                    incompatible: ["medianImpute"],
                     disabled: false
                 },
                 {
                     value: "medianImpute",
+                    incompatible: ["bagImpute"],
                     disabled: false
                 },
                 {
                     value: "pca",
+                    incompatible: ["ica", "scale", "center"],
                     disabled: false
                 },
-                {
-                    value: "ica",
-                    disabled: true
-                },
+                // {  // Not supported since we need to pass custom n.comp number
+                //     value: "ica",
+                //     incompatible: ["pca", "scale", "center"],
+                //     disabled: true
+                // },
                 {
                     value: "spatialSign",
+                    incompatible: ["scale", "center"],
                     disabled: false
                 },
                 {
                     value: "corr",
+                    incompatible: [],
                     disabled: false
                 },
                 {
                     value: "zv",
+                    incompatible: [],
                     disabled: false
                 },
                 {
                     value: "nzv",
+                    incompatible: [],
                     disabled: false
                 },
                 {
                     value: "conditionalX",
+                    incompatible: [],
                     disabled: false
                 }
             ]
