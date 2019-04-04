@@ -28,6 +28,7 @@
 			"canceled": "canceled",
 			"deleted": "deleted",
 			"upload_sucessfull": "uploaded successfully",
+			"upload_unsucessfull": "file upload error",
 			"not_implemented": "Function is still not available in this version"
 		},
 		"demo_server": {

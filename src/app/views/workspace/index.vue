@@ -4,7 +4,7 @@
             <el-col :span="24">
                 <public-import style="float:left;" ref="publicImporte" v-on:refresh-items="refreshFilesInDirectory"></public-import>
                 <el-button style="float:right;" icon="el-icon-delete" size="mini" type="primary" round @click.prevent.stop="deleteFilesInDirectory">
-                    {{ $t('views.workspace.index.buttons.delete_all') }}
+                    {{ $t("views.workspace.index.buttons.delete_all") }}
                 </el-button>
             </el-col>
         </el-row>
@@ -35,11 +35,11 @@
         </el-row>
         <div class="dropzone-context-menu">
             <ul class="menu-options">
-                <li class="menu-option" @click="contextAction('select')">{{ $t('views.workspace.index.context_menu.select') }}</li>
-                <li class="menu-option" @click="contextAction('download')">{{ $t('views.workspace.index.context_menu.download') }}</li>
-                <li class="menu-option" @click="contextAction('delete')">{{ $t('views.workspace.index.context_menu.delete') }}</li>
-                <li class="menu-option" @click="contextAction('preview')">{{ $t('views.workspace.index.context_menu.preview') }}</li>
-                <li class="menu-option" @click="contextAction('stats')">{{ $t('views.workspace.index.context_menu.stats') }}</li>
+                <li class="menu-option" @click="contextAction('select')">{{ $t("views.workspace.index.context_menu.select") }}</li>
+                <li class="menu-option" @click="contextAction('download')">{{ $t("views.workspace.index.context_menu.download") }}</li>
+                <li class="menu-option" @click="contextAction('delete')">{{ $t("views.workspace.index.context_menu.delete") }}</li>
+                <li class="menu-option" @click="contextAction('preview')">{{ $t("views.workspace.index.context_menu.preview") }}</li>
+                <li class="menu-option" @click="contextAction('stats')">{{ $t("views.workspace.index.context_menu.stats") }}</li>
             </ul>
         </div>
     </div>
@@ -89,7 +89,7 @@ export default {
     },
     methods: {
         deleteFilesInDirectory() {
-            this.$confirm(this.$t('views.workspace.index.operations.delete_all.dialog.description'), this.$t('views.workspace.index.operations.delete_all.dialog.title'), {
+            this.$confirm(this.$t("views.workspace.index.operations.delete_all.dialog.description"), this.$t("views.workspace.index.operations.delete_all.dialog.title"), {
                 type: "warning"
             })
                 .then(_ => {
@@ -98,14 +98,14 @@ export default {
                     } else {
                         this.$message({
                             type: "warning",
-                            message: this.$t('globals.demo_server.function_disabled')
+                            message: this.$t("globals.demo_server.function_disabled")
                         });
                     }
                 })
                 .catch(_ => {
                     this.$message({
                         type: "info",
-                        message: this.$t('globals.messages.canceled')
+                        message: this.$t("globals.messages.canceled")
                     });
                 });
         },
@@ -144,7 +144,7 @@ export default {
             console.log(this.contextmenu.selectedFile);
             this.$message({
                 type: "info",
-                message:  this.$t('globals.messages.not_implemented')
+                message: this.$t("globals.messages.not_implemented")
             });
         },
         dropzoneFileClick(item) {
@@ -185,8 +185,25 @@ export default {
                 item.file.previewElement.classList.remove("dz-selected");
             }
         },
-        dropzoneUploaded(file, element) {
-            this.$message({ message: file.name + " " + this.$t('globals.messages.upload_sucessfull'), type: "success" });
+        dropzoneUploaded(uploadResponse, element) {
+            // If we have file info than upload is successful
+            if (typeof uploadResponse.remote_message === "undefined") {
+                this.$message({ message: uploadResponse.name + " " + this.$t("views.workspace.components.dropzone.messages.upload_sucessfull"), type: "success" });
+            } else {
+                let errorMessage = uploadResponse.name + " " + this.$t("globals.messages.upload_unsucessfull") + "<br />";
+                let counter = 1;
+                uploadResponse.remote_message.forEach(item => {
+                    errorMessage += counter + ". " + this.$t("views.workspace.components.dropzone.messages." + item) + "<br />";
+                    counter++;
+                });
+
+                this.$message({
+                    showClose: true,
+                    message: errorMessage,
+                    dangerouslyUseHTMLString: true,
+                    type: "error"
+                });
+            }
         },
         dropzoneRemoved(file) {
             console.log("dropzoneRemoved");
@@ -200,20 +217,20 @@ export default {
             ApiDeleteFile({ selectedFiles: [file.fileId] })
                 .then(response => {
                     if (response.data.success === true) {
-                        this.$message({ message: file.name + " " + this.$t('globals.messages.deleted'), type: "success" });
+                        this.$message({ message: file.name + " " + this.$t("globals.messages.deleted"), type: "success" });
                         this.selectedFiles = this.selectedFiles.filter(function(item) {
                             return file.fileId !== item.id;
                         });
                     } else {
                         console.log(response);
-                        this.$message({ message: this.$t('globals.errors.request_general'), type: "warning" });
+                        this.$message({ message: this.$t("globals.errors.request_general"), type: "warning" });
                     }
                     this.loading = false;
                 })
                 .catch(error => {
                     console.log(error);
                     this.loading = false;
-                    this.$message({ message: this.$t('globals.errors.request_general'), type: "warning" });
+                    this.$message({ message: this.$t("globals.errors.request_general"), type: "warning" });
                 });
         },
         fetchReadFilesInDirectory() {

@@ -90,20 +90,24 @@ export default {
         }
 
         this.dropzone.on("success", (file, response) => {
+            let addedFile = file;
             if (response.success === true) {
-                const newFile = response.message;
-                file.fileId = newFile.id;
-                // file.size = newFile.size;
-                // file.name = newFile.filename + newFile.extension;
-                file.basename = newFile.filename + newFile.extension;
-                file.extension = newFile.extension.replace(".", "");
-                file.mime_type = newFile.mime_type || "text/plain";
+                const remoteFileInfo = response.message;
+                addedFile.fileId = remoteFileInfo.id;
+                // addedFile.size = remoteFileInfo.size;
+                // addedFile.name = remoteFileInfo.filename + remoteFileInfo.extension;
+                addedFile.basename = remoteFileInfo.filename + remoteFileInfo.extension;
+                addedFile.extension = remoteFileInfo.extension.replace(".", "");
+                addedFile.mime_type = remoteFileInfo.mime_type || "text/plain";
+                // addedFile.type = "file";
+                addedFile.url = "/static/icons/defult.png";
+                // Add fileID
+                
+            }else{
+                addedFile.remote_message = response.message;
             }
 
-            // file.type = "file";
-            file.url = "/static/icons/defult.png";
-            // Add fileID
-            vm.$emit("fileUploaded", file, vm.dropzone.element);
+            vm.$emit("fileUploaded", addedFile, vm.dropzone.element);
         });
         this.dropzone.on("addedfile", item => {
             this.dropzone.emit("thumbnail", item, "/static/icons/defult.png");

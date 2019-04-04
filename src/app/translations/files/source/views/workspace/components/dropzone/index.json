@@ -4,7 +4,10 @@
 			"components": {
 				"dropzone": {
 					"messages": {
-						"upload_placeholder": "Drop files here or click to upload"
+						"upload_placeholder": "Drop files here or click to upload",
+						"delimiters_check": "Please check file delimiters: use dot (.) for the decimal point and a comma (,) for the delimiter",
+						"upload_sucessfull": "File successfully uploaded",
+						"upload_unsucessfull": "Errors while uploading file"
 					},
 					"buttons": {
 						"delete_file": "Delete"
