@@ -787,6 +787,13 @@ export default {
                 })
             );
         }
+    },
+    watch: {
+        explorationJobId: function(newVal, oldVal) {
+            if (newVal === "") {
+                this.$refs.queueTable.clearSelection();
+            }
+        }
     }
 };
 </script>

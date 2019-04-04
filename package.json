@@ -55,6 +55,7 @@
         "webpack:web:prod": "webpack --config=.webpack-config/webpack.app.config.js --env=production --target=web"
     },
     "dependencies": {
+        "animate.css": "^3.7.0",
         "axios": "^0.18.0",
         "clipboard": "^2.0.1",
         "crypto-js": "^3.1.9-1",

@@ -1,12 +1,12 @@
 <template>
     <div class="selected-files-container">
-        <div v-if="selectedFiles.length < 1" class="files-view-item empty-selection">{{ $t('components.SelectedFiles.select_file') }}</div>
-        <div v-for="file in selectedFiles" :key="file.id" class="files-view-item active">
+        <div v-if="selectedFiles.length < 1" class="files-view-item empty-selection animated fadeInLeft">{{ $t("components.SelectedFiles.select_file") }}</div>
+        <div v-for="file in selectedFiles" :key="file.id" class="files-view-item active animated flipInX">
             {{ file.basename }}
             <span class="close-container" @click="closeSelectedFile(file.id)">x</span>
         </div>
-        <div v-if="explorationJobId != ''" class="files-view-item explorationJobId" closable>
-            Analysis ID: {{ explorationJobId }}
+        <div v-if="explorationJobId != ''" class="files-view-item explorationJobId animated flipInY" closable>
+            Queue ID: <span style="font-weight: bold;">{{ explorationJobId }}</span>
             <span class="close-container" @click.prevent.stop="handleCloseExplorationJobId()">x</span>
         </div>
     </div>
@@ -44,49 +44,52 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+@import "~scss_vars";
+
 .selected-files-container {
     vertical-align: middle;
-
     .empty-selection {
         font-size: 14px;
         font-weight: 400;
     }
-
     .files-view-item {
         display: inline-block;
-
         float: left;
         line-height: 40px;
         border: 0;
 
-        background-color: #e3006e;
+        background-color: $green;
         color: #fff;
 
         padding: 0 10px;
         height: 40px;
         font-size: 12px;
         cursor: default;
+
         &:not(:last-child) {
             margin-right: 10px;
         }
         .close-container {
-            width: 15px;
-            height: 15px;
-            border-radius: 25%;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
             text-align: center;
             font-weight: bold;
             cursor: pointer;
-
+            font-size: 15px;
+            float: right;
+            line-height: 17px;
+            margin-top: 10px;
+            margin-left: 5px;
             &:hover {
-                background-color: #b4bccc;
+                background-color: $ui-background;
                 color: #fff;
             }
         }
     }
     .explorationJobId {
-        background-color: #85ce61;
+        background-color: $pink;
         color: #fff;
-        border-color: #85ce61;
     }
 }
 </style>

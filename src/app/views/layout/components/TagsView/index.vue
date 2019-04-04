@@ -3,7 +3,7 @@
         <scroll-pane class="tags-view-wrapper" ref="scrollPane">
             <router-link
                 ref="tag"
-                class="tags-view-item"
+                class="tags-view-item animated flipInX"
                 :class="isActive(tag) ? 'active' : ''"
                 v-for="tag in Array.from(visitedViews)"
                 :to="tag.path"

@@ -53,7 +53,7 @@ export default {
                 this.thumbnailWidth +
                 "px;height:" +
                 this.thumbnailHeight +
-                'px" ><img data-dz-thumbnail style="width:' +
+                'px" ><img data-dz-thumbnail style="margin: 0 auto; width:' +
                 this.thumbnailWidth +
                 "px;height:" +
                 this.thumbnailHeight +
@@ -102,12 +102,23 @@ export default {
                 // addedFile.type = "file";
                 addedFile.url = "/static/icons/defult.png";
                 // Add fileID
-                
-            }else{
+            } else {
                 addedFile.remote_message = response.message;
             }
-
             vm.$emit("fileUploaded", addedFile, vm.dropzone.element);
+            // Remove file from dropzone if there was error in upload
+            if (typeof addedFile.remote_message !== "undefined") {
+                this.dropzone.files = this.dropzone.files.filter(({ upload }) => {
+                    let removedCheck = true;
+                    if (typeof upload != "undefined") {
+                        if (upload.uuid === addedFile.upload.uuid) {
+                            removedCheck = false;
+                        }
+                    }
+                    return removedCheck;
+                });
+                this.dropzone.removeFile(file);
+            }
         });
         this.dropzone.on("addedfile", item => {
             this.dropzone.emit("thumbnail", item, "/static/icons/defult.png");
@@ -123,8 +134,15 @@ export default {
             if (this.isDestroyEvent === false) {
                 console.log("Event: removedfile");
                 // https://github.com/enyo/dropzone/issues/1175#issuecomment-412302917
-                if (file.manuallyAdded) vm.dropzone.options.maxFiles++;
-                vm.$emit("fileRemoved", file);
+                if (file.manuallyAdded) {
+                    vm.dropzone.options.maxFiles++;
+                }
+                // Remove file from dropzone if there was error in upload
+                if (typeof file.remote_message === "undefined") {
+                    vm.$emit("fileRemoved", file);
+                }else{
+                    vm.dropzone.options.maxFiles--;
+                }
             }
         });
         this.dropzone.on("error", (file, error, xhr) => {
@@ -279,7 +297,7 @@ export default {
         vertical-align: middle;
         transition: all 0.3s linear;
         border-bottom: 1px dashed transparent;
-
+        min-height: 120px;
         &:not(:first-child) {
             margin: 0 0 0 5px;
         }

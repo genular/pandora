@@ -17,8 +17,8 @@
                     v-on:fileUploaded="dropzoneUploaded"
                     v-on:actionListener="dropzoneFileClick"
                     :showRemoveLink="!$config.isDemoServer"
-                    :thumbnailHeight="75"
-                    :thumbnailWidth="80"
+                    :thumbnailHeight="100"
+                    :thumbnailWidth="100"
                     :maxFiles="1000"
                     :maxFilesize="1000000"
                     :authToken="auth_token"
@@ -190,7 +190,7 @@ export default {
             if (typeof uploadResponse.remote_message === "undefined") {
                 this.$message({ message: uploadResponse.name + " " + this.$t("views.workspace.components.dropzone.messages.upload_sucessfull"), type: "success" });
             } else {
-                let errorMessage = uploadResponse.name + " " + this.$t("globals.messages.upload_unsucessfull") + "<br />";
+                let errorMessage = uploadResponse.name + " " + this.$t("globals.messages.upload_unsucessfull") + "<br /><br />";
                 let counter = 1;
                 uploadResponse.remote_message.forEach(item => {
                     errorMessage += counter + ". " + this.$t("views.workspace.components.dropzone.messages." + item) + "<br />";
@@ -201,6 +201,7 @@ export default {
                     showClose: true,
                     message: errorMessage,
                     dangerouslyUseHTMLString: true,
+                    duration: 10000,
                     type: "error"
                 });
             }

@@ -10,13 +10,13 @@
                 </el-tooltip>
                 <el-tooltip style="float: left;" placement="top" v-if="selectedFeatureSetId > 0">
                     <div slot="content">{{ $t("globals.buttons.copy") }}</div>
-                    <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(selectedFeatureSetId, $event)"
+                    <el-button style="cursor: copy;" class="animated flipInX" type="success" size="small" @click="copyToClipboard(selectedFeatureSetId, $event)"
                         >{{ $t("views.apps.simon.exploration.header.selected_dataset") }}: {{ selectedFeatureSetId }}</el-button
                     >
                 </el-tooltip>
                 <el-tooltip style="float: right;" placement="top" v-if="selectedModelsIDs.length > 0">
                     <div slot="content">{{ $t("globals.buttons.copy") }}</div>
-                    <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(JSON.stringify(selectedModelsIDs), $event)">
+                    <el-button style="cursor: copy;" type="success" class="animated flipInX" size="small" @click="copyToClipboard(JSON.stringify(selectedModelsIDs), $event)">
                         {{ $t("views.apps.simon.exploration.header.selected_models") }}: {{ selectedModelsIDs.join(", ") }}
                     </el-button>
                 </el-tooltip>
