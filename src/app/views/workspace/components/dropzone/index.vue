@@ -140,7 +140,7 @@ export default {
                 // Remove file from dropzone if there was error in upload
                 if (typeof file.remote_message === "undefined") {
                     vm.$emit("fileRemoved", file);
-                }else{
+                } else {
                     vm.dropzone.options.maxFiles--;
                 }
             }
@@ -171,6 +171,20 @@ export default {
             this.dropzone.emit("addedfile", file);
             this.dropzone.files.push(file);
             if (this.dropzone.options.maxFiles) this.dropzone.options.maxFiles--;
+        },
+        preselectFilesByID(selectedFiles) {
+            this.dropzone.files.forEach((item, itemIndex) => {
+                const isAlreadySelected = selectedFiles.some(file => file.id === item.fileId);
+
+                if (isAlreadySelected) {
+                    this.dropzone.files[itemIndex].previewElement.classList.add("dz-selected");
+                }
+            });
+        },
+        deselectAllFiles() {
+            this.dropzone.files.forEach((item, itemIndex) => {
+                this.dropzone.files[itemIndex].previewElement.classList.remove("dz-selected");
+            });
         }
     },
     destroyed() {
@@ -248,6 +262,8 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">
+@import "~scss_vars";
+
 .dropzone {
     border: 0 none;
 
@@ -287,9 +303,8 @@ export default {
     }
 
     > .dz-selected {
-        border-bottom: 1px dashed #e3006e !important;
+        border-bottom: 1px dashed $ui-background !important;
         background: rgba(239, 240, 249, 0.67) !important;
-        border-radius: 15px;
     }
 
     > .dz-preview {
@@ -369,12 +384,12 @@ export default {
             font-weight: 800;
             letter-spacing: 1.1px;
             text-align: center;
-            top: 35px;
+            top: 45px;
             left: 50%;
             opacity: 0;
             background-color: rgba(227, 0, 110, 0.6);
-            margin-left: -40px;
-            width: 80px;
+            margin-left: -50px;
+            width: 100px;
         }
         .dz-progress {
             opacity: 0;

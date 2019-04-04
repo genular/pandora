@@ -141,12 +141,20 @@ export default {
         },
         contextAction(action) {
             console.log(action);
-            console.log(this.contextmenu.selectedFile);
-            this.$message({
-                type: "info",
-                message: this.$t("globals.messages.not_implemented")
-            });
+            if (action === "select") {
+                this.dropzoneFileClick({ file: this.contextmenu.selectedFile });
+            } else {
+                this.$message({
+                    type: "info",
+                    message: this.$t("globals.messages.not_implemented")
+                });
+            }
         },
+        /**
+         * Triggers on file click; action: click/contextmenu, file: item
+         * @param  {[type]} item [description]
+         * @return {[type]}      [description]
+         */
         dropzoneFileClick(item) {
             if (this.contextmenu.visible) {
                 this.toggleMenu("hide");
@@ -162,27 +170,30 @@ export default {
                 return false;
             }
 
-            let selectFile = false;
             const selectedFile = {
                 id: parseInt(item.file.fileId),
                 basename: item.file.name,
                 extension: item.file.extension,
                 type: item.file.type
             };
+            let isAlreadySelected = this.selectedFiles.some(file => file.id === selectedFile.id);
 
-            // Check if there are any existing file selected
-            if (this.selectedFiles.length > 0) {
-                this.selectedFiles = this.selectedFiles.filter(function(item) {
-                    return selectedFile.id !== item.id;
-                });
-            } else {
+            // if no files are selected select this one
+            if (this.selectedFiles.length === 0) {
                 this.selectedFiles = [selectedFile];
-                selectFile = true;
-            }
-            if (selectFile === true) {
                 item.file.previewElement.classList.add("dz-selected");
-            } else {
+                // if file already selected deselect it
+            } else if (isAlreadySelected === true) {
+                this.selectedFiles = this.selectedFiles.filter(({ id }) => selectedFile.id !== id);
                 item.file.previewElement.classList.remove("dz-selected");
+                // if file is not selected deselect all others and select current
+            } else {
+                this.selectedFiles = this.selectedFiles.filter(({ id }) => selectedFile.id !== id);
+                this.$refs.workspaceDropzone.deselectAllFiles();
+                if (isAlreadySelected === false) {
+                    item.file.previewElement.classList.add("dz-selected");
+                    this.selectedFiles = [selectedFile];
+                }
             }
         },
         dropzoneUploaded(uploadResponse, element) {
@@ -243,6 +254,9 @@ export default {
                         if (this.directoryFilesHash !== directoryFilesHash) {
                             this.totalFiles = response.data.message.length;
                             this.manuallyAddFiles(response.data.message);
+                            if (this.selectedFiles.length > 0) {
+                                this.$refs.workspaceDropzone.preselectFilesByID(this.selectedFiles);
+                            }
                         }
                     } else {
                         console.log(response);
@@ -259,6 +273,13 @@ export default {
             this.$refs.workspaceDropzone.removeAllFiles(false);
             this.fetchReadFilesInDirectory();
             this.refreshLoading = false;
+        }
+    },
+    watch: {
+        selectedFiles(newVal, oldVal) {
+            if (newVal.length === 0) {
+                this.$refs.workspaceDropzone.deselectAllFiles();
+            }
         }
     }
 };
