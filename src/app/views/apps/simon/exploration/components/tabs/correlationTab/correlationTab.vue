@@ -372,6 +372,14 @@ export default {
         };
     },
     computed: {
+        activeTabName: {
+            get() {
+                return this.$store.getters.simonExplorationActiveTabName;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonExplorationnActiveTabName", value);
+            }
+        },
         selectedFeatureSetId: {
             get() {
                 return this.$store.getters.simonExplorationSelectedFeatureSetId;
@@ -383,14 +391,25 @@ export default {
     },
     mounted() {
         console.log("mounted: correlationTab");
+        console.log(this.selectedFeatureSetId);
 
         const featureSet = this.jobDetailsData.resamplesList.filter(resample => resample.resampleID === this.selectedFeatureSetId)[0];
-
-        if (featureSet.featuresTotal < 250) {
-            this.tabEnabled = true;
-            if (this.renderedImage === "") {
-                this.handleFetchCorrPlotImage();
+        if (typeof featureSet !== "undefined") {
+            console.log(featureSet);
+            
+            if (featureSet.featuresTotal < 250) {
+                this.tabEnabled = true;
+                if (this.renderedImage === "") {
+                    this.handleFetchCorrPlotImage();
+                }
+            }else{
+                this.tabEnabled = false;
+                this.loadingPlot = false;
             }
+        }else{
+            this.tabEnabled = false;
+            this.loadingPlot = false;
+            this.activeTabName = "datasetsTab";
         }
     },
     methods: {

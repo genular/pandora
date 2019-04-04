@@ -252,7 +252,13 @@
                         </el-table-column>
                         <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.hide_failed')">
                             <template slot-scope="scope">
-                                <span><el-checkbox v-model="hideFailedModels[scope.row.resampleID]" :checked="true"></el-checkbox></span>
+                                <span
+                                    ><el-checkbox
+                                        v-model="hideFailedModels[scope.row.resampleID]"
+                                        @change="getDatasetResamplesModels(null, scope.row)"
+                                        :checked="true"
+                                    ></el-checkbox
+                                ></span>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -592,6 +598,12 @@ export default {
                                 this.selectedQueueID = pqid;
                                 this.resamplesList[pqid] = response.data.data;
                                 this.dialogQueueDetails = true;
+                                // Preselect first row
+                                this.$nextTick(() => {
+                                    this.getDatasetResamplesModels(null, this.resamplesList[pqid][0]);
+                                    this.$refs.resamplesDetailsTable.clearSelection();
+                                    this.$refs.resamplesDetailsTable.toggleRowSelection(this.resamplesList[pqid][0]);
+                                });
                             } else {
                                 this.$message({
                                     message: this.$t("globals.errors.request_general"),
@@ -619,6 +631,9 @@ export default {
                 return;
             }
             console.log("Resamples change: resampleID: " + row.resampleID + " " + this.selectedResampleID);
+            console.log(selection);
+            console.log(this.hideFailedModels[row.resampleID]);
+            console.log(this.selectedResampleID);
 
             if (row.modelsTotal === 0) {
                 this.$message({
@@ -627,16 +642,26 @@ export default {
                 });
                 return;
             }
+            // Support for auto reload on Hide failed click
+            let reloadCheck = true;
+            if (Array.isArray(selection) && selection.length === 0) {
+                reloadCheck = false;
+            } else if (selection === null && this.hideFailedModels[row.resampleID] === false && this.selectedResampleID === 0) {
+                reloadCheck = false;
+            }
 
-            if (row.resampleID !== this.selectedResampleID) {
+            if (reloadCheck === true) {
                 this.modelsListLoading = true;
                 ApiFetchResampleModels({ drid: row.resampleID, measurements: this.selectedPerformace, hideFailedModels: this.hideFailedModels[row.resampleID] })
                     .then(response => {
                         if (response.data.success === true) {
                             this.selectedResampleID = row.resampleID;
                             this.modelsList[row.resampleID] = response.data.data.modelsList;
-                            this.performaceVariables[row.resampleID] = response.data.data.performaceVariables;
 
+                            // Save performance vars on first run
+                            if (typeof this.performaceVariables[row.resampleID] === "undefined") {
+                                this.performaceVariables[row.resampleID] = response.data.data.performaceVariables;
+                            }
                             // Preselect if nothing selected.. eg. first run
                             if (this.selectedPerformace.length < 1) {
                                 this.selectedPerformace = ["Accuracy"];
@@ -741,7 +766,6 @@ export default {
             this.queueFilterQuery.page = val;
             this.getDatasetQueueList();
         },
-
         handleDownload() {
             this.downloadLoading = true;
             import("@/vendor/Export2Excel").then(excel => {

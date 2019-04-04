@@ -161,7 +161,26 @@ export default {
             let check = false;
             if (item.restriction !== undefined) {
                 if (this[item.restriction] !== undefined) {
-                    check = this[item.restriction] === 0;
+                    if (Number.isInteger(this[item.restriction])) {
+                        if (this[item.restriction] < 1) {
+                            check = true;
+                        }
+                    } else if (Array.isArray(this[item.restriction])) {
+                        let more_or_eq = 0;
+                        // If there is nothing in array TAB is always disabled
+                        if (this[item.restriction].length < 1) {
+                            check = true;
+                            return check;
+                        }
+                        if (item.restriction_details !== undefined) {
+                            if (this[item.restriction].length < item.restriction_details) {
+                                check = true;
+                                return check;
+                            }
+                        }
+                    } else {
+                        check = this[item.restriction] === 0;
+                    }
                 }
             }
             return check;
