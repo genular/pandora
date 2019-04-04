@@ -903,10 +903,10 @@ export default {
             import("@/vendor/Export2Excel").then(excel => {
                 const exportData = JSON.parse(JSON.stringify(this.jobDetailsData.resampleModels[this.selectedFeatureSetId]));
                 // Filter models based on selection
-                const filteredArray = exportData.filter(({ modelID }) => this.selectedModelsIDs.includes(modelID));
+                // const filteredArray = exportData.filter(({ modelID }) => this.selectedModelsIDs.includes(modelID));
 
                 // Map performance variables to root node
-                const flattenData = filteredArray.map(function(item) {
+                const flattenData = exportData.map(function(item) {
                     let itemFlat = item;
                     itemFlat = Object.assign(itemFlat, item.performance);
                     delete itemFlat.performance;
