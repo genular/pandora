@@ -22,7 +22,7 @@
                     :maxFiles="1000"
                     :maxFilesize="1000000"
                     :authToken="auth_token"
-                    acceptedFiles="text/csv,application/octet-stream"
+                    acceptedFiles=".txt,.csv"
                     :url="user_settings_server_address_backend + '/backend/system/filesystem/upload'"
                 >
                 </dropzone>
