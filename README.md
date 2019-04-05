@@ -102,8 +102,10 @@ If you configured your own database and file-system you don't need to do followi
 # Commit changes to the container
 docker commit genular genular/simon:latest
 # Your changes are now committed and saved! You must do this step each time you wish to save your work!
+# 
 # To stop currently running container please type
 docker stop genular
+# When you wish to use SIMON again please use docker run command from above again!
 ```
 
 ### Advanced
