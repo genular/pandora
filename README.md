@@ -97,14 +97,14 @@ Once the container is started you can open SIMON on `http://localhost:3010` and 
 
 ##### Important
 To exit/shutdown `SIMON` you must use following command when you are finished with your analytical work to save your progress, otherwise all your current session data will be lost:
-If you configured your own database and file-system you don't need to do following step.
+If you configured your own database and file-system you don't need to do following step in same order.
 ```bash
+# To stop currently running container please type
+docker stop genular
+
 # Commit changes to the container
 docker commit genular genular/simon:latest
 # Your changes are now committed and saved! You must do this step each time you wish to save your work!
-# 
-# To stop currently running container please type
-docker stop genular
 # When you wish to use SIMON again please use docker run command from above again!
 ```
 
