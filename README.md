@@ -64,13 +64,15 @@ The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon
 
 #### Requirements
 [Docker](https://docs.docker.com/engine/installation/) (`version 17.05` or later is required for building the image).
+[Docker Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
 
 #### Running SIMON Container
-In order to run a test instance of `SIMON` we first need to prepare the environment. 
+In order to run a test instance of `SIMON` we first need to prepare the environment.
+If you finished installing docker please follow command below.
 Lets pull the [genular/simon](https://cloud.docker.com/u/genular/repository/docker/genular/simon) image from DockerHub. Then run a Docker container with appropriately mounted volumes and port mapping. By default the container would run with a local file-system inside of it.
 
 ```bash
-docker container pull genular/simon
+## This command will download and start SIMON
 docker run --rm \
     --detach \
     --network=host \
@@ -78,27 +80,28 @@ docker run --rm \
     --tty \
     --interactive \
     --env IS_DOCKER='true' \
+    --env TZ=America/Los_Angeles \
     --publish 3010:3010 \
     --publish 3011:3011 \
     --publish 3012:3012 \
     --publish 3013:3013 \
-    genular:simon
+    genular/simon:latest
 ```
 Once the container is started you can open SIMON on `http://localhost:3010` and create your account.
 
 ##### Important
-To exit/shutdown `SIMON` you must use following command when you are finished with your analytical work, otherwise all your current session data will be lost:
-
+To exit/shutdown `SIMON` you must use following command when you are finished with your analytical work to save your progress, otherwise all your current session data will be lost:
+If you configured your own database and file-system you don't need to do following step.
 ```bash
 # Then get the docker container id using this command
 docker ps
 # Commit changes to the container
-docker commit <container_id> genular:simon
+docker commit <CONTAINER_ID> genular:simon
 ```
 
 ### Advanced
-To install and configure `SIMON` from source you will need basic knowledge of Linux, how to set up databases (MySQL) and web server (Apache, nginx) together with R and PHP configuration.
-> Installation instructions are located in [this file](https://github.com/genular/simon-frontend/blob/master/INSTALL.md). 
+To install and configure `SIMON` from source you will need knowledge of Linux, how to set up databases (MySQL) and web server (Apache, nginx) together with R and PHP configuration.
+> Installation instructions are located in [this file](https://github.com/genular/simon-frontend/blob/master/INSTALL.md).
 > You can find semi-automated bash installation script [here](https://github.com/genular/simon-backend/blob/master/documentation/installation/install_dependencies.sh), that can also help you to get started.
 > 
 If you believe you don't have necessarily skills to do so, you could always ask a friend to help you or check out our [demo](https://dashboard.genular.org)
