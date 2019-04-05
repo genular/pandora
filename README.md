@@ -71,8 +71,11 @@ In order to run a test instance of `SIMON` we first need to prepare the environm
 If you finished installing docker please follow command below.
 Lets pull the [genular/simon](https://cloud.docker.com/u/genular/repository/docker/genular/simon) image from DockerHub. Then run a Docker container with appropriately mounted volumes and port mapping. By default the container would run with a local file-system inside of it.
 
+If you wish to get correct time., replace TZ=<timzone> with your timezone.
+You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+
 ```bash
-## This command will download and start SIMON
+# This command will download and start SIMON
 docker run --rm \
     --detach \
     --network=host \
@@ -100,7 +103,7 @@ docker commit <CONTAINER_ID> genular:simon
 ```
 
 ### Advanced
-To install and configure `SIMON` from source you will need knowledge of Linux, how to set up databases (MySQL) and web server (Apache, nginx) together with R and PHP configuration.
+To install and configure `SIMON` from source you will need knowledge of Linux, how to set up databases (MySQL) and web server (Apache, nginx) together with R and PHP setup and configuration.
 > Installation instructions are located in [this file](https://github.com/genular/simon-frontend/blob/master/INSTALL.md).
 > You can find semi-automated bash installation script [here](https://github.com/genular/simon-backend/blob/master/documentation/installation/install_dependencies.sh), that can also help you to get started.
 > 
