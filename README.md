@@ -63,22 +63,22 @@ If you are beginner this is recommended way to start `SIMON`. This can also be v
 The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon-backend/blob/master/documentation/docker_images/Dockerfile).
 
 #### Requirements
-[Docker](https://docs.docker.com/engine/installation/) (`version 17.05` or later is required for building the image).
-[Docker Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
+* [Docker](https://docs.docker.com/engine/installation/) (`version 17.05` or later is required for building the image).
+* [Docker Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
 
 #### Running SIMON Container
 In order to run a test instance of `SIMON` we first need to prepare the environment.
-If you finished installing docker please follow command below.
+If you finished installing docker please continue.
+
 Lets pull the [genular/simon](https://cloud.docker.com/u/genular/repository/docker/genular/simon) image from DockerHub. 
-Then run a docker container with appropriately mounted volumes and port mapping. By default the container would run with a local file-system inside of it.
+Then we will run a docker container with appropriately mounted volumes and port mapping. By default the container would run with a local file-system inside of it.
 
-After you installed docker and docker is running, please open your favorite Terminal and run the command below.
-Windows - open `Windows Power Shell`
+After you installed docker and its running, please open your favorite Terminal and run the command below.
+If on Windows - open `Windows Power Shell`
 
-If you wish to get correct time, replace TZ=<timzone> with your timezone.
-You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+> If you wish to get correct time, replace TZ=<timzone> with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 ```bash
-# Important: if you are using Windows replace newline separators in the command "\" with "`"
+# Important: if you are using Windows replace newline separators in the command: "\" with "`"
 docker run --rm \
     --detach \
     --name genular \
@@ -86,14 +86,15 @@ docker run --rm \
     --interactive \
     --env IS_DOCKER='true' \
     --env TZ=America/Los_Angeles \
+    --volume /mnt/genular/simon-backend/SHARED_DATA:/mnt/usrdata \
     --publish 3010:3010 \
     --publish 3011:3011 \
     --publish 3012:3012 \
     --publish 3013:3013 \
     genular/simon:latest
 ```
-Once the container is started you can open SIMON on `http://localhost:3010` and create your account.
-- If you get asked you can allow connections through your Windows Firewall.
+Once command is executed and the container is started you can open SIMON on `http://localhost:3010` and create your account.
+- If you get asked please allow connections through your Windows Firewall.
 
 ##### Important
 To exit/shutdown `SIMON` you must use following command when you are finished with your analytical work to save your progress, otherwise all your current session data will be lost:
