@@ -65,8 +65,8 @@ If you are beginner this is recommended way to start `SIMON`. This can also be v
 The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon-backend/blob/master/documentation/docker_images/Dockerfile).
 
 #### Requirements
-* [Docker](https://docs.docker.com/engine/installation/) (`version 17.05` or later is required for building the image).
-* [Docker Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows)
+* [Docker](https://docs.docker.com/engine/installation/) (`version 17.05` or later is required)
+* [Docker Windows](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
 
 #### Running SIMON Container
 In order to run a test instance of `SIMON` we first need to prepare the environment.
