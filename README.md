@@ -74,24 +74,11 @@ Lets pull the [genular/simon](https://cloud.docker.com/u/genular/repository/dock
 Then we will run `SIMON` with appropriately mounted volumes and port mapping. By default `SIMON` will run with a Docker Volume file-system inside of it.
 
 Please open your favorite Terminal and run the command below.
-If on Windows - open `Windows Power Shell`
+- If on Windows - open `Windows Power Shell`
 
 > If you wish to get correct time, replace TZ=<timzone> with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 ```bash
-# Important: if you are using Windows replace newline separators in the command: "\" with "`"
-docker run --rm \
-    --detach \
-    --name genular \
-    --tty \
-    --interactive \
-    --env IS_DOCKER='true' \
-    --env TZ=America/Los_Angeles \
-    --volume genular_data:/mnt/usrdata \
-    --publish 3010:3010 \
-    --publish 3011:3011 \
-    --publish 3012:3012 \
-    --publish 3013:3013 \
-    genular/simon:latest
+docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=America/Los_Angeles --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:latest
 ```
 Once command is executed and the container is started you can open SIMON on `http://localhost:3010` and create your account.
 - If you get asked please allow connections through your Windows Firewall.
@@ -108,7 +95,7 @@ docker stop genular
 To install and configure `SIMON` from source you will need knowledge of Linux, how to set up databases (MySQL) and web server (Apache, nginx) together with R and PHP setup and configuration.
 > Installation instructions are located in [this file](https://github.com/genular/simon-frontend/blob/master/INSTALL.md).
 > You can find semi-automated bash installation script [here](https://github.com/genular/simon-backend/blob/master/documentation/installation/install_dependencies.sh), that can also help you to get started.
-> 
+
 If you believe you don't have necessarily skills to do so, you could always ask a friend to help you or check out our [demo](https://dashboard.genular.org)
 
 ## Community
