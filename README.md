@@ -68,12 +68,12 @@ The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon
 
 #### Running SIMON Container
 In order to run a test instance of `SIMON` we first need to prepare the environment.
-If you finished installing docker please continue.
+If you finished installing [Docker](https://docs.docker.com/engine/installation/) please continue to following steps.
 
 Lets pull the [genular/simon](https://cloud.docker.com/u/genular/repository/docker/genular/simon) image from DockerHub. 
-Then we will run a docker container with appropriately mounted volumes and port mapping. By default the container would run with a local file-system inside of it.
+Then we will run `SIMON` with appropriately mounted volumes and port mapping. By default `SIMON` will run with a Docker Volume file-system inside of it.
 
-After you installed docker and its running, please open your favorite Terminal and run the command below.
+Please open your favorite Terminal and run the command below.
 If on Windows - open `Windows Power Shell`
 
 > If you wish to get correct time, replace TZ=<timzone> with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
@@ -86,7 +86,7 @@ docker run --rm \
     --interactive \
     --env IS_DOCKER='true' \
     --env TZ=America/Los_Angeles \
-    --volume /mnt/genular/simon-backend/SHARED_DATA:/mnt/usrdata \
+    --volume genular_data:/mnt/usrdata \
     --publish 3010:3010 \
     --publish 3011:3011 \
     --publish 3012:3012 \
@@ -96,18 +96,13 @@ docker run --rm \
 Once command is executed and the container is started you can open SIMON on `http://localhost:3010` and create your account.
 - If you get asked please allow connections through your Windows Firewall.
 
-##### Important
-To exit/shutdown `SIMON` you must use following command when you are finished with your analytical work to save your progress, otherwise all your current session data will be lost:
-If you configured your own database and file-system you don't need to do following step in same order.
+##### Other
+`SIMON` will now run until you shutdown/restart your machine or stop it manually.
+To stop manually currently running `SIMON` container please type following command:
 ```bash
-# Commit changes to the container
-docker commit genular genular/simon:latest --pause
-# Your changes are now committed and saved! You must do this step each time you wish to save your work!
-
-# To stop currently running container please type
 docker stop genular
-# When you wish to use SIMON again please use docker run command from above again!
 ```
+> When you wish to start and use `SIMON` again please type-in docker run command from above, again!
 
 ### Advanced
 To install and configure `SIMON` from source you will need knowledge of Linux, how to set up databases (MySQL) and web server (Apache, nginx) together with R and PHP setup and configuration.
