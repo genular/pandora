@@ -89,7 +89,13 @@ To manually stop `SIMON` container please type following command:
 ```bash
 docker stop genular
 ```
-> When you wish to start and use `SIMON` again please type-in docker run command from above, again!
+When you wish to start and use `SIMON` again please type-in docker run command from above, again!
+
+To delete all data and reset `SIMON` to factory defaults you need to clear data inside volume you configured.
+If you used default run configuration please execute following command:
+```bash
+docker volume rm genular_data
+```
 
 ### Advanced
 To install and configure `SIMON` from source you will need knowledge of Linux, how to set up databases (MySQL) and web server (Apache, nginx) together with R and PHP setup and configuration.
