@@ -66,7 +66,8 @@ The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon
 
 #### Requirements
 * [Docker](https://docs.docker.com/engine/installation/) (`version 17.05` or later is required)
-* [Docker Windows](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
+* [Docker Windows installation tutorial](https://docs.docker.com/docker-for-windows/install/)
+* [Docker Windows direct download](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
 
 #### Running SIMON Container
 In order to run a test instance of `SIMON` we first need to prepare the environment.
