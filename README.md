@@ -80,12 +80,12 @@ Please open your favorite Terminal and run the command below.
 ```bash
 docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=America/Los_Angeles --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:latest
 ```
-Once command is executed and the container is started you can open SIMON on `http://localhost:3010` and create your account.
+Once command is executed and the `SIMON` is started you can access it on `http://localhost:3010` and create your account.
 - If you get asked please allow connections through your Windows Firewall.
 
 ##### Other
-`SIMON` will now run until you shutdown/restart your machine or stop it manually.
-To stop manually currently running `SIMON` container please type following command:
+`SIMON` will now run until you *shutdown/restart* your machine or *stop it manually*.
+To manually stop `SIMON` container please type following command:
 ```bash
 docker stop genular
 ```
