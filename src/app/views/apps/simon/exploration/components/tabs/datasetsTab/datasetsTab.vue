@@ -222,6 +222,7 @@
                                     icon="el-icon-download"
                                     @click="handleOperations('downloadModels', null)"
                                 ></el-button>
+                                <!-- TODO
                                 <el-button
                                     size="small"
                                     :title="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.deploy.title')"
@@ -236,6 +237,7 @@
                                     icon="el-icon-delete"
                                     @click="handleOperations('deleteModels', null)"
                                 ></el-button>
+                                -->
                             </el-button-group>
                         </div>
                     </div>
