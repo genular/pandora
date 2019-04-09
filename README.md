@@ -36,7 +36,7 @@ our focus here is scientific community so we can enable scientist and other rese
 * :file_folder: **feature discovery** You can discover relevant trends and patterns inside your data with ease, that would usually take years of manual handcrafting
 * :package: **exploratory data analysis** Visual analysis of automated machine learning results will give you instant insights with help of many different visualization algorithms
 * :arrows_counterclockwise: **sharing is caring** You can share your results with others, deploy your models instantly or download your data for external use
-* :closed_lock_with_key: **privacy and security** By hosting `SIMON` on your own dedicated servers you don't have to worry about someone else is looking after your data
+* :closed_lock_with_key: **privacy and security** By hosting `SIMON` on your own dedicated servers you don't have to worry about someone else is looking after your data and your models
 
 ## Features
 
@@ -44,12 +44,14 @@ our focus here is scientific community so we can enable scientist and other rese
 
 * **200+** automated machine learning algorithms to choose from
 * nicely designed **drag&drop** user interface to easily apply data modeling techniques
-* supports **local** and **cloud** backend storage architecture
-* for-each model you can compare between **34 model performance measures**
+* Supports **high sparsity** data
+* supports **local** and **cloud** backend storage
+* compare up to **34 model performance measures**
 * visual **data analysis** that supports *clustering* and *correlation graphs*
 * visual **feature analysis** with dot-plots that supports **280 visual styles**
 * visual **model comparison** with *box-and-whisker* style plots
-* public dataset repository import to **easily import** and analyze pre-published data
+* in-build **data preprocessing** (correlation filtering, normalization, imputation...)
+* public dataset repository import to **easily import** and **analyze** already published data
 * Integrated **SAM (Significance Analysis of Microarrays)** technique for finding significant genes in a set of microarray experiments
 * Supports translation to **multiple languages**
 
@@ -98,11 +100,11 @@ docker volume rm genular_data
 ```
 
 ### Advanced
-To install and configure `SIMON` from source you will need knowledge of Linux, how to set up databases (MySQL) and web server (Apache, nginx) together with R and PHP setup and configuration.
+To install and configure `SIMON` from source you will need knowledge of [Linux](https://en.wikipedia.org/wiki/Linux), how to set up databases ([MySQL](https://mariadb.org/)) and web server ([Apache](https://www.apache.org/), [nginx](https://nginx.org/en/)) together with [R](https://www.r-project.org/) and [PHP](https://www.php.net/) setup and configuration.
 > Installation instructions are located in [this file](https://github.com/genular/simon-frontend/blob/master/INSTALL.md).
-> You can find semi-automated bash installation script [here](https://github.com/genular/simon-backend/blob/master/documentation/installation/install_dependencies.sh), that can also help you to get started.
+> You can find semi-automated bash installation script [here](https://github.com/genular/simon-backend/blob/master/documentation/installation/install_dependencies.sh), that can also help you to get started and guide you through installation process.
 
-If you believe you don't have necessarily skills to do so, you could always ask a friend to help you or check out our [demo](https://dashboard.genular.org)
+If you believe you don't have necessarily skills to install `SIMON`, you could always ask a friend to help you or check out our [demo](https://dashboard.genular.org)
 
 ## Community
 
@@ -128,7 +130,7 @@ If you need any help, please contact us [via email](mailto:info@genular.com).
 6. Once your code is ready, submit a pull request from your branch to SIMON `master` branch. We'll do a quick review and give you feedback.
 
 [0]: https://github.com/genular/simon-frontend/issues
-[1]: https://github.com/genular/simon-frontend/issues/new
+[1]: https://github.com/genular/simon-frontend/issues/new/choose
 [3]: https://help.github.com/articles/fork-a-repo/
 [4]: https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches
 
