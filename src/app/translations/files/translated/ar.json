@@ -336,7 +336,7 @@
   "views.dashboard.admin.components.QueueTable.messages.missing_models": "لا يمكن تحديد قائمة الانتظار المهمة. كل تحليل الخوارزميات مع الانتهاء من خطأ.",
   "views.dashboard.admin.components.QueueTable.dialog.no_data": "لا عرض",
   "views.dashboard.admin.components.QueueTable.dialog.title": "تجهيز إحصائيات انتظار المحدد",
-  "views.dashboard.admin.components.QueueTable.dialog.selected_queue_id": "معرف قائمة الانتظار",
+  "views.dashboard.admin.components.QueueTable.dialog.selected_queue_id": "Queue ID(s)",
   "views.dashboard.admin.components.QueueTable.dialog.selected_resamples_ids": "إعادة تشكيل الهوية(s)",
   "views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.title": "المصدر",
   "views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.initial": "الأولي",
