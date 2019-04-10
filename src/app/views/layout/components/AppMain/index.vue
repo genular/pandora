@@ -3,7 +3,7 @@
         <div class="app-main-inner">
             <transition name="fade" mode="out-in">
                 <keep-alive :include="cachedViews">
-                    <router-view v-if="is_online !== false"></router-view>
+                    <router-view></router-view>
                 </keep-alive>
             </transition>
         </div>

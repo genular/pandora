@@ -74,12 +74,13 @@ export default {
         if (this.statsHash === "") {
             this.getServerStats();
         }
+        // Set the timer to get new data each 60 seconds
         if (this.updateInterval === null) {
             this.updateInterval = setInterval(
                 function() {
                     this.getServerStats();
                 }.bind(this),
-                120000
+                60000
             );
         }
     },
@@ -98,9 +99,8 @@ export default {
                     const statistics = response.data.message;
                     const statsHash = md5String(JSON.stringify(statistics));
                     if (this.statsHash !== statsHash) {
-                        this.statsHas = statsHash;
+                        this.statsHash = statsHash;
                         this.statistics = statistics;
-                        this.$store.dispatch("setIsOnline", true);
                     }
                     if (this.listLoading === true) {
                         this.listLoading = false;
@@ -108,7 +108,6 @@ export default {
                 })
                 .catch(error => {
                     console.log("==> Cannot get server stats: " + error);
-                    this.$store.dispatch("setIsOnline", false);
                 });
         }
     }

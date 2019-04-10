@@ -23,8 +23,8 @@
             :data="queueList"
             ref="queueTable"
             :empty-text="$t('views.dashboard.admin.components.QueueTable.table.no_data')"
-            @select-all="selectJobID"
-            @select="selectJobID"
+            @select-all="selectQueue"
+            @select="selectQueue"
             row-key="queueID"
             stripe
             border
@@ -137,13 +137,14 @@
             >
             </el-pagination>
         </div>
+        <!-- Queue Details Info Dialog -->
         <el-dialog :visible.sync="dialogQueueDetails" :before-close="closeQueueDetailsDialog" width="75%">
             <span slot="title">
-                <el-row type="flex" align="top">
+                <el-row type="flex" align="top" style="line-height: 32px;">
                     <el-col :span="12">
                         <span>{{ $t("views.dashboard.admin.components.QueueTable.dialog.title") }}</span>
                     </el-col>
-                    <el-col :span="12" style="text-align: right;" v-if="performaceVariables[selectedResampleID]">
+                    <el-col :span="12" style="text-align: right;" v-if="performaceVariables[selectedResampleIDsHash]">
                         <el-select
                             style="padding-right: 25px;width: 100%;"
                             v-model="selectedPerformace"
@@ -153,7 +154,7 @@
                             :placeholder="$t('globals.performanceVariables.placeholder')"
                         >
                             <el-option
-                                v-for="item in performaceVariables[selectedResampleID]"
+                                v-for="item in performaceVariables[selectedResampleIDsHash]"
                                 :key="item"
                                 :value="item"
                                 :label="$t(['globals.performanceVariables.options.', item, '.title'].join(''))"
@@ -161,6 +162,16 @@
                                 <span>{{ $t("globals.performanceVariables.options." + item + ".title") }}</span>
                             </el-option>
                         </el-select>
+                    </el-col>
+                </el-row>
+                <el-row type="flex" align="top" style="text-align: right;margin-right: 25px; padding-top: 25px;">
+                    <el-col :span="24">
+                        <el-button style="cursor: copy;" type="success" class="animated flipInX" size="small">
+                            {{ $t("views.dashboard.admin.components.QueueTable.dialog.selected_queue_id") }}: {{ selectedQueueID }}
+                        </el-button>
+                        <el-button style="cursor: copy;" type="success" class="animated flipInX" size="small">
+                            {{ $t("views.dashboard.admin.components.QueueTable.dialog.selected_resamples_ids") }}: {{ selectedResampleIDs.join(", ") }}
+                        </el-button>
                     </el-col>
                 </el-row>
             </span>
@@ -171,8 +182,7 @@
                         ref="resamplesDetailsTable"
                         :data="resamplesList[selectedQueueID]"
                         :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')"
-                        @select-all="getDatasetResamplesModels"
-                        @select="getDatasetResamplesModels"
+                        @selection-change="getDatasetResamplesModels"
                         row-key="resampleID"
                         style="width: 100%"
                         height="250"
@@ -250,17 +260,6 @@
                                 <span>{{ scope.row.modelsTotal }}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.hide_failed')">
-                            <template slot-scope="scope">
-                                <span
-                                    ><el-checkbox
-                                        v-model="hideFailedModels[scope.row.resampleID]"
-                                        @change="getDatasetResamplesModels(null, scope.row)"
-                                        :checked="true"
-                                    ></el-checkbox
-                                ></span>
-                            </template>
-                        </el-table-column>
                     </el-table>
                 </el-col>
             </el-row>
@@ -272,16 +271,24 @@
                         v-loading="modelsListLoading"
                         @sort-change="
                             ({ column, prop, order }) => {
-                                deepSort({ column, prop, order }, 'modelsList', 'selectedResampleID', null, null);
+                                deepSort({ column, prop, order }, 'modelsList', null, null, null);
                             }
                         "
-                        :data="modelsList[selectedResampleID]"
+                        :data="modelsList"
                         :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')"
                         :row-class-name="modelDetailsTableRowClassName"
                         style="width: 100%"
                         height="300"
                     >
-                        <el-table-column fixed align="center" width="50">
+                        <el-table-column
+                            fixed
+                            align="center"
+                            width="30"
+                            prop="status"
+                            :filters="[{ text: 'Failed', value: 0 }, { text: 'Success', value: 1 }]"
+                            :filter-method="filterModelStatus"
+                            filter-placement="bottom-end"
+                        >
                             <template slot-scope="scope">
                                 <div v-if="scope.row.status > 0"><span class="el-icon-success"></span></div>
                                 <div v-else>
@@ -294,7 +301,12 @@
                                 </div>
                             </template>
                         </el-table-column>
-                        <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.model_id')">
+                        <el-table-column align="center" width="125" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.resample_id')">
+                            <template slot-scope="scope">
+                                <span>{{ scope.row.resampleID }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="center" width="125" :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.model_id')">
                             <template slot-scope="scope">
                                 <span>{{ scope.row.modelID }}</span>
                             </template>
@@ -370,15 +382,17 @@ export default {
 
             selectedQueueID: 0,
             resamplesList: [],
-            selectedResampleID: 0,
+
+            selectedResampleIDs: [],
+            selectedResampleIDsHash: "",
+            // Array of objects holding all models for selected resamples
             modelsList: [],
-            //
-            hideFailedModels: [],
             modelsListLoading: false,
+
             performaceVariables: [],
             selectedPerformace: [],
-
-            interval: null,
+            // Timer to update queue table
+            updateInterval: null,
             queueTotalItems: null,
             queueFilterQuery: {
                 page: 1,
@@ -416,13 +430,13 @@ export default {
             this.explorationJobId = "";
             this.getDatasetQueueList();
         }
-
+        // Set the timer to get new data each 60 seconds
         if (this.updateInterval === null) {
             this.updateInterval = setInterval(
                 function() {
                     this.getDatasetQueueList();
                 }.bind(this),
-                120000
+                60000
             );
         }
     },
@@ -433,10 +447,10 @@ export default {
     methods: {
         // Called when user closed queue details Dialog
         closeQueueDetailsDialog(done) {
-            console.log("closeQueueDetailsDialog: " + this.selectedResampleID);
+            console.log("closeQueueDetailsDialog: " + this.selectedResampleIDs);
             // Reset if any resample was selected on some previous screen
             // Reset resamples
-            this.selectedResampleID = 0;
+            this.selectedResampleIDs = [];
             this.$refs.resamplesDetailsTable.setCurrentRow();
             this.$refs.resamplesDetailsTable.clearSelection();
             // Reset models
@@ -541,7 +555,7 @@ export default {
                 }
             } else if (clickAction === "info") {
                 const queueID = rowInfo.queueID;
-                if (this.checkselectJobID(rowInfo) === true) {
+                if (this.canSelectQueue(rowInfo) === true) {
                     this.getDatasetResamplesList(queueID, rowInfo.status);
                 } else {
                     this.$message({
@@ -570,12 +584,14 @@ export default {
             }
             apiFetchQueueList(this.queueFilterQuery)
                 .then(response => {
-                    const queueListHash = md5String(JSON.stringify(response.data.message));
+                    const queueData = response.data.message;
+                    const queueListHash = md5String(JSON.stringify(queueData));
                     // Update elements only if needed to avoid DOM rendering
                     if (this.queueListHash !== queueListHash && response.data.success === true) {
-                        this.queueList = response.data.message.queueList;
                         this.queueListHash = queueListHash;
-                        this.queueTotalItems = response.data.message.queueTotalItems;
+
+                        this.queueList = queueData.queueList;
+                        this.queueTotalItems = queueData.queueTotalItems;
                     }
                     if (this.queueListLoading === true) {
                         this.queueListLoading = false;
@@ -598,11 +614,13 @@ export default {
                                 this.selectedQueueID = pqid;
                                 this.resamplesList[pqid] = response.data.data;
                                 this.dialogQueueDetails = true;
-                                // Preselect first row
+                                // Toggle selection status of first row
                                 this.$nextTick(() => {
-                                    this.getDatasetResamplesModels(null, this.resamplesList[pqid][0]);
-                                    this.$refs.resamplesDetailsTable.clearSelection();
-                                    this.$refs.resamplesDetailsTable.toggleRowSelection(this.resamplesList[pqid][0]);
+                                    this.resamplesList[pqid].forEach((resampleRow, resampleIndex) => {
+                                        if (resampleIndex === 0) {
+                                            this.$refs.resamplesDetailsTable.toggleRowSelection(resampleRow);
+                                        }
+                                    });
                                 });
                             } else {
                                 this.$message({
@@ -622,45 +640,23 @@ export default {
                 console.log(status);
             }
         },
-        getDatasetResamplesModels(selection, row) {
-            // In-case "select all" check-box is pressed, row is than undefined
-            if (typeof row === "undefined") {
-                this.selectedResampleID = 0;
-                this.$refs.resamplesDetailsTable.setCurrentRow();
-                this.$refs.resamplesDetailsTable.clearSelection();
-                return;
-            }
-            console.log("Resamples change: resampleID: " + row.resampleID + " " + this.selectedResampleID);
-            console.log(selection);
-            console.log(this.hideFailedModels[row.resampleID]);
-            console.log(this.selectedResampleID);
+        getDatasetResamplesModels(selection) {
+            this.selectedResampleIDs = selection.map(selectionItem => {
+                return selectionItem.resampleID;
+            });
 
-            if (row.modelsTotal === 0) {
-                this.$message({
-                    message: this.$t("views.dashboard.admin.components.QueueTable.messages.missing_models"),
-                    type: "warning"
-                });
-                return;
-            }
-            // Support for auto reload on Hide failed click
-            let reloadCheck = true;
-            if (Array.isArray(selection) && selection.length === 0) {
-                reloadCheck = false;
-            } else if (selection === null && this.hideFailedModels[row.resampleID] === false && this.selectedResampleID === 0) {
-                reloadCheck = false;
-            }
+            const resamplesIDsHash = md5String(JSON.stringify(this.selectedResampleIDs));
 
-            if (reloadCheck === true) {
+            if (this.selectedResampleIDs.length !== 0) {
                 this.modelsListLoading = true;
-                ApiFetchResampleModels({ drid: row.resampleID, measurements: this.selectedPerformace, hideFailedModels: this.hideFailedModels[row.resampleID] })
+                ApiFetchResampleModels({ resampleIDs: this.selectedResampleIDs, measurements: [] })
                     .then(response => {
                         if (response.data.success === true) {
-                            this.selectedResampleID = row.resampleID;
-                            this.modelsList[row.resampleID] = response.data.data.modelsList;
+                            this.modelsList = response.data.data.modelsList;
 
                             // Save performance vars on first run
-                            if (typeof this.performaceVariables[row.resampleID] === "undefined") {
-                                this.performaceVariables[row.resampleID] = response.data.data.performaceVariables;
+                            if (typeof this.performaceVariables[resamplesIDsHash] === "undefined") {
+                                this.performaceVariables[resamplesIDsHash] = response.data.data.performaceVariables;
                             }
                             // Preselect if nothing selected.. eg. first run
                             if (this.selectedPerformace.length < 1) {
@@ -675,26 +671,31 @@ export default {
                             });
                             console.log(response.data);
                         }
+                        this.selectedResampleIDsHash = resamplesIDsHash;
                         this.modelsListLoading = false;
                     })
                     .catch(error => {
                         console.log(error);
                     });
-                this.$refs.resamplesDetailsTable.setCurrentRow(row);
             } else {
-                this.selectedResampleID = 0;
-                this.$refs.resamplesDetailsTable.setCurrentRow();
-                this.$refs.resamplesDetailsTable.clearSelection();
+                // Everything is deselected clear leftovers
+                this.modelsList = [];
+                this.performaceVariables = [];
+                this.selectedPerformace = [];
+                this.selectedResampleIDsHash = resamplesIDsHash;
             }
         },
-        checkselectJobID(row, index) {
+        filterModelStatus(value, row) {
+            return row.status === value;
+        },
+        canSelectQueue(row, index) {
             if (row.modelsSuccess < 1) {
                 return false;
             } else {
                 return true;
             }
         },
-        selectJobID(selection, row) {
+        selectQueue(selection, row) {
             // In-case "select all" check-box is pressed, row is than undefined
             if (typeof row === "undefined") {
                 // Clear selection and remove any selected queue from store
@@ -714,7 +715,7 @@ export default {
                 row = selection.pop();
                 this.$refs.queueTable.toggleRowSelection(row, true);
             }
-            if (this.checkselectJobID(row) === false) {
+            if (this.canSelectQueue(row) === false) {
                 this.$refs.queueTable.clearSelection();
             }
             // Should in progress jobs be selected?
@@ -798,11 +799,16 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
-.queue-list-container-table {
-    .queue-name {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+.queue-list-container {
+    .queue-list-container-table {
+        .queue-name {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+    .el-dialog__body {
+        padding: 0 20px;
     }
 }
 .el-table .warning-row {

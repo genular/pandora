@@ -21,7 +21,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["user_roles", "is_online"])
+        ...mapGetters(["user_roles"])
     },
     created() {
         // if (!this.user_roles.includes(2)) {
