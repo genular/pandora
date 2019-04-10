@@ -185,12 +185,12 @@ export default {
         };
     },
     computed: {
-        explorationJobId: {
+        selectedQueueIDs: {
             get() {
-                return this.$store.getters.simonExplorationJobId;
+                return this.$store.getters.simonExplorationQueueIDs;
             },
             set(value) {
-                this.$store.dispatch("setSimonExplorationJobId", value);
+                this.$store.dispatch("setSimonExplorationQueueIDs", value);
             }
         },
         selectedFeatureSetId: {
@@ -253,7 +253,7 @@ export default {
             this.listLoading = true;
 
             getVariableImportance({
-                pqid: this.explorationJobId,
+                pqid: this.selectedQueueIDs,
                 resampleID: this.selectedFeatureSetId,
                 modelsID: this.selectedModelsIDs,
                 ...this.paginateVariableImpData
@@ -288,7 +288,7 @@ export default {
             this.downloadLoading = true;
 
             getVariableImportance({
-                pqid: this.explorationJobId,
+                pqid: this.selectedQueueIDs,
                 resampleID: this.selectedFeatureSetId,
                 modelsID: this.selectedModelsIDs,
                 page: 1,

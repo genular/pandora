@@ -415,19 +415,19 @@ export default {
         };
     },
     computed: {
-        explorationJobId: {
+        selectedQueueIDs: {
             get() {
-                return this.$store.getters.simonExplorationJobId;
+                return this.$store.getters.simonExplorationQueueIDs;
             },
             set(value) {
-                this.$store.dispatch("setSimonExplorationJobId", value);
-            }
+                this.$store.dispatch("setSimonExplorationQueueIDs", value);
+            } 
         }
     },
     mounted() {
         // Initial Items request
         if (this.queueListHash === "") {
-            this.explorationJobId = "";
+            this.selectedQueueIDs = "";
             this.getDatasetQueueList();
         }
         // Set the timer to get new data each 60 seconds
@@ -699,7 +699,7 @@ export default {
             // In-case "select all" check-box is pressed, row is than undefined
             if (typeof row === "undefined") {
                 // Clear selection and remove any selected queue from store
-                this.explorationJobId = "";
+                this.selectedQueueIDs = "";
                 this.$refs.queueTable.clearSelection();
                 //if (selection.length > 0) {
                 //    row = selection[0];
@@ -739,12 +739,12 @@ export default {
                 return;
             }
 
-            if (row.queueID !== this.explorationJobId) {
+            if (row.queueID !== this.selectedQueueIDs) {
                 // Select new queue
-                this.explorationJobId = row.queueID;
+                this.selectedQueueIDs = row.queueID;
                 this.$refs.queueTable.setCurrentRow(row);
             } else {
-                this.explorationJobId = "";
+                this.selectedQueueIDs = "";
                 this.$refs.queueTable.clearSelection();
             }
         },
@@ -790,7 +790,7 @@ export default {
         }
     },
     watch: {
-        explorationJobId: function(newVal, oldVal) {
+        selectedQueueIDs: function(newVal, oldVal) {
             if (newVal === "") {
                 this.$refs.queueTable.clearSelection();
             }

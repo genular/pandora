@@ -2,10 +2,10 @@
     <div class="app-container" v-loading="explorationLoading" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="middle">
             <el-col :span="24">
-                <el-tooltip style="float: left;" placement="top" v-if="explorationJobId">
+                <el-tooltip style="float: left;" placement="top" v-if="selectedQueueIDs">
                     <div slot="content">{{ $t("globals.buttons.copy") }}</div>
-                    <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(explorationJobId, $event)"
-                        >{{ $t("views.apps.simon.exploration.header.selected_queue") }}: {{ explorationJobId }}</el-button
+                    <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(selectedQueueIDs, $event)"
+                        >{{ $t("views.apps.simon.exploration.header.selected_queue") }}: {{ selectedQueueIDs }}</el-button
                     >
                 </el-tooltip>
                 <el-tooltip style="float: left;" placement="top" v-if="selectedFeatureSetId > 0">
@@ -104,12 +104,12 @@ export default {
                 this.$store.dispatch("setSimonExplorationnActiveTabName", value);
             }
         },
-        explorationJobId: {
+        selectedQueueIDs: {
             get() {
-                return this.$store.getters.simonExplorationJobId;
+                return this.$store.getters.simonExplorationQueueIDs;
             },
             set(value) {
-                this.$store.dispatch("setSimonExplorationJobId", value);
+                this.$store.dispatch("setSimonExplorationQueueIDs", value);
             }
         },
         selectedFeatureSetId: {
@@ -178,9 +178,9 @@ export default {
             return check;
         },
         getDatasetResamples() {
-            console.log("getDatasetResamples: " + this.explorationJobId);
+            console.log("getDatasetResamples: " + this.selectedQueueIDs);
 
-            ApiFetchQueueExplorationDetails({ queueID: this.explorationJobId, measurements: [] })
+            ApiFetchQueueExplorationDetails({ queueID: this.selectedQueueIDs, measurements: [] })
                 .then(response => {
                     if (response.data.success === true) {
                         this.jobDetailsData.resamplesList = response.data.message.resamplesList;
@@ -201,7 +201,7 @@ export default {
                             showClose: true
                         });
 
-                        this.explorationJobId = "";
+                        this.selectedQueueIDs = "";
                         this.jobDetailsData.resamplesList = [];
                         this.selectedFeatureSetId = 0;
                         this.selectedModelsIDs = [];

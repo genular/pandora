@@ -35,7 +35,7 @@ const apps = {
                 }
             },
             exploration: {
-                job_id: estore.get("apps-simon-exploration-job_id") || "",
+                queueIDs: estore.get("apps-simon-exploration-queueIDs") || "",
                 selectedFeatureSetId: estore.get("apps-simon-exploration-selectedFeatureSetId") || 0,
                 selectedModelsIDs: estore.get("apps-simon-exploration-selectedModelsIDs") || [],
                 activeTabName: estore.get("apps-simon-exploration-activeTabName") || "datasetsTab",
@@ -54,9 +54,9 @@ const apps = {
             estore.set("apps-simon-selectedPackages", selectedPackages);
         },
         // exploration
-        SET_SIMON_EXPLORATION_JOB_ID: (state, job_id) => {
-            state.simon.exploration.job_id = job_id;
-            estore.set("apps-simon-exploration-job_id", job_id);
+        SET_SIMON_EXPLORATION_QUEUE_IDS: (state, queueIDs) => {
+            state.simon.exploration.queueIDs = queueIDs;
+            estore.set("apps-simon-exploration-queueIDs", queueIDs);
         },
         SET_SIMON_EXPLORATION_SELECTED_FEATURE_SET_ID: (state, selectedFeatureSetId) => {
             state.simon.exploration.selectedFeatureSetId = selectedFeatureSetId;
@@ -288,8 +288,8 @@ const apps = {
             commit("SET_SIMON_ANALYSIS_BACKWARD_SELECTION", backwardSelection);
         },
         // exploration
-        setSimonExplorationJobId({ commit }, job_id) {
-            commit("SET_SIMON_EXPLORATION_JOB_ID", job_id);
+        setSimonExplorationQueueIDs({ commit }, queueIDs) {
+            commit("SET_SIMON_EXPLORATION_QUEUE_IDS", queueIDs);
         },
         setSimonExplorationSelectedFeatureSetId({ commit }, selectedFeatureSetId) {
             commit("SET_SIMON_EXPLORATION_SELECTED_FEATURE_SET_ID", selectedFeatureSetId);

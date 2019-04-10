@@ -134,7 +134,7 @@ export const constantRouterMap = [
                     title: "exploratory-analysis",
                     icon: "fa fa-icon fa-area-chart",
                     // simonAnalysisJobId is store getter
-                    restrictions: { action: true, actionType: "simonExplorationJobId" }
+                    restrictions: { action: true, actionType: "simonExplorationQueueIDs" }
                 }
             }
         ]

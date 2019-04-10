@@ -5,8 +5,8 @@
             {{ file.basename }}
             <span class="close-container" @click="closeSelectedFile(file.id)">x</span>
         </div>
-        <div v-if="explorationJobId != ''" class="files-view-item explorationJobId animated flipInY" closable>
-            Queue ID: <span style="font-weight: bold;">{{ explorationJobId }}</span>
+        <div v-if="selectedQueueIDs != ''" class="files-view-item selectedQueueIDs animated flipInY" closable>
+            Queue ID: <span style="font-weight: bold;">{{ selectedQueueIDs }}</span>
             <span class="close-container" @click.prevent.stop="handleCloseExplorationJobId()">x</span>
         </div>
     </div>
@@ -22,18 +22,18 @@ export default {
                 this.$store.dispatch("setSelectedFiles", value);
             }
         },
-        explorationJobId: {
+        selectedQueueIDs: {
             get() {
-                return this.$store.getters.simonExplorationJobId;
+                return this.$store.getters.simonExplorationQueueIDs;
             },
             set(value) {
-                this.$store.dispatch("setSimonExplorationJobId", value);
+                this.$store.dispatch("setSimonExplorationQueueIDs", value);
             }
         }
     },
     methods: {
         handleCloseExplorationJobId() {
-            this.explorationJobId = "";
+            this.selectedQueueIDs = "";
         },
         closeSelectedFile(selectdFileID) {
             this.selectedFiles = this.selectedFiles.filter(function(item) {
@@ -87,7 +87,7 @@ export default {
             }
         }
     }
-    .explorationJobId {
+    .selectedQueueIDs {
         background-color: $pink;
         color: #fff;
     }
