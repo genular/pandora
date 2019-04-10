@@ -336,6 +336,8 @@
   "views.dashboard.admin.components.QueueTable.messages.missing_models": "无法选择排队的任务。 所有分析算法完成了一个错误。",
   "views.dashboard.admin.components.QueueTable.dialog.no_data": "没有什么显示的",
   "views.dashboard.admin.components.QueueTable.dialog.title": "处理统计数据选定的队列",
+  "views.dashboard.admin.components.QueueTable.dialog.selected_queue_id": "排队的ID",
+  "views.dashboard.admin.components.QueueTable.dialog.selected_resamples_ids": "重ID(s)",
   "views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.title": "来源",
   "views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.initial": "初始",
   "views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.predicted": "预测",

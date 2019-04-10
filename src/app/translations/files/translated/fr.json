@@ -336,6 +336,8 @@
   "views.dashboard.admin.components.QueueTable.messages.missing_models": "Impossible de sélectionner la file d'attente des tâches. Tous les algorithmes d'analyse terminé avec une erreur.",
   "views.dashboard.admin.components.QueueTable.dialog.no_data": "Rien à afficher",
   "views.dashboard.admin.components.QueueTable.dialog.title": "Le traitement des statistiques pour la file d'attente sélectionnée",
+  "views.dashboard.admin.components.QueueTable.dialog.selected_queue_id": "ID de file d'attente",
+  "views.dashboard.admin.components.QueueTable.dialog.selected_resamples_ids": "Rééchantillonner ID(s)",
   "views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.title": "Source",
   "views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.initial": "Initiale",
   "views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.predicted": "Prédit",
