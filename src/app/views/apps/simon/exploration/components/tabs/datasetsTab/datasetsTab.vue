@@ -858,11 +858,22 @@ export default {
                 });
                 return;
             }
+            // If someone select multiple rows keep only last one
+            if (selection.length > 1) {
+                this.$refs.resamplesTable.clearSelection();
+                row = selection.pop();
+                this.$refs.resamplesTable.toggleRowSelection(row, true);
+            }else if (selection.length === 1){
+                row = selection.pop();
+                this.$refs.resamplesTable.toggleRowSelection(row, true);
+            }
 
             if (row.resampleID !== this.selectedFeatureSetId) {
                 console.log("Filtering models for new resample!");
 
                 this.selectedFeatureSetId = row.resampleID;
+                this.selectedModelsIDs = [];
+
                 // Select only models with that feature set ID
                 this.jobDetailsData.resampleModels[this.selectedFeatureSetId] = this.jobDetailsData.modelsList.filter(model => model.resampleID === this.selectedFeatureSetId);
 

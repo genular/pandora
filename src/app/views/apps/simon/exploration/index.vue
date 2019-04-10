@@ -78,13 +78,9 @@ export default {
             performanceVariables: [],
 
             jobDetailsData: {
-                //feature_sets: [],
                 resamplesList: [],
-                //model_details: [],
                 resampleModels: [],
-                //all_models: [],
                 modelsList: [],
-                //process_queue: []
                 queueDetails: {},
                 performance: []
             }
@@ -92,35 +88,12 @@ export default {
     },
     mounted() {
         console.log("mounted: exploration");
+        this.resetExploration();
     },
     activated() {
         console.log("activated: exploration, reseting variables");
-        // Always reset on activation variables
-        // Reset any previusly selected resample
-        this.selectedFeatureSetId = 0;
-        this.jobDetailsData = {
-            //feature_sets: [],
-            resamplesList: [],
-            //model_details: [],
-            resampleModels: [],
-            //all_models: [],
-            modelsList: [],
-            //process_queue: []
-            queueDetails: {},
-            performance: []
-        };
-        // Reset any models for the resample
-        this.displayModels = [];
-        // Reset any selected models for the resample
-        this.selectedModelsIDs = [];
+        this.resetExploration();
 
-        // On initial opening fetch resamples from server
-        if (this.jobDetailsData.resamplesList.length === 0) {
-            this.handleFetchJobDetails();
-        } else {
-            console.log("New selected queue detected, refreshing resample data");
-            this.handleFetchJobDetails();
-        }
     },
     computed: {
         activeTabName: {
@@ -157,6 +130,25 @@ export default {
         }
     },
     methods: {
+        resetExploration(){
+            // Always reset on activation variables
+            // Reset any previusly selected resample
+            this.selectedFeatureSetId = 0;
+            this.jobDetailsData = {
+                resamplesList: [],
+                resampleModels: [],
+                modelsList: [],
+                queueDetails: {},
+                performance: []
+            };
+            // Reset any models for the resample
+            this.displayModels = [];
+            // Reset any selected models for the resample
+            this.selectedModelsIDs = [];
+
+            // On initial opening fetch resamples from server
+            this.getDatasetResamples();
+        },
         isTabDisabled(item) {
             let check = false;
             if (item.restriction !== undefined) {
@@ -185,10 +177,10 @@ export default {
             }
             return check;
         },
-        handleFetchJobDetails() {
-            console.log("handleFetchJobDetails: " + this.explorationJobId);
+        getDatasetResamples() {
+            console.log("getDatasetResamples: " + this.explorationJobId);
 
-            ApiFetchQueueExplorationDetails({ queueID: this.explorationJobId, measurements: this.measurements })
+            ApiFetchQueueExplorationDetails({ queueID: this.explorationJobId, measurements: [] })
                 .then(response => {
                     if (response.data.success === true) {
                         this.jobDetailsData.resamplesList = response.data.message.resamplesList;

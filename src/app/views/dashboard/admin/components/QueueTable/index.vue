@@ -556,7 +556,7 @@ export default {
             } else if (clickAction === "info") {
                 const queueID = rowInfo.queueID;
                 if (this.canSelectQueue(rowInfo) === true) {
-                    this.getDatasetResamplesList(queueID, rowInfo.status);
+                    this.getDatasetResamples(queueID, rowInfo.status);
                 } else {
                     this.$message({
                         message: this.$t("views.dashboard.admin.components.QueueTable.messages.in_progress"),
@@ -601,7 +601,7 @@ export default {
                     console.log("==> Cannot get dashboard queue stats: " + error);
                 });
         },
-        getDatasetResamplesList(pqid, status) {
+        getDatasetResamples(pqid, status) {
             if (status >= 3) {
                 this.dialogQueueDetails = false;
                 if (typeof this.resamplesList[pqid] !== "undefined") {

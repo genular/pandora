@@ -70,7 +70,7 @@
 						"dialog": {
 							"no_data": "Nothing to display",
 							"title": "Processing statistics for selected queue",
-							"selected_queue_id": "Queued ID",
+							"selected_queue_id": "Queue ID(s)",
 							"selected_resamples_ids": "Resample ID(s)",
 							"resamples_table": {
 								"header": {

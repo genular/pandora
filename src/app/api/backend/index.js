@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 10:26:55
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-02-02 10:29:13
+ * @Last Modified time: 2019-04-10 12:54:56
  */
 import request from "@/utils/request";
 
@@ -133,6 +133,7 @@ export function fetchQueueList(query) {
         params: query
     });
 }
+// Exploration => details
 export function fetchQueueExplorationDetails(query) {
     return request({
         url: baseUrlPath + "/queue/exploration/list",
@@ -141,6 +142,7 @@ export function fetchQueueExplorationDetails(query) {
     });
 }
 
+// Dashboard => details
 export function fetchQueueResamples(query) {
     return request({
         url: baseUrlPath + "/queue/details",
