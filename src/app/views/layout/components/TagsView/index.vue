@@ -169,7 +169,6 @@ export default {
         }
     }
     .context-menu {
-        box-shadow: 0 4px 5px 3px rgb(239, 240, 249);
         position: fixed;
         z-index: 1001;
         background-color: #ffffff;

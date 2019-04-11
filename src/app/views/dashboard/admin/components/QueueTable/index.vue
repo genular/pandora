@@ -608,11 +608,11 @@ export default {
                     this.selectedQueueID = pqid;
                     this.dialogQueueDetails = true;
                 } else {
-                    ApiFetchQueueResamples({ pqid: pqid })
+                    ApiFetchQueueResamples({ queueIDs: [pqid] })
                         .then(response => {
                             if (response.data.success === true) {
                                 this.selectedQueueID = pqid;
-                                this.resamplesList[pqid] = response.data.data;
+                                this.resamplesList[pqid] = response.data.message;
                                 this.dialogQueueDetails = true;
                                 // Toggle selection status of first row
                                 this.$nextTick(() => {

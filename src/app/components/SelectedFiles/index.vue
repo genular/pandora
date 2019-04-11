@@ -76,7 +76,7 @@ export default {
             text-align: center;
             font-weight: bold;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 15px; 
             float: right;
             line-height: 17px;
             margin-top: 10px;

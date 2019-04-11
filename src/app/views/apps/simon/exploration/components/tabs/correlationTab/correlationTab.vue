@@ -393,20 +393,23 @@ export default {
         console.log("mounted: correlationTab");
         console.log(this.selectedFeatureSetId);
 
-        const featureSet = this.jobDetailsData.resamplesList.filter(resample => resample.resampleID === this.selectedFeatureSetId)[0];
+        const featureSet = this.jobDetailsData.resamplesList.find(obj => {
+            return obj.resampleID === this.selectedFeatureSetId;
+        });
+
         if (typeof featureSet !== "undefined") {
             console.log(featureSet);
-            
+
             if (featureSet.featuresTotal < 250) {
                 this.tabEnabled = true;
                 if (this.renderedImage === "") {
                     this.handleFetchCorrPlotImage();
                 }
-            }else{
+            } else {
                 this.tabEnabled = false;
                 this.loadingPlot = false;
             }
-        }else{
+        } else {
             this.tabEnabled = false;
             this.loadingPlot = false;
             this.activeTabName = "datasetsTab";
@@ -428,13 +431,19 @@ export default {
         },
         handleFetchCorrPlotImage() {
             this.loadingPlot = true;
+            this.renderedImageData = "";
 
             fetchCorrPlotImage({ resampleID: this.selectedFeatureSetId, settings: this.settingsForm })
                 .then(response => {
-                    // Decode base64 encoded results
-                    this.renderedImageData = window.atob(response.data.image);
-
-                    this.renderedImage = "data:image/svg+xml;base64," + encodeURIComponent(response.data.image);
+                    if (response.data.status === true) {
+                        // Decode base64 encoded results
+                        this.renderedImageData = window.atob(response.data.image);
+                    }
+                    if (this.renderedImageData.length < 15) {
+                        this.renderedImage = line_chart_404;
+                    } else {
+                        this.renderedImage = "data:image/svg+xml;base64," + encodeURIComponent(response.data.image);
+                    }
                     this.loadingPlot = false;
                 })
                 .catch(error => {

@@ -421,14 +421,14 @@ export default {
                     key: "samrAnalysisTab",
                     icon: "fa fa-balance-scale",
                     restriction: "selectedFeatureSetId"
-                },
-                {
+                }
+                /*,{
                     label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title"),
                     view: "catBoostTab",
                     key: "catBoostTab",
                     icon: "fa fa-balance-scale",
                     restriction: "selectedFeatureSetId"
-                }
+                }*/
             ],
             jobClassesDisaply: [],
             selectedClasses: []

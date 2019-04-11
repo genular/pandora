@@ -364,7 +364,12 @@ export default {
                 });
         }, 500),
         redrawImage() {
-            this.handleFetchHeatmapImage();
+            const selectedRows = this.settingsForm.selectedRows.length;
+            if (selectedRows === 0 || selectedRows > 2) {
+                this.handleFetchHeatmapImage();
+            } else {
+                console.log("Please select more than 2 rows to cluster");
+            }
         },
         downloadPlotImage() {
             const svgBlob = new Blob([this.renderedImageData], { type: "image/svg+xml;charset=utf-8" });
@@ -378,14 +383,16 @@ export default {
         },
         handleFetchHeatmapImage() {
             this.loadingPlot = true;
-
+            this.renderedImageData = "";
             fetchHeatmapImage({
                 resampleID: this.selectedFeatureSetId,
                 settings: this.settingsForm
             })
                 .then(response => {
-                    // Decode base64 encoded results
-                    this.renderedImageData = window.atob(response.data.image);
+                    if (response.data.status === true) {
+                        // Decode base64 encoded results
+                        this.renderedImageData = window.atob(response.data.image);
+                    }
 
                     if (this.renderedImageData.length < 15) {
                         this.renderedImage = line_chart_404;

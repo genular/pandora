@@ -173,6 +173,7 @@ export default {
     },
     mounted() {
         console.log("mounted: samrAnalysisTab");
+        this.handleFetchFormOptions();
     },
     computed: {
         selectedFeatureSetId: {
@@ -204,24 +205,24 @@ export default {
                     console.log(error);
                     this.loadingResults = false;
                 });
+        },
+        handleFetchFormOptions() {
+            this.loadingOptions = true;
+            fetchSamrFormOptions()
+                .then(response => {
+                    if (response.data.status === "success") {
+                        console.log(response.data.message);
+                        this.settingOptions = response.data.message;
+                    } else {
+                        console.log(response.data);
+                    }
+                    this.loadingOptions = false;
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.loadingOptions = false;
+                });
         }
-        // ,handleFetchFormOptions() {
-        //     this.loadingOptions = true;
-        //     fetchSamrFormOptions()
-        //         .then(response => {
-        //             if (response.data.status === "success") {
-        //                 console.log(response.data.message);
-        //                 this.settingOptions = response.data.message;
-        //             } else {
-        //                 console.log(response.data);
-        //             }
-        //             this.loadingOptions = false;
-        //         })
-        //         .catch(error => {
-        //             console.log(error);
-        //             this.loadingOptions = false;
-        //         });
-        // }
     },
     watch: {
         /**
@@ -232,7 +233,7 @@ export default {
          */
         isTabDisabled: function(newVal, oldVal) {
             if (newVal === false) {
-                // this.handleFetchFormOptions();
+                this.handleFetchFormOptions();
             }
         }
     }
