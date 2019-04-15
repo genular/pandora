@@ -2,30 +2,33 @@
     <div class="datasetsTab-container">
         <el-row align="top">
             <el-col :span="24">
-                <el-card class="box-card">
+                <el-card class="box-card animated fadeIn">
                     <div slot="header" class="clearfix">
                         <div class="card_intro">{{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.title") }}</div>
-                        <div class="models_actions" v-if="jobClassesDisaply.length > 0">
-                            <el-select
-                                style="min-width: 350px;"
-                                v-model="selectedClasses"
-                                multiple
-                                filterable
-                                remote
-                                default-first-option
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.filters.exploration_classes.placeholder')"
-                                size="large"
-                                :remote-method="filterAvaliableClasses"
-                                @change="selectChangeClasses"
-                                @focus="selectSuggestClasses"
-                            >
-                                <el-option
-                                    v-for="(classItem, index) in jobClassesDisaply"
-                                    :key="classItem.remapped"
-                                    :label="classItem.original"
-                                    :value="classItem.remapped"
-                                ></el-option>
-                            </el-select>
+                        <div v-if="selectedFeatureSetId > 0">
+                            <div class="models_actions animated fadeIn" v-if="jobClassesDisaply.length > 0">
+                                <el-select
+                                    style="min-width: 350px;"
+                                    v-model="selectedClasses"
+                                    multiple
+                                    filterable
+                                    remote
+                                    default-first-option
+                                    :placeholder="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.filters.exploration_classes.placeholder')"
+                                    size="large"
+                                    :remote-method="filterAvaliableClasses"
+                                    @change="selectChangeClasses"
+                                    @focus="selectSuggestClasses"
+                                >
+                                    <el-option
+                                        v-for="(classItem, index) in jobClassesDisaply"
+                                        :key="classItem.remapped"
+                                        :label="classItem.original"
+                                        :value="classItem.remapped"
+                                        :disabled="classItem.unique < 2"
+                                    ></el-option>
+                                </el-select>
+                            </div>
                         </div>
                     </div>
                     <!-- Main queue Resamples Table -->
@@ -179,7 +182,7 @@
                                         size="mini"
                                         :title="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.operations.download.title')"
                                         style="float: left;"
-                                        type="primary"
+                                        type="success"
                                         icon="el-icon-download"
                                         @click="handleOperations('downloadResample', scope.row)"
                                     ></el-button>
@@ -210,7 +213,7 @@
         </el-row>
         <el-row align="top" v-if="displayModels.length > 0" style="margin-top: 15px;">
             <el-col :span="24">
-                <el-card class="box-card">
+                <el-card class="box-card animated fadeIn">
                     <div slot="header" class="clearfix">
                         <div class="card_intro">{{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.title") }}</div>
                         <div class="models_actions" v-if="selectedModelsIDs.length > 0">
@@ -218,7 +221,7 @@
                                 <el-button
                                     size="small"
                                     :title="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.download.title')"
-                                    type="danger"
+                                    type="success"
                                     icon="el-icon-download"
                                     @click="handleOperations('downloadModels', null)"
                                 ></el-button>
@@ -462,15 +465,6 @@ export default {
     },
     mounted() {
         console.log("datasetsTab: mounted");
-
-        this.jobClassesDisaply = this.jobDetailsData.queueDetails.selectedOptions.classes;
-
-        // Paginate Resample
-        this.paginateResamples(1);
-
-        this.$nextTick(() => {
-            this.datasetsTabMapOptions = this.datasetsTabMapOptionsTemplate;
-        });
     },
     methods: {
         deepSort({ column, prop, order }, dataArray, dataArrayID, dataProp, dataPropID, additionalAction) {
@@ -672,8 +666,7 @@ export default {
 
                 for (let i = 0, lenI = selectedClassesDetails.length; i < lenI; i++) {
                     let selectedClass = selectedClassesDetails[i];
-                    console.log("selectedClass: ");
-                    console.log(selectedClass);
+                    console.log("selectedClass: ", selectedClass);
 
                     let checkIfClassInSelectedTabs = this.datasetsTabMapOptions.filter(function(e) {
                         return e.key === selectedClass.remapped;
@@ -814,6 +807,9 @@ export default {
         },
         // Initialize Pagination of Features
         paginateResamples(pageNumber) {
+            if(this.selectedFeatureSetId <= 0){
+                this.$refs.resamplesTable.clearSelection();
+            }
             this.paginateResamplesData.currentPage = pageNumber;
             // because pages logically start with 1, but technically with 0
             pageNumber = pageNumber - 1;
@@ -863,7 +859,7 @@ export default {
                 this.$refs.resamplesTable.clearSelection();
                 row = selection.pop();
                 this.$refs.resamplesTable.toggleRowSelection(row, true);
-            }else if (selection.length === 1){
+            } else if (selection.length === 1) {
                 row = selection.pop();
                 this.$refs.resamplesTable.toggleRowSelection(row, true);
             }
@@ -962,10 +958,18 @@ export default {
         }
     },
     watch: {
-        "jobDetailsData.performance": function(newVal, oldVal) {
-            console.log("redrawing tables");
-            //this.$refs.resamplesTable.doLayout();
-            //this.$refs.modelDetailsTable.doLayout();
+        "jobDetailsData.queueDetails": function(newVal, oldVal) {
+            console.log("Updating jobClassesDisaply");
+            // And new selected queue classes
+            if (typeof newVal.selectedOptions !== "undefined") {
+                this.jobClassesDisaply = newVal.selectedOptions.classes;
+                // Paginate Resample
+                this.paginateResamples(1);
+
+                this.$nextTick(() => {
+                    this.datasetsTabMapOptions = this.datasetsTabMapOptionsTemplate;
+                });
+            }
         }
     }
 };

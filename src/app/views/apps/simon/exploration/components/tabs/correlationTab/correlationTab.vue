@@ -5,7 +5,7 @@
                 <el-col :span="24" style="text-align: right;">
                     <el-button
                         :title="$t('views.apps.simon.exploration.components.tabs.correlationTab.buttons.download')"
-                        type="primary"
+                        type="success"
                         icon="el-icon-download"
                         :disabled="renderedImage === '' || loadingPlot"
                         @click="downloadPlotImage"
@@ -231,7 +231,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" round @click="redrawImage">
+                            <el-button type="danger" round @click="redrawImage">
                                 {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
                             </el-button>
                         </el-form-item>

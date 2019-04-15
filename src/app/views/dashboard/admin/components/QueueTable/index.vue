@@ -98,6 +98,7 @@
                         size="mini"
                         :title="$t('views.dashboard.admin.components.QueueTable.table.operations.info.title')"
                         type="success"
+                        plain
                         round
                         icon="el-icon-info"
                         @click="handleOperations('info', scope.row)"
@@ -106,8 +107,7 @@
                     <el-button
                         size="mini"
                         :title="$t('views.dashboard.admin.components.QueueTable.table.operations.download.title')"
-                        type="primary"
-                        plain
+                        type="success"                        
                         icon="el-icon-download"
                         @click="handleOperations('download', scope.row)"
                     >
@@ -115,8 +115,7 @@
                     <el-button
                         size="mini"
                         :title="$t('views.dashboard.admin.components.QueueTable.table.operations.delete.title')"
-                        type="danger"
-                        plain
+                        type="danger"                        
                         icon="el-icon-delete"
                         @click="handleOperations('delete', scope.row)"
                     >

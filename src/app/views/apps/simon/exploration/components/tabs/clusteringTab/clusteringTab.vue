@@ -4,7 +4,7 @@
             <el-col :span="24" style="text-align: right;">
                 <el-button
                     :title="$t('views.apps.simon.exploration.components.tabs.clusteringTab.buttons.download')"
-                    type="primary"
+                    type="success"
                     icon="el-icon-download"
                     :disabled="renderedImage === '' || loadingPlot"
                     @click="downloadPlotImage"
@@ -208,7 +208,7 @@
                         </el-input-number>
                     </el-form-item>
                     <el-form-item label="">
-                        <el-button type="primary" size="mini" icon="el-icon-picture-outline" @click="redrawImage" round>
+                        <el-button type="danger" size="mini" icon="el-icon-picture-outline" @click="redrawImage" round>
                             {{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.buttons.plot_image") }}
                         </el-button>
                     </el-form-item>

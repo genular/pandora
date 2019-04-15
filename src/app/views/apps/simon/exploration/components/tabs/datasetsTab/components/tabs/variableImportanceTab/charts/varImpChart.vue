@@ -4,7 +4,12 @@
             <el-col :span="24">
                 <el-form :inline="true">
                     <el-form-item label="Theme">
-                        <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="width:135px;">
+                        <el-select 
+                            v-model="settingsForm.theme" 
+                            size="mini" 
+                            placeholder="Select" 
+                            @change="redrawImage" 
+                            style="width:135px;">
                             <el-option
                                 v-for="item in settingOptions.theme"
                                 :key="item.id"
@@ -39,6 +44,7 @@
                     <el-form-item label="Color">
                         <el-select
                             v-model="settingsForm.colorPalette"
+                            @change="redrawImage"
                             size="mini"
                             placeholder="Select"
                             style="width:130px;"
@@ -99,17 +105,20 @@
                     </el-form-item>
 
                     <el-form-item style="float: right;">
-                        <el-button size="mini" type="primary" :loading="loadingPlot" round @click="redrawImage"
-                            >Plot</el-button
+                        <el-button size="mini" 
+                            type="danger" 
+                            :loading="loadingPlot" 
+                            round 
+                            @click="redrawImage">Redraw Plot</el-button
                         >
                     </el-form-item>
 
                     <el-form-item style="float: right;">
                         <el-button
                             size="mini"
-                            type="primary"
+                            type="success"
                             icon="el-icon-download"
-                            :disabled="renderedImage === '' || loadingPlot"
+                            :disabled="renderedImage === false || loadingPlot"
                             @click="downloadPlotImage"
                         ></el-button>
                     </el-form-item>
@@ -118,12 +127,13 @@
         </el-row>
         <el-row justify="center">
             <el-col :span="24" v-loading="loadingPlot" element-loading-text="Processing..." style="text-align: center;">
-                <object
-                    id="correlation-svg"
-                    style="margin: 0 auto;"
-                    :data="renderedImage"
-                    type="image/svg+xml"
-                ></object>
+                <!-- SVG Plot placeholder -->
+                <div v-if="renderedImage !== false">
+                    <object id="correlation-svg" class="animated fadeIn" style="margin: 0 auto;" :data="renderedImage" type="image/svg+xml"></object>
+                </div>
+                <div class="plot-placeholder" v-else>
+                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                </div>
             </el-col>
         </el-row>
     </div>
@@ -151,7 +161,7 @@ export default {
     data() {
         return {
             loadingPlot: true,
-            renderedImage: "",
+            renderedImage: false,
             settingOptions: {
                 dotsize: 0.5,
                 theme: plotThemes,
@@ -185,7 +195,7 @@ export default {
     },
     mounted() {
         console.log("mounted: varImpChart");
-        if (this.renderedImage === "") {
+        if (this.renderedImage === false) {
             this.handleFetchGraphVariableImportance();
         }
     },
@@ -195,7 +205,7 @@ export default {
             this.handleFetchGraphVariableImportance();
         },
         downloadPlotImage() {
-            const svgBlob = new Blob([this.renderedImageData + "<!-- created by SIMON: https://genular.org -->"], { type: "image/svg+xml;charset=utf-8" });
+            const svgBlob = new Blob([window.atob(decodeURIComponent(this.renderedImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], { type: "image/svg+xml;charset=utf-8" });
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
@@ -220,19 +230,25 @@ export default {
                 variables: JSON.stringify(this.selectedVariableImp.map(item => item.feature_name)),
                 settings: JSON.stringify(this.settingsForm)
             })
-                .then(response => {
-                    // Decode base64 encoded results
-                    this.renderedImageData = window.atob(response.data.image);
-                    
+                .then(response => {                  
                     this.renderedImage = "data:image/svg+xml;base64," + encodeURIComponent(response.data.image);
                     this.loadingPlot = false;
                 })
                 .catch(error => {
                     console.log("Server error occurred");
-                    this.renderedImage = line_chart_404;
+                    this.renderedImage = false;
                     this.loadingPlot = false;
                 });
         }
     }
 };
 </script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+.plot-placeholder {
+    text-align: center;
+    > i {
+        font-size: 256px;
+        color: #333333;
+    }
+}
+</style>

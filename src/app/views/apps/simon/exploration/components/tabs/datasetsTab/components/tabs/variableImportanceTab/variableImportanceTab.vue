@@ -10,20 +10,17 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item>
-                            <el-switch v-model="paginateVariableImpData.sort" active-color="#13ce66" inactive-color="#ff4949" active-text="ASC" inactive-text="DESC"> </el-switch>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button size="mini" class="filter-item" type="primary" v-waves @click="handleTableFilter">Sort</el-button>
+                            <el-switch v-model="paginateVariableImpData.sort" @change="handleTableFilter" active-color="#13ce66" inactive-color="#ff4949" active-text="ASC" inactive-text="DESC"> </el-switch>
                         </el-form-item>
                         <el-form-item style="float: right;">
                             <el-button
                                 size="mini"
                                 class="filter-item"
-                                type="primary"
+                                type="success"
                                 :loading="downloadLoading"
                                 v-waves
                                 icon="el-icon-download"
-                                @click="handleDownload"
+                                @click="downloadTable"
                             ></el-button>
                         </el-form-item>
                     </el-form>
@@ -273,10 +270,11 @@ export default {
                         type: "error"
                     });
                     console.log(error);
+                    this.listLoading = false;
                 });
         },
         tableVariableImpClass({ row, rowIndex }) {
-            if (row.t_auc > 0.6) {
+            if (row.score_perc > 50) {
                 return "success-row";
             } else if (row.t_auc < 0.2) {
                 return "warning-row";
@@ -284,7 +282,7 @@ export default {
             return "";
         },
         // Export all features for selected models in Excel table
-        handleDownload() {
+        downloadTable() {
             this.downloadLoading = true;
 
             getVariableImportance({

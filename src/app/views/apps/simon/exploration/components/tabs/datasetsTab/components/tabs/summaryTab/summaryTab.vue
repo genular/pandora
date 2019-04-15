@@ -1,18 +1,25 @@
 <template>
     <div class="summaryTab-container" v-loading="loading" element-loading-text="Processing...">
         <div v-if="!isTabDisabled">
-            <el-row type="flex" align="top">
+
+            <el-row type="flex" align="top" :gutter="20">
                 <el-col :span="12">
                     <el-row type="flex" align="top">
                         <el-col :span="12" style="text-align: right;">
                             <span>Model comparison</span>
                         </el-col>
                         <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="primary" icon="el-icon-download" :disabled="summary.boxplot === false" @click="downloadPlotImage('boxplot')">
+                            <el-button size="mini" round type="success" icon="el-icon-download" :disabled="summary.boxplot === false" @click="downloadPlotImage('boxplot')">
                             </el-button>
                         </el-col>
                     </el-row>
-                    <object id="summary-boxplot" style="margin: 0 auto;" :data="summary.boxplot" type="image/svg+xml"> </object>
+                    <!-- SVG Plot placeholder -->
+                    <div v-if="summary.boxplot !== false">
+                        <object id="summary-boxplot" style="margin: 0 auto;" :data="summary.boxplot" type="image/svg+xml"> </object>
+                    </div>
+                    <div class="plot-placeholder" v-else>
+                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                    </div>
                 </el-col>
                 <el-col :span="12">
                     <el-row type="flex" align="top">
@@ -20,29 +27,35 @@
                             <span>ROC summary</span>
                         </el-col>
                         <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="primary" icon="el-icon-download" :disabled="summary.rocplot === false" @click="downloadPlotImage('rocplot')">
+                            <el-button size="mini" round type="success" icon="el-icon-download" :disabled="summary.rocplot === false" @click="downloadPlotImage('rocplot')">
                             </el-button>
                         </el-col>
                     </el-row>
-                    <object id="summary-rocplot" style="margin: 0 auto;" :data="summary.rocplot" type="image/svg+xml"></object>
+                    <!-- SVG Plot placeholder -->
+                    <div v-if="summary.rocplot !== false">
+                        <object id="summary-rocplot" style="margin: 0 auto;" :data="summary.rocplot" type="image/svg+xml"></object>
+                    </div>
+                    <div class="plot-placeholder" v-else>
+                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                    </div>
                 </el-col>
             </el-row>
 
-            <el-row type="flex" align="top" v-if="summary.info.differences || summary.info.summary">
+            <el-row type="flex" align="top" :gutter="20">
                 <el-col :span="12" v-if="summary.info.differences">
                     <el-row type="flex" align="top">
                         <el-col :span="12" style="text-align: left;">
                             <span>Statistics</span>
                         </el-col>
                         <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.differences, $event)"></el-button>
+                            <el-button size="mini" round type="success" icon="el-icon-download" @click="copyToClipboard(summary.info.differences, $event)"></el-button>
                         </el-col>
                     </el-row>
-                    <pre class="code-output">
+                    <div class="code-output">
                         <highlight-code lang="bash">
                             {{summary.info.differences}}
                         </highlight-code>
-                    </pre>
+                    </div>
                 </el-col>
                 <el-col :span="12" v-if="summary.info.summary">
                     <el-row type="flex" align="top">
@@ -50,14 +63,14 @@
                             <span>Raw data</span>
                         </el-col>
                         <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="primary" icon="el-icon-download" @click="copyToClipboard(summary.info.summary, $event)"></el-button>
+                            <el-button size="mini" round type="success" icon="el-icon-download" @click="copyToClipboard(summary.info.summary, $event)"></el-button>
                         </el-col>
                     </el-row>
-                    <pre class="code-output">
+                    <div class="code-output">
                         <highlight-code lang="bash">
                             {{summary.info.summary}}
                         </highlight-code>
-                    </pre>
+                    </div>
                 </el-col>
             </el-row>
         </div>
@@ -129,7 +142,8 @@ export default {
             clipboard(content, event);
         },
         downloadPlotImage(summaryID) {
-            const svgBlob = new Blob([decodeURIComponent(this.summary[summaryID].substring(24))], { type: "image/svg+xml;charset=utf-8" });
+
+            const svgBlob = new Blob([window.atob(decodeURIComponent(this.summary[summaryID].substring(26))) + "<!-- created by SIMON: https://genular.org -->"], { type: "image/svg+xml;charset=utf-8" });
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
@@ -155,13 +169,14 @@ export default {
                         // This is true if no plot is in question
                         if (typeof respItem === "object") {
                             for (let respsumIndex in respItem) {
+                                 // Decode base64 encoded results
                                 this.summary.info[respsumIndex] = window.atob(respItem[respsumIndex]);
                             }
                         } else {
                             if (respItem.length < 15) {
                                 this.summary[respIndex] = line_chart_404;
                             } else {
-                                this.summary[respIndex] = "data:image/svg+xml;base64," + encodeURIComponent(respItem);
+                               this.summary[respIndex] = "data:image/svg+xml;base64," + encodeURIComponent(respItem);
                             }
                         }
                     }
@@ -206,10 +221,22 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+
+.plot-placeholder {
+    text-align: center;
+    > i {
+        font-size: 256px;
+        color: #333333;
+    }
+}
+
 .code-output {
-    max-width: 90%;
-    height: 300px;
-    overflow: auto;
-    font-size: 11px;
+    overflow: hidden;
+    font-size: 12px;
+    pre {
+        code{
+            max-height: 300px;
+        }
+    }
 }
 </style>

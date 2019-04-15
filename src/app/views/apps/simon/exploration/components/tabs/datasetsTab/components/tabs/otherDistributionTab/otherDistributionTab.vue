@@ -64,6 +64,7 @@ export default {
             fetchDatasetStatisticsOther({ resampleID: this.selectedFeatureSetId, column_name: this.columnName })
                 .then(response => {
                     console.log(response);
+                    this.statisticalData = [1, 2, 3, 4, 5];
                     if (response.data.status === "success") {
                         this.statisticalData = [1, 2, 3, 4, 5];
                         console.log("==> TYPES: Boolean DONE!");
@@ -79,4 +80,6 @@ export default {
     }
 };
 </script>
-<style rel="stylesheet/scss" lang="scss"></style>
+<style rel="stylesheet/scss" lang="scss" scoped>
+    
+</style>

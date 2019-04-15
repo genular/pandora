@@ -4,9 +4,9 @@
             <el-col :span="24">
                 <el-tooltip style="float: left;" placement="top" v-if="selectedQueueIDs">
                     <div slot="content">{{ $t("globals.buttons.copy") }}</div>
-                    <el-button style="cursor: copy;" type="success" size="small" @click="copyToClipboard(selectedQueueIDs, $event)"
-                        >{{ $t("views.apps.simon.exploration.header.selected_queue") }}: {{ selectedQueueIDs }}</el-button
-                    >
+                    <el-button style="cursor: copy; float: left;border: 0 none;background-color: #e3006e; color: #FFFFFF;" size="small" @click="copyToClipboard(selectedQueueIDs, $event)">
+                        {{ $t("views.apps.simon.exploration.header.selected_queue") }}: {{ selectedQueueIDs }}
+                    </el-button>
                 </el-tooltip>
                 <el-tooltip style="float: left;" placement="top" v-if="selectedFeatureSetId > 0">
                     <div slot="content">{{ $t("globals.buttons.copy") }}</div>
@@ -28,15 +28,19 @@
                     size="small"
                     :placeholder="$t('globals.performanceVariables.placeholder')"
                 >
-                    <el-option v-for="item in performanceVariables" :key="item" :value="item" :label="$t(['globals.performanceVariables.options.', item, '.title'].join(''))">
+                    <el-option
+                        v-for="item in jobDetailsData.performaceVariables"
+                        :key="item"
+                        :value="item"
+                        :label="$t(['globals.performanceVariables.options.', item, '.title'].join(''))"
+                    >
                         <span>{{ $t("globals.performanceVariables.options." + item + ".title") }}</span>
                     </el-option>
                 </el-select>
             </el-col>
         </el-row>
-
         <br />
-        <el-tabs v-model="activeTabName" v-if="jobDetailsData.resamplesList.length > 0" type="border-card" class="tab-container">
+        <el-tabs v-model="activeTabName" type="border-card" class="tab-container">
             <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key="item.key" :name="item.key" :disabled="isTabDisabled(item)">
                 <span slot="label"><i :class="item.icon"></i> {{ item.label }}</span>
                 <keep-alive>
@@ -61,7 +65,7 @@ export default {
         return {
             explorationLoading: true,
             tabMapOptions: [
-                { label: "Datasets", key: "datasetsTab", icon: "el-icon-date" },
+                { label: "Datasets", key: "datasetsTab", icon: "el-icon-date", restriction: ["jobDetailsData", "resamplesList"] },
                 {
                     label: "Correlation",
                     key: "correlationTab",
@@ -75,13 +79,16 @@ export default {
                     restriction: "selectedFeatureSetId"
                 }
             ],
-            performanceVariables: [],
 
             jobDetailsData: {
+                // Returned from server
                 resamplesList: [],
-                resampleModels: [],
                 modelsList: [],
                 queueDetails: {},
+                performaceVariables: [],
+                // In the JS
+                resampleModels: [],
+                // Array of selected performaceVariables
                 performance: []
             }
         };
@@ -93,7 +100,6 @@ export default {
     activated() {
         console.log("activated: exploration, reseting variables");
         this.resetExploration();
-
     },
     computed: {
         activeTabName: {
@@ -130,48 +136,78 @@ export default {
         }
     },
     methods: {
-        resetExploration(){
-            // Always reset on activation variables
-            // Reset any previusly selected resample
-            this.selectedFeatureSetId = 0;
-            this.jobDetailsData = {
-                resamplesList: [],
-                resampleModels: [],
-                modelsList: [],
-                queueDetails: {},
-                performance: []
-            };
-            // Reset any models for the resample
-            this.displayModels = [];
-            // Reset any selected models for the resample
-            this.selectedModelsIDs = [];
-
-            // On initial opening fetch resamples from server
-            this.getDatasetResamples();
+        resetExploration() {
+            // Reset variables if new queue is selected
+            if (typeof this.jobDetailsData.queueDetails.id !== "undefined") {
+                // 
+                if (this.selectedQueueIDs !== this.jobDetailsData.queueDetails.id) {
+                    console.log("Reseting exploration variables");
+                    this.selectedFeatureSetId = 0;
+                    this.jobDetailsData = {
+                        // Returned from server
+                        resamplesList: [],
+                        modelsList: [],
+                        queueDetails: {},
+                        performaceVariables: [],
+                        // In the JS
+                        resampleModels: [],
+                        // Array of selected performaceVariables
+                        performance: []
+                    };
+                    // Reset any models for the resample
+                    this.displayModels = [];
+                    // Reset any selected models for the resample
+                    this.selectedModelsIDs = [];
+                    this.getDatasetResamples();
+                }
+            } else {
+                this.selectedFeatureSetId = 0;
+                this.getDatasetResamples();
+            }
         },
         isTabDisabled(item) {
             let check = false;
             if (item.restriction !== undefined) {
-                if (this[item.restriction] !== undefined) {
-                    if (Number.isInteger(this[item.restriction])) {
-                        if (this[item.restriction] < 1) {
+                let restrictionVariable = false;
+
+                if (Array.isArray(item.restriction)) {
+                    let varCount = 0;
+                    item.restriction.forEach(element => {
+                        if (varCount === 0) {
+                            if (this[item.restriction] !== undefined) {
+                                restrictionVariable = this[item.restriction];
+                            }
+                        } else {
+                            if (restrictionVariable[item.restriction] !== undefined) {
+                                restrictionVariable = restrictionVariable[item.restriction];
+                            }
+                        }
+                        varCount++;
+                    });
+                } else if (this[item.restriction] !== undefined) {
+                    restrictionVariable = this[item.restriction];
+                }
+
+                if (restrictionVariable !== false) {
+                    if (Number.isInteger(restrictionVariable)) {
+                        if (restrictionVariable < 1) {
                             check = true;
                         }
-                    } else if (Array.isArray(this[item.restriction])) {
+                    } else if (Array.isArray(restrictionVariable)) {
                         let more_or_eq = 0;
                         // If there is nothing in array TAB is always disabled
-                        if (this[item.restriction].length < 1) {
+                        if (restrictionVariable.length < 1) {
                             check = true;
                             return check;
                         }
                         if (item.restriction_details !== undefined) {
-                            if (this[item.restriction].length < item.restriction_details) {
+                            if (restrictionVariable.length < item.restriction_details) {
                                 check = true;
                                 return check;
                             }
                         }
                     } else {
-                        check = this[item.restriction] === 0;
+                        check = restrictionVariable === 0;
                     }
                 }
             }
@@ -183,11 +219,13 @@ export default {
             ApiFetchQueueExplorationDetails({ queueID: this.selectedQueueIDs, measurements: [] })
                 .then(response => {
                     if (response.data.success === true) {
-                        this.jobDetailsData.resamplesList = response.data.message.resamplesList;
-                        this.jobDetailsData.queueDetails = response.data.message.queueDetails;
-                        this.jobDetailsData.modelsList = response.data.message.modelsList;
 
-                        this.performanceVariables = response.data.message.performaceVariables;
+                        this.jobDetailsData.resamplesList = response.data.message.resamplesList;
+                        this.jobDetailsData.modelsList = response.data.message.modelsList;
+                        this.jobDetailsData.queueDetails = response.data.message.queueDetails;
+                        this.jobDetailsData.performaceVariables = response.data.message.performaceVariables;
+
+                        console.log("Trying to preselect performance variables:");
                         // Preselect if nothing selected.. eg. first run
                         if (this.jobDetailsData.performance.length < 1) {
                             this.jobDetailsData.performance = ["Accuracy", "PredictAUC", "Sensitivity", "Specificity", "Recall"];
@@ -200,11 +238,6 @@ export default {
                             duration: 10000,
                             showClose: true
                         });
-
-                        this.selectedQueueIDs = "";
-                        this.jobDetailsData.resamplesList = [];
-                        this.selectedFeatureSetId = 0;
-                        this.selectedModelsIDs = [];
 
                         this.$router.push({
                             path: "/dashboard"
