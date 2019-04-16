@@ -93,7 +93,7 @@ export default {
                             }
                         },
                         saveAsImage: {
-                            type: "svg",
+                            type: "png",
                             title: "save as image",
                             name: "chart"
                         },

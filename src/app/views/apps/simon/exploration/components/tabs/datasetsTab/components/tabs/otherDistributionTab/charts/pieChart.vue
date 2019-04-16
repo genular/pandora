@@ -27,7 +27,8 @@ export default {
     },
     data() {
         return {
-            chart: null
+            chart: null,
+            __resizeHanlder: null
         };
     },
     mounted() {
@@ -59,19 +60,13 @@ export default {
     },
     methods: {
         initChart() {
-            this.chart = echarts.init(this.$el, "macarons", { renderer: "svg" });
-
-            console.log(this.chart);
-
+            this.chart = echarts.init(this.$el, "macarons");
+            
             this.chart.setOption({
+                legend: {},
                 tooltip: {
                     trigger: "item",
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
-                },
-                legend: {
-                    left: "center",
-                    bottom: "10",
-                    data: ["Male", "Female"]
                 },
                 toolbox: {
                     show: true,
@@ -81,7 +76,7 @@ export default {
                     top: -10,
                     feature: {
                         saveAsImage: {
-                            type: "svg",
+                            type: "png",
                             title: "save as image",
                             name: "chart"
                         },
@@ -96,14 +91,32 @@ export default {
                 },
                 series: [
                     {
-                        name: "Demographics data",
+                        name: "min distribution",
                         type: "pie",
-                        roseType: "radius",
-                        radius: "55%",
-                        center: ["50%", "50%"],
-                        data: [{ value: 32, name: "Male" }, { value: 43, name: "Female" }],
-                        animationEasing: "cubicInOut",
-                        animationDuration: 2600
+                        radius: 60,
+                        center: ["25%", "30%"],
+                        data: [{ value: 25, name: "Training" }, { value: 75, name: "Testing" }]
+                    },
+                    {
+                        name: "max distribution",
+                        type: "pie",
+                        radius: 60,
+                        center: ["75%", "30%"],
+                        data: [{ value: 50, name: "Training" }, { value: 50, name: "Testing" }]
+                    },
+                    {
+                        name: "median distribution",
+                        type: "pie",
+                        radius: 60,
+                        center: ["25%", "75%"],
+                        data: [{ value: 75, name: "Training" }, { value: 25, name: "Testing" }]
+                    },
+                    {
+                        name: "unique values",
+                        type: "pie",
+                        radius: 60,
+                        center: ["25%", "75%"],
+                        data: [{ value: 50, name: "Training" }, { value: 50, name: "Testing" }]
                     }
                 ]
             });

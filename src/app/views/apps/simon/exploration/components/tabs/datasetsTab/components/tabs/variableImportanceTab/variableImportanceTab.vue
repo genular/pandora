@@ -65,7 +65,10 @@
 
                         <el-table-column fixed label="Feature">
                             <template slot-scope="scope">
-                                <span>{{ scope.row.original }}</span>
+                                <el-tooltip class="item" effect="dark" placement="top-start">
+                                    <div slot="content">This feature accounts for {{ scope.row.score_perc }}% of this model's variance</div>
+                                    <span>{{ scope.row.original }}</span>
+                                </el-tooltip>
                             </template>
                         </el-table-column>
 
@@ -156,7 +159,7 @@ export default {
             paginateVariableImpData: {
                 page: 1,
                 page_size: 20,
-                sort: true,
+                sort: false,
                 sort_by: "score_perc",
                 total_items: null
             },

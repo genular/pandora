@@ -4,7 +4,11 @@
             <el-col :span="24">
                 <el-tooltip style="float: left;" placement="top" v-if="selectedQueueIDs">
                     <div slot="content">{{ $t("globals.buttons.copy") }}</div>
-                    <el-button style="cursor: copy; float: left;border: 0 none;background-color: #e3006e; color: #FFFFFF;" size="small" @click="copyToClipboard(selectedQueueIDs, $event)">
+                    <el-button
+                        style="cursor: copy; float: left;border: 0 none;background-color: #e3006e; color: #FFFFFF;"
+                        size="small"
+                        @click="copyToClipboard(selectedQueueIDs, $event)"
+                    >
                         {{ $t("views.apps.simon.exploration.header.selected_queue") }}: {{ selectedQueueIDs }}
                     </el-button>
                 </el-tooltip>
@@ -93,14 +97,6 @@ export default {
             }
         };
     },
-    mounted() {
-        console.log("mounted: exploration");
-        this.resetExploration();
-    },
-    activated() {
-        console.log("activated: exploration, reseting variables");
-        this.resetExploration();
-    },
     computed: {
         activeTabName: {
             get() {
@@ -135,11 +131,20 @@ export default {
             }
         }
     },
+    mounted() {
+        console.log("mounted: exploration");
+        this.resetExploration();
+    },
+    activated() {
+        console.log("activated: exploration, reseting variables");
+        this.resetExploration();
+    },
     methods: {
         resetExploration() {
+            this.explorationLoading = true;
             // Reset variables if new queue is selected
             if (typeof this.jobDetailsData.queueDetails.id !== "undefined") {
-                // 
+                //
                 if (this.selectedQueueIDs !== this.jobDetailsData.queueDetails.id) {
                     console.log("Reseting exploration variables");
                     this.selectedFeatureSetId = 0;
@@ -154,16 +159,17 @@ export default {
                         // Array of selected performaceVariables
                         performance: []
                     };
-                    // Reset any models for the resample
-                    this.displayModels = [];
                     // Reset any selected models for the resample
                     this.selectedModelsIDs = [];
+                    this.activeTabName = "datasetsTab";
                     this.getDatasetResamples();
                 }
             } else {
                 this.selectedFeatureSetId = 0;
+                this.activeTabName = "datasetsTab";
                 this.getDatasetResamples();
             }
+            this.explorationLoading = false;
         },
         isTabDisabled(item) {
             let check = false;
@@ -215,11 +221,10 @@ export default {
         },
         getDatasetResamples() {
             console.log("getDatasetResamples: " + this.selectedQueueIDs);
-
+            this.explorationLoading = true;
             ApiFetchQueueExplorationDetails({ queueID: this.selectedQueueIDs, measurements: [] })
                 .then(response => {
                     if (response.data.success === true) {
-
                         this.jobDetailsData.resamplesList = response.data.message.resamplesList;
                         this.jobDetailsData.modelsList = response.data.message.modelsList;
                         this.jobDetailsData.queueDetails = response.data.message.queueDetails;

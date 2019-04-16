@@ -6,7 +6,7 @@
     "private": true,
     "author": "Ivan Tomic <info@genular.com>",
     "copyright": "Copyright © 2018 Ivan Tomic <info@genular.com> All rights reserved.",
-    "homepage": "http://genular.com",
+    "homepage": "http://genular.org",
     "repository": "https://github.com/genular/simon-frontend",
     "browserslist": "since 2018",
     "build": {

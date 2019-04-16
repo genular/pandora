@@ -807,7 +807,7 @@ export default {
         },
         // Initialize Pagination of Features
         paginateResamples(pageNumber) {
-            if(this.selectedFeatureSetId <= 0){
+            if (this.selectedFeatureSetId <= 0) {
                 this.$refs.resamplesTable.clearSelection();
             }
             this.paginateResamplesData.currentPage = pageNumber;
@@ -968,6 +968,11 @@ export default {
 
                 this.$nextTick(() => {
                     this.datasetsTabMapOptions = this.datasetsTabMapOptionsTemplate;
+                    if (this.selectedModelsIDs.length === 0) {
+                        this.displayModels = [];
+                        this.$refs.resamplesTable.setCurrentRow();
+                        this.$refs.resamplesTable.clearSelection();
+                    }
                 });
             }
         }

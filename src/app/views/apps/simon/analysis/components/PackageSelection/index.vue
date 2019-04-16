@@ -8,6 +8,15 @@
         </el-row>
         -->
         <el-row>
+            <el-col :span="24">
+                <el-checkbox-group v-model="filter.checkBoxSelected" class="checkbox-filters" @change="filterPackages">
+                    <el-checkbox v-for="item in filter.checkBoxAvaliable" :label="item.key" :key="item.key" :disabled="item.disabled">
+                        {{ item.label }}
+                    </el-checkbox>
+                </el-checkbox-group>
+            </el-col>
+        </el-row>
+        <el-row>
             <el-col :span="11">
                 <el-card class="box-card">
                     <div slot="header">
@@ -17,19 +26,25 @@
                     </div>
                     <div class="box-item">
                         <div class="search-packages">
-                            <el-autocomplete
-                                value-key="name"
-                                prefix-icon="el-icon-search"
+                            <el-select
+                                class="flud-selects"
+                                v-model="packagesSearch.input"
+                                value-key="internal_id"
+                                :clearable="true"
+                                placeholder="type to search"
+                                filterable
+                                remote
+                                :remote-method="querySearchAvaliable"
+                                :default-first-option="true"
                                 popper-class="packages-autocomplete"
-                                v-model="search.available"
-                                :fetch-suggestions="querySearchAvaliable"
-                                @select="handleAutoselectClick"
+                                @change="selectPackage"
+                                :loading="packagesSearch.loading"
                             >
-                                <template slot-scope="props">
-                                    <div class="name" style="float: left;">{{ props.item.label }}</div>
-                                    <span class="label" style="float: right;">{{ props.item.internal_id }}</span>
-                                </template>
-                            </el-autocomplete>
+                                <el-option v-for="item in packagesSearch.results" :key="item.internal_id" :label="item.label" :value="item">
+                                    <div class="name" style="float: left;">{{ item.label }}</div>
+                                    <span class="label" style="float: right;">{{ item.internal_id }}</span>
+                                </el-option>
+                            </el-select>
                         </div>
                         <div class="draggable-containers">
                             <draggable
@@ -43,7 +58,7 @@
                                 @end="isDragging = false"
                             >
                                 <el-collapse-item
-                                    :class="item.disabled ? 'draggable-item disabled' : 'draggable-item'"
+                                    :class="item.disabled ? 'draggable-item disabled' : 'draggable-item animated flipInX'"
                                     v-for="(item, index) in avaliablePackages"
                                     :name="index"
                                     :key="item.id"
@@ -192,7 +207,7 @@
 </template>
 <script>
 import draggable from "vuedraggable";
-import { findObjectIndexByKey, removeDuplicateObjectsByKey, orderBy } from "@/utils/helpers";
+import { findObjectIndexByKey, removeDuplicateObjectsByKey, orderBy, debounce } from "@/utils/helpers";
 
 export default {
     name: "PackageSelection",
@@ -208,12 +223,36 @@ export default {
             delayedDragging: false,
             /** Models for HTML filters */
             filter: {
-                allPackages: false
+                allPackages: false,
+                checkBoxAvaliable: [
+                    {
+                        label: "Classification",
+                        key: "classification",
+                        disabled: true
+                    },
+                    {
+                        label: "Regression",
+                        key: "regression",
+                        disabled: true
+                    },
+                    {
+                        label: "Time-series",
+                        key: "timeseries",
+                        disabled: true
+                    },
+                    {
+                        label: "Multiple outcomes",
+                        key: "multipleoutcomes",
+                        disabled: true
+                    }
+                ],
+                checkBoxSelected: ["classification", "regression", "timeseries", "multipleoutcomes"]
             },
             /** Search for available packages */
-            search: {
-                available: "",
-                selected: ""
+            packagesSearch: {
+                input: "",
+                loading: false,
+                results: []
             }
         };
     },
@@ -285,36 +324,51 @@ export default {
                 console.log(this.selectedPackages[activeTabs[0]].label);
             }
         },
-        querySearchAvaliable(queryString, cb) {
+        querySearchAvaliable: debounce(function(queryString) {
+            this.packagesSearch.loading = true;
             let results = [];
-            if (typeof queryString !== "undefined" && this.avaliablePackages.length > 0) {
-                queryString = queryString.split(" ");
-                results = this.avaliablePackages.filter(function(item) {
-                    return queryString.every(function(el) {
-                        return item.internal_id.indexOf(el) > -1;
-                    });
-                });
-            } else if (typeof queryString === "undefined" && this.avaliablePackages.length > 0) {
+
+            if (typeof queryString === "undefined" || queryString.length < 1) {
                 results = this.avaliablePackages.slice(0, 25);
+            } else {
+                if (this.avaliablePackages.length > 0) {
+                    queryString = queryString.toLowerCase().split(" ");
+                    results = this.avaliablePackages.filter(function(item) {
+                        return queryString.every(function(el) {
+                            const searchText = item.internal_id + item.label + JSON.stringify(item.tags) + JSON.stringify(item.citations);
+                            return searchText.toLowerCase().indexOf(el) > -1;
+                        });
+                    });
+                }
             }
-            // call callback function to return suggestions
-            cb(results);
+            this.packagesSearch.results = results;
+            this.packagesSearch.loading = false;
+        }, 500),
+        filterPackages(currentSelection) {
+            // Loop this.avaliablePackages and set disabled flag!
         },
-        createFilter(queryString) {
-            return packages => {
-                return packages.internal_id.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
-            };
-        },
-        handleAutoselectClick(item) {
-            const itemIndex = findObjectIndexByKey(this.avaliablePackages, "id", item.id);
-            if (itemIndex > -1) {
-                this.avaliablePackages.splice(itemIndex, 1);
+        selectPackage(item) {
+            if (typeof item === "object") {
+                this.packagesSearch.input = "";
+
+                const itemIndexAvaliable = findObjectIndexByKey(this.avaliablePackages, "id", item.id);
+                const itemIndexSearch = findObjectIndexByKey(this.packagesSearch.results, "id", item.id);
+
+                if (itemIndexSearch > -1) {
+                    this.packagesSearch.results.splice(itemIndexSearch, 1);
+                }
+
+                if (itemIndexAvaliable > -1) {
+                    this.avaliablePackages.splice(itemIndexAvaliable, 1);
+                }
+
+                this.selectedPackages.unshift(item);
+
+                this.$message({
+                    message: item.label + " selected!",
+                    type: "success"
+                });
             }
-            this.selectedPackages.unshift(item);
-            this.$message({
-                message: item.label + " selected!",
-                type: "success"
-            });
         },
         onMove({ relatedContext, draggedContext }) {
             const relatedElement = relatedContext.element;
@@ -362,6 +416,10 @@ export default {
 @import "~scss_vars";
 
 .simon-package-selection {
+    .checkbox-filters {
+        margin-top: 20px;
+        margin-left: 2px;
+    }
     .box-card {
         margin-top: 20px;
     }
@@ -378,8 +436,9 @@ export default {
     .search-packages {
         clear: both;
 
-        .el-autocomplete {
+        .flud-selects {
             width: 100%;
+            overflow: hidden;
         }
     }
     .draggable-containers {
@@ -481,10 +540,12 @@ export default {
         .name {
             text-overflow: ellipsis;
             overflow: hidden;
+            margin-left: 15px;
         }
         .label {
             font-size: 12px;
             color: #b4b4b4;
+            margin-right: 15px;
         }
     }
 }
