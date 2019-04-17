@@ -74,6 +74,9 @@
 										"summaryTab": {
 											"title": "Summary"
 										},
+										"modelDetailsTab": {
+											"title": "Model Summary"
+										},
 										"samrAnalysisTab": {
 											"title": "SAM"
 										},

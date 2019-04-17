@@ -30,6 +30,7 @@
                     multiple
                     filterable
                     size="small"
+                    :loading="explorationLoading"
                     :placeholder="$t('globals.performanceVariables.placeholder')"
                 >
                     <el-option
@@ -141,10 +142,9 @@ export default {
     },
     methods: {
         resetExploration() {
-            this.explorationLoading = true;
-            // Reset variables if new queue is selected
+            // Check if new queue is selected if we already have loaded queue details
             if (typeof this.jobDetailsData.queueDetails.id !== "undefined") {
-                //
+                // If completely new queue is selected
                 if (this.selectedQueueIDs !== this.jobDetailsData.queueDetails.id) {
                     console.log("Reseting exploration variables");
                     this.selectedFeatureSetId = 0;
@@ -165,11 +165,51 @@ export default {
                     this.getDatasetResamples();
                 }
             } else {
+                console.log("Getting queue details for first time:");
+                // in case user is back on page and he didn't changed selection
                 this.selectedFeatureSetId = 0;
+                // Reset any selected models for the resample
+                this.selectedModelsIDs = [];
                 this.activeTabName = "datasetsTab";
+                
                 this.getDatasetResamples();
             }
-            this.explorationLoading = false;
+        },
+        getDatasetResamples() {
+            console.log("getDatasetResamples: " + this.selectedQueueIDs);
+
+            this.explorationLoading = true;
+            ApiFetchQueueExplorationDetails({ queueID: this.selectedQueueIDs, measurements: [] })
+                .then(response => {
+                    if (response.data.success === true) {
+                        this.jobDetailsData.resamplesList = response.data.message.resamplesList;
+                        this.jobDetailsData.modelsList = response.data.message.modelsList;
+                        this.jobDetailsData.queueDetails = response.data.message.queueDetails;
+                        this.jobDetailsData.performaceVariables = response.data.message.performaceVariables;
+
+                        console.log("Trying to preselect performance variables:");
+                        // Preselect if nothing selected.. eg. first run
+                        if (this.jobDetailsData.performance.length < 1) {
+                            this.jobDetailsData.performance = ["Accuracy", "PredictAUC", "Sensitivity", "Specificity", "Recall"];
+                        }
+                    } else {
+                        // Something went wrong, cannot fetch details from Server
+                        this.$message({
+                            message: this.$t("globals.errors.request_general"),
+                            type: "error",
+                            duration: 10000,
+                            showClose: true
+                        });
+
+                        this.$router.push({
+                            path: "/dashboard"
+                        });
+                    }
+                    this.explorationLoading = false;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         },
         isTabDisabled(item) {
             let check = false;
@@ -218,41 +258,6 @@ export default {
                 }
             }
             return check;
-        },
-        getDatasetResamples() {
-            console.log("getDatasetResamples: " + this.selectedQueueIDs);
-            this.explorationLoading = true;
-            ApiFetchQueueExplorationDetails({ queueID: this.selectedQueueIDs, measurements: [] })
-                .then(response => {
-                    if (response.data.success === true) {
-                        this.jobDetailsData.resamplesList = response.data.message.resamplesList;
-                        this.jobDetailsData.modelsList = response.data.message.modelsList;
-                        this.jobDetailsData.queueDetails = response.data.message.queueDetails;
-                        this.jobDetailsData.performaceVariables = response.data.message.performaceVariables;
-
-                        console.log("Trying to preselect performance variables:");
-                        // Preselect if nothing selected.. eg. first run
-                        if (this.jobDetailsData.performance.length < 1) {
-                            this.jobDetailsData.performance = ["Accuracy", "PredictAUC", "Sensitivity", "Specificity", "Recall"];
-                        }
-                    } else {
-                        // Something went wrong, cannot fetch details from Server
-                        this.$message({
-                            message: this.$t("globals.errors.request_general"),
-                            type: "error",
-                            duration: 10000,
-                            showClose: true
-                        });
-
-                        this.$router.push({
-                            path: "/dashboard"
-                        });
-                    }
-                    this.explorationLoading = false;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
         },
         copyToClipboard(content, event) {
             clipboard(content, event);

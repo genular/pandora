@@ -10,18 +10,18 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item>
-                            <el-switch v-model="paginateVariableImpData.sort" @change="handleTableFilter" active-color="#13ce66" inactive-color="#ff4949" active-text="ASC" inactive-text="DESC"> </el-switch>
+                            <el-switch
+                                v-model="paginateVariableImpData.sort"
+                                @change="handleTableFilter"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                                active-text="ASC"
+                                inactive-text="DESC"
+                            >
+                            </el-switch>
                         </el-form-item>
                         <el-form-item style="float: right;">
-                            <el-button
-                                size="mini"
-                                class="filter-item"
-                                type="success"
-                                :loading="downloadLoading"
-                                v-waves
-                                icon="el-icon-download"
-                                @click="downloadTable"
-                            ></el-button>
+                            <el-button size="mini" class="filter-item" type="success" :loading="downloadLoading" v-waves icon="el-icon-download" @click="downloadTable"></el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -212,12 +212,15 @@ export default {
     },
     mounted() {
         console.log("mounted: variableImportanceTab: " + this.isTabDisabled);
+        if (this.listLoading === false && this.displayVariableImp.length === 0) {
+            this.handleFetchVariableImp();
+        }
     },
     methods: {
         deselectVariableImp(feature) {
             console.log("deselectVariableImp");
             console.log(feature);
-            
+
             // Remove deselected TAG feature from selected features
             this.selectedVariableImp = this.selectedVariableImp.filter(item => {
                 return item.feature_name !== feature.feature_name;
@@ -311,7 +314,7 @@ export default {
                             let models = modelsValues.filter((value, index, self) => {
                                 return self.indexOf(value) === index;
                             });
-                            models = models.join('_');
+                            models = models.join("_");
 
                             excel.export_json_to_excel(tHeader, this.formatJson(filterVal, response.data.data), "varImp_resampleID_" + this.selectedFeatureSetId + "_" + models);
                             this.downloadLoading = false;

@@ -348,7 +348,7 @@
             <el-col :span="24" style="margin-top: 15px;">
                 <el-tabs v-model="activeDatasetSubTabName" v-if="selectedFeatureSetId > 0" type="card">
                     <!-- Don't display Tab Pane if we have only one Tab to display and he doesn't satisfy display criteria -->
-                    <el-tab-pane v-for="item in datasetsTabMapOptions" :label="item.label" :key="item.key" :name="item.key" :disabled="isTabDisabled(item)">
+                    <el-tab-pane v-for="item in datasetsTabMapOptions"  v-if="!isTabDisabled(item)" :label="item.label" :key="item.key" :name="item.key" :disabled="isTabDisabled(item)">
                         <span slot="label"><i :class="item.icon"></i> {{ item.label }}</span>
                         <keep-alive>
                             <sub-tab-pane v-if="activeDatasetSubTabName == item.key" :currentView="item.view" :columnName="item.key" :isTabDisabled="isTabDisabled(item)">
@@ -407,7 +407,7 @@ export default {
                     key: "varImp",
                     icon: "fa fa-balance-scale",
                     restriction: "selectedModels",
-                    restriction_details: "1"
+                    restriction_details: -1
                     // If restriction (selectedModels) is array this is more or eq.. >=1 it will pass
                 },
                 {
@@ -416,7 +416,17 @@ export default {
                     key: "summaryTab",
                     icon: "fa fa-balance-scale",
                     restriction: "selectedModels",
-                    restriction_details: "2"
+                    restriction_details: 2
+                },
+                {
+                    label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title"),
+                    view: "modelDetailsTab",
+                    key: "modelDetailsTab",
+                    icon: "fa fa-balance-scale",
+                    restriction: "selectedModels",
+                    // restriction_details: 1
+                    // Temp disable tab,
+                    restriction_details: 10000
                 },
                 {
                     label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title"),
@@ -424,14 +434,17 @@ export default {
                     key: "samrAnalysisTab",
                     icon: "fa fa-balance-scale",
                     restriction: "selectedFeatureSetId"
-                }
-                /*,{
+                },
+                {
                     label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title"),
                     view: "catBoostTab",
                     key: "catBoostTab",
                     icon: "fa fa-balance-scale",
-                    restriction: "selectedFeatureSetId"
-                }*/
+                    // restriction: "selectedFeatureSetId"
+                    // Temp disable tab
+                    restriction: "selectedModels",
+                    restriction_details: 10000
+                }
             ],
             jobClassesDisaply: [],
             selectedClasses: []
@@ -737,30 +750,59 @@ export default {
                 }
             }
         },
-        // Check if Tab should be disabled based on restriction property in datasetsTabMapOptions
+        /**
+         * Check if Tab should be disabled based on restriction property in datasetsTabMapOptions
+         * Returns true is tab is disabled and false if tab is enabled
+         * @param  {[type]}  item [description]
+         * @return {Boolean}      [description]
+         */
         isTabDisabled(item) {
             let check = false;
             if (item.restriction !== undefined) {
-                if (this[item.restriction] !== undefined) {
-                    if (Number.isInteger(this[item.restriction])) {
-                        if (this[item.restriction] < 1) {
+                let restrictionVariable = false;
+                // Restriction can be an array
+                // Example: restriction: ["jobDetailsData", "resamplesList"]
+                if (Array.isArray(item.restriction)) {
+                    let varCount = 0;
+                    item.restriction.forEach(element => {
+                        if (varCount === 0) {
+                            if (this[item.restriction] !== undefined) {
+                                restrictionVariable = this[item.restriction];
+                            }
+                        } else {
+                            if (restrictionVariable[item.restriction] !== undefined) {
+                                restrictionVariable = restrictionVariable[item.restriction];
+                            }
+                        }
+                        varCount++;
+                    });
+                } else if (this[item.restriction] !== undefined) {
+                    restrictionVariable = this[item.restriction];
+                }
+
+                if (restrictionVariable !== false) {
+                    // If restriction variable is Integer disable tab if variable value is 0
+                    if (Number.isInteger(restrictionVariable)) {
+                        if (restrictionVariable < 1) {
                             check = true;
                         }
-                    } else if (Array.isArray(this[item.restriction])) {
+                        // If restriction variable is array
+                    } else if (Array.isArray(restrictionVariable)) {
                         let more_or_eq = 0;
-                        // If there is nothing in array TAB is always disabled
-                        if (this[item.restriction].length < 1) {
+                        // If there is nothing in array disable tab
+                        if (restrictionVariable.length < 1) {
                             check = true;
                             return check;
                         }
+                        // Check for restriction details
                         if (item.restriction_details !== undefined) {
-                            if (this[item.restriction].length < item.restriction_details) {
+                            if (restrictionVariable.length < item.restriction_details) {
                                 check = true;
                                 return check;
                             }
                         }
                     } else {
-                        check = this[item.restriction] === 0;
+                        check = restrictionVariable === 0;
                     }
                 }
             }
@@ -972,6 +1014,7 @@ export default {
                         this.displayModels = [];
                         this.$refs.resamplesTable.setCurrentRow();
                         this.$refs.resamplesTable.clearSelection();
+                        false;
                     }
                 });
             }

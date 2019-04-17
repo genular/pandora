@@ -28,9 +28,9 @@
                 </dropzone>
             </el-col>
         </el-row>
-        <el-row type="flex" align="top">
+        <el-row type="flex" align="top" style="padding-top: 10px;text-align: right;">
             <el-col :span="24">
-                <el-select @change="fetchReadFilesInDirectory" style="width: 140px" class="filter-item" v-model="fetchSettings.args.sort">
+                <el-select @change="fetchReadFilesInDirectory" style="width: 140px; padding-right: 10px;" class="filter-item" v-model="fetchSettings.args.sort">
                     <el-option v-for="item in fetchSettings.options.sort" :key="item.key" :label="item.label" :value="item.key"> </el-option>
                 </el-select>
                  <el-switch v-model="fetchSettings.args.order" @change="fetchReadFilesInDirectory" active-color="#13ce66" inactive-color="#ff4949" active-text="ASC" inactive-text="DESC"> </el-switch>

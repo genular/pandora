@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2018-03-07 15:53:55
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2018-03-23 09:42:25
+* @Last Modified time: 2019-04-17 14:42:27
 */
 
 export { default as variableImportanceTab } from "./variableImportanceTab/variableImportanceTab.vue";
@@ -13,3 +13,4 @@ export { default as samrAnalysisTab } from "./samrAnalysisTab/samrAnalysisTab.vu
 export { default as catBoostTab } from "./catBoostTab/catBoostTab.vue";
 
 export { default as summaryTab } from "./summaryTab/summaryTab.vue";
+export { default as modelDetailsTab } from "./modelDetailsTab/modelDetailsTab.vue";
