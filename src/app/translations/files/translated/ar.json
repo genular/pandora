@@ -278,6 +278,7 @@
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.messages.failed_model": "نموذج لم تنتهي بنجاح",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.variableImportanceTab.title": "متغير أهمية",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title": "ملخص",
+  "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title": "نموذج ملخص",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title": "سام",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title": "CatBoost",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.messages.max_classes": "اختيار الحد الأقصى 5 فئات هي المعتمدة حاليا",
