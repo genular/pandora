@@ -315,6 +315,7 @@ export default {
         handleAvaliableChange(activeTabs) {
             console.log("===== handleAvaliableChange =====");
             if (activeTabs.length > 0) {
+                console.log(activeTabs);
                 console.log(this.avaliablePackages[activeTabs[0]].label);
             }
         },
@@ -334,10 +335,14 @@ export default {
                 if (this.avaliablePackages.length > 0) {
                     queryString = queryString.toLowerCase().split(" ");
                     results = this.avaliablePackages.filter(function(item) {
-                        return queryString.every(function(el) {
-                            const searchText = item.internal_id + item.label + JSON.stringify(item.tags) + JSON.stringify(item.citations);
-                            return searchText.toLowerCase().indexOf(el) > -1;
-                        });
+                        if (item.disabled === true) {
+                            return false;
+                        } else {
+                            return queryString.every(function(el) {
+                                const searchText = item.internal_id + item.label + JSON.stringify(item.tags) + JSON.stringify(item.citations);
+                                return searchText.toLowerCase().indexOf(el) > -1;
+                            });
+                        }
                     });
                 }
             }
@@ -390,11 +395,16 @@ export default {
     watch: {
         "filter.allPackages": function(newVal, oldVal) {
             const allPackages = [...this.avaliablePackages, ...this.selectedPackages];
+
             const allPackagesUnique = removeDuplicateObjectsByKey(allPackages, "internal_id");
 
             if (newVal === true) {
-                this.selectedPackages = orderBy(allPackagesUnique, "internal_id");
-                this.avaliablePackages = [];
+                this.selectedPackages = orderBy(allPackagesUnique, "internal_id").filter(function(item) {
+                    return !item.disabled;
+                });
+                this.avaliablePackages = allPackagesUnique.filter(function(item) {
+                    return item.disabled;
+                });
             } else {
                 this.avaliablePackages = orderBy(allPackagesUnique, "internal_id");
                 this.selectedPackages = [];

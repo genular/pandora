@@ -204,13 +204,15 @@ const apps = {
                             status = message;
                         } else if (success === true) {
                             commit("SET_SIMON_ANALYSIS_AVALIABLE_FEATURES", message);
-
+                            console.log("Reseting all available features");
+                            
                             // Reset submission fields from prev analysis
                             commit("SET_SIMON_ANALYSIS_SELECTED_FEATURES", []);
                             commit("SET_SIMON_ANALYSIS_EXCLUDE_FEATURES", []);
                             commit("SET_SIMON_ANALYSIS_SELECTED_OUTCOME", []);
                             commit("SET_SIMON_ANALYSIS_SELECTED_CLASSES", []);
                             commit("SET_SIMON_ANALYSIS_SELECTED_FORMULA", []);
+
                             commit("SET_SIMON_ANALYSIS_SELECTED_PREPROCESS", ["center", "scale"]);
                             commit("SET_SIMON_ANALYSIS_SELECTED_PARITTIONSPLIT", 75);
                             commit("SET_SIMON_ANALYSIS_FILTER_EXTRACTION", false);

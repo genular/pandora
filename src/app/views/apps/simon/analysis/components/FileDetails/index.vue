@@ -385,7 +385,7 @@ export default {
         };
     },
     computed: {
-         /** All available Features */
+        /** All available Features */
         avaliableFeatures: {
             get() {
                 return this.$store.getters.simonAnalysisAvaliableFeatures;
@@ -477,11 +477,11 @@ export default {
             let allSelectedFeatures = [...this.selectedFeatures, ...this.excludeFeatures, ...this.selectedOutcome, ...this.selectedFormula, ...this.selectedClasses];
             let allSelectedFeaturesUnique = [];
 
-            if(allSelectedFeatures.length === 0){
+            if (allSelectedFeatures.length === 0) {
                 allSelectedFeatures = this.avaliableFeatures;
             }
 
-            if(allSelectedFeatures.length > 0){
+            if (allSelectedFeatures.length > 0) {
                 allSelectedFeaturesUnique = removeDuplicateObjectsByKey(allSelectedFeatures, "position");
             }
             console.log("Found total of:  " + allSelectedFeaturesUnique.length + " unique features");
@@ -647,6 +647,10 @@ export default {
                 }
             }
             this.checkFormula();
+        },
+        avaliableFeatures: function(newVal, oldVal) {
+            console.log("Resetting display features");
+            this.avaliableFeaturesDisplay = [];
         }
     }
 };

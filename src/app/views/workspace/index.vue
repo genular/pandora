@@ -28,6 +28,14 @@
                 </dropzone>
             </el-col>
         </el-row>
+        <el-row type="flex" align="top">
+            <el-col :span="24">
+                <el-select @change="fetchReadFilesInDirectory" style="width: 140px" class="filter-item" v-model="fetchSettings.args.sort">
+                    <el-option v-for="item in fetchSettings.options.sort" :key="item.key" :label="item.label" :value="item.key"> </el-option>
+                </el-select>
+                 <el-switch v-model="fetchSettings.args.order" @change="fetchReadFilesInDirectory" active-color="#13ce66" inactive-color="#ff4949" active-text="ASC" inactive-text="DESC"> </el-switch>
+            </el-col>
+        </el-row>
         <el-row class="files-container" type="flex" align="top">
             <el-col :span="24">
                 <div class="dropzone-previews dropzone"></div>
@@ -65,6 +73,15 @@ export default {
             totalFileSize: 0,
             totalFiles: 0,
             directoryFilesHash: "",
+            fetchSettings: {
+                args: {
+                    sort: "name",
+                    order: true
+                },
+                options: {
+                    sort: [{ label: "Name", key: "name" }, { label: "Date", key: "date" }, { label: "Size", key: "filesize" }]
+                }
+            },
             contextmenu: {
                 element: null,
                 visible: false,
@@ -247,7 +264,7 @@ export default {
         },
         fetchReadFilesInDirectory() {
             this.loading = true;
-            ApiReadFilesInUserDirectory({ selectedDirectory: "" })
+            ApiReadFilesInUserDirectory({ selectedDirectory: "", settings: this.fetchSettings.args })
                 .then(response => {
                     if (response.data.success === true) {
                         const directoryFilesHash = md5String(JSON.stringify(response.data.message));
