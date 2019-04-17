@@ -278,7 +278,7 @@
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.messages.failed_model": "Modell nicht erfolgreich abgeschlossen",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.variableImportanceTab.title": "Variable Bedeutung",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title": "Zusammenfassung",
-  "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title": "Model Summary",
+  "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title": "Modell Zusammenfassung",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title": "SAM",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title": "CatBoost",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.messages.max_classes": "Auswahl von maximal 5 Klassen wird derzeit unterstützt",
