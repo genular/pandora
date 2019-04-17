@@ -4,35 +4,14 @@
             <el-col :span="24">
                 <el-form :inline="true">
                     <el-form-item label="Theme">
-                        <el-select 
-                            v-model="settingsForm.theme" 
-                            size="mini" 
-                            placeholder="Select" 
-                            @change="redrawImage" 
-                            style="width:135px;">
-                            <el-option
-                                v-for="item in settingOptions.theme"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id"
-                            >
+                        <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" @change="redrawImage" style="width:135px;">
+                            <el-option v-for="item in settingOptions.theme" :key="item.id" :label="item.name" :value="item.id">
                                 <span style="float: left">{{ item.name }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">
                                     <el-tooltip placement="top">
                                         <div slot="content" style="text-align: center;">
-                                            <img
-                                                :src="
-                                                    'static/images/plot_styles/' +
-                                                        item.id +
-                                                        '_' +
-                                                        settingsForm.colorPalette +
-                                                        '.svg'
-                                                "
-                                                style="height: 125px;"
-                                            /><br />
-                                            <span style="max-width: 125px;width: 150px;display: block;">{{
-                                                item.description
-                                            }}</span>
+                                            <img :src="'static/images/plot_styles/' + item.id + '_' + settingsForm.colorPalette + '.svg'" style="height: 125px;" /><br />
+                                            <span style="max-width: 125px;width: 150px;display: block;">{{ item.description }}</span>
                                         </div>
                                         <span class="el-icon-info"></span>
                                     </el-tooltip>
@@ -42,36 +21,14 @@
                     </el-form-item>
 
                     <el-form-item label="Color">
-                        <el-select
-                            v-model="settingsForm.colorPalette"
-                            @change="redrawImage"
-                            size="mini"
-                            placeholder="Select"
-                            style="width:130px;"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.colorPalette"
-                                :key="item.id"
-                                :label="item.value"
-                                :value="item.id"
-                            >
+                        <el-select v-model="settingsForm.colorPalette" @change="redrawImage" size="mini" placeholder="Select" style="width:130px;">
+                            <el-option v-for="item in settingOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
                                 <span style="float: left">{{ item.value }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">
                                     <el-tooltip placement="top">
                                         <div slot="content" style="text-align: center;">
-                                            <img
-                                                :src="
-                                                    'static/images/plot_styles/' +
-                                                        settingsForm.theme +
-                                                        '_' +
-                                                        item.id +
-                                                        '.svg'
-                                                "
-                                                style="height: 125px;"
-                                            /><br />
-                                            <span style="max-width: 125px;width: 150px;display: block;">
-                                                colorblind: {{ item.colorblind }}
-                                            </span>
+                                            <img :src="'static/images/plot_styles/' + settingsForm.theme + '_' + item.id + '.svg'" style="height: 125px;" /><br />
+                                            <span style="max-width: 125px;width: 150px;display: block;"> colorblind: {{ item.colorblind }} </span>
                                         </div>
                                         <span class="el-icon-info"></span>
                                     </el-tooltip>
@@ -80,56 +37,29 @@
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item label="Fontsize">
-                        <el-input-number
-                            size="mini"
-                            v-model="settingsForm.fontSize"
-                            :step="1"
-                            :max="48"
-                            :min="6"
-                            style="width:100px;"
-                        >
-                        </el-input-number>
+                    <el-form-item label="Font">
+                        <el-input-number size="mini" v-model="settingsForm.fontSize" :step="1" :max="48" :min="6" style="width:100px;"> </el-input-number>
                     </el-form-item>
 
-                    <el-form-item label="Dotsize">
-                        <el-input-number
-                            size="mini"
-                            v-model="settingsForm.dotsize"
-                            :step="0.02"
-                            :max="75"
-                            :min="0.02"
-                            style="width:100px;"
-                        >
-                        </el-input-number>
+                    <el-form-item label="Dot">
+                        <el-input-number size="mini" v-model="settingsForm.dotsize" :step="0.02" :max="75" :min="0.02" style="width:100px;"> </el-input-number>
                     </el-form-item>
 
-                    <el-form-item style="float: right;">
-                        <el-button size="mini" 
-                            type="danger" 
-                            :loading="loadingPlot" 
-                            round 
-                            @click="redrawImage">Redraw Plot</el-button
-                        >
-                    </el-form-item>
-
-                    <el-form-item style="float: right;">
-                        <el-button
-                            size="mini"
-                            type="success"
-                            icon="el-icon-download"
-                            :disabled="renderedImage === false || loadingPlot"
-                            @click="downloadPlotImage"
-                        ></el-button>
+                    <el-form-item label="Ratio">
+                        <el-input-number size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1" style="width:100px;"> </el-input-number>
                     </el-form-item>
                 </el-form>
+            </el-col>
+            <el-col :span="24" style="text-align: right;">
+                <el-button size="mini" type="danger" :loading="loadingPlot" round @click="redrawImage">Redraw Plot</el-button>
+                <el-button size="mini" type="success" icon="el-icon-download" :disabled="renderedImage === false || loadingPlot" @click="downloadPlotImage"></el-button>
             </el-col>
         </el-row>
         <el-row justify="center">
             <el-col :span="24" v-loading="loadingPlot" element-loading-text="Processing..." style="text-align: center;">
                 <!-- SVG Plot placeholder -->
                 <div v-if="renderedImage !== false">
-                    <object id="correlation-svg" class="animated fadeIn" style="margin: 0 auto;" :data="renderedImage" type="image/svg+xml"></object>
+                    <object id="correlation-svg" class="animated fadeIn" style="margin: 0 auto; margin-top: 10px; max-width: 100%;" :data="renderedImage" type="image/svg+xml"></object>
                 </div>
                 <div class="plot-placeholder" v-else>
                     <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
@@ -170,8 +100,9 @@ export default {
             settingsForm: {
                 dotsize: 0.5,
                 fontSize: 12,
-                theme: "theme_minimal",
-                colorPalette: "Purples"
+                theme: "theme_bw",
+                colorPalette: "Set1",
+                aspect_ratio: 1
             }
         };
     },
@@ -205,7 +136,9 @@ export default {
             this.handleFetchGraphVariableImportance();
         },
         downloadPlotImage() {
-            const svgBlob = new Blob([window.atob(decodeURIComponent(this.renderedImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], { type: "image/svg+xml;charset=utf-8" });
+            const svgBlob = new Blob([window.atob(decodeURIComponent(this.renderedImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
+                type: "image/svg+xml;charset=utf-8"
+            });
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
@@ -217,12 +150,7 @@ export default {
         handleFetchGraphVariableImportance() {
             this.loadingPlot = true;
 
-            const plotFileName =
-                md5String(
-                    this.selectedFeatureSetId +
-                        JSON.stringify(this.selectedVariableImp) +
-                        JSON.stringify(this.settingsForm)
-                ) + ".svg";
+            const plotFileName = md5String(this.selectedFeatureSetId + JSON.stringify(this.selectedVariableImp) + JSON.stringify(this.settingsForm)) + ".svg";
 
             fetchGraphVariableImportance({
                 resampleID: this.selectedFeatureSetId,
@@ -230,7 +158,7 @@ export default {
                 variables: JSON.stringify(this.selectedVariableImp.map(item => item.feature_name)),
                 settings: JSON.stringify(this.settingsForm)
             })
-                .then(response => {                  
+                .then(response => {
                     this.renderedImage = "data:image/svg+xml;base64," + encodeURIComponent(response.data.image);
                     this.loadingPlot = false;
                 })

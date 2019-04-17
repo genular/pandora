@@ -216,9 +216,11 @@ export default {
     methods: {
         deselectVariableImp(feature) {
             console.log("deselectVariableImp");
+            console.log(feature);
+            
             // Remove deselected TAG feature from selected features
             this.selectedVariableImp = this.selectedVariableImp.filter(item => {
-                return item.id !== feature.id;
+                return item.feature_name !== feature.feature_name;
             });
             // Uncheck table check-box
             this.$refs.variableImpTable.toggleRowSelection(feature, false);
