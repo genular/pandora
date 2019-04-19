@@ -392,6 +392,7 @@
   "globals.buttons.guide.nextBtnText": "Prochaine",
   "globals.buttons.guide.prevBtnText": "Précédente",
   "globals.messages.success": "succès",
+  "globals.messages.failed": "failed",
   "globals.messages.canceled": "annulé",
   "globals.messages.deleted": "supprimé",
   "globals.messages.upload_sucessfull": "téléchargé avec succès",
