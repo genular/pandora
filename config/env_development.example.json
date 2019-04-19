@@ -18,6 +18,8 @@
     "api": {
         "secret": "PLACEHOLDER",
         "chargebee_site_name": "PLACEHOLDER",
-        "chargebee": "PLACEHOLDER"
+        "chargebee": "PLACEHOLDER",
+        "here_app_code": "PLACEHOLDER",
+        "here_app_id": "PLACEHOLDER"
     }
 }

@@ -1,88 +1,22 @@
 <template>
-    <div class="summaryTab-container" v-loading="loading" element-loading-text="Processing...">
-        <div v-if="!isTabDisabled">
+    <div class="modelDetailsTab-container" v-loading="loading" element-loading-text="Processing...">
 
-            <el-row type="flex" align="top" :gutter="20">
-                <el-col :span="12">
-                    <el-row type="flex" align="top">
-                        <el-col :span="12" style="text-align: right;">
-                            <span>Model comparison</span>
-                        </el-col>
-                        <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="success" icon="el-icon-download" :disabled="summary.boxplot === false" @click="downloadPlotImage('boxplot')">
-                            </el-button>
-                        </el-col>
-                    </el-row>
-                    <!-- SVG Plot placeholder -->
-                    <div v-if="summary.boxplot !== false">
-                        <object id="summary-boxplot" style="margin: 0 auto;" :data="summary.boxplot" type="image/svg+xml"> </object>
-                    </div>
-                    <div class="plot-placeholder" v-else>
-                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                    </div>
-                </el-col>
-                <el-col :span="12">
-                    <el-row type="flex" align="top">
-                        <el-col :span="12" style="text-align: right;">
-                            <span>ROC summary</span>
-                        </el-col>
-                        <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="success" icon="el-icon-download" :disabled="summary.rocplot === false" @click="downloadPlotImage('rocplot')">
-                            </el-button>
-                        </el-col>
-                    </el-row>
-                    <!-- SVG Plot placeholder -->
-                    <div v-if="summary.rocplot !== false">
-                        <object id="summary-rocplot" style="margin: 0 auto;" :data="summary.rocplot" type="image/svg+xml"></object>
-                    </div>
-                    <div class="plot-placeholder" v-else>
-                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                    </div>
-                </el-col>
-            </el-row>
-
-            <el-row type="flex" align="top" :gutter="20">
-                <el-col :span="12" v-if="summary.info.differences">
-                    <el-row type="flex" align="top">
-                        <el-col :span="12" style="text-align: left;">
-                            <span>Statistics</span>
-                        </el-col>
-                        <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="success" icon="el-icon-download" @click="copyToClipboard(summary.info.differences, $event)"></el-button>
-                        </el-col>
-                    </el-row>
-                    <div class="code-output">
-                        <highlight-code lang="bash">
-                            {{summary.info.differences}}
-                        </highlight-code>
-                    </div>
-                </el-col>
-                <el-col :span="12" v-if="summary.info.summary">
-                    <el-row type="flex" align="top">
-                        <el-col :span="12" style="text-align: left;">
-                            <span>Raw data</span>
-                        </el-col>
-                        <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="success" icon="el-icon-download" @click="copyToClipboard(summary.info.summary, $event)"></el-button>
-                        </el-col>
-                    </el-row>
-                    <div class="code-output">
-                        <highlight-code lang="bash">
-                            {{summary.info.summary}}
-                        </highlight-code>
-                    </div>
-                </el-col>
-            </el-row>
-        </div>
-        <!-- ELSE if Tab is DISABLED -->
-        <div v-else>
-            <el-alert title="Notification" description="Unfortionatly this function is currently disabled" type="warning" style="margin-top: 20px;" show-icon :closable="false">
-            </el-alert>
-        </div>
+        <el-row type="flex" align="top">
+            <el-col :span="24">
+                <el-tabs tab-position="left">
+                    <el-tab-pane label="Data distribution">Data distribution</el-tab-pane>
+                    <el-tab-pane label="AUC/ROC">AUC/ROC</el-tab-pane>
+                    <el-tab-pane label="Feature importance">Feature importance</el-tab-pane>
+                    <el-tab-pane label="Partial Dependence & ICE">Partial Dependence & ICE</el-tab-pane>
+                    <el-tab-pane label="Feature interaction">Feature interaction</el-tab-pane>
+                    <el-tab-pane label="breakDown">breakDown</el-tab-pane>
+                </el-tabs>
+            </el-col>
+        </el-row>
     </div>
 </template>
 <script>
-import { fetchGraphSummary } from "@/api/plots";
+import { fetchGraphModelSummary } from "@/api/plots";
 import { md5String } from "@/utils";
 import clipboard from "@/utils/clipboard";
 
@@ -138,24 +72,10 @@ export default {
         }
     },
     methods: {
-        copyToClipboard(content, event) {
-            clipboard(content, event);
-        },
-        downloadPlotImage(summaryID) {
-
-            const svgBlob = new Blob([window.atob(decodeURIComponent(this.summary[summaryID].substring(26))) + "<!-- created by SIMON: https://genular.org -->"], { type: "image/svg+xml;charset=utf-8" });
-            const svgUrl = URL.createObjectURL(svgBlob);
-            const downloadLink = document.createElement("a");
-            downloadLink.href = svgUrl;
-            downloadLink.download = "summary-" + summaryID + ".svg";
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-        },
         handleFetchSummaryPlots() {
             this.loading = true;
 
-            fetchGraphSummary({
+            fetchGraphModelSummary({
                 resampleID: this.selectedFeatureSetId,
                 modelsIDs: JSON.stringify(this.selectedModelsIDs)
             })
@@ -222,21 +142,4 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 
-.plot-placeholder {
-    text-align: center;
-    > i {
-        font-size: 256px;
-        color: #333333;
-    }
-}
-
-.code-output {
-    overflow: hidden;
-    font-size: 12px;
-    pre {
-        code{
-            max-height: 300px;
-        }
-    }
-}
 </style>

@@ -25,6 +25,7 @@
 		},
 		"messages": {
 			"success": "success",
+			"failed": "failed",
 			"canceled": "canceled",
 			"deleted": "deleted",
 			"upload_sucessfull": "uploaded successfully",

@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 10:26:55
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-04-10 12:54:56
+ * @Last Modified time: 2019-04-18 10:12:22
  */
 import request from "@/utils/request";
 
@@ -108,24 +108,33 @@ export function searchCountry(input) {
     });
 }
 
-export function searchAddressSuggest(input) {
+export function searchAddressSuggest(input, app_code, app_id) {
     return request({
-        url: "http://places.cit.api.here.com/places/v1/suggest?app_code=HjaPdhcpX2fQcX4-Bhsr5w&app_id=UErNjt36zAkX8xBdxWFV&pretty=true&q=" + encodeURIComponent(input),
+        url: "http://places.cit.api.here.com/places/v1/suggest?app_code=" + app_code + "&app_id=" + app_id + "&pretty=true&q=" + encodeURIComponent(input),
         method: "GET",
         headers: { "X-Map-Viewport": "13.3704,52.5122,13.4194,52.5262" }
     });
 }
 
-export function searchAddressDetails(input) {
+export function searchAddressDetails(input, app_code, app_id) {
     return request({
         url:
             "https://geocoder.cit.api.here.com/6.2/geocode.json?searchtext=" +
             encodeURIComponent(input) +
-            "&app_id=UErNjt36zAkX8xBdxWFV&app_code=HjaPdhcpX2fQcX4-Bhsr5w&gen=9&jsonattributes=1&locationattributes=address&maxresults=1&addressattributes=country,city,postalCode,addressLines&language=en-US",
+            "&app_id=" +
+            app_id +
+            "&app_code=" +
+            app_code +
+            "&gen=9&jsonattributes=1&locationattributes=address&maxresults=1&addressattributes=country,city,postalCode,addressLines&language=en-US",
         method: "GET"
     });
 }
 
+/**
+ * Returns all user queues and their details
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
 export function fetchQueueList(query) {
     return request({
         url: baseUrlPath + "/queue/list",
@@ -133,6 +142,23 @@ export function fetchQueueList(query) {
         params: query
     });
 }
+
+/**
+ * Updates queue specific field
+ * @param  {[type]} submitData [description]
+ * @return {[type]}            [description]
+ */
+export function updateQueueName(submitData) {
+    const data = {
+        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData)))
+    };
+    return request({
+        url: baseUrlPath + "/queue/update",
+        method: "POST",
+        data
+    });
+}
+
 // Exploration => details
 export function fetchQueueExplorationDetails(query) {
     return request({

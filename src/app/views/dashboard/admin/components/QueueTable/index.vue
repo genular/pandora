@@ -41,7 +41,22 @@
             </el-table-column>
             <el-table-column align="left" :label="$t('views.dashboard.admin.components.QueueTable.table.header.queue_name')">
                 <template slot-scope="scope">
-                    <span class="queue-name" :title="scope.row.queueName">{{ scope.row.queueName }}</span>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="float: left; line-height: 32px;" class="queue-name" :title="scope.row.queueName" v-show="!scope.row.edit['queueName']">{{
+                            scope.row.queueName
+                        }}</span>
+                        <div v-if="typeof scope.row.edit['queueName'] !== 'undefined'" style="display: flex; float: right;">
+                            <!-- update users_files.display_filename -->
+                            <el-input style="float: left;" v-model="scope.row.queueName" v-show="scope.row.edit['queueName']"></el-input>
+                            <el-button
+                                style="float: right;"
+                                @click="editTableField(scope.row, 'queueName')"
+                                :icon="scope.row.edit['queueName'] ? 'el-icon-check' : 'el-icon-edit'"
+                                circle
+                            >
+                            </el-button>
+                        </div>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.created')">
@@ -107,7 +122,7 @@
                     <el-button
                         size="mini"
                         :title="$t('views.dashboard.admin.components.QueueTable.table.operations.download.title')"
-                        type="success"                        
+                        type="success"
                         icon="el-icon-download"
                         @click="handleOperations('download', scope.row)"
                     >
@@ -115,7 +130,7 @@
                     <el-button
                         size="mini"
                         :title="$t('views.dashboard.admin.components.QueueTable.table.operations.delete.title')"
-                        type="danger"                        
+                        type="danger"
                         icon="el-icon-delete"
                         @click="handleOperations('delete', scope.row)"
                     >
@@ -354,6 +369,7 @@
 <script>
 import {
     fetchQueueList as apiFetchQueueList,
+    updateQueueName as apiUpdateQueueName,
     fetchQueueResamples as ApiFetchQueueResamples,
     fetchResampleModels as ApiFetchResampleModels,
     deleteDatasetQueueTask as ApiDeleteDatasetQueueTask,
@@ -420,7 +436,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationQueueIDs", value);
-            } 
+            }
         }
     },
     mounted() {
@@ -444,6 +460,36 @@ export default {
         this.updateInterval = null;
     },
     methods: {
+        /**
+         * Update value in the table
+         * @param  {[type]} row        [description]
+         * @param  {[type]} columnName [description]
+         * @return {[type]}            [description]
+         */
+        editTableField(row, columnName) {
+            const clickAction = (row.edit[columnName] = !row.edit[columnName]);
+            const fieldValue = row[columnName];
+
+            if (clickAction === false) {
+                if (fieldValue !== null && fieldValue.length > 0) {
+                    this.queueListLoading = true;
+                    apiUpdateQueueName({ updateID: row["queueID"], updateAction: columnName, updateValue: fieldValue })
+                        .then(response => {
+                            this.queueListLoading = false;
+                            this.$message({
+                                type: response.data.success ? "success" : "error",
+                                message: response.data.success ? this.$t("globals.messages.success") : this.$t("globals.messages.failed")
+                            });
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            this.queueListLoading = false;
+                        });
+                }else{
+                    console.log("Name is too sort!");
+                }
+            }
+        },
         // Called when user closed queue details Dialog
         closeQueueDetailsDialog(done) {
             console.log("closeQueueDetailsDialog: " + this.selectedResampleIDs);

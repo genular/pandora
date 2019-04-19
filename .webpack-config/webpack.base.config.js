@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 11:52:45
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-03-08 18:06:32
+ * @Last Modified time: 2019-04-18 15:45:08
  */
 /*
  * @Author: LogIN-
@@ -314,7 +314,7 @@ module.exports = environment => {
             hot: false,
             contentBase: path.join(__dirname, output),
             inline: false,
-            port: 8080,
+            port: 3020,
             quiet: true,
             disableHostCheck: true,
             watchOptions: {

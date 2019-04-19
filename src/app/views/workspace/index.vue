@@ -30,10 +30,10 @@
         </el-row>
         <el-row type="flex" align="top" style="padding-top: 10px;text-align: right;">
             <el-col :span="24">
-                <el-select @change="fetchReadFilesInDirectory" style="width: 140px; padding-right: 10px;" class="filter-item" v-model="fetchSettings.args.sort">
+                <el-select @change="refreshFilesInDirectory" style="width: 140px; padding-right: 10px;" class="filter-item" v-model="fetchSettings.args.sort_by">
                     <el-option v-for="item in fetchSettings.options.sort" :key="item.key" :label="item.label" :value="item.key"> </el-option>
                 </el-select>
-                 <el-switch v-model="fetchSettings.args.order" @change="fetchReadFilesInDirectory" active-color="#13ce66" inactive-color="#ff4949" active-text="ASC" inactive-text="DESC"> </el-switch>
+                 <el-switch v-model="fetchSettings.args.sort" @change="refreshFilesInDirectory" active-color="#13ce66" inactive-color="#ff4949" active-text="ASC" inactive-text="DESC"> </el-switch>
             </el-col>
         </el-row>
         <el-row class="files-container" type="flex" align="top">
@@ -75,11 +75,11 @@ export default {
             directoryFilesHash: "",
             fetchSettings: {
                 args: {
-                    sort: "name",
-                    order: true
+                    sort_by: "display_filename",
+                    sort: true
                 },
                 options: {
-                    sort: [{ label: "Name", key: "name" }, { label: "Date", key: "date" }, { label: "Size", key: "filesize" }]
+                    sort: [{ label: "Name", key: "display_filename" }, { label: "Date", key: "created" }, { label: "Size", key: "size" }]
                 }
             },
             contextmenu: {
@@ -264,7 +264,7 @@ export default {
         },
         fetchReadFilesInDirectory() {
             this.loading = true;
-            ApiReadFilesInUserDirectory({ selectedDirectory: "", settings: this.fetchSettings.args })
+            ApiReadFilesInUserDirectory({ selectedDirectory: "uploads", settings: this.fetchSettings.args })
                 .then(response => {
                     if (response.data.success === true) {
                         const directoryFilesHash = md5String(JSON.stringify(response.data.message));

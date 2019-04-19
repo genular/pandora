@@ -2,11 +2,16 @@
 * @Author: LogIN-
 * @Date:   2018-03-22 13:10:06
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-02-08 14:30:28
+* @Last Modified time: 2019-04-18 14:06:04
 */
 import request from "@/utils/request";
 const baseUrlPath = "/plots";
 
+/**
+ * [fetchCorrPlotImage description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
 export function fetchCorrPlotImage(query) {
     return request({
         url: baseUrlPath + "/correlation/render-plot",
@@ -14,7 +19,11 @@ export function fetchCorrPlotImage(query) {
         params: query
     });
 }
-
+/**
+ * [fetchHeatmapImage description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
 export function fetchHeatmapImage(query) {
     return request({
         url: baseUrlPath + "/heatmap/render-plot",
@@ -22,7 +31,11 @@ export function fetchHeatmapImage(query) {
         params: query
     });
 }
-
+/**
+ * [fetchGraphVariableImportance description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
 export function fetchGraphVariableImportance(query) {
     return request({
         url: baseUrlPath + "/variableImportance/render-plot",
@@ -30,7 +43,11 @@ export function fetchGraphVariableImportance(query) {
         params: query
     });
 }
-
+/**
+ * [fetchDatasetStatisticsBoolean description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
 export function fetchDatasetStatisticsBoolean(query) {
     return request({
         url: baseUrlPath + "/stats/two-class",
@@ -38,7 +55,11 @@ export function fetchDatasetStatisticsBoolean(query) {
         params: query
     });
 }
-
+/**
+ * [fetchDatasetStatisticsOther description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
 export function fetchDatasetStatisticsOther(query) {
     return request({
         url: baseUrlPath + "/stats/multi-class",
@@ -46,7 +67,11 @@ export function fetchDatasetStatisticsOther(query) {
         params: query
     });
 }
-
+/**
+ * [fetchGraphSummary description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
 export function fetchGraphSummary(query) {
     return request({
         url: baseUrlPath + "/summary/render-plot",
@@ -54,7 +79,15 @@ export function fetchGraphSummary(query) {
         params: query
     });
 }
-
-
-
-
+/**
+ * [fetchGraphModelSummary description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function fetchGraphModelSummary(query) {
+    return request({
+        url: baseUrlPath + "/model-summary/render-plot",
+        method: "GET",
+        params: query
+    });
+}
