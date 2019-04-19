@@ -392,6 +392,7 @@
   "globals.buttons.guide.nextBtnText": "下",
   "globals.buttons.guide.prevBtnText": "以前的",
   "globals.messages.success": "成功",
+  "globals.messages.failed": "failed",
   "globals.messages.canceled": "取消",
   "globals.messages.deleted": "已删除",
   "globals.messages.upload_sucessfull": "上传功",
