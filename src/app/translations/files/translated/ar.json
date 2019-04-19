@@ -392,6 +392,7 @@
   "globals.buttons.guide.nextBtnText": "القادم",
   "globals.buttons.guide.prevBtnText": "السابقة",
   "globals.messages.success": "النجاح",
+  "globals.messages.failed": "failed",
   "globals.messages.canceled": "إلغاء",
   "globals.messages.deleted": "حذف",
   "globals.messages.upload_sucessfull": "التي تم تحميلها بنجاح",
