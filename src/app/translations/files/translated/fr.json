@@ -277,7 +277,7 @@
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.description": "Cela permettra de supprimer définitivement tous les éléments sur le système de certains modèle(s). Continuer?",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.messages.failed_model": "Le modèle n'a pas terminé avec succès",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.variableImportanceTab.title": "Importance Variable",
-  "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title": "Training Summary",
+  "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title": "Résumé De La Formation",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title": "Modèle De Résumé",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title": "SAM",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title": "CatBoost",
