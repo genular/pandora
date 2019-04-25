@@ -72,7 +72,7 @@
 											"title": "Variable Importance"
 										},
 										"summaryTab": {
-											"title": "Summary"
+											"title": "Training Summary"
 										},
 										"modelDetailsTab": {
 											"title": "Model Summary"

@@ -239,7 +239,7 @@ export default {
     }
 };
 </script>
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scoped>
 .samr_form {
     .el-form-item {
         margin-bottom: 5px;

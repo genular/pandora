@@ -31,29 +31,30 @@ Goal of this project is to make unified user interface that will empower anyone 
 While `SIMON` can be used in across many different fields, 
 our focus here is scientific community so we can enable scientist and other researchers in the field to quickly prototype around their data and get meaningful results out of it.
 
-## Why is this so awesome?
+## Why is this so cool?
 * :chart: **automated machine learning** Automation of machine learning process for predictive analytics
 * :file_folder: **feature discovery** You can discover relevant trends and patterns inside your data with ease, that would usually take years of manual handcrafting
 * :package: **exploratory data analysis** Visual analysis of automated machine learning results will give you instant insights with help of many different visualization algorithms
 * :arrows_counterclockwise: **sharing is caring** You can share your results with others, deploy your models instantly or download your data for external use
 * :closed_lock_with_key: **privacy and security** By hosting `SIMON` on your own dedicated servers you don't have to worry about someone else is looking after your data and your models
 
-## Features
+## Current version features
 
 <img alt="SIMON UI screenshot" src=".github/static/simon_analysis.png" align="right" width="500px"/>
 
 * **200+** automated machine learning algorithms to choose from
-* nicely designed **drag&drop** user interface to easily apply data modeling techniques
-* Supports **high sparsity** data
-* supports **local** and **cloud** backend storage
+* nicely designed **drag&drop** user interface to easily apply *data modeling techniques*
+* supports **high sparsity** data
+* supports **local** and **cloud** backend data storage
 * compare up to **34 model performance measures**
 * visual **data analysis** that supports *clustering* and *correlation graphs*
 * visual **feature analysis** with dot-plots that supports **280 visual styles**
-* visual **model comparison** with *box-and-whisker* style plots
+* visual **model performance comparison** and **model insights**
 * in-build **data preprocessing** (correlation filtering, normalization, imputation...)
-* public dataset repository import to **easily import** and **analyze** already published data
-* Integrated **SAM (Significance Analysis of Microarrays)** technique for finding significant genes in a set of microarray experiments
-* Supports translation to **multiple languages**
+* public dataset repository import to **easily import** and **analyze** already published data* *(in progress)*
+* integrated **SAM (Significance Analysis of Microarrays)** technique for finding significant genes in a set of microarray experiments
+* supports translation to **multiple languages**
+* **model export** take your models and associated data with you on the go
 
 ---
 
@@ -61,7 +62,7 @@ our focus here is scientific community so we can enable scientist and other rese
 
 ### Easy
 This section describes the process of pulling a pre-built version of `SIMON` from [DockerHub](https://hub.docker.com/).
-If you are beginner this is recommended way to start `SIMON`. This can also be very handy for developers for development without polluting the host machine.
+If you are beginner or you wish to quickly check it out this is recommended way to start `SIMON`. This can also be very handy for developers for development without polluting the host machine.
 The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon-backend/blob/master/documentation/docker_images/Dockerfile).
 
 #### Requirements
@@ -69,7 +70,7 @@ The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon
 * [Docker Windows installation tutorial](https://docs.docker.com/docker-for-windows/install/)
 * [Docker Windows direct download](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
 
-#### Running SIMON Container
+#### Running SIMON Docker Container
 In order to run a test instance of `SIMON` we first need to prepare the environment.
 If you finished installing [Docker](https://docs.docker.com/engine/installation/) please continue to following steps.
 
@@ -86,7 +87,7 @@ docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='tru
 Once command is executed and the `SIMON` is started you can access it on `http://localhost:3010` and create your account.
 - If you get asked please allow connections through your Windows Firewall.
 
-##### Other
+##### Other information
 `SIMON` will now run until you *shutdown/restart* your machine or *stop it manually*.
 To manually stop `SIMON` container please type following command:
 ```bash
@@ -137,8 +138,7 @@ If you need any help, please contact us [via email](mailto:info@genular.com).
 
 
 ### Places to Help
-We're looking for co-maintainers! If you want to become one please write to [LogIN-](https://github.com/LogIN-) or drop us [email](mailto:info@genular.com).
-
+We're looking for contributors!
 In addition to contributing, optimizing and reviewing code, writing bug and feature requests you can help with following:
 
 Project | How To Help | Next Step
@@ -170,7 +170,7 @@ If you discover a security vulnerability within `SIMON`, please [e-mail us](mail
 
 
 ## License
-Please check `LICENCE` file for more information.
+`SIMON` is open-source software for more information please check `LICENCE` file for more information.
 
 ## Citation
 This software can be used for research purposes, you should cite

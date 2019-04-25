@@ -5,11 +5,9 @@
             <el-row type="flex" align="top" :gutter="20">
                 <el-col :span="12">
                     <el-row type="flex" align="top">
-                        <el-col :span="12" style="text-align: right;">
-                            <span>Model comparison</span>
-                        </el-col>
-                        <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="success" icon="el-icon-download" :disabled="summary.boxplot === false" @click="downloadPlotImage('boxplot')">
+                        <el-col :span="24" style="text-align: center;">
+                            <span>Comparison of model performance measurements</span>
+                            <el-button style="float: right;" size="mini" round type="success" icon="el-icon-download" :disabled="summary.boxplot === false" @click="downloadPlotImage('boxplot')">
                             </el-button>
                         </el-col>
                     </el-row>
@@ -23,11 +21,9 @@
                 </el-col>
                 <el-col :span="12">
                     <el-row type="flex" align="top">
-                        <el-col :span="12" style="text-align: right;">
-                            <span>ROC summary</span>
-                        </el-col>
-                        <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="success" icon="el-icon-download" :disabled="summary.rocplot === false" @click="downloadPlotImage('rocplot')">
+                        <el-col :span="24" style="text-align: center;">
+                            <span>ROC curve charts comparison</span>
+                            <el-button style="float: right;" size="mini" round type="success" icon="el-icon-download" :disabled="summary.rocplot === false" @click="downloadPlotImage('rocplot')">
                             </el-button>
                         </el-col>
                     </el-row>
@@ -44,11 +40,9 @@
             <el-row type="flex" align="top" :gutter="20">
                 <el-col :span="12" v-if="summary.info.differences">
                     <el-row type="flex" align="top">
-                        <el-col :span="12" style="text-align: left;">
-                            <span>Statistics</span>
-                        </el-col>
-                        <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="success" icon="el-icon-download" @click="copyToClipboard(summary.info.differences, $event)"></el-button>
+                        <el-col :span="24" style="text-align: center;">
+                            <span>Performance measurements</span>
+                            <el-button style="float: right;" size="mini" round type="success" icon="el-icon-document-copy" @click="copyToClipboard(summary.info.differences, $event)"></el-button>
                         </el-col>
                     </el-row>
                     <div class="code-output">
@@ -59,11 +53,9 @@
                 </el-col>
                 <el-col :span="12" v-if="summary.info.summary">
                     <el-row type="flex" align="top">
-                        <el-col :span="12" style="text-align: left;">
-                            <span>Raw data</span>
-                        </el-col>
-                        <el-col :span="12" style="text-align: right;">
-                            <el-button size="mini" round type="success" icon="el-icon-download" @click="copyToClipboard(summary.info.summary, $event)"></el-button>
+                        <el-col :span="24" style="text-align: center;">
+                            <span>Model fitting result summaries</span>
+                            <el-button style="float: right;" size="mini" round type="success" icon="el-icon-document-copy" @click="copyToClipboard(summary.info.summary, $event)"></el-button>
                         </el-col>
                     </el-row>
                     <div class="code-output">
@@ -231,9 +223,12 @@ export default {
 }
 
 .code-output {
-    overflow: hidden;
+    max-height: 350px;
     font-size: 12px;
+    overflow: auto;
+    margin-top: 15px;
     pre {
+        margin: 0;
         code{
             max-height: 300px;
         }
