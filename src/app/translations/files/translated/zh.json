@@ -277,7 +277,7 @@
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.description": "这将永久删除一切对系统的有关选择的模型(s)。 继续吗？",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.messages.failed_model": "模式并不成功完成",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.variableImportanceTab.title": "可变的重要性",
-  "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title": "摘要",
+  "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title": "Training Summary",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title": "模式摘要",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title": "SAM",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title": "CatBoost",
