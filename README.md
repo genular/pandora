@@ -170,7 +170,7 @@ If you discover a security vulnerability within `SIMON`, please [e-mail us](mail
 
 
 ## License
-`SIMON` is open-source software for more information please check `LICENCE` file for more information.
+`SIMON` is open-source software for more informations please check `LICENCE` file.
 
 ## Citation
 This software can be used for research purposes, you should cite
