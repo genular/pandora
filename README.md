@@ -22,21 +22,21 @@
 
 ## Intro
 
-`SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. <a href="https://dashboard.genular.org" target="_blank">(click here for demo)</a>
+`SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. Check out <a href="https://dashboard.genular.org" target="_blank">live demo</a> or view <a href="https://genular.org/simon-screenshots/" target="_blank">screenshots</a>.
 Currently `SIMON` implements automated machine learning (autoML) and statistical data discovery features
 that will help you to easily illustrate dynamic relationships and provide you with a structural sense of your data.
 
-Goal of this project is to make unified user interface that will empower anyone to extract meaningful information from their data and enable them to rapidly use machine learning algorithms. `It gives you freedom and control over your own models.` genular is an entirely open source organization, if you wish to learn more visit us [here](https://genular.org)
+Goal of this project is to make unified user interface that will empower anyone to extract meaningful information from their data and enable them to rapidly use machine learning algorithms. `It gives you freedom and control over your own models.` `genular` is an entirely open source organization, if you wish to learn more visit us [here](https://genular.org)
 
-While `SIMON` can be used in across many different fields, 
-our focus here is scientific community so we can enable scientist and other researchers in the field to quickly prototype around their data and get meaningful results out of it.
+While `SIMON` can be used in across different fields, 
+our focus here is scientific community so we can enable researchers in the field to quickly prototype around their data and get meaningful results out of it.
 
 ## Why is this so cool?
 * :chart: **automated machine learning** Automation of machine learning process for predictive analytics
 * :file_folder: **feature discovery** You can discover relevant trends and patterns inside your data with ease, that would usually take years of manual handcrafting
 * :package: **exploratory data analysis** Visual analysis of automated machine learning results will give you instant insights with help of many different visualization algorithms
-* :arrows_counterclockwise: **sharing is caring** You can share your results with others, deploy your models instantly or download your data for external use
-* :closed_lock_with_key: **privacy and security** By hosting `SIMON` on your own dedicated servers you don't have to worry about someone else is looking after your data and your models
+* :arrows_counterclockwise: **sharing is caring** You can share your results with others, deploy your models instantly* *(in progress)* or download your data for external use
+* :closed_lock_with_key: **privacy and security** By hosting `SIMON` on your own dedicated servers or laptop you don't have to worry about someone else is looking after your data and your models
 
 ## Current version features
 
