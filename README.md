@@ -3,7 +3,7 @@
         <a href="https://genular.org" target="_blank">
             <img width="200" src="https://github.com/genular/simon-frontend/raw/master/.github/static/black_logo_notext_transparent@2x.png"></a>
     </p>
-    <h1>SIMON<br/><sub>automated machine learning and feature discovery platform.</sub></h1>
+    <h1>SIMON<br/><sub>automated machine learning and feature discovery platform</sub></h1>
     <p align="center">
         <a href="https://crowdin.com/project/genular" alt="Help us translate">
             <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
