@@ -22,7 +22,7 @@
 
 ## Intro
 
-`SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. Check out <a href="https://dashboard.genular.org" target="_blank">live demo</a> or view <a href="https://genular.org/simon-screenshots/" target="_blank">screenshots</a>.
+`SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. Check out <a href="https://dashboard.genular.org" target="_blank">live demo</a> or <a href="https://genular.org/simon-screenshots/" target="_blank">view screenshots</a>.
 Currently `SIMON` implements automated machine learning (autoML) and statistical data discovery features
 that will help you to easily illustrate dynamic relationships and provide you with a structural sense of your data.
 
