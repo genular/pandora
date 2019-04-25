@@ -277,7 +277,7 @@
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.description": "هذا سيتم حذف كل شيء على النظام الذي تم اختياره على نموذج(s). تستمر ؟",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.messages.failed_model": "نموذج لم تنتهي بنجاح",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.variableImportanceTab.title": "متغير أهمية",
-  "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title": "ملخص",
+  "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title": "التدريب ملخص",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title": "نموذج ملخص",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title": "سام",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title": "CatBoost",
