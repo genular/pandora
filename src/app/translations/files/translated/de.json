@@ -277,7 +277,7 @@
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.description": "Dies wird dauerhaft löschen Sie alles auf das system bezogen auf ausgewählte Modell(en). Weiter?",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.messages.failed_model": "Modell nicht erfolgreich abgeschlossen",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.variableImportanceTab.title": "Variable Bedeutung",
-  "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title": "Training Summary",
+  "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title": "Training Zusammenfassung",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title": "Modell Zusammenfassung",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title": "SAM",
   "views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title": "CatBoost",
