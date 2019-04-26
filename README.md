@@ -146,6 +146,7 @@ Project | How To Help | Next Step
 Localization | Help us translate `SIMON` into your language. If some translation is missing or incorrect you can easily help us by correcting it. | [Join our Translation Community](https://crowdin.com/project/genular)
 Tutorials | Help others use and understand `SIMON` | Write a tutorial or record it, with usage examples
 Organizing | Ask clarifying questions on recently opened GitHub issues to move the discussion forward | [Here](https://github.com/genular/simon-frontend/issues)
+Write article | Help other understand what is Machine Learning & how can they apply it, by publishing blog post | [e-mail us](mailto:info@genular.com)
 
 ## Browser Support
 Tested on `Firefox Quantum 64` or above. As much as we like other browsers we are focusing here to primary provide support for open source ones.

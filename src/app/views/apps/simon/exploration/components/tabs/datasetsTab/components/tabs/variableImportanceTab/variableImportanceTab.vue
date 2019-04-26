@@ -51,7 +51,7 @@
                         row-key="id"
                         @select-all="handleVarImpSelection"
                         @select="handleVarImpSelection"
-                        max-height="600"
+                        style="min-height: 600px;"
                         size="small"
                         border
                     >
