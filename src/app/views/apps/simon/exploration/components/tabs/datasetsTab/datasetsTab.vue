@@ -348,7 +348,14 @@
             <el-col :span="24" style="margin-top: 15px;">
                 <el-tabs v-model="activeDatasetSubTabName" v-if="selectedFeatureSetId > 0" type="card">
                     <!-- Don't display Tab Pane if we have only one Tab to display and he doesn't satisfy display criteria -->
-                    <el-tab-pane v-for="item in datasetsTabMapOptions"  v-if="!isTabDisabled(item)" :label="item.label" :key="item.key" :name="item.key" :disabled="isTabDisabled(item)">
+                    <el-tab-pane
+                        v-for="item in datasetsTabMapOptions"
+                        v-if="!isTabDisabled(item)"
+                        :label="item.label"
+                        :key="item.key"
+                        :name="item.key"
+                        :disabled="isTabDisabled(item)"
+                    >
                         <span slot="label"><i :class="item.icon"></i> {{ item.label }}</span>
                         <keep-alive>
                             <sub-tab-pane v-if="activeDatasetSubTabName == item.key" :currentView="item.view" :columnName="item.key" :isTabDisabled="isTabDisabled(item)">
@@ -548,6 +555,14 @@ export default {
                     }
                 )
                     .then(_ => {
+                        if (this.$config.isDemoServer) {
+                            this.$message({
+                                type: "warning",
+                                message: this.$t("globals.demo_server.function_disabled")
+                            });
+                            return;
+                        }
+
                         this.resamplesTableLoading = true;
                         ApiDeleteDatasetResampleTask({ resampleID: rowInfo.resampleID })
                             .then(response => {
