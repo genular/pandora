@@ -82,7 +82,7 @@ Please open your favorite Terminal and run the command below.
 
 > If you wish to get correct time, replace TZ=<timzone> with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 ```bash
-docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=America/Los_Angeles --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:latest
+docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=America/Los_Angeles --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:0.1.0
 ```
 Once command is executed and the `SIMON` is started you can access it on `http://localhost:3010` and create your account.
 - If you get asked please allow connections through your Windows Firewall.
