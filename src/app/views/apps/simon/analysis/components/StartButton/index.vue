@@ -26,7 +26,7 @@
                         {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description") }}
                     </div>
                     <div style="float: right;">
-                        {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title") }} <span>{{ datasetQueueSparsity * 100 }}%</span>
+                        {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title") }} <span style="font-weight: bold;">{{ datasetQueueSparsity * 100 }}%</span>
                     </div>
                 </el-tooltip>
                 <br />
@@ -507,24 +507,43 @@ export default {
             // Total active selected rows
             let totalSelectedRows = 0;
 
-            console.log("resampleSelectionChange");
+            console.log("resampleSelectionChange: " + selection.length);
+
             // For each resample lets check if it selected in user side table
             selection.forEach((selectedRow, selectedRowIndex) => {
+                let action = true;
                 // Never mark row for processing if its not valid
                 if (selectedRow.isValid === true) {
                     totalSelectedRows++;
+                    action = true;
                 } else {
+                    action = false;
+                }
+
+                if (action === false) {
+                    // If row is not valid always deselected them!
                     if (typeof unselectRows[selectedRow.id] === "undefined") {
                         unselectRows.push(selectedRow);
                     }
                 }
             });
-            for (let indexUnselect = 0; indexUnselect < unselectRows.length; indexUnselect++) {
-                for (let indexResamples = 0; indexResamples < this.datasetResamples[queueIndex].data.length; indexResamples++) {
+
+            for (let indexResamples = 0; indexResamples < this.datasetResamples[queueIndex].data.length; indexResamples++) {
+                for (let indexUnselect = 0; indexUnselect < unselectRows.length; indexUnselect++) {
                     if (unselectRows[indexUnselect].id === this.datasetResamples[queueIndex].data[indexResamples].id) {
+                        console.log("unselecting resample: " + unselectRows[indexUnselect].id);
+                        // Toggle HTML table
                         this.$refs[tableReference][0].toggleRowSelection(unselectRows[indexUnselect], false);
+                        // Toggle isSelected marker
+                        this.datasetResamples[queueIndex].data[indexResamples].isSelected = false;
                         continue;
                     }
+                }
+                let selectedIndex = findObjectIndexByKey(selection, "id", this.datasetResamples[queueIndex].data[indexResamples].id);
+                if (selectedIndex === -1) {
+                    this.datasetResamples[queueIndex].data[indexResamples].isSelected = false;
+                } else if (this.datasetResamples[queueIndex].data[indexResamples].isSelected !== true) {
+                    this.datasetResamples[queueIndex].data[indexResamples].isSelected = true;
                 }
             }
 

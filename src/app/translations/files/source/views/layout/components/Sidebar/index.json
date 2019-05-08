@@ -3,7 +3,7 @@
 		"layout": {
 			"components": {
 				"Sidebar": {
-					"action_not_allowed": "You must satisfy specific module criteria to use it, like for example select from Workspace."
+					"action_not_allowed": "You must satisfy specific module criteria to use it, like for example select file from Workspace or mark one queue from Dashboard!"
 				}
 			}
 		}

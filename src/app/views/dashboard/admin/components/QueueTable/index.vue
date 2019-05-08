@@ -618,7 +618,9 @@ export default {
                 3: { class: "danger", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.3") }, // Processing
                 4: { class: "info", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.4") },
                 5: { class: "success", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.5") }, // Finished
-                6: { class: "danger", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.6") }
+                6: { class: "danger", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.6") }, // Finished
+                7: { class: "success", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.7") }, // Paused
+                8: { class: "danger", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.8") } // Resumed
             };
             return statusMap[status][type];
         },

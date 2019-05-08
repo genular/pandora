@@ -11,7 +11,9 @@
 							"3": "Processing",
 							"4": "Processing",
 							"5": "Completed",
-							"6": "Completed/Errors"
+							"6": "Completed/Errors",
+							"7": "Paused",
+							"8": "Resumed"
 						},
 						"filters": {
 							"queue_id": {

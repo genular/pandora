@@ -3,7 +3,7 @@
         <a href="https://genular.org" target="_blank">
             <img width="200" src="https://github.com/genular/simon-frontend/raw/master/.github/static/black_logo_notext_transparent@2x.png"></a>
     </p>
-    <h1>SIMON<br/><sub>automated machine learning and feature discovery platform</sub></h1>
+    <h1>SIMON<br/><sub>machine learning and feature discovery platform</sub></h1>
     <p align="center">
         <a href="https://crowdin.com/project/genular" alt="Help us translate">
             <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
@@ -23,7 +23,7 @@
 ## Intro
 
 `SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. Check out <a href="https://dashboard.genular.org" target="_blank">live demo</a> or <a href="https://genular.org/simon-screenshots/" target="_blank">view screenshots</a>.
-Currently `SIMON` implements automated machine learning (autoML) and statistical data discovery features
+Currently `SIMON` implements machine learning (autoML) and statistical data discovery features
 that will help you to easily illustrate dynamic relationships and provide you with a structural sense of your data.
 
 Goal of this project is to make unified user interface that will empower anyone to extract meaningful information from their data and enable them to rapidly use machine learning algorithms. `It gives you freedom and control over your own models.` `genular` is an entirely open source organization, if you wish to learn more visit us [here](https://genular.org)
@@ -32,21 +32,21 @@ While `SIMON` can be used in across different fields,
 our focus here is scientific community so we can enable researchers in the field to quickly prototype around their data and get meaningful results out of it.
 
 ## Why is this so cool?
-* :chart: **automated machine learning** Automation of machine learning process for predictive analytics
-* :file_folder: **feature discovery** You can discover relevant trends and patterns inside your data with ease, that would usually take years of manual handcrafting
-* :package: **exploratory data analysis** Visual analysis of automated machine learning results will give you instant insights with help of many different visualization algorithms
-* :arrows_counterclockwise: **sharing is caring** You can share your results with others, deploy your models instantly* *(in progress)* or download your data for external use
-* :closed_lock_with_key: **privacy and security** By hosting `SIMON` on your own dedicated servers or laptop you don't have to worry about someone else is looking after your data and your models
+* :file_folder: **feature discovery** you can discover relevant trends and patterns inside your data with ease, that would usually take years of manual handcrafting
+* :chart: **automated machine learning** automation of machine learning process
+* :package: **exploratory data analysis** visual analysis of automated machine learning results will give you instant insights with help of many different visualization algorithms
+* :arrows_counterclockwise: **sharing is caring** you can share your results with others, deploy your models instantly* *(in progress)* or download your data for external use
+* :closed_lock_with_key: **privacy and security** hosting `SIMON` on your own dedicated servers or laptop you don't have to worry about someone else is looking after your data and your models
 
 ## Current version features
 
 <img alt="SIMON UI screenshot" src=".github/static/simon_analysis.png" align="right" width="500px"/>
 
-* **200+** automated machine learning algorithms to choose from
+* **200+** machine learning algorithms to [choose from](https://topepo.github.io/caret/available-models.html)
 * nicely designed **drag&drop** user interface to easily apply *data modeling techniques*
-* supports **high sparsity** data
+* supports **high sparsity** data via imputation or [mulset](https://cran.r-project.org/web/packages/mulset/index.html)
 * supports **local** and **cloud** backend data storage
-* compare up to **34 model performance measures**
+* compare all **model performance measures** in one place
 * visual **data analysis** that supports *clustering* and *correlation graphs*
 * visual **feature analysis** with dot-plots that supports **280 visual styles**
 * visual **model performance comparison** and **model insights**

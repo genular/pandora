@@ -309,6 +309,8 @@
   "views.dashboard.admin.components.QueueTable.status_map.4": "Processing",
   "views.dashboard.admin.components.QueueTable.status_map.5": "Completed",
   "views.dashboard.admin.components.QueueTable.status_map.6": "Completed/Errors",
+  "views.dashboard.admin.components.QueueTable.status_map.7": "Paused",
+  "views.dashboard.admin.components.QueueTable.status_map.8": "Resumed",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.placeholder": "Please enter task ID",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.sorting.descending": "Descending",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.sorting.ascending": "Ascending",
