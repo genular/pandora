@@ -42,7 +42,7 @@ our focus here is scientific community so we can enable researchers in the field
 
 <img alt="SIMON UI screenshot" src=".github/static/simon_analysis.png" align="right" width="500px"/>
 
-* **200+** machine learning algorithms to [choose from](https://topepo.github.io/caret/available-models.html)
+* **200+** machine learning algorithms to <a href="https://topepo.github.io/caret/available-models.html" target="_blank">choose from</a>
 * nicely designed **drag&drop** user interface to easily apply *data modeling techniques*
 * supports **high sparsity** data via imputation or [mulset](https://cran.r-project.org/web/packages/mulset/index.html)
 * supports **local** and **cloud** backend data storage
