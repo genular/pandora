@@ -309,6 +309,8 @@
   "views.dashboard.admin.components.QueueTable.status_map.4": "Verarbeite",
   "views.dashboard.admin.components.QueueTable.status_map.5": "Abgeschlossen",
   "views.dashboard.admin.components.QueueTable.status_map.6": "Abgeschlossen/Fehler",
+  "views.dashboard.admin.components.QueueTable.status_map.7": "Paused",
+  "views.dashboard.admin.components.QueueTable.status_map.8": "Resumed",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.placeholder": "Bitte geben Sie die task-ID",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.sorting.descending": "Absteigend",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.sorting.ascending": "Aufsteigend",
