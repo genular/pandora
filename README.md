@@ -22,14 +22,10 @@
 
 ## Intro
 
-`SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. Check out <a href="https://dashboard.genular.org" target="_blank">live demo</a> or <a href="https://genular.org/simon-screenshots/" target="_blank">view screenshots</a>.
-Currently `SIMON` implements machine learning (autoML) and statistical data discovery features
-that will help you to easily illustrate dynamic relationships and provide you with a structural sense of your data.
+`SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. Check out <a href="https://dashboard.genular.org" target="_blank">live demo</a> or <a href="https://genular.org/simon-screenshots/" target="_blank">maybe better, view screenshots</a>.
+Currently `SIMON` implements machine learning (autoML) and statistical data discovery features that will help you to illustrate dynamic relationships and provide you with a structural sense of your data.
 
-Goal of this project is to make unified user interface that will empower anyone to extract meaningful information from their data and enable them to rapidly use machine learning algorithms. `It gives you freedom and control over your own models.` `genular` is an entirely open source organization, if you wish to learn more visit us [here](https://genular.org)
-
-While `SIMON` can be used in across different fields, 
-our focus here is scientific community so we can enable researchers in the field to quickly prototype around their data and get meaningful results out of it.
+Goal of this project is to make user interface that will empower scientists, makers and others to extract meaningful information from their data and enable them to rapidly use and quickly prototype with different machine learning algorithms. At the end `It gives you freedom and control over your own models.` `genular` is an entirely open source organization, if you wish to learn more visit us [here](https://genular.org)
 
 ## Why is this so cool?
 * :file_folder: **feature discovery** you can discover relevant trends and patterns inside your data with ease, that would usually take years of manual handcrafting
@@ -44,7 +40,7 @@ our focus here is scientific community so we can enable researchers in the field
 
 * **200+** machine learning algorithms to <a href="https://topepo.github.io/caret/available-models.html" target="_blank">choose from</a>
 * nicely designed **drag&drop** user interface to easily apply *data modeling techniques*
-* supports **high sparsity** data via imputation or [mulset](https://cran.r-project.org/web/packages/mulset/index.html)
+* supports **high sparsity** data via imputation or <a href="https://cran.r-project.org/web/packages/mulset/index.html" target="_blank">mulset</a>
 * supports **local** and **cloud** backend data storage
 * compare all **model performance measures** in one place
 * visual **data analysis** that supports *clustering* and *correlation graphs*
