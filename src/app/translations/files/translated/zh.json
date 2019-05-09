@@ -309,6 +309,8 @@
   "views.dashboard.admin.components.QueueTable.status_map.4": "处理",
   "views.dashboard.admin.components.QueueTable.status_map.5": "完成",
   "views.dashboard.admin.components.QueueTable.status_map.6": "完成的错误。",
+  "views.dashboard.admin.components.QueueTable.status_map.7": "暂停",
+  "views.dashboard.admin.components.QueueTable.status_map.8": "恢复",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.placeholder": "请输入任务ID",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.sorting.descending": "降",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.sorting.ascending": "升",

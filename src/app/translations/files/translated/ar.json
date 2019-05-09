@@ -309,6 +309,8 @@
   "views.dashboard.admin.components.QueueTable.status_map.4": "تجهيز",
   "views.dashboard.admin.components.QueueTable.status_map.5": "الانتهاء",
   "views.dashboard.admin.components.QueueTable.status_map.6": "الانتهاء/أخطاء",
+  "views.dashboard.admin.components.QueueTable.status_map.7": "مؤقتا",
+  "views.dashboard.admin.components.QueueTable.status_map.8": "استأنفت",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.placeholder": "يرجى إدخال معرف المهمة",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.sorting.descending": "تنازلي",
   "views.dashboard.admin.components.QueueTable.filters.queue_id.sorting.ascending": "تصاعدي",
