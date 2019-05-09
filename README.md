@@ -83,6 +83,8 @@ docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='tru
 Once command is executed and the `SIMON` is started you can access it on `http://localhost:3010` and create your account.
 - If you get asked please allow connections through your Windows Firewall.
 
+To run latest code that is in master branch, please use following docker image `genular/simon:latest`
+
 ##### Other information
 `SIMON` will now run until you *shutdown/restart* your machine or *stop it manually*.
 To manually stop `SIMON` container please type following command:

@@ -521,9 +521,16 @@ export default {
                 }
 
                 let arraySorted = arrayData.sort(function(obj1, obj2) {
-                    // Ascending
-                    return obj1.performance[pref] - obj2.performance[pref];
+                    if (typeof obj1.performance !== "undefined" && typeof obj2.performance !== "undefined") {
+                        // Ascending
+                        return obj1.performance[pref] - obj2.performance[pref];
+                    } else if (typeof obj1.performance === "undefined" && typeof obj2.performance !== "undefined") {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
                 });
+                
                 if (order === "descending") {
                     arraySorted = arraySorted.reverse();
                 }
