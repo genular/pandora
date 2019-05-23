@@ -1,11 +1,13 @@
 /*
-* @Author: LogIN-
-* @Date:   2018-01-25 14:43:35
-* @Last Modified by:   LogIN-
-* @Last Modified time: 2019-01-25 09:58:34
-*/
+ * @Author: LogIN-
+ * @Date:   2018-01-25 14:43:35
+ * @Last Modified by:   LogIN-
+ * @Last Modified time: 2019-05-16 15:01:44
+ */
 const md5 = require("@/utils/3rdparty/md5.js");
-
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
 /**
  * Sorts alphanumeric array You can use it in this way: array.sort(sortAlphaNum)
  * @param  {[type]} a Array item a
@@ -31,6 +33,66 @@ export function orderBy(array, key) {
         var y = b[key];
         return x < y ? -1 : x > y ? 1 : 0;
     });
+}
+
+/**
+ * [findMinMax description]
+ * @param  {[type]} objectArray  [description]
+ * @param  {[type]} objProp      [description]
+ * @param  {[type]} decimalPoint [description]
+ * @return {[type]}              [description]
+ */
+export function findMinMax(objectArray, objProp, decimalPoint) {
+    let firstIndex = -1;
+
+    for (let i = 0; i < objectArray.length; i += 1) {
+        if (typeof objectArray[i][objProp] !== "undefined") {
+            // Only process numeric entries
+            if (isNumeric(objectArray[i][objProp])) {
+                firstIndex = i;
+                break;
+            }
+        }
+    }
+
+    if (firstIndex === -1) {
+        return [0, 0, 0];
+    }
+
+    let min = objectArray[firstIndex][objProp],
+        max = objectArray[firstIndex][objProp];
+
+    for (let i = 1, len = objectArray.length; i < len; i++) {
+        if (typeof objectArray[i][objProp] !== "undefined") {
+            let v = objectArray[i][objProp];
+            // Only process numeric entries
+            if (isNumeric(v)) {
+                min = v < min ? v : min;
+                max = v > max ? v : max;
+            }
+        }
+    }
+    min = +min.toFixed(decimalPoint);
+    max = +max.toFixed(decimalPoint);
+
+    let step = (max - min) / 10;
+    step = +step.toFixed(decimalPoint);
+
+    if (!isNumeric(min)) {
+        min = 0;
+    }
+    if (!isNumeric(max)) {
+        max = 1;
+    }
+    if (!isNumeric(step)) {
+        step = 0.01;
+    }
+
+    if(min === max){
+        step = 0.01;
+    }
+
+    return [min, max, step];
 }
 
 /** Check if a string is a valid JSON string
@@ -189,4 +251,29 @@ export function debounce(func, wait, immediate) {
     };
 
     return debounced;
+}
+
+/**
+ * [tableSorting description]
+ * @param  {[type]} v1        [description]
+ * @param  {[type]} v2        [description]
+ * @param  {[type]} columnIds [description]
+ * @return {[type]}           [description]
+ */
+export function tableSorting(v1, v2, columnIds) {
+    if (typeof v1[columnIds[0]] === "undefined") {
+        v1[columnIds[0]] = {};
+        v1[columnIds[0]][columnIds[1]] = 0;
+    } else if (typeof v1[columnIds[0]][columnIds[1]] === "undefined") {
+        v1[columnIds[0]][columnIds[1]] = 0;
+    }
+
+    if (typeof v2[columnIds[0]] === "undefined") {
+        v2[columnIds[0]] = {};
+        v2[columnIds[0]][columnIds[1]] = 0;
+    } else if (typeof v2[columnIds[0]][columnIds[1]] === "undefined") {
+        v2[columnIds[0]][columnIds[1]] = 0;
+    }
+
+    return v1[columnIds[0]][columnIds[1]] - v2[columnIds[0]][columnIds[1]];
 }

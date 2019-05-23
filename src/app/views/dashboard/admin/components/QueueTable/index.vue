@@ -485,7 +485,7 @@ export default {
                             console.log(error);
                             this.queueListLoading = false;
                         });
-                }else{
+                } else {
                     console.log("Name is too sort!");
                 }
             }
@@ -530,7 +530,7 @@ export default {
                         return 1;
                     }
                 });
-                
+
                 if (order === "descending") {
                     arraySorted = arraySorted.reverse();
                 }
@@ -565,45 +565,52 @@ export default {
                             this.queueListLoading = false;
                         });
                 } else if (clickAction === "delete") {
-                    const queueID = rowInfo.queueID;
-
-                    this.$confirm(
-                        this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.dialog.description"),
-                        this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.dialog.title"),
-                        {
+                    if (rowInfo.status < 5 && rowInfo.status !== 2) {
+                        this.$message({
+                            message: this.$t("views.dashboard.admin.components.QueueTable.messages.in_progress"),
                             type: "warning"
-                        }
-                    )
-                        .then(_ => {
-                            if (this.$config.isDemoServer) {
-                                this.$message({
-                                    type: "warning",
-                                    message: this.$t("globals.demo_server.function_disabled")
-                                });
-                                return;
-                            }
-                            this.queueListLoading = true;
-
-                            ApiDeleteDatasetQueueTask({ queueID: queueID })
-                                .then(response => {
-                                    this.queueListLoading = false;
-                                    this.getDatasetQueueList();
-                                    this.$message({
-                                        type: "success",
-                                        message: this.$t("globals.messages.success")
-                                    });
-                                })
-                                .catch(error => {
-                                    this.queueListLoading = false;
-                                    console.log(error);
-                                });
-                        })
-                        .catch(_ => {
-                            this.$message({
-                                type: "info",
-                                message: this.$t("globals.messages.canceled")
-                            });
                         });
+                    } else {
+                        const queueID = rowInfo.queueID;
+
+                        this.$confirm(
+                            this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.dialog.description"),
+                            this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.dialog.title"),
+                            {
+                                type: "warning"
+                            }
+                        )
+                            .then(_ => {
+                                if (this.$config.isDemoServer) {
+                                    this.$message({
+                                        type: "warning",
+                                        message: this.$t("globals.demo_server.function_disabled")
+                                    });
+                                    return;
+                                }
+                                this.queueListLoading = true;
+
+                                ApiDeleteDatasetQueueTask({ queueID: queueID })
+                                    .then(response => {
+                                        this.queueListLoading = false;
+                                        this.getDatasetQueueList();
+                                        this.$message({
+                                            type: "success",
+                                            message: this.$t("globals.messages.success")
+                                        });
+                                    })
+                                    .catch(error => {
+                                        this.queueListLoading = false;
+                                        console.log(error);
+                                    });
+                            })
+                            .catch(_ => {
+                                this.$message({
+                                    type: "info",
+                                    message: this.$t("globals.messages.canceled")
+                                });
+                            });
+                    }
                 }
             } else if (clickAction === "info") {
                 const queueID = rowInfo.queueID;
@@ -618,6 +625,15 @@ export default {
             }
         },
         statusFilter(status, type) {
+            // 0 Created
+            // 1 User confirmed - and resamples active
+            // 2 User canceled - Inactive
+            // 3 Marked for processing - cron job must pick it up
+            // 4 R Processing
+            // 5 R Finished - Sucess
+            // 6 R Finished - Errors
+            // 7 User Paused
+            // 8 User resumed
             const statusMap = {
                 0: { class: "success", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.0") }, // User created
                 1: { class: "info", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.1") }, // User confirmed waiting to process

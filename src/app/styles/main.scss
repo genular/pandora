@@ -12,7 +12,7 @@
 @import "./sidebar.scss";
 
 /* @import "~element-ui/lib/theme-chalk/index.css"; */
-$--font-path: '~element-ui/lib/theme-chalk/fonts';
+$--font-path: "~element-ui/lib/theme-chalk/fonts";
 @import "~element-ui/packages/theme-chalk/src/index";
 
 *,
@@ -234,7 +234,7 @@ div:focus {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        color: #FFFFFF;
+        color: #ffffff;
         font-weight: bold;
         width: 50%;
         font-size: 18px;
@@ -251,5 +251,28 @@ div:focus {
     .el-loading-spinner .el-loading-text {
         color: #ffffff;
         font-weight: bold;
+    }
+}
+
+.custom-table-header-labels {
+    width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+
+    .custom-table-header-labels-text {
+        text-overflow: ellipsis;
+        float: left;
+        white-space: nowrap;
+        max-width: calc(100% - 17px);
+        overflow: hidden;
+    }
+    span {
+        &:nth-of-type(2) {
+            float: right;
+            // Filter Icon
+            i {
+                cursor: pointer;
+            }
+        }
     }
 }
