@@ -177,7 +177,7 @@ the aforementioned papers in any resulting publication.
 
 ```bash
     Adriana Tomic, Ivan Tomic, Yael Rosenberg-Hasson, Cornelia L. Dekker, Holden T. Maecker, Mark M. Davis.
-    SIMON, an automated machine learning system reveals immune signatures of influenza vaccine responses.
-    Preprint available from bioRxiv 545186
-    doi: https://doi.org/10.1101/545186
+    SIMON, an Automated Machine Learning System, Reveals Immune Signatures of Influenza Vaccine Responses
+    http://www.jimmunol.org/content/early/2019/06/13/jimmunol.1900033.abstract
+    doi: 10.4049/jimmunol.1900033
 ```
