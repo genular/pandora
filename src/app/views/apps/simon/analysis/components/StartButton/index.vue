@@ -26,7 +26,11 @@
                         {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description") }}
                     </div>
                     <div style="float: right;">
-                        {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title") }} <span style="font-weight: bold;">{{ datasetQueueSparsity * 100 }}%</span>
+                        {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title") }}
+
+                        <span style="font-weight: bold;" v-if="!isNaN(datasetQueueSparsity)">{{ datasetQueueSparsity * 100 }}%</span>
+                        <span style="font-weight: bold;" v-else>Not calculated</span>
+
                     </div>
                 </el-tooltip>
                 <br />
@@ -145,7 +149,7 @@ import {
 
 import clipboard from "@/utils/clipboard";
 import { findObjectIndexByKey } from "@/utils/helpers";
-import { downloadFileTemplate, downloadItemsTemplate } from "@/utils/templates.js";
+import { downloadItemsTemplate } from "@/utils/templates";
 
 export default {
     name: "StartButton",
@@ -265,21 +269,18 @@ export default {
             this.startLoading();
             const item = this.datasetResamples[resampleIndex]["data"][rowIndex];
 
-            const downloadWindow = window.open("", "_blank");
-            downloadWindow.document.write(downloadFileTemplate());
-
             ApiGenarateFileDownloadLink({ downloadType: "resample", recordID: item.id })
                 .then(response => {
                     if (response.data.success === true && response.data.message.length > 0) {
-                        downloadWindow.document.getElementById("download_links").innerHTML = downloadItemsTemplate(response.data.message);
-                    } else {
-                        downloadWindow.close();
+                        this.$alert(downloadItemsTemplate(response.data.message), "Download links", {
+                            dangerouslyUseHTMLString: true,
+                            callback: action => {}
+                        });
                     }
                     this.stopLoading();
                 })
                 .catch(error => {
                     this.stopLoading();
-                    downloadWindow.close();
                 });
         },
         progressStatus(percentage, status = "") {
@@ -428,7 +429,11 @@ export default {
             this.datasetResamples = [];
             this.datasetQueueID = 0;
 
+            console.log("Start loading");
+
             this.startLoading();
+
+            console.log("End loading");
 
             ApiGetSimonPreAnalysisDetails(this.submitJobForm)
                 .then(response => {
@@ -443,6 +448,7 @@ export default {
                             this.isValidateDisabled = true;
                             // Automatically preselect valid re-samples
                             this.$nextTick(() => {
+                                console.log("INFO: preSelectDatasetResamples");
                                 this.preSelectDatasetResamples();
                             });
                         } else {
@@ -462,12 +468,14 @@ export default {
                         type: "warning"
                     });
                     console.log(error);
+                    this.stopLoading();
                 });
         },
         preSelectDatasetResamples() {
             // Loop all created tables and preselect all rows
             this.datasetResamples.forEach((queue, resampleIndex) => {
                 const tableReference = "datasetResamplesTable_" + queue.outcome.remapped;
+                console.log(tableReference);
                 this.$refs[tableReference][0].toggleAllSelection();
             });
         },

@@ -3,7 +3,7 @@
         <a href="https://genular.org" target="_blank">
             <img width="200" src="https://github.com/genular/simon-frontend/raw/master/.github/static/black_logo_notext_transparent@2x.png"></a>
     </p>
-    <h1>SIMON<br/><sub>machine learning and feature discovery platform</sub></h1>
+    <h1>SIMON<br/><sub>machine learning feature discovery platform</sub></h1>
     <p align="center">
         <a href="https://crowdin.com/project/genular" alt="Help us translate">
             <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
@@ -22,15 +22,15 @@
 
 ## Intro
 
-`SIMON` is a powerful, flexible, open-source and easy to use knowledge discovery application. Check out <a href="https://dashboard.genular.org" target="_blank">live demo</a> or <a href="https://genular.org/simon-screenshots/" target="_blank">maybe better, view screenshots</a>.
-Currently `SIMON` implements machine learning (autoML) and statistical data discovery features that will help you to illustrate dynamic relationships and provide you with a structural sense of your data.
+`SIMON` is a powerful, flexible, open-source and easy to use Machine Learning Knowledge Discovery software. Check out <a href="https://dashboard.genular.org" target="_blank">live demo</a> or <a href="https://genular.org/simon-screenshots/" target="_blank">maybe better, view screenshots</a>.
+Currently `SIMON` implements Machine Learning and many other statistical data discovery features that will help you to illustrate dynamic relationships and provide you with a structural sense of your data.
 
-Goal of this project is to make user interface that will empower scientists, makers and others to extract meaningful information from their data and enable them to rapidly use and quickly prototype with different machine learning algorithms. At the end `It gives you freedom and control over your own models.` `genular` is an entirely open source organization, if you wish to learn more visit us [here](https://genular.org)
+Goal of this project is to make user interface that will empower scientists, makers and others to extract meaningful information from their data and enable them to rapidly use and quickly prototype with different machine learning algorithms. At the end `SIMON gives you freedom and control over your own models.` `genular` is an entirely open source organization, if you wish to learn more visit us [here](https://genular.org)
 
 ## Why is this so cool?
 * :file_folder: **feature discovery** you can discover relevant trends and patterns inside your data with ease, that would usually take years of manual handcrafting
-* :chart: **automated machine learning** automation of machine learning process
-* :package: **exploratory data analysis** visual analysis of automated machine learning results will give you instant insights with help of many different visualization algorithms
+* :chart: **machine learning** Build Machine Learning models with ease, and quickly compare them via our innovative interface
+* :package: **exploratory data analysis** visual analysis of multiple different machine learning results will give you instant insights with help of many different visualization algorithms
 * :arrows_counterclockwise: **sharing is caring** you can share your results with others, deploy your models instantly* *(in progress)* or download your data for external use
 * :closed_lock_with_key: **privacy and security** hosting `SIMON` on your own dedicated servers or laptop you don't have to worry about someone else is looking after your data and your models
 
@@ -50,7 +50,7 @@ Goal of this project is to make user interface that will empower scientists, mak
 * public dataset repository import to **easily import** and **analyze** already published data* *(in progress)*
 * integrated **SAM (Significance Analysis of Microarrays)** technique for finding significant genes in a set of microarray experiments
 * supports translation to **multiple languages**
-* **model export** take your models and associated data with you on the go
+* **model export** take your models, reproducibility code and associated data with you on the go* *(in progress)*
 
 ---
 
@@ -67,23 +67,23 @@ The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon
 * [Docker Windows direct download](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
 
 #### Running SIMON Docker Container
-In order to run a test instance of `SIMON` we first need to prepare the environment.
-If you finished installing [Docker](https://docs.docker.com/engine/installation/) please continue to following steps.
+In order to run a test instance of `SIMON` we first need to prepare the local environment.
 
-Lets pull the [genular/simon](https://cloud.docker.com/u/genular/repository/docker/genular/simon) image from DockerHub. 
-Then we will run `SIMON` with appropriately mounted volumes and port mapping. By default `SIMON` will run with a Docker Volume file-system inside of it.
+1. Download and install [Docker](https://docker.com). When you finished installing [Docker](https://docs.docker.com/engine/installation/) please *continue* to steps below.
 
-Please open your favorite Terminal and run the command below.
-- If on Windows - open `Windows Power Shell`
+2. Lets download and run the [genular/simon](https://cloud.docker.com/u/genular/repository/docker/genular/simon) image from DockerHub. 
+* Then we will run `SIMON` with appropriately mounted volumes and port mapping. By default `SIMON` will run with a Docker Volume file-system inside of it.
+* Please **open** your favorite **Terminal** and **run** the **command below**. If on Windows - open `Windows Power Shell` => *Click Start, type PowerShell, and then click Windows PowerShel*
 
-> If you wish to get correct time, replace TZ=<timzone> with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+> *If you wish to get correct time inside SIMON, replace TZ=<timzone> variable with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)*
 ```bash
 docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=America/Los_Angeles --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:0.1.0
 ```
-Once command is executed and the `SIMON` is started you can access it on `http://localhost:3010` and create your account.
-- If you get asked please allow connections through your Windows Firewall.
 
-To run latest code that is in master branch, please use following docker image `genular/simon:latest`
+3. Once command is executed and the `SIMON` is downloaded and started you can access it on `http://localhost:3010` via your web favorite browser *(we recommend [Firefox](https://www.mozilla.org/en-GB/firefox/new/))* and create your administrator account.
+- If you get asked, please *allow connections* through your *Windows Firewall*.
+
+*To run latest code that is in master branch, please use following docker image `genular/simon:latest`*
 
 ##### Other information
 `SIMON` will now run until you *shutdown/restart* your machine or *stop it manually*.
@@ -151,7 +151,7 @@ Tested on `Firefox Quantum 64` or above. As much as we like other browsers we ar
 
 ### Reaching Out
 If you'd like to start a conversation feel free to [e-mail us](mailto:info@genular.com).
-I would also gladly like to hear from you if you find this project useful and helpful!
+I would also like to hear from you if you find this project useful and helpful!
 
  * Join us on `#genular` on `freenode.net` (or use the [web client](https://webchat.freenode.net/?channels=genular)).
  * Find us [on Twitter](https://twitter.com/genular) under @genular

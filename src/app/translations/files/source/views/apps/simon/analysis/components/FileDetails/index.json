@@ -18,7 +18,7 @@
 								},
 								"predictor_exclude": {
 									"title": "Exclude predictors",
-									"description": "If you selected to use ALL Predictors in Select ALL switch, you can exclude some of them by selecting them here.<br />To use this function select ALL switch must be turned on!",
+									"description": "If you selected to use ALL Predictors in Select ALL switch, you can exclude some of them by selecting them here. To use this function select ALL switch must be turned on!",
 									"placeholder": "Exclude predictor variables"
 								},
 								"partitions": {

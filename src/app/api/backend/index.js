@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 10:26:55
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-04-18 10:12:22
+ * @Last Modified time: 2019-12-10 10:20:57
  */
 import request from "@/utils/request";
 
@@ -247,9 +247,11 @@ export function resamplesFeaturesSuggest(submitData) {
 }
 
 export function getSimonPreAnalysisDetails(submitData) {
+    // URL Encode two times, since sometimes utf8 characters from column names are issue for JS btoa
     const data = {
-        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData)))
+        submitData: encodeURIComponent(window.btoa(encodeURIComponent(JSON.stringify(submitData))))
     };
+
     return request({
         url: baseUrlPath + "/system/simon/pre-analysis",
         method: "POST",
