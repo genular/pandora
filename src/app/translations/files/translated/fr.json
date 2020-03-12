@@ -38,7 +38,7 @@
   "views.apps.simon.analysis.components.FileDetails.body.predictor.description": "Un prédicteur de la variable est une variable est utilisée dans la ML de prévoir une autre variable",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder": "Veuillez sélectionner les variables prédictives, type de recherche...",
   "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.title": "Exclure les facteurs prédictifs",
-  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description": "If you selected to use ALL Predictors in Select ALL switch, you can exclude some of them by selecting them here. To use this function select ALL switch must be turned on!",
+  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description": "Si vous avez choisi d'utiliser TOUS les Prédicteurs de Sélectionner TOUS les interrupteur, vous pouvez exclure certains d'entre eux en les sélectionnant ici. Pour utiliser cette fonction, sélectionnez TOUS commutateur doit être activé!",
   "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.placeholder": "Exclure les variables prédictives",
   "views.apps.simon.analysis.components.FileDetails.body.partitions.title": "Formation/jeu de données de Test de la partition (en%)",
   "views.apps.simon.analysis.components.FileDetails.body.partitions.description": "Séparer un ensemble de données en un ensemble d'apprentissage et un jeu de test, la plupart des données est utilisé pour la formation, et une plus petite partie des données est utilisé pour les tests.",
