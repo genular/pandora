@@ -38,7 +38,7 @@
   "views.apps.simon.analysis.components.FileDetails.body.predictor.description": "A predictor variable is a variable used in ML to predict another variable",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder": "Please select predictor variables, type to search...",
   "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.title": "Exclude predictors",
-  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description": "If you selected to use ALL Predictors in Select ALL switch, you can exclude some of them by selecting them here.<br />To use this function select ALL switch must be turned on!",
+  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description": "If you selected to use ALL Predictors in Select ALL switch, you can exclude some of them by selecting them here. To use this function select ALL switch must be turned on!",
   "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.placeholder": "Exclude predictor variables",
   "views.apps.simon.analysis.components.FileDetails.body.partitions.title": "Training/Testing dataset partition (%)",
   "views.apps.simon.analysis.components.FileDetails.body.partitions.description": "Separate a data set into a training set and testing set, most of the data is used for training, and a smaller portion of the data is used for testing.",

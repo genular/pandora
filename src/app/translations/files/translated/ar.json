@@ -38,7 +38,7 @@
   "views.apps.simon.analysis.components.FileDetails.body.predictor.description": "مؤشر المتغير هو متغير المستخدمة في مل التنبؤ متغير آخر",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder": "يرجى تحديد متغيرات توقع نوع البحث...",
   "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.title": "استبعاد تنبئ",
-  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description": "إذا قمت بتحديد استخدام جميع المتسابقين في تحديد كافة التبديل ، يمكنك استبعاد بعض منهم عن طريق اختيار لهم هنا.<br />لاستخدام هذه الوظيفة تحديد كل ما يجب تشغيل التبديل.",
+  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description": "إذا قمت بتحديد استخدام جميع المتسابقين في تحديد كافة التبديل ، يمكنك استبعاد بعض منهم عن طريق اختيار لهم هنا. لاستخدام هذه الوظيفة تحديد كل ما يجب أن يكون مفتاح تشغيل!",
   "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.placeholder": "استبعاد المتغيرات توقع",
   "views.apps.simon.analysis.components.FileDetails.body.partitions.title": "التدريب/اختبار dataset القسم (%)",
   "views.apps.simon.analysis.components.FileDetails.body.partitions.description": "منفصلة مجموعة من البيانات إلى مجموعة التدريب والاختبار تعيين معظم البيانات المستخدمة في التدريب ، جزء أصغر من البيانات المستخدمة في الاختبار.",
