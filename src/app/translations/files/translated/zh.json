@@ -38,7 +38,7 @@
   "views.apps.simon.analysis.components.FileDetails.body.predictor.description": "一个预测变量是一个变量使用ML预测的另一个变量",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder": "请选择预测变量、类型搜索...",
   "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.title": "排除的预测变量",
-  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description": "If you selected to use ALL Predictors in Select ALL switch, you can exclude some of them by selecting them here. To use this function select ALL switch must be turned on!",
+  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description": "如果你选择使用的所有预测在选择所有开关，你可以排除他们中的一些通过选择他们在这里。 使用这一功能的选择所有开关必须打开！",
   "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.placeholder": "排除预测变量",
   "views.apps.simon.analysis.components.FileDetails.body.partitions.title": "培训/测试数据集的分区(%)",
   "views.apps.simon.analysis.components.FileDetails.body.partitions.description": "单独一个数据集成一个培训设置和测试设置的，大部分数据是用于培训，以及一小部分数据是用于测试。",
