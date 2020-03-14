@@ -451,7 +451,7 @@ export default {
                 function() {
                     this.getDatasetQueueList();
                 }.bind(this),
-                60000
+                10000
             );
         }
     },

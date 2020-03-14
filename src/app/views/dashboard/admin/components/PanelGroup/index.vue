@@ -80,7 +80,7 @@ export default {
                 function() {
                     this.getServerStats();
                 }.bind(this),
-                60000
+                30000
             );
         }
     },
