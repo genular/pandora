@@ -38,7 +38,7 @@
   "views.apps.simon.analysis.components.FileDetails.body.predictor.description": "Eine predictor-Variable ist eine Variable, die in ML verwendet wird, um eine andere Variable vorherzusagen",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder": "Bitte wählen Sie die Vorhersage-Variablen, tippen um zu suchen...",
   "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.title": "Vorhersagen ausschließen",
-  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description": "Wenn Sie ALLE Vorhersagen im Schalter ALLE auswählen, können Sie einige von ihnen ausschließen, indem Sie sie hier auswählen.<br />Um diese Funktion zu verwenden, müssen ALLE Schalter eingeschaltet sein!",
+  "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.description": "Wenn Sie festgelegt haben, verwenden ALLE Prädiktoren in Wählen Sie wechseln, können Sie einige davon ausschließen, indem Sie Sie hier. Um diese Funktion zu verwenden wählen Sie ALLE Schalter müssen eingeschaltet sein!",
   "views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.placeholder": "Vorhersage-Variablen ausschließen",
   "views.apps.simon.analysis.components.FileDetails.body.partitions.title": "Training/Test der Dataset-Partition (%)",
   "views.apps.simon.analysis.components.FileDetails.body.partitions.description": "Trennen Sie einen Datensatz in einen Trainingssatz und Testsatz, die meisten Daten werden für Schulungen verwendet und ein kleiner Teil der Daten wird zum Testen verwendet.",
