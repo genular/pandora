@@ -436,6 +436,8 @@
   "globals.performanceVariables.options.Precision.description": "",
   "globals.performanceVariables.options.PredictAUC.title": "预测哥伦比亚联合自卫军",
   "globals.performanceVariables.options.PredictAUC.description": "",
+  "globals.performanceVariables.options.prAUC.title": "prAUC",
+  "globals.performanceVariables.options.prAUC.description": "",
   "globals.performanceVariables.options.Prevalence.title": "流行率",
   "globals.performanceVariables.options.Prevalence.description": "",
   "globals.performanceVariables.options.Recall.title": "回想一下",
