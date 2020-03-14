@@ -58,6 +58,7 @@
 				"PositiveControl": { "title": "Positive Control", "description": "" },
 				"Precision": { "title": "Precision", "description": "" },
 				"PredictAUC": { "title": "Predict AUC", "description": "" },
+				"prAUC": { "title": "prAUC", "description": "" },
 				"Prevalence": { "title": "Prevalence", "description": "" },
 				"Recall": { "title": "Recall", "description": "" },
 				"Sensitivity": { "title": "Sensitivity", "description": "" },

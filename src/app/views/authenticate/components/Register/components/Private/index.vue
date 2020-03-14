@@ -28,7 +28,7 @@
                                         <i slot="suffix" :class="validation['userForm'].username"></i>
                                     </el-input>
                                     <p class="note">
-                                        This will be your username. You can add the name of your organization later.
+                                        This will be your username.
                                     </p>
                                 </el-form-item>
                                 <el-form-item label="Email address" style="width: 49%; float: left; margin-left: 2%;">

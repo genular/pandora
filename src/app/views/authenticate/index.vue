@@ -111,6 +111,7 @@ export default {
                     }
                 })
                 .catch(error => {
+                    console.log("==> configureBackendServers: ")
                     console.log(error);
                     this.loadingWizard = false;
                     this.backendServersError = true;
