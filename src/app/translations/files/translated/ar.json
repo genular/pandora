@@ -436,6 +436,8 @@
   "globals.performanceVariables.options.Precision.description": "",
   "globals.performanceVariables.options.PredictAUC.title": "التنبؤ AUC",
   "globals.performanceVariables.options.PredictAUC.description": "",
+  "globals.performanceVariables.options.prAUC.title": "prAUC",
+  "globals.performanceVariables.options.prAUC.description": "",
   "globals.performanceVariables.options.Prevalence.title": "انتشار",
   "globals.performanceVariables.options.Prevalence.description": "",
   "globals.performanceVariables.options.Recall.title": "أذكر",
