@@ -5,16 +5,16 @@
 				"components": {
 					"PanelGroup": {
 						"tasks": {
-							"title": "Tasks submitted"
+							"title": "Tasks"
 						},
 						"datasets": {
-							"title": "Datasets generated"
+							"title": "Datasets"
 						},
 						"models": {
-							"title": "Models processed"
+							"title": "Models"
 						},
 						"features": {
-							"title": "Features discovered"
+							"title": "Features"
 						}
 					}
 				}

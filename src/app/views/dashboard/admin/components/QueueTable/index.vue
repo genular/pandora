@@ -72,7 +72,12 @@
             </el-table-column>
             <el-table-column align="center" class-name="status-col" :label="$t('views.dashboard.admin.components.QueueTable.table.header.status')" width="175">
                 <template slot-scope="scope">
-                    <el-tag :type="statusFilter(scope.row.status, 'class')">{{ statusFilter(scope.row.status, "value") }}</el-tag>
+                    <el-tag :type="statusFilter(scope.row.status, 'class')">
+                        {{ statusFilter(scope.row.status, "value") }}
+
+                        <small>({{ Math.round((scope.row.modelsTotal / JSON.parse(scope.row.packages).length) 
+                            * 100) }}%)</small>
+                    </el-tag>
                 </template>
             </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.extraction.title')">
@@ -99,7 +104,7 @@
             </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.modelsTotal')">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.modelsTotal }}</span>
+                    <span>{{ scope.row.modelsTotal }} / {{ JSON.parse(scope.row.packages).length }}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.modelsSuccess')">
@@ -308,7 +313,8 @@
                                 <div v-else>
                                     <el-tooltip class="item" effect="dark" placement="top-start">
                                         <div slot="content">
-                                            {{ $t("views.dashboard.admin.components.QueueTable.dialog.models_table.header.status.options.error") }}
+                                            {{ $t("views.dashboard.admin.components.QueueTable.dialog.models_table.header.status.options.error") }}:
+                                            {{ scope.row.error }}
                                         </div>
                                         <span class="el-icon-warning"></span>
                                     </el-tooltip>
@@ -635,15 +641,42 @@ export default {
             // 7 User Paused
             // 8 User resumed
             const statusMap = {
-                0: { class: "success", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.0") }, // User created
-                1: { class: "info", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.1") }, // User confirmed waiting to process
-                2: { class: "warning", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.2") }, // User canceled
-                3: { class: "danger", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.3") }, // Processing
-                4: { class: "info", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.4") },
-                5: { class: "success", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.5") }, // Finished
-                6: { class: "danger", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.6") }, // Finished
-                7: { class: "success", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.7") }, // Paused
-                8: { class: "danger", value: this.$t("views.dashboard.admin.components.QueueTable.status_map.8") } // Resumed
+                0: { 
+                    class: "success", 
+                    value: this.$t("views.dashboard.admin.components.QueueTable.status_map.0") 
+                }, // User created
+                1: { 
+                    class: "info", 
+                    value: this.$t("views.dashboard.admin.components.QueueTable.status_map.1") 
+                }, // User confirmed waiting to process
+                2: { 
+                    class: "warning", 
+                    value: this.$t("views.dashboard.admin.components.QueueTable.status_map.2") 
+                }, // User canceled
+                3: { 
+                    class: "danger", 
+                    value: this.$t("views.dashboard.admin.components.QueueTable.status_map.3") 
+                }, // Processing
+                4: { 
+                    class: "info", 
+                    value: this.$t("views.dashboard.admin.components.QueueTable.status_map.4") 
+                },
+                5: { 
+                    class: "success", 
+                    value: this.$t("views.dashboard.admin.components.QueueTable.status_map.5") 
+                }, // Finished
+                6: { 
+                    class: "danger", 
+                    value: this.$t("views.dashboard.admin.components.QueueTable.status_map.6") 
+                }, // Finished
+                7: { 
+                    class: "success", 
+                    value: this.$t("views.dashboard.admin.components.QueueTable.status_map.7") 
+                }, // Paused
+                8: { 
+                    class: "danger", 
+                    value: this.$t("views.dashboard.admin.components.QueueTable.status_map.8") 
+                } // Resumed
             };
             return statusMap[status][type];
         },

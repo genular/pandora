@@ -1,6 +1,6 @@
 <template>
     <el-row class="dashboard-inner-panel-group" :gutter="15" justify="center" v-loading="listLoading" :element-loading-text="$t('globals.page_loading')">
-        <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+        <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
             <div class="card-panel">
                 <div class="card-panel-icon-wrapper icon-1">
                     <i class="fa fa-icon fa-database card-panel-icon"></i>
@@ -11,7 +11,7 @@
                 </div>
             </div>
         </el-col>
-        <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+        <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
             <div class="card-panel">
                 <div class="card-panel-icon-wrapper icon-2">
                     <i class="fa fa-icon fa-filter card-panel-icon"></i>
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </el-col>
-        <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+        <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
             <div class="card-panel">
                 <div class="card-panel-icon-wrapper icon-3">
                     <i class="fa fa-icon fa-area-chart card-panel-icon"></i>
@@ -33,7 +33,7 @@
                 </div>
             </div>
         </el-col>
-        <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+        <el-col :xs="6" :sm="6" :lg="6" class="card-panel-col">
             <div class="card-panel">
                 <div class="card-panel-icon-wrapper icon-4">
                     <i class="fa fa-icon fa-cog card-panel-icon"></i>
