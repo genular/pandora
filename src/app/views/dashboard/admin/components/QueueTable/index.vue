@@ -75,8 +75,10 @@
                     <el-tag :type="statusFilter(scope.row.status, 'class')">
                         {{ statusFilter(scope.row.status, "value") }}
 
-                        <small>({{ Math.round((scope.row.modelsTotal / JSON.parse(scope.row.packages).length) 
-                            * 100) }}%)</small>
+                        <small>
+                            ({{ Math.round((scope.row.modelsTotal / (JSON.parse(scope.row.packages).length * scope.row.resamplesTotal)) 
+                            * 100) }}%)
+                        </small>
                     </el-tag>
                 </template>
             </el-table-column>
@@ -104,7 +106,7 @@
             </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.modelsTotal')">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.modelsTotal }} / {{ JSON.parse(scope.row.packages).length }}</span>
+                    <span>{{ scope.row.modelsTotal }} / {{ (JSON.parse(scope.row.packages).length * scope.row.resamplesTotal) }}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.modelsSuccess')">
