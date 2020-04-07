@@ -77,13 +77,15 @@ In order to run a test instance of `SIMON` we first need to prepare the local en
 
 > *If you wish to get correct time inside SIMON, replace TZ=<timzone> variable with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)*
 ```bash
-docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=America/Los_Angeles --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:0.1.0
+docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:0.1.0
 ```
-
 3. Once command is executed and the `SIMON` is downloaded and started you can access it on `http://localhost:3010` via your web favorite browser *(we recommend [Firefox](https://www.mozilla.org/en-GB/firefox/new/))* and create your administrator account.
 - If you get asked, please *allow connections* through your *Windows Firewall*.
 
-*To run latest code that is in master branch, please use following docker image `genular/simon:latest`*
+*To run latest code that is in development master branch, please use following docker image `genular/simon:latest`*
+```bash
+docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --volume genular_data_master:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:latest
+```
 
 ##### Other information
 `SIMON` will now run until you *shutdown/restart* your machine or *stop it manually*.
