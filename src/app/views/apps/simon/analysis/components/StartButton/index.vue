@@ -4,96 +4,45 @@
             <el-col :offset="13" :span="11">
                 <el-row type="flex" align="middle">
                     <el-col :span="24">
-                        <el-button class="validate-analysis" type="primary" round icon="el-icon-caret-right" :disabled="isValidateDisabled == true" @click="validateJob"
-                            >Validate data</el-button
-                        >
+                        <el-button class="validate-analysis" type="primary" round icon="el-icon-caret-right" :disabled="isValidateDisabled == true" @click="validateJob">Validate data</el-button>
                     </el-col>
                 </el-row>
             </el-col>
         </el-row>
         <!-- Confirm submission Alert Dialog -->
-        <el-dialog
-            :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.title')"
-            :visible.sync="submissionVisible"
-            width="40%"
-            :before-close="handleSubmissionCancle"
-        >
+        <el-dialog :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.title')" :visible.sync="submissionVisible" width="40%" :before-close="handleSubmissionCancle">
             <div class="tip">
                 <div style="float: left;">{{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.header") }}:</div>
-
                 <el-tooltip placement="top">
                     <div slot="content">
                         {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description") }}
                     </div>
                     <div style="float: right;">
                         {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title") }}
-
                         <span style="font-weight: bold;" v-if="!isNaN(datasetQueueSparsity)">{{ datasetQueueSparsity * 100 }}%</span>
                         <span style="font-weight: bold;" v-else>Not calculated</span>
-
                     </div>
                 </el-tooltip>
                 <br />
                 <br />
                 <el-tabs v-if="datasetResamples.length > 0" type="border-card">
-                    <el-tab-pane
-                        v-for="(item, index) in datasetResamples"
-                        :label="item.outcome.original + ' (' + datasetResamples[index]['data'].length + ')'"
-                        :key="index"
-                        :name="String(index)"
-                        :v-model="0"
-                    >
-                        <el-table
-                            :data="datasetResamples[index]['data']"
-                            :ref="'datasetResamplesTable_' + item.outcome.remapped"
-                            height="250"
-                            style="width: 100%"
-                            @select="selectResampleItem"
-                            @selection-change="
+                    <el-tab-pane v-for="(item, index) in datasetResamples" :label="item.outcome.original + ' (' + datasetResamples[index]['data'].length + ')'" :key="index" :name="String(index)" :v-model="0">
+                        <el-table :data="datasetResamples[index]['data']" :ref="'datasetResamplesTable_' + item.outcome.remapped" height="250" style="width: 100%" @select="selectResampleItem" @selection-change="
                                 selection => {
                                     resampleSelectionChange(selection, index, item.outcome.remapped);
                                 }
-                            "
-                        >
+                            ">
                             <el-table-column type="selection"> </el-table-column>
-                            <el-table-column
-                                property="totalFeatures"
-                                :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.features')"
-                                sortable
-                                align="center"
-                            >
+                            <el-table-column property="totalFeatures" :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.features')" sortable align="center">
                             </el-table-column>
-                            <el-table-column
-                                property="totalSamples"
-                                :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.samples')"
-                                sortable
-                                align="center"
-                            >
+                            <el-table-column property="totalSamples" :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.samples')" sortable align="center">
                             </el-table-column>
-                            <el-table-column
-                                property="totalDatapoints"
-                                :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.datapoints')"
-                                sortable
-                                align="center"
-                            >
+                            <el-table-column property="totalDatapoints" :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.datapoints')" sortable align="center">
                             </el-table-column>
                             <el-table-column align="center">
                                 <template slot-scope="scope">
-                                    <el-button
-                                        type="primary"
-                                        size="mini"
-                                        @click.native.prevent="downloadResampleDataset(scope.$index, index)"
-                                        icon="el-icon-download"
-                                        circle
-                                    ></el-button>
-                                    <el-popover
-                                        placement="top-start"
-                                        v-if="!scope.row.isValid"
-                                        :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title')"
-                                        width="200"
-                                        style="margin-left: 5px;"
-                                        trigger="hover"
-                                    >
+                                    <el-button type="primary" size="mini" @click.native.prevent="downloadResampleDataset(scope.$index, index)" icon="el-icon-download" circle></el-button>
+                                    <el-popover placement="top-start" v-if="!scope.row.isValid" :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title')" width="200" style="margin-left: 5px;" trigger="hover">
                                         <div v-for="(message, messageIndex) in scope.row.message">
                                             {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages." + message.msg_info) }} {{ message.data }}
                                         </div>
@@ -111,20 +60,14 @@
             <span slot="footer" class="dialog-footer">
                 <el-button type="info" round icon="el-icon-caret-right" @click="handleSubmissionCancle">{{
                     $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.buttons.cancel")
-                }}</el-button>
+                    }}</el-button>
                 <el-button class="submit-analysis" type="primary" round icon="el-icon-caret-right" :disabled="!processTaskVisible" @click="processTask">{{
                     $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.buttons.process")
-                }}</el-button>
+                    }}</el-button>
             </span>
         </el-dialog>
         <!-- ERROR Alert Dialog -->
-        <el-dialog
-            :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.errors.title')"
-            :visible.sync="messageWarnings.length > 0"
-            width="35%"
-            :show-close="false"
-            center
-        >
+        <el-dialog :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.errors.title')" :visible.sync="messageWarnings.length > 0" width="35%" :show-close="false" center>
             <div class="tip">
                 <p>
                     <el-alert v-for="(item, index) in messageWarnings" :title="item" :key="index" type="error" :closable="false" show-icon></el-alert>
@@ -452,9 +395,19 @@ export default {
                                 this.preSelectDatasetResamples();
                             });
                         } else {
+                            const h = this.$createElement;
+                            let messageInfo = this.$t("globals.errors.request_general");
+                            response.data.details.message.forEach((msg, msgIndex) => {
+
+                                if (msg.msg_info === "invalid_columns") {
+                                    messageInfo = messageInfo + "<br />Invalid column values detected: " + msg.data;
+                                }
+                            });
                             this.$message({
-                                message: this.$t("globals.errors.request_general"),
-                                type: "warning"
+                                message: h("div", {domProps:{innerHTML: messageInfo}}),
+                                type: "error",
+                                duration: 5000,
+                                showClose: true
                             });
                         }
                     }
@@ -568,14 +521,18 @@ export default {
         }
     }
 };
+
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "~scss_vars";
+
 .simon-start-button {
     margin-top: 20px;
+
     .validate-analysis {
         float: right;
     }
+
     .progress-circle {
         position: fixed;
         width: 100%;
@@ -585,6 +542,7 @@ export default {
         left: 0;
         z-index: 100;
         background-color: rgba(255, 255, 255, 0.5);
+
         .el-progress {
             position: absolute;
             left: 50%;
@@ -593,4 +551,5 @@ export default {
         }
     }
 }
+
 </style>
