@@ -271,7 +271,7 @@ export default {
                     });
             } else {
                 this.cancelSubmission();
-            }
+            } 
         },
         cancelSubmission() {
             this.submissionVisible = false;
