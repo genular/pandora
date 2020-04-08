@@ -255,26 +255,36 @@ export default {
         stopLoading() {
             this.loadingInstance.close();
         },
-        handleSubmissionCancle(event) {
+        /*
+            quite - Should we display confirmation box or not
+         */
+        handleSubmissionCancle(quite = false) {
+            console.log("handleSubmissionCancle:" + this.datasetQueueID);
             this.startLoading();
+            if (quite === false) {
+                this.$confirm(this.$t("views.apps.simon.analysis.components.StartButton.dialogs.cancel.message"))
+                    .then(_ => {
+                        this.cancelSubmission();
+                    })
+                    .catch(_ => {
+                        this.stopLoading();
+                    });
+            } else {
+                this.cancelSubmission();
+            }
+        },
+        cancelSubmission() {
+            this.submissionVisible = false;
+            this.processTaskVisible = false;
+            this.isValidateDisabled = false;
 
-            this.$confirm(this.$t("views.apps.simon.analysis.components.StartButton.dialogs.cancel.message"))
-                .then(_ => {
-                    this.submissionVisible = false;
-                    this.processTaskVisible = false;
-                    this.isValidateDisabled = false;
-
-                    ApiCancelDatasetQueueTask({ queueID: this.datasetQueueID })
-                        .then(response => {
-                            this.stopLoading();
-                        })
-                        .catch(error => {
-                            this.stopLoading();
-                            console.log(error);
-                        });
-                })
-                .catch(_ => {
+            ApiCancelDatasetQueueTask({ queueID: this.datasetQueueID })
+                .then(response => {
                     this.stopLoading();
+                })
+                .catch(error => {
+                    this.stopLoading();
+                    console.log(error);
                 });
         },
         processTask() {
@@ -395,18 +405,24 @@ export default {
                                 this.preSelectDatasetResamples();
                             });
                         } else {
-                            const h = this.$createElement;
-                            let messageInfo = this.$t("globals.errors.request_general");
-                            response.data.details.message.forEach((msg, msgIndex) => {
+                            // TODO:
+                            // Cancel task, delete Queue from database
+                            this.handleSubmissionCancle(true);
 
+                            const h = this.$createElement;
+                            let messageInfo = this.$t("globals.errors.request_general") + "<br />";
+
+                            response.data.details.message.forEach((msg, msgIndex) => {
                                 if (msg.msg_info === "invalid_columns") {
                                     messageInfo = messageInfo + "<br />Invalid column values detected: " + msg.data;
                                 }
                             });
+
                             this.$message({
-                                message: h("div", {domProps:{innerHTML: messageInfo}}),
+                                dangerouslyUseHTMLString: true,
+                                message: messageInfo,
                                 type: "error",
-                                duration: 5000,
+                                duration: 15000,
                                 showClose: true
                             });
                         }

@@ -573,7 +573,16 @@ export default {
                             this.queueListLoading = false;
                         });
                 } else if (clickAction === "delete") {
-                    if (rowInfo.status < 5 && rowInfo.status !== 2) {
+                    // 0 Created
+                    // 1 User confirmed - and resamples active
+                    // 2 User canceled - Inactive
+                    // 3 Marked for processing - cron job must pick it up
+                    // 4 R Processing
+                    // 5 R Finished - Sucess
+                    // 6 R Finished - Errors
+                    // 7 User Paused
+                    // 8 User resumed
+                    if (rowInfo.status === 4) {
                         this.$message({
                             message: this.$t("views.dashboard.admin.components.QueueTable.messages.in_progress"),
                             type: "warning"
