@@ -276,3 +276,25 @@ div:focus {
         }
     }
 }
+
+.custom-table-header-labels-sortable {
+    display: inline-block;
+    vertical-align: middle;
+
+    .custom-table-header-labels-text {
+        text-overflow: ellipsis;
+        float: left;
+        white-space: nowrap;
+        max-width: calc(100% - 17px);
+        overflow: hidden;
+    }
+    span {
+        &:nth-of-type(2) {
+            float: right;
+            // Filter Icon
+            i {
+                cursor: pointer;
+            }
+        }
+    }
+}

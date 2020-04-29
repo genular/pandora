@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <!-- Main queue Resamples Table -->
-                    <el-table
+                    <el-table 
                         ref="resamplesTable"
                         v-loading="tableLoading.resamples"
                         :data="displayResamples"

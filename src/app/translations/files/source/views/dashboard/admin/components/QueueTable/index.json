@@ -54,14 +54,20 @@
 									"title": "More information"
 								},
 								"download": {
-									"title": "Download dataset"
+									"title": "Download queue"
 								},
 								"delete": {
-									"title": "Delete dataset",
+									"title": "Delete queue",
 									"dialog": {
 										"title": "Warning",
 										"description": "This will permanently delete everything on the system related to selected queue. Continue?"
 									}
+								},
+								"pause": {
+									"title": "Pause queue"
+								},
+								"start": {
+									"title": "Start queue"
 								}
 							}
 						},
