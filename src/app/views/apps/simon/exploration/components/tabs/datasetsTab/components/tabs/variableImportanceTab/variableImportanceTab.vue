@@ -298,10 +298,10 @@ export default {
                 resampleID: this.selectedFeatureSetId,
                 modelsID: this.selectedModelsIDs,
                 page: 1,
-                page_size: 10000,
+                page_size: 100000,
                 sort: true,
                 sort_by: "score_perc",
-                total_items: 10000
+                total_items: 100000
             })
                 .then(response => {
                     if (response.data.success === true) {
