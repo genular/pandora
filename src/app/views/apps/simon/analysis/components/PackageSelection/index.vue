@@ -49,10 +49,10 @@
                         <div class="draggable-containers">
                             <draggable
                                 class="draggable-items"
-                                element="el-collapse"
+                                tag="el-collapse"
                                 :component-data="getComponentData('handleAvaliableChange')"
                                 v-model="avaliablePackages"
-                                :options="dragOptions"
+                                v-bind="dragOptions"
                                 :move="onMove"
                                 @start="isDragging = true"
                                 @end="isDragging = false"
@@ -139,10 +139,10 @@
                         <div class="draggable-containers">
                             <draggable
                                 class="draggable-items"
-                                element="el-collapse"
+                                tag="el-collapse"
                                 :component-data="getComponentData('handleSelectedChange')"
                                 v-model="selectedPackages"
-                                :options="dragOptions"
+                                v-bind="dragOptions"
                                 :move="onMove"
                                 @start="isDragging = true"
                                 @end="isDragging = false"

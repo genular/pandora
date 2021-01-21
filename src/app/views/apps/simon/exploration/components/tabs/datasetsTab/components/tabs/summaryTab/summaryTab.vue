@@ -12,8 +12,8 @@
                         </el-col>
                     </el-row>
                     <!-- SVG Plot placeholder -->
-                    <div v-if="summary.boxplot !== false">
-                        <object id="summary-boxplot" style="margin: 0 auto;" :data="summary.boxplot" type="image/svg+xml"> </object>
+                    <div v-if="summary.boxplot !== false" style="text-align: center;">
+                        <img id="summary-boxplot" style="margin: 0 auto;" class="animated fadeIn" :src="'data:image/png;base64,' + summary.boxplot_png" fit="scale-down">
                     </div>
                     <div class="plot-placeholder" v-else>
                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
@@ -28,8 +28,8 @@
                         </el-col>
                     </el-row>
                     <!-- SVG Plot placeholder -->
-                    <div v-if="summary.rocplot !== false">
-                        <object id="summary-rocplot" style="margin: 0 auto;" :data="summary.rocplot" type="image/svg+xml"></object>
+                    <div v-if="summary.rocplot !== false" style="text-align: center;">
+                        <img id="summary-rocplot" style="margin: 0 auto;" class="animated fadeIn" :src="'data:image/png;base64,' + summary.rocplot_png" fit="scale-down">
                     </div>
                     <div class="plot-placeholder" v-else>
                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
@@ -46,9 +46,9 @@
                         </el-col>
                     </el-row>
                     <div class="code-output">
-                        <highlight-code lang="bash">
+                        <div class="highlight_code">
                             {{summary.info.differences}}
-                        </highlight-code>
+                        </div>
                     </div>
                 </el-col>
                 <el-col :span="12" v-if="summary.info.summary">
@@ -59,9 +59,9 @@
                         </el-col>
                     </el-row>
                     <div class="code-output">
-                        <highlight-code lang="bash">
+                        <div class="highlight_code">
                             {{summary.info.summary}}
-                        </highlight-code>
+                        </div>
                     </div>
                 </el-col>
             </el-row>
@@ -97,7 +97,9 @@ export default {
             loading: false,
             summary: {
                 boxplot: false,
+                boxplot_png: false,
                 rocplot: false,
+                rocplot_png: false,
                 info: {
                     summary: false,
                     differences: false
@@ -135,7 +137,7 @@ export default {
         },
         downloadPlotImage(summaryID) {
 
-            const svgBlob = new Blob([window.atob(decodeURIComponent(this.summary[summaryID].substring(26))) + "<!-- created by SIMON: https://genular.org -->"], { type: "image/svg+xml;charset=utf-8" });
+            const svgBlob = new Blob([window.atob(decodeURIComponent("data:image/svg+xml;base64," + this.summary[summaryID].substring(26))) + "<!-- created by SIMON: https://genular.org -->"], { type: "image/svg+xml;charset=utf-8" });
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
@@ -168,7 +170,7 @@ export default {
                             if (respItem.length < 15) {
                                 this.summary[respIndex] = line_chart_404;
                             } else {
-                               this.summary[respIndex] = "data:image/svg+xml;base64," + encodeURIComponent(respItem);
+                               this.summary[respIndex] = encodeURIComponent(respItem);
                             }
                         }
                     }
@@ -233,5 +235,12 @@ export default {
             max-height: 300px;
         }
     }
+}
+/* Graphs */
+#summary-boxplot{
+
+}
+#summary-rocplot {
+
 }
 </style>

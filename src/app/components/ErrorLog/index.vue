@@ -37,9 +37,9 @@
                     <template slot-scope="scope">
                         <div class="error-description">
                             <pre v-if="scope.row.err" class="code-output">
-                                <highlight-code lang="bash">
+                                <div class="highlight_code">
                                     {{scope.row.err.stack}}
-                                </highlight-code>
+                                </div>
                             </pre>
                         </div>
                     </template>

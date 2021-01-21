@@ -390,31 +390,11 @@ export default {
         }
     },
     mounted() {
-        console.log("mounted: correlationTab");
+        console.log("====>>> mounted: correlationTab");
         console.log(this.selectedFeatureSetId);
-
-        const featureSet = this.jobDetailsData.resamplesList.find(obj => {
-            return obj.resampleID === this.selectedFeatureSetId;
-        });
-
-        if (typeof featureSet !== "undefined") {
-            console.log(featureSet);
-
-            if (featureSet.featuresTotal < 250) {
-                this.tabEnabled = true;
-                if (this.renderedImage === "") {
-                    this.handleFetchCorrPlotImage();
-                }
-            } else {
-                this.tabEnabled = false;
-                this.loadingPlot = false;
-            }
-        } else {
-            this.tabEnabled = false;
-            this.loadingPlot = false;
-            this.activeTabName = "datasetsTab";
-        }
+        this.isTabEnabled();
     },
+
     methods: {
         redrawImage() {
             this.handleFetchCorrPlotImage();
@@ -451,6 +431,29 @@ export default {
                     this.renderedImage = line_chart_404;
                     this.loadingPlot = false;
                 });
+        },
+        isTabEnabled(){
+            const featureSet = this.jobDetailsData.resamplesList.find(obj => {
+                return obj.resampleID === this.selectedFeatureSetId;
+            });
+
+            if (typeof featureSet !== "undefined") {
+                console.log(featureSet);
+
+                if (featureSet.featuresTotal < 250) {
+                    this.tabEnabled = true;
+                    if (this.renderedImage === "") {
+                        this.handleFetchCorrPlotImage();
+                    }
+                } else {
+                    this.tabEnabled = false;
+                    this.loadingPlot = false;
+                }
+            } else {
+                this.tabEnabled = false;
+                this.loadingPlot = false;
+                this.activeTabName = "datasetsTab";
+            }
         }
     }
 };

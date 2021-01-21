@@ -92,9 +92,9 @@
                         <el-col :span="24" style="margin-top: 10px;">
                             <div>Input parameters:</div>
                             <pre class="code-output">
-                                    <highlight-code lang="bash">
+                                    <div class="highlight_code">
                                         {{resultsData.request}}
-                                    </highlight-code>
+                                    </div>
                                 </pre>
                         </el-col>
                     </el-row>

@@ -58,8 +58,8 @@
         <el-row justify="center">
             <el-col :span="24" v-loading="loadingPlot" element-loading-text="Processing..." style="text-align: center;">
                 <!-- SVG Plot placeholder -->
-                <div v-if="renderedImage !== false">
-                    <object id="correlation-svg" class="animated fadeIn" style="margin: 0 auto; margin-top: 10px; max-width: 100%;" :data="renderedImage" type="image/svg+xml"></object>
+                <div v-if="renderedImage !== false" style="text-align: center;">
+                    <img id="varImp-svg" class="animated fadeIn" :src="renderedImageDisplay" fit="scale-down">
                 </div>
                 <div class="plot-placeholder" v-else>
                     <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
@@ -92,6 +92,7 @@ export default {
         return {
             loadingPlot: true,
             renderedImage: false,
+            renderedImageDisplay: false,
             settingOptions: {
                 dotsize: 0.5,
                 theme: plotThemes,
@@ -160,11 +161,13 @@ export default {
             })
                 .then(response => {
                     this.renderedImage = "data:image/svg+xml;base64," + encodeURIComponent(response.data.image);
+                    this.renderedImageDisplay = "data:image/png;base64," + encodeURIComponent(response.data.image_png);
                     this.loadingPlot = false;
                 })
                 .catch(error => {
                     console.log("Server error occurred");
                     this.renderedImage = false;
+                    this.renderedImageDisplay = false;
                     this.loadingPlot = false;
                 });
         }
@@ -178,5 +181,10 @@ export default {
         font-size: 256px;
         color: #333333;
     }
+}
+#varImp-svg {
+    margin: 0 auto; 
+    margin-top: 10px; 
+    display: block;
 }
 </style>

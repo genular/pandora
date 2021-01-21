@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2019-01-14 16:20:23
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-03-08 12:57:10
+* @Last Modified time: 2021-01-21 10:13:54
 */
 import Vue from "vue";
 import env_vars from "env_vars";
@@ -12,9 +12,6 @@ import locale from "element-ui/lib/locale/lang/en";
 import "@/styles/main.scss"; // require styles using webpack alias
 
 import VueParticles from "vue-particles";
-
-import VueHighlightJS from 'vue-highlight.js';
-import bash from 'highlight.js/lib/languages/bash';
 
 import Database from "./utils/storage/index";
 Vue.prototype.$db = Database;
@@ -40,12 +37,6 @@ Vue.use(Element, {
 });
 
 Vue.use(VueParticles);
-Vue.use(VueHighlightJS, {
-	// Register only languages needed
-	languages: {
-		bash
-	}
-});
 
 Vue.config.productionTip = (env_vars.name == 'production');
 
