@@ -1,0 +1,29 @@
+{
+	"views": {
+		"apps": {
+			"simon": {
+				"exploration": {
+					"components": {
+						"tabs": {
+							"distributionTab": {
+								"index": {
+									"tabs": {
+										"distributionTraining": {
+											"title": "Training distribution"
+										},
+										"distributionTesting": {
+											"title": "Testing distribution"
+										},
+										"distributionResample": {
+											"title": "Training & Testing distribution"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

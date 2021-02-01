@@ -21,7 +21,7 @@
                 <el-card class="box-card">
                     <div slot="header">
                         {{ $t("views.apps.simon.analysis.components.PackageSelection.head.available.title") }}
-                        <span class="track-count">{{ selectedPackages.length }}/{{ avaliablePackages.length + selectedPackages.length }}</span>
+                        <span class="track-count">{{ enabledPackagesTotal - enabledPackagesSelected }}/{{ allPackagesTotal }}</span>
                         <el-switch v-model="filter.allPackages"></el-switch>
                     </div>
                     <div class="box-item">
@@ -302,6 +302,22 @@ export default {
             set(value) {
                 this.$store.dispatch("setSimonAnalysisBackwardSelection", value);
             }
+        },
+        enabledPackagesAvaliable: function() {
+            const count = this.avaliablePackages.filter((obj) => obj.disabled === false).length;
+            return(count);
+        },
+        enabledPackagesSelected: function() {
+            const count = this.selectedPackages.filter((obj) => obj.disabled === false).length;
+            return(count);
+        },
+        enabledPackagesTotal: function() {
+            const count = this.enabledPackagesAvaliable + this.enabledPackagesSelected;
+            return(count);
+        },
+        allPackagesTotal: function() {
+            const count =  this.avaliablePackages.length + this.selectedPackages.length;
+            return(count);
         }
     },
     methods: {
@@ -353,6 +369,7 @@ export default {
             // Loop this.avaliablePackages and set disabled flag!
         },
         selectPackage(item) {
+            console.log("==> selectPackage");
             if (typeof item === "object") {
                 this.packagesSearch.input = "";
 
@@ -394,6 +411,8 @@ export default {
     },
     watch: {
         "filter.allPackages": function(newVal, oldVal) {
+            console.log("==> filter.allPackages");
+            
             const allPackages = [...this.avaliablePackages, ...this.selectedPackages];
 
             const allPackagesUnique = removeDuplicateObjectsByKey(allPackages, "internal_id");

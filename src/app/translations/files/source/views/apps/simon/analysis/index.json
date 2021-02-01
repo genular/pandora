@@ -9,11 +9,13 @@
 							"messages": {
 								"error_server": "Error communication with back-end server. Please try again latter",
 								"error_format": "Features are not named properly, please rename your Column fields and try again.<br /> Please ensure that your columns are named only in Alphanumeric format (0-9,A-Z,a-z), additional only underscore _ is supported.<br /> For example:<br />spaces, and all other characters like !#$%&/()=?*+- etc. are not currently supported.<br /><br />Invalid: <br />",
-								"error_read": "File could not be read, so no columns can be detected. Please re-check your file, clear cache and try again"
+								"error_read": "File could not be read, so no columns can be detected. Please re-check your file, clear cache and try again",
+								"error_classification": "In this version only classification problems are supported. Please select outcome variable that contains 2 or more classes."
 							},
 							"buttons": {
 								"cancel": "Cancel",
-								"try_again": "Try again"
+								"try_again": "Try again",
+								"select_another": "Select another"
 							}
 						}
 					}

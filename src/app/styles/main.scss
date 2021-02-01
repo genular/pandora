@@ -302,3 +302,9 @@ div:focus {
     font-family: monospace;
     white-space: pre;
 }
+
+.distribution_images {
+    max-width: 100%;
+    height: auto;
+    width: auto\9; /* ie8 */
+}

@@ -4,7 +4,6 @@
         <el-row type="flex" align="top">
             <el-col :span="24">
                 <el-tabs tab-position="left">
-                    <el-tab-pane label="Data distribution">Data distribution</el-tab-pane>
                     <el-tab-pane label="AUC/ROC">AUC/ROC</el-tab-pane>
                     <el-tab-pane label="Feature importance">Feature importance</el-tab-pane>
                     <el-tab-pane label="Partial Dependence & ICE">Partial Dependence & ICE</el-tab-pane>

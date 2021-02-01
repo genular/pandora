@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { datasetsTab, correlationTab, clusteringTab } from "./tabs";
+import { datasetsTab, correlationTab, clusteringTab, distributionTab } from "./tabs";
 
 export default {
     name: "tabPane",
@@ -24,7 +24,8 @@ export default {
     components: {
         datasetsTab,
         correlationTab,
-        clusteringTab
+        clusteringTab,
+        distributionTab
     }
 };
 </script>

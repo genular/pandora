@@ -82,6 +82,12 @@ export default {
                     key: "clusteringTab",
                     icon: "el-icon-date",
                     restriction: "selectedFeatureSetId"
+                },
+                {
+                    label: "Data distribution",
+                    key: "distributionTab",
+                    icon: "el-icon-date",
+                    restriction: "selectedFeatureSetId"
                 }
             ],
 

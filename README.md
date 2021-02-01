@@ -77,7 +77,7 @@ In order to run a test instance of `SIMON` we first need to prepare the local en
 
 > *If you wish to get correct time inside SIMON, replace TZ=<timzone> variable with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)*
 ```bash
-docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --volume genular_data_master:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:latest
+docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:latest
 
 ```
 3. Once command is executed and the `SIMON` is downloaded and started you can access it on `http://localhost:3010` via your web favorite browser *(we recommend [Firefox](https://www.mozilla.org/en-GB/firefox/new/))* and create your administrator account.

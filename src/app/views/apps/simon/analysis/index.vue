@@ -8,8 +8,16 @@
         <el-dialog :title="$t('views.apps.simon.analysis.index.dialog.title')" :visible.sync="errorDialogVisible" width="30%" center :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
             <span v-html="errorDialogMessage"></span>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="cancelInitFeatures">{{ $t('views.apps.simon.analysis.index.dialog.buttons.cancel') }}</el-button>
-                <el-button type="primary" @click="reinitializeInitFeatures">{{ $t('views.apps.simon.analysis.index.dialog.buttons.try_again') }}</el-button>
+                    <div v-if="errorDialogType === 'server_error'">
+                    <el-button @click="cancelInitFeatures">{{ $t('views.apps.simon.analysis.index.dialog.buttons.cancel') }}</el-button>
+                    <el-button type="primary" @click="reinitializeInitFeatures">{{ $t('views.apps.simon.analysis.index.dialog.buttons.try_again') }}</el-button>
+                </div>
+                <div v-else-if="errorDialogType === 'general_error'">
+                    <el-button @click="errorDialogVisible = false">{{ $t('views.apps.simon.analysis.index.dialog.buttons.select_another') }}</el-button>
+                </div>
+                <div v-else>
+                    undefined error
+                </div>
             </span>
         </el-dialog>
     </div>
@@ -30,7 +38,8 @@ export default {
         return {
             loadingInstance: null,
             errorDialogVisible: false,
-            errorDialogMessage: ""
+            errorDialogMessage: "",
+            errorDialogType: "server_error"
         };
     },
     computed: {
@@ -65,11 +74,21 @@ export default {
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFileHash", value);
             }
+        },
+        /** Current Selected Outcome */
+        selectedOutcome: {
+            get() {
+                return this.$store.getters.simonAnalysisSelectedOutcome;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonAnalysisSelectedOutcome", value);
+            }
         }
     },
     mounted() {
         console.log("mounted: analysis");
         this.initFeatures();
+
     },
     methods: {
         loadingStart() {
@@ -106,23 +125,33 @@ export default {
             this.$store.dispatch("setSimonAvailablePackages", this.selectedFiles).then(
                 response => {
                     this.loadingEnd();
+
+                    // Check if we have any packages loaded / returned from R backend
+                    if(this.avaliablePackages.length < 1){
+                        this.errorDialogVisible = true;
+                        this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_server');
+                        this.errorDialogType = "server_error";
+                    }else{
+                        this.checkIsValidOutcome(this.selectedOutcome);
+                    }
                 },
                 error => {
                     console.log("Error Response: ", error);
                     this.loadingEnd();
                     this.errorDialogVisible = true;
                     this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_server');
+                    this.errorDialogType = "server_error";
                 }
             );
             // }
         },
         initFeatures() {
             this.initPackages();
+
             const selectedFilesHash = createHashFromArrayID(this.selectedFiles);
             /** Get selected CSV file Details needed in FileDetails sub-component */
             if (this.selectedFilesHash !== selectedFilesHash) {
                 console.log("read new features: " + this.selectedFilesHash);
-
                 this.loadingStart();
 
                 this.$store.dispatch("setSimonAnalysisSelectedFileHash", selectedFilesHash);
@@ -140,6 +169,7 @@ export default {
 
                             this.errorDialogVisible = true;
                             this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_format') + featuresExample;
+                            this.errorDialogType = "server_error";
                         }
                     },
                     error => {
@@ -148,9 +178,64 @@ export default {
                         this.selectedFilesHash = "";
                         this.errorDialogVisible = true;
                         this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_read');
+                        this.errorDialogType = "server_error";
                     }
                 );
             }
+        },
+        checkIsValidOutcome(selectedOutcomes){
+            console.log("checkIsValidOutcome:");
+            console.log(selectedOutcomes);
+            let unique_count = 0;
+            if(selectedOutcomes.length > 0) {
+
+                for (let i in selectedOutcomes) {
+
+                    unique_count = selectedOutcomes[i].unique_count;
+
+                    console.log("Total unique outcome variables: " + unique_count);
+                    if(unique_count < 2){
+                        this.errorDialogVisible = true;
+                        this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_classification');
+                        this.errorDialogType = "general_error";
+                        this.selectedOutcome = [];
+                        break;
+                    }
+                }
+            }
+
+            this.filterPackages(unique_count);
+        },
+        filterPackages(unique_count){
+            console.log("Enabling packages based on selection: " + unique_count);
+
+            for (let i in this.avaliablePackages) {
+
+                if(unique_count < 2){
+                    this.avaliablePackages[i].disabled = true;
+                }
+
+                if(unique_count === 2){
+                    if (this.avaliablePackages[i].classification === true) {
+                        this.avaliablePackages[i].disabled = false;
+                    }
+                }
+                // Disable Two class models
+                if(unique_count > 2 && unique_count <= 702){
+                    if (this.avaliablePackages[i].classification === true) {
+                        if (Array.isArray(this.avaliablePackages[i].tags) && this.avaliablePackages[i].tags.includes('Two Class Only') === true) {
+                            this.avaliablePackages[i].disabled = true;
+                        }else{
+                            this.avaliablePackages[i].disabled = false;
+                        }
+                    }
+                }
+            }
+        }
+    },
+    watch: {
+        "selectedOutcome": function(selectedOutcomes) {
+            this.checkIsValidOutcome(selectedOutcomes);
         }
     }
 };

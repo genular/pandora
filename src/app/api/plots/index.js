@@ -2,7 +2,7 @@
 * @Author: LogIN-
 * @Date:   2018-03-22 13:10:06
 * @Last Modified by:   LogIN-
-* @Last Modified time: 2019-04-18 14:06:04
+* @Last Modified time: 2021-02-01 11:02:53
 */
 import request from "@/utils/request";
 const baseUrlPath = "/plots";
@@ -87,6 +87,20 @@ export function fetchGraphSummary(query) {
 export function fetchGraphModelSummary(query) {
     return request({
         url: baseUrlPath + "/model-summary/render-plot",
+        method: "GET",
+        params: query
+    });
+}
+
+
+/**
+ * [fetchGraphDistribution description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function fetchGraphDistribution(query) {
+    return request({
+        url: baseUrlPath + "/distribution/render-plot",
         method: "GET",
         params: query
     });

@@ -564,6 +564,7 @@ export default {
                     }
                 }
             }
+            
             this.checkFormula();
         },
         checkFormula() {

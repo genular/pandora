@@ -502,7 +502,7 @@ export default {
                     restriction: "selectedModels",
                     // restriction_details: 1
                     // Temp disable tab,
-                    restriction_details: 10000
+                    restriction_details: 1
                 },
                 {
                     label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title"),
