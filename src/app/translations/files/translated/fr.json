@@ -33,7 +33,7 @@
   "components.SelectedFiles.select_file": "Veuillez sélectionner un fichier à partir de l'espace de travail pour commencer l'Analyse",
   "views.apps.simon.analysis.components.FileDetails.head.title": "Veuillez sélectionner les propriétés d'analyse",
   "views.apps.simon.analysis.components.FileDetails.head.description": "seulement 50 premières variables sont indiqués, le type de filtre à autrui ou de sélectionner TOUS les switch",
-  "views.apps.simon.analysis.components.FileDetails.head.clear": "claire",
+  "views.apps.simon.analysis.components.FileDetails.head.clear": "Reset features & selection",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.title": "Les variables prédictives",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.description": "Un prédicteur de la variable est une variable est utilisée dans la ML de prévoir une autre variable",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder": "Veuillez sélectionner les variables prédictives, type de recherche...",

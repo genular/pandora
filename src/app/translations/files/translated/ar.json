@@ -33,7 +33,7 @@
   "components.SelectedFiles.select_file": "يرجى تحديد ملف واحد من مساحة العمل لبدء تحليل",
   "views.apps.simon.analysis.components.FileDetails.head.title": "يرجى تحديد المطلوب تحليل خصائص",
   "views.apps.simon.analysis.components.FileDetails.head.description": "فقط لأول 50 المتغيرات تظهر نوع لتصفية الآخرين أو حدد جميع التبديل",
-  "views.apps.simon.analysis.components.FileDetails.head.clear": "واضح",
+  "views.apps.simon.analysis.components.FileDetails.head.clear": "Reset features & selection",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.title": "المتغيرات توقع",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.description": "مؤشر المتغير هو متغير المستخدمة في مل التنبؤ متغير آخر",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder": "يرجى تحديد متغيرات توقع نوع البحث...",

@@ -33,7 +33,7 @@
   "components.SelectedFiles.select_file": "请选择一个文件从工作区开始分析",
   "views.apps.simon.analysis.components.FileDetails.head.title": "请选择所需的分析性",
   "views.apps.simon.analysis.components.FileDetails.head.description": "只有第50变量都显示，型过滤的其他人或者选择的所有开关",
-  "views.apps.simon.analysis.components.FileDetails.head.clear": "清楚的",
+  "views.apps.simon.analysis.components.FileDetails.head.clear": "Reset features & selection",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.title": "预测变量",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.description": "一个预测变量是一个变量使用ML预测的另一个变量",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder": "请选择预测变量、类型搜索...",
