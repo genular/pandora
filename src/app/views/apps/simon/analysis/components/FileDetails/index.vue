@@ -160,7 +160,7 @@
                     </el-select>
                 </el-col>
 
-                <el-col :span="7" class="analysis-option">
+                <el-col :span="4" class="analysis-option">
                     <el-tooltip placement="bottom">
                         <div slot="content">
                             {{ $t("views.apps.simon.analysis.components.FileDetails.body.regression.description") }}
@@ -190,6 +190,44 @@
                         @focus="selectAvaliableFeaturesDisplay('selectedFormula')"
                     >
                         <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedFormula'" :label="item.original" :value="item">
+                            <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;"
+                                >{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span
+                            >
+                        </el-option>
+                    </el-select>
+                </el-col>
+
+                <el-col :span="3" class="analysis-option">
+                    <el-tooltip placement="bottom">
+                        <div slot="content">
+                            {{ $t("views.apps.simon.analysis.components.FileDetails.body.time_series.description") }}
+                        </div>
+                        <span class="field-title">{{ $t("views.apps.simon.analysis.components.FileDetails.body.time_series.title") }}</span>
+                    </el-tooltip>
+                    <el-select
+                        class="flud-selects"
+                        v-model="timeSeriesDate"
+                        :disabled="true"
+                        multiple
+                        filterable
+                        remote
+                        :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.time_series.placeholder')"
+                        value-key="position"
+                        :remote-method="
+                            userInput => {
+                                filterAvaliableFeaturesDisplay(userInput, 'timeSeriesDate');
+                            }
+                        "
+                        :loading="loading['timeSeriesDate']"
+                        @change="
+                            selection => {
+                                resampleSelectionChange(selection, 'timeSeriesDate');
+                            }
+                        "
+                        @focus="selectAvaliableFeaturesDisplay('timeSeriesDate')"
+                    >
+                        <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_timeSeriesDate'" :label="item.original" :value="item">
                             <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
                             <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;"
                                 >{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span
@@ -291,6 +329,7 @@ export default {
                 excludeFeatures: false,
                 selectedOutcome: false,
                 selectedFormula: false,
+                timeSeriesDate: false,
                 selectedClasses: false,
                 selectedPreProcess: false
             },
@@ -430,12 +469,22 @@ export default {
                 this.$store.dispatch("setSimonAnalysisSelectedClasses", value);
             }
         },
+        /* Regression analysis dependents */
         selectedFormula: {
             get() {
                 return this.$store.getters.simonAnalysisSelectedFormula;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFormula", value);
+            }
+        },
+        /* Regression analysis dependents */
+        timeSeriesDate: {
+            get() {
+                return this.$store.getters.simonAnalysisTimeSeriesDate;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonAnalysisTimeSeriesDate", value);
             }
         },
         selectedPreProcess: {
@@ -474,7 +523,7 @@ export default {
     },
     mounted() {
         if (this.avaliableFeaturesDisplay.length === 0) {
-            let allSelectedFeatures = [...this.selectedFeatures, ...this.excludeFeatures, ...this.selectedOutcome, ...this.selectedFormula, ...this.selectedClasses];
+            let allSelectedFeatures = [...this.selectedFeatures, ...this.excludeFeatures, ...this.selectedOutcome, ...this.selectedFormula, ...this.timeSeriesDate, ...this.selectedClasses];
             let allSelectedFeaturesUnique = [];
 
             if (allSelectedFeatures.length === 0) {
@@ -527,7 +576,7 @@ export default {
             }
         },
         resampleSelectionChange(selected, variable) {
-            const selectors = ["selectedFeatures", "excludeFeatures", "selectedOutcome", "selectedFormula", "selectedClasses"];
+            const selectors = ["selectedFeatures", "excludeFeatures", "selectedOutcome", "selectedFormula", "timeSeriesDate", "selectedClasses"];
 
             if (variable === "selectedFeatures") {
                 const selectedFeaturesIndex = findObjectIndexByKey(this.selectedFeatures, "remapped", "ALL");
@@ -568,7 +617,7 @@ export default {
             this.checkFormula();
         },
         checkFormula() {
-            const allExcludeFeatures = [...this.excludeFeatures, ...this.selectedOutcome, ...this.selectedFormula, ...this.selectedClasses];
+            const allExcludeFeatures = [...this.excludeFeatures, ...this.selectedOutcome, ...this.selectedFormula, ...this.timeSeriesDate, ...this.selectedClasses];
             const allExcludeFeaturesUnique = removeDuplicateObjectsByKey(allExcludeFeatures, "position");
             // Construct regression formula if any regression fields are selected
             if (this.selectedFeatures.length > 0 && this.selectedFormula.length > 0) {
@@ -606,6 +655,7 @@ export default {
             this.selectedOutcome = [];
             this.selectedClasses = [];
             this.selectedFormula = [];
+            this.timeSeriesDate = [];
             this.selectedPreProcess = ["center", "scale"];
             this.regressionFormula = "";
             this.classificationFormula = [];

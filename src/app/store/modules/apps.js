@@ -21,6 +21,7 @@ const apps = {
                 selectedOutcome: estore.get("apps-simon-analysis-selectedOutcome") || [],
                 selectedClasses: estore.get("apps-simon-analysis-selectedClasses") || [],
                 selectedFormula: estore.get("apps-simon-analysis-selectedFormula") || [],
+                timeSeriesDate: estore.get("apps-simon-analysis-timeSeriesDate") || [],
                 selectedPreProcess: estore.get("apps-simon-analysis-selectedPreProcess") || ["center", "scale"],
                 selectedPartitionSplit: estore.get("apps-simon-analysis-selectedPartitionSplit") || 75,
 
@@ -106,6 +107,10 @@ const apps = {
         SET_SIMON_ANALYSIS_SELECTED_FORMULA: (state, selectedFormula) => {
             state.simon.analysis.selectedFormula = selectedFormula;
             estore.set("apps-simon-analysis-selectedFormula", selectedFormula);
+        },
+        SET_SIMON_ANALYSIS_TIME_SERIES_DATE: (state, timeSeriesDate) => {
+            state.simon.analysis.timeSeriesDate = timeSeriesDate;
+            estore.set("apps-simon-analysis-timeSeriesDate", timeSeriesDate);
         },
         SET_SIMON_ANALYSIS_SELECTED_PREPROCESS: (state, selectedPreProcess) => {
             state.simon.analysis.selectedPreProcess = selectedPreProcess;
@@ -261,6 +266,9 @@ const apps = {
         },
         setSimonAnalysisSelectedFormula({ commit }, selectedFormula) {
             commit("SET_SIMON_ANALYSIS_SELECTED_FORMULA", selectedFormula);
+        },
+        setSimonAnalysisTimeSeriesDate({ commit }, timeSeriesDate) {
+            commit("SET_SIMON_ANALYSIS_TIME_SERIES_DATE", timeSeriesDate);
         },
         setSimonAnalysisSelectedPreProcess({ commit }, selectedPreProcess) {
             commit("SET_SIMON_ANALYSIS_SELECTED_PREPROCESS", selectedPreProcess);

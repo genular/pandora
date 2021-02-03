@@ -39,6 +39,7 @@ const getters = {
     simonAnalysisSelectedOutcome: state => state.apps.simon.analysis.selectedOutcome,
     simonAnalysisSelectedClasses: state => state.apps.simon.analysis.selectedClasses,
     simonAnalysisSelectedFormula: state => state.apps.simon.analysis.selectedFormula,
+    simonAnalysisTimeSeriesDate: state => state.apps.simon.analysis.timeSeriesDate,
     simonAnalysisSelectedPreProcess: state => state.apps.simon.analysis.selectedPreProcess,
     simonAnalysisSelectedPartitionSplit: state => state.apps.simon.analysis.selectedPartitionSplit,
     simonAnalysisTotalSamples: state => state.apps.simon.analysis.total_samples,

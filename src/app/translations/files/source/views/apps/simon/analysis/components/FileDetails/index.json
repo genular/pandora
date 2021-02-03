@@ -35,6 +35,11 @@
 									"description": "Response variable ∼ Predictor. As you select fields you will see formula example being constructed in upper left corner. This field is unavailable if you are not processing any Regression algorithm.",
 									"placeholder": "Regression dependents"
 								},
+								"time_series": {
+									"title": "Time Series",
+									"description": "Please select date column that will be used in time series analysis.",
+									"placeholder": "Date Column"
+								},
 								"classes": {
 									"title": "Additional Exploration Classes",
 									"description": "Please select all fields that are not being used as Response nor Predictor variables. This fields will be available to you in latter on Exploratory analysis, where you will be able to plot them against your results.",

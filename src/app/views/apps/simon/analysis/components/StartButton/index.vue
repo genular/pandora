@@ -122,6 +122,7 @@ export default {
                 selectedPreProcess: [],
                 selectedPartitionSplit: 75,
                 selectedFormula: [],
+                timeSeriesDate: [],
                 selectedClasses: [],
                 selectedPackages: [],
                 extraction: false,
@@ -172,6 +173,15 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFormula", value);
+            }
+        },
+        /* Regression analysis dependents */
+        timeSeriesDate: {
+            get() {
+                return this.$store.getters.simonAnalysisTimeSeriesDate;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonAnalysisTimeSeriesDate", value);
             }
         },
         selectedPreProcess: {
@@ -370,6 +380,7 @@ export default {
                 selectedPreProcess: this.selectedPreProcess.sort(sortAlphaNum),
                 selectedPartitionSplit: this.selectedPartitionSplit,
                 selectedFormula: this.selectedFormula.sort(sortAlphaNum),
+                timeSeriesDate: this.timeSeriesDate.sort(sortAlphaNum),
                 selectedClasses: this.selectedClasses.sort(sortAlphaNum),
                 selectedPackages: this.$store.getters.simonSelectedPackages
                     .map(function(item) {
