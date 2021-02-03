@@ -121,6 +121,7 @@
                     </el-slider>
                 </el-col>
             </el-row>
+
             <el-row type="flex" align="middle">
                 <el-col :span="1" style="min-width: 45px;"></el-col>
                 <el-col :span="7" class="analysis-option">
@@ -534,6 +535,7 @@ export default {
                 allSelectedFeaturesUnique = removeDuplicateObjectsByKey(allSelectedFeatures, "position");
             }
             console.log("Found total of:  " + allSelectedFeaturesUnique.length + " unique features");
+
             this.avaliableFeaturesDisplay = allSelectedFeaturesUnique;
         }
         this.checkFormula();
@@ -736,7 +738,7 @@ export default {
 }
 .analysis-option {
     &:not(:last-child) {
-        margin-right: 10px;
+        padding-right: 10px;
     }
 
     .field-title {
