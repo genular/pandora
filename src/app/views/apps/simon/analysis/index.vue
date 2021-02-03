@@ -191,9 +191,21 @@ export default {
 
                 for (let i in selectedOutcomes) {
 
-                    unique_count = selectedOutcomes[i].unique_count;
+                    if(typeof selectedOutcomes[i].unique_count !== "undefined") {
+                        if(selectedOutcomes[i].unique_count !== false){
+                            unique_count = selectedOutcomes[i].unique_count;        
+                        }else{
+                            // Fall-back for old versions where this is not calculated
+                            unique_count = 2;  
+                        }
+                    }else{
+                        // Fall-back for old versions where this is not calculated
+                        unique_count = 2;  
+                    }
+                    
 
                     console.log("Total unique outcome variables: " + unique_count);
+
                     if(unique_count < 2){
                         this.errorDialogVisible = true;
                         this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_classification');
