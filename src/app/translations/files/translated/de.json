@@ -33,7 +33,7 @@
   "components.SelectedFiles.select_file": "Bitte wählen Sie eine Datei aus dem Arbeitsbereich Analyse starten",
   "views.apps.simon.analysis.components.FileDetails.head.title": "Bitte wählen Sie die gewünschten Analyseneigenschaften",
   "views.apps.simon.analysis.components.FileDetails.head.description": "nur die ersten 50 Variablen angezeigt werden, tippen, um andere zu filtern oder ALLE Schalter auswählen",
-  "views.apps.simon.analysis.components.FileDetails.head.clear": "klar",
+  "views.apps.simon.analysis.components.FileDetails.head.clear": "Reset features & selection",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.title": "Vorhersage-Variablen",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.description": "Eine predictor-Variable ist eine Variable, die in ML verwendet wird, um eine andere Variable vorherzusagen",
   "views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder": "Bitte wählen Sie die Vorhersage-Variablen, tippen um zu suchen...",
