@@ -325,7 +325,12 @@ export default {
         };
     },
     mounted() {
-        console.log("mounted: clusteringTab");
+        console.log("mounted: " + this.$options.name);
+        this.redrawImage();
+    },
+    activated() {
+        console.log("activated: " + this.$options.name);
+        this.redrawImage();
     },
     computed: {
         selectedFeatureSetId: {
@@ -376,7 +381,7 @@ export default {
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
-            downloadLink.download = "clustering.svg";
+            downloadLink.download = "resampleID_" + this.selectedFeatureSetId + "_clustering_plot.svg";
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);

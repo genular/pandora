@@ -6,7 +6,7 @@
                     <div slot="header" class="clearfix">
                         <div class="card_intro">{{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.title") }}</div>
                         <div v-if="selectedFeatureSetId > 0">
-                            <div class="models_actions animated fadeIn" v-if="jobClassesDisaply.length > 0">
+                            <div class="models_actions animated fadeIn" v-if="queueClassesDisplay.length > 0">
                                 <el-select
                                     style="min-width: 350px;"
                                     v-model="selectedClasses"
@@ -21,7 +21,7 @@
                                     @focus="selectSuggestClasses"
                                 >
                                     <el-option
-                                        v-for="(classItem, index) in jobClassesDisaply"
+                                        v-for="(classItem, index) in queueClassesDisplay"
                                         :key="classItem.remapped"
                                         :label="classItem.original"
                                         :value="classItem.remapped"
@@ -522,7 +522,7 @@ export default {
                     restriction_details: 10000
                 }
             ],
-            jobClassesDisaply: [],
+            queueClassesDisplay: [],
             selectedClasses: []
         };
     },
@@ -553,7 +553,8 @@ export default {
         }
     },
     mounted() {
-        console.log("datasetsTab: mounted");
+        console.log("mounted: " + this.$options.name);
+        console.log("selectedFeatureSetId (resampleID): " + this.selectedFeatureSetId);
     },
     methods: {
         // Download and delete resample actions
@@ -677,21 +678,21 @@ export default {
         // Filter and display classes on user typing!
         filterAvaliableClasses(userInput) {
             if (userInput.length >= 2) {
-                this.jobClassesDisaply = this.jobDetailsData.queueDetails.selectedOptions.classes.filter(item => {
+                this.queueClassesDisplay = this.jobDetailsData.queueDetails.selectedOptions.classes.filter(item => {
                     return item.original.toLowerCase().indexOf(userInput.toLowerCase()) > -1;
                 });
             } else {
-                this.jobClassesDisaply = [];
+                this.queueClassesDisplay = [];
             }
         },
         // Display random first five items (classes) on user click/focus
         selectSuggestClasses(event) {
-            if (this.jobClassesDisaply.length === 0) {
+            if (this.queueClassesDisplay.length === 0) {
                 let sliceEnd = 5;
                 if (this.jobDetailsData.queueDetails.selectedOptions.classes.length < 5) {
                     sliceEnd = this.jobDetailsData.queueDetails.selectedOptions.classes.length;
                 }
-                this.jobClassesDisaply = this.jobDetailsData.queueDetails.selectedOptions.classes.slice(0, sliceEnd);
+                this.queueClassesDisplay = this.jobDetailsData.queueDetails.selectedOptions.classes.slice(0, sliceEnd);
             }
         },
         // When some class is selected lets make a Tab from it!
@@ -1334,12 +1335,18 @@ export default {
             if (exportData.length > 0) {
                 console.log(exportData);
 
-                // Map performance variables to root node
+                // Map performance and packageDetails variables to root column node
                 const flattenData = exportData.map(function(item) {
                     let itemFlat = item;
                     if (typeof item.performance !== "undefined") {
                         itemFlat = Object.assign(itemFlat, item.performance);
                         delete itemFlat.performance;
+                    }
+
+
+                    if (typeof item.packageDetails !== "undefined") {
+                        itemFlat = Object.assign(itemFlat, item.packageDetails);
+                        delete itemFlat.packageDetails;
                     }
 
                     return itemFlat;
@@ -1351,7 +1358,7 @@ export default {
                 excel.export_json_to_excel(tHeader, formattedData, downloadFilename);
             }
 
-            this.tableLoading[tableType] = true;
+            this.tableLoading[tableType] = false;
         },
         formatJson(filterVal, jsonData) {
             return jsonData.map(v =>
@@ -1381,10 +1388,10 @@ export default {
     },
     watch: {
         "jobDetailsData.queueDetails": function(newVal, oldVal) {
-            console.log("Updating jobClassesDisaply");
+            console.log("Updating queueClassesDisplay");
             // And new selected queue classes
             if (typeof newVal.selectedOptions !== "undefined") {
-                this.jobClassesDisaply = newVal.selectedOptions.classes;
+                this.queueClassesDisplay = newVal.selectedOptions.classes;
                 // Paginate Resample
                 this.paginateResamples(1);
 

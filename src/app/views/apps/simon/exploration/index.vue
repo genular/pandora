@@ -139,11 +139,11 @@ export default {
         }
     },
     mounted() {
-        console.log("mounted: exploration");
+        console.log("mounted: " + this.$options.name);
         this.resetExploration();
     },
     activated() {
-        console.log("activated: exploration, reseting variables");
+        console.log("activated: " + this.$options.name);
         this.resetExploration();
     },
     methods: {
@@ -171,7 +171,7 @@ export default {
                     this.getDatasetResamples();
                 }
             } else {
-                console.log("Getting queue details for first time:");
+                console.log("Fetching queue exploration details for first time (resetExploration)");
                 // in case user is back on page and he didn't changed selection
                 this.selectedFeatureSetId = 0;
                 // Reset any selected models for the resample
@@ -196,7 +196,28 @@ export default {
                         console.log("Trying to preselect performance variables:");
                         // Preselect if nothing selected.. eg. first run
                         if (this.jobDetailsData.performance.length < 1) {
-                            this.jobDetailsData.performance = ["Accuracy", "PredictAUC", "Sensitivity", "Specificity", "Recall"];
+                            let prefferedVariables = ["Accuracy", "PredictAUC", "Sensitivity", "Specificity", "Recall"];
+                            this.jobDetailsData.performance = [];
+
+                            prefferedVariables.forEach((item, index) => {
+                                if(this.jobDetailsData.performaceVariables.includes(item)){
+                                    this.jobDetailsData.performance.push(item)
+                                }
+                            });
+
+                            // If some performance variables are missing from default ones take the remaining from server return data
+                            const preselectDifference = (5 - this.jobDetailsData.performance.length);
+
+                            if(preselectDifference > 0 && this.jobDetailsData.performaceVariables.length >= preselectDifference){
+                                let addCount = 0;
+                               this.jobDetailsData.performaceVariables.forEach((item, index) => {
+                                    if(this.jobDetailsData.performance.includes(item) === false && addCount < preselectDifference){
+                                        this.jobDetailsData.performance.push(item);
+                                        addCount++;
+                                    }
+                                });
+
+                            }
                         }
                     } else {
                         // Something went wrong, cannot fetch details from Server

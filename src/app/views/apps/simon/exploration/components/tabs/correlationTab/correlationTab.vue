@@ -390,21 +390,27 @@ export default {
         }
     },
     mounted() {
-        console.log("====>>> mounted: correlationTab");
-        console.log(this.selectedFeatureSetId);
+        console.log("mounted: " + this.$options.name);
         this.isTabEnabled();
+        this.redrawImage();
     },
-
+    activated(){
+        console.log("activated: " + this.$options.name);
+        this.isTabEnabled();
+        this.redrawImage();
+    },
     methods: {
         redrawImage() {
-            this.handleFetchCorrPlotImage();
+            if(this.tabEnabled = true){
+                this.handleFetchCorrPlotImage();
+            }
         },
         downloadPlotImage() {
             const svgBlob = new Blob([this.renderedImageData], { type: "image/svg+xml;charset=utf-8" });
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
-            downloadLink.download = "correlation-plot.svg";
+            downloadLink.download = "resampleID_" + this.selectedFeatureSetId + "_correlation_plot.svg";
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);

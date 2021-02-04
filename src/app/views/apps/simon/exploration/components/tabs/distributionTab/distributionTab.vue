@@ -63,7 +63,7 @@ export default {
         };
     },
     mounted() {
-        console.log("mounted: distributionTab");
+        console.log("mounted: " + this.$options.name);
     },
     computed: {
         selectedFeatureSetId: {

@@ -88,7 +88,14 @@ export default {
         }
 
         if (this.isTabDisabled === false && this.listLoading === false && this.plot_data.histogram === false) {
-            this.handleFetchVariableImp();
+            this.handleFetchDistributionPlot();
+        }
+    },
+    activated(){
+        console.log("activated: " + this.$options.name);
+        
+        if (this.isTabDisabled === false) {
+            this.handleFetchDistributionPlot();
         }
     },
     computed: {
