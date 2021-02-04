@@ -2,7 +2,7 @@
  * @Author: LogIN-
  * @Date:   2019-01-22 10:26:55
  * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-12-10 10:20:57
+ * @Last Modified time: 2021-02-04 15:01:13
  */
 import request from "@/utils/request";
 
@@ -341,6 +341,21 @@ export function getPublicDatasets(submitData) {
 export function importPublicDatasets(submitData) {
     return request({
         url: baseUrlPath + "/dataset/import/public/import/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
+        method: "GET"
+    });
+}
+
+
+/**
+ * Generates publicly accessible download link for specific file ID
+ * @param  {object} Containing two variables:
+ * downloadType: (resample, queue)
+ * recordID: main ID of the queue or resample
+ * @return {object}            JSON decoded API response object
+ */
+export function generateSystemLogFileDownloadLink(submitData) {
+    return request({
+        url: baseUrlPath + "/system/simon/generate-log-file/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
         method: "GET"
     });
 }

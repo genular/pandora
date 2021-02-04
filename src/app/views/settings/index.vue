@@ -72,6 +72,14 @@
                         </el-button>
                     </div>
                 </el-card>
+                <el-card class="box-card" style="margin-top: 15px;">
+                    <div slot="header" class="clearfix"><span>System debugging</span></div>
+                    <div style="text-align: right;">
+                        <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">
+                            Generate system log file
+                        </el-button>
+                    </div>
+                </el-card>
             </el-col>
         </el-row>
 
@@ -89,7 +97,8 @@
 <script>
 import NProgress from "nprogress"; // progress bar
 import { mapGetters } from "vuex";
-import { userDetials as ApiBackendUserDetails } from "@/api/backend";
+import { userDetials as ApiBackendUserDetails, generateSystemLogFileDownloadLink as ApiGenerateSystemLogFileDownloadLink } from "@/api/backend";
+import { downloadItemsTemplate } from "@/utils/templates.js";
 
 export default {
     name: "UserSettings",
@@ -119,6 +128,7 @@ export default {
     },
     mounted() {
         console.log("mounted: settings");
+
         if (this.settingsForm.username === null) {
             this.getUserDetails();
         }
@@ -133,10 +143,26 @@ export default {
                 .then(response => {
                     if (response.data.success === true) {
                         this.settingsForm = response.data.message;
-                        console.log("Setting values");
-                        console.log(this.settingsForm);
                     } else {
                         console.log("Could not get user details. Please try again latter.");
+                    }
+                    this.requestLoading = false;
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.requestLoading = false;
+                });
+        },
+        generateSystemLogFile() {
+            this.requestLoading = true;
+
+            ApiGenerateSystemLogFileDownloadLink({  })
+                .then(response => {
+                    if (response.data.success === true && response.data.message.length > 0) {
+                        this.$alert(downloadItemsTemplate(response.data.message), "Download links", {
+                            dangerouslyUseHTMLString: true,
+                            callback: action => {}
+                        });
                     }
                     this.requestLoading = false;
                 })
