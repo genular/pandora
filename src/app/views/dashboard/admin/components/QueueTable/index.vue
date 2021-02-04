@@ -143,10 +143,12 @@
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="queueFilterQuery.page" :page-sizes="[10, 20, 30, 50]" :page-size="queueFilterQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="queueTotalItems">
             </el-pagination>
         </div>
+
         <!-- Queue Details Info Dialog -->
-        <el-dialog :visible.sync="dialogQueueDetails" :before-close="closeQueueDetailsDialog" width="75%">
+        <el-dialog :visible.sync="dialogQueueDetails" :before-close="closeQueueDetailsDialog" width="75%" center>
+            
             <span slot="title">
-                <el-row type="flex" align="top" style="line-height: 32px;">
+                <el-row align="top" style="line-height: 32px;">
                     <el-col :span="12">
                         <span>{{ $t("views.dashboard.admin.components.QueueTable.dialog.title") }}</span>
                     </el-col>
@@ -169,147 +171,168 @@
                     </el-col>
                 </el-row>
             </span>
-            <!-- Resample data -->
-            <el-row type="flex" align="top">
-                <el-col :span="24">
-                    <el-table ref="resamplesDetailsTable" :data="resamplesList[selectedQueueID]" :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')" @selection-change="getDatasetResamplesModels" row-key="resampleID" :border="true" fit style="width: 100%" height="250">
-                        <el-table-column type="selection" reserve-selection width="40" fixed> </el-table-column>
-                        <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.resample_id')" prop="resampleID" :render-header="
-                (h, { column, store }) => {
-                    return renderHeader(h, { column, store }, 'resamplesDetailsTable');
-                }
-            ">
-                            <template slot-scope="scope">
-                                <span>{{ scope.row.resampleID }}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.processingTime')" prop="processing_time" :render-header="
-                (h, { column, store }) => {
-                    return renderHeader(h, { column, store }, 'resamplesDetailsTable');
-                }
-            ">
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.processing_time">{{ scope.row.processing_time | millisecondsToStr }}</span>
-                                <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column fixed align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.title')" width="75">
-                            <template slot-scope="scope">
-                                <div v-if="(scope.row.dataSource = 1)">
-                                    <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">{{ $t("views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.initial") }}</div>
-                                        <span class="el-icon-more"></span>
-                                    </el-tooltip>
-                                </div>
-                                <div v-else>
-                                    <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">{{ $t("views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.predicted") }}</div>
-                                        <span class="el-icon-more-outline"></span>
-                                    </el-tooltip>
-                                </div>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" prop="samplesTotal" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples')" :render-header="
-                (h, { column, store }) => {
-                    return renderHeader(h, { column, store }, 'resamplesDetailsTable');
-                }
-            ">
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span> <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" prop="featuresTotal" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_features')" :render-header="
-                (h, { column, store }) => {
-                    return renderHeader(h, { column, store }, 'resamplesDetailsTable');
-                }
-            ">
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.featuresTotal">{{ scope.row.featuresTotal }}</span> <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" prop="samplesTraining" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples_training')" :render-header="
-                (h, { column, store }) => {
-                    return renderHeader(h, { column, store }, 'resamplesDetailsTable');
-                }
-            ">
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span> <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" prop="samplesTesting" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples_testing')" :render-header="
-                (h, { column, store }) => {
-                    return renderHeader(h, { column, store }, 'resamplesDetailsTable');
-                }
-            ">
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span> <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_models_processed')" prop="modelsTotal" :render-header="
-                (h, { column, store }) => {
-                    return renderHeader(h, { column, store }, 'resamplesDetailsTable');
-                }
-            ">
-                            <template slot-scope="scope">
-                                <span>{{ scope.row.modelsTotal }}</span>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-col>
-            </el-row>
-            <!-- Model Details data -->
-            <el-row type="flex" align="top">
-                <el-col :span="24">
-                    <el-table ref="modelDetailsTable" v-loading="modelsListLoading" @sort-change="
-                            ({ column, prop, order }) => {
-                                deepSort({ column, prop, order }, 'modelsList', null, null, null);
-                            }
-                        " :data="modelsList" :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')" :row-class-name="modelDetailsTableRowClassName" style="width: 100%" height="300">
-                        <el-table-column fixed align="center" width="30" prop="status" :filters="[{ text: 'Failed', value: 0 }, { text: 'Success', value: 1 }]" :filter-method="filterModelStatus" filter-placement="bottom-end">
-                            <template slot-scope="scope">
-                                <div v-if="scope.row.status > 0"><span class="el-icon-success"></span></div>
-                                <div v-else>
-                                    <el-tooltip class="item" effect="dark" placement="top-start">
-                                        <div slot="content">
-                                            {{ $t("views.dashboard.admin.components.QueueTable.dialog.models_table.header.status.options.error") }}:
-                                            {{ scope.row.error }}
-                                        </div>
-                                        <span class="el-icon-warning"></span>
-                                    </el-tooltip>
-                                </div>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" width="125" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.resample_id')">
-                            <template slot-scope="scope">
-                                <span>{{ scope.row.resampleID }}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" width="125" :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.model_id')">
-                            <template slot-scope="scope">
-                                <span>{{ scope.row.modelID }}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="left" prop="modelName" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.analasys_method')">
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.modelName">{{ scope.row.modelName }}</span> <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column align="center" prop="processing_time" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.processing_time')">
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.processing_time">{{ scope.row.processing_time | millisecondsToStr }}</span> <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column v-for="(performanceItem, performanceIndex) in selectedPerformace" :prop="'performance|' + performanceItem" :key="performanceItem + '_' + performanceIndex" :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))" sortable="custom" @sort-orders="['ascending', 'descending']">
-                            <template slot-scope="scope">
-                                <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">
-                                    {{ scope.row.performance[performanceItem] }}
-                                </span>
-                                <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-col>
-            </el-row>
+
+            <span>
+                <!-- Resample data -->
+                <el-row align="top">
+                    <el-col :span="24">
+                        <el-table ref="resamplesDetailsTable" 
+                        :data="resamplesList[selectedQueueID]" 
+                        :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')" 
+                        @selection-change="getDatasetResamplesModels" 
+                        row-key="resampleID" 
+                        :border="true" 
+                        fit 
+                        style="width: 100%" 
+                        height="250">
+                            <el-table-column type="selection" reserve-selection width="40" fixed> </el-table-column>
+                            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.resample_id')" prop="resampleID" :render-header="
+                    (h, { column, store }) => {
+                        return renderHeader(h, { column, store }, 'resamplesDetailsTable');
+                    }
+                ">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.resampleID }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.processingTime')" prop="processing_time" :render-header="
+                    (h, { column, store }) => {
+                        return renderHeader(h, { column, store }, 'resamplesDetailsTable');
+                    }
+                ">
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.processing_time">{{ scope.row.processing_time | millisecondsToStr }}</span>
+                                    <span v-else>N/A</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column fixed align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.title')" width="75">
+                                <template slot-scope="scope">
+                                    <div v-if="(scope.row.dataSource = 1)">
+                                        <el-tooltip class="item" effect="dark" placement="top-start">
+                                            <div slot="content">{{ $t("views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.initial") }}</div>
+                                            <span class="el-icon-more"></span>
+                                        </el-tooltip>
+                                    </div>
+                                    <div v-else>
+                                        <el-tooltip class="item" effect="dark" placement="top-start">
+                                            <div slot="content">{{ $t("views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.predicted") }}</div>
+                                            <span class="el-icon-more-outline"></span>
+                                        </el-tooltip>
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="center" prop="samplesTotal" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples')" :render-header="
+                    (h, { column, store }) => {
+                        return renderHeader(h, { column, store }, 'resamplesDetailsTable');
+                    }
+                ">
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span> <span v-else>N/A</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="center" prop="featuresTotal" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_features')" :render-header="
+                    (h, { column, store }) => {
+                        return renderHeader(h, { column, store }, 'resamplesDetailsTable');
+                    }
+                ">
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.featuresTotal">{{ scope.row.featuresTotal }}</span> <span v-else>N/A</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="center" prop="samplesTraining" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples_training')" :render-header="
+                    (h, { column, store }) => {
+                        return renderHeader(h, { column, store }, 'resamplesDetailsTable');
+                    }
+                ">
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span> <span v-else>N/A</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="center" prop="samplesTesting" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples_testing')" :render-header="
+                    (h, { column, store }) => {
+                        return renderHeader(h, { column, store }, 'resamplesDetailsTable');
+                    }
+                ">
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span> <span v-else>N/A</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_models_processed')" prop="modelsTotal" :render-header="
+                    (h, { column, store }) => {
+                        return renderHeader(h, { column, store }, 'resamplesDetailsTable');
+                    }
+                ">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.modelsTotal }}</span>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-col>
+                </el-row>
+
+                <!-- Model Details data -->
+                <el-row>
+                    <el-col :span="24">
+                        <el-table ref="modelDetailsTable" 
+                            v-loading="modelsListLoading" 
+                            @sort-change="({ column, prop, order }) => {
+                                    deepSort({ column, prop, order }, 'modelsList', null, null, null);
+                                }"
+                            :data="modelsList" 
+                            :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')" 
+                            :row-class-name="modelDetailsTableRowClassName" 
+                            row-key="modelID"
+                            style="width: 100%" 
+                            height="300">
+
+                            <el-table-column fixed align="center" width="30" prop="status" 
+                            :filters="[{ text: 'Failed', value: 0 }, { text: 'Success', value: 1 }]" 
+                            :filter-method="filterModelStatus" filter-placement="bottom-end">
+                                <template slot-scope="scope">
+                                    <div v-if="scope.row.status > 0"><span class="el-icon-success"></span></div>
+                                    <div v-else>
+                                        <el-tooltip class="item" effect="dark" placement="top-start">
+                                            <div slot="content">
+                                                {{ $t("views.dashboard.admin.components.QueueTable.dialog.models_table.header.status.options.error") }}:
+                                                {{ scope.row.error }}
+                                            </div>
+                                            <span class="el-icon-warning"></span>
+                                        </el-tooltip>
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="center" width="125" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.resample_id')">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.resampleID }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="center" width="125" :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.model_id')">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.modelID }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="left" prop="modelName" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.analasys_method')">
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.modelName">{{ scope.row.modelName }}</span> <span v-else>N/A</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="center" prop="processing_time" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.processing_time')">
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.processing_time">{{ scope.row.processing_time | millisecondsToStr }}</span> <span v-else>N/A</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column v-for="(performanceItem, performanceIndex) in selectedPerformace" :prop="'performance|' + performanceItem" :key="performanceItem + '_' + performanceIndex" :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))" sortable="custom" @sort-orders="['ascending', 'descending']">
+                                <template slot-scope="scope">
+                                    <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">
+                                        {{ scope.row.performance[performanceItem] }}
+                                    </span>
+                                    <span v-else>N/A</span>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-col>
+                </el-row>
+            </span>
         </el-dialog>
     </div>
 </template>
@@ -709,6 +732,7 @@ export default {
                                             this.$refs.resamplesDetailsTable.toggleRowSelection(resampleRow);
                                         }
                                     });
+                                    this.$refs.resamplesDetailsTable.doLayout();
                                 });
                             } else {
                                 this.$message({
@@ -740,16 +764,20 @@ export default {
                 ApiFetchResampleModels({ resampleIDs: this.selectedResampleIDs, measurements: [] })
                     .then(response => {
                         if (response.data.success === true) {
-                            this.modelsList = response.data.data.modelsList;
-
                             // Save performance vars on first run
                             if (typeof this.performaceVariables[resamplesIDsHash] === "undefined") {
                                 this.performaceVariables[resamplesIDsHash] = response.data.data.performaceVariables;
                             }
+
                             // Preselect if nothing selected.. eg. first run
                             if (this.selectedPerformace.length < 1) {
                                 this.selectedPerformace = ["Accuracy"];
                             }
+                            this.$nextTick(() => {
+                                this.modelsList = response.data.data.modelsList;
+                                this.$refs.modelDetailsTable.doLayout();
+                            });
+
                         } else {
                             this.$message({
                                 message: this.$t("globals.errors.request_general"),

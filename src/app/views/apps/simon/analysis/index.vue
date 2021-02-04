@@ -186,12 +186,13 @@ export default {
         checkIsValidOutcome(selectedOutcomes){
             console.log("checkIsValidOutcome:");
             console.log(selectedOutcomes);
+
             let unique_count = 0;
             if(selectedOutcomes.length > 0) {
 
                 for (let i in selectedOutcomes) {
 
-                    if(typeof selectedOutcomes[i].unique_count !== "undefined") {
+                    if("unique_count" in selectedOutcomes[i] && typeof selectedOutcomes[i].unique_count !== "undefined") {
                         if(selectedOutcomes[i].unique_count !== false){
                             unique_count = selectedOutcomes[i].unique_count;        
                         }else{
