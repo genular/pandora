@@ -74,11 +74,18 @@
                 </el-card>
                 <el-card class="box-card" style="margin-top: 15px;">
                     <div slot="header" class="clearfix"><span>System debugging</span></div>
-                    <div style="text-align: right;">
-                        <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">
-                            Generate system log file
-                        </el-button>
-                    </div>
+                    <el-row type="flex" class="row-bg" justify="space-between">
+                        <el-col :span="6">
+                            <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">
+                                Update minor SIMON version
+                            </el-button>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">
+                                Generate system log file
+                            </el-button>
+                        </el-col>
+                    </el-row>
                 </el-card>
             </el-col>
         </el-row>
@@ -155,7 +162,6 @@ export default {
         },
         generateSystemLogFile() {
             this.requestLoading = true;
-
             ApiGenerateSystemLogFileDownloadLink({  })
                 .then(response => {
                     if (response.data.success === true && response.data.message.length > 0) {
@@ -170,6 +176,23 @@ export default {
                     console.log(error);
                     this.requestLoading = false;
                 });
+        },
+        updateSimonVersion(){
+            this.$confirm('This can permanently destroy all your SIMON data and settings. Continue?', 'Update minor SIMON version', {
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Cancel',
+                type: 'warning'
+            }).then(() => {
+                this.$message({
+                    type: 'info',
+                    message: 'Update canceled'
+                }); 
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: 'Update canceled'
+                });          
+            });
         }
     }
 };

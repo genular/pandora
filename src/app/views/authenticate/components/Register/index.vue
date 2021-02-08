@@ -1,6 +1,6 @@
 <template>
     <div class="register-tab-container">
-        <div class="title">Join us</div>
+        <div class="title">User registration</div>
         <div class="lead">The best way to design, build, and ship machine learning models.</div>
         <el-row class="register-options-container" v-if="registrationType == null">
             <el-col :span="12">

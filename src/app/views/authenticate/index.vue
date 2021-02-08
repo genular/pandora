@@ -89,6 +89,7 @@ export default {
     },
     mounted() {
         console.log("mounted: authenticate: " + this.action);
+        
         if (this.isConfigured === false) {
             this.configureBackendServers();
         }

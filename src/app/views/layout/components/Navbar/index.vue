@@ -3,6 +3,10 @@
         <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
         <breadcrumb class="breadcrumb-container"></breadcrumb>
         <div class="right-menu">
+            <!--
+                <search id="header-search" class="right-menu-item" />
+            -->
+
             <!-- Selected Files and Exploation IDs -->
             <selected-files class="right-menu-item"></selected-files>
             <error-log v-if="errorLogs.length > 0" class="right-menu-item error-logs"></error-log>
@@ -40,6 +44,8 @@ import Hamburger from "@/components/Hamburger";
 import ErrorLog from "@/components/ErrorLog";
 import LangSelect from "@/components/LangSelect";
 import SelectedFiles from "@/components/SelectedFiles";
+import Search from '@/components/HeaderSearch'
+
 import { generateRouteTitle } from "@/utils/i18n";
 export default {
     components: {
@@ -47,7 +53,8 @@ export default {
         SelectedFiles,
         Hamburger,
         ErrorLog,
-        LangSelect
+        LangSelect,
+        Search
     },
     computed: {
         ...mapGetters(["sidebar", "errorLogs", "user_id", "user_settings_server_address_backend"])

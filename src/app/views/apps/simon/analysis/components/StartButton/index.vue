@@ -27,7 +27,13 @@
                 <br />
                 <el-tabs v-if="datasetResamples.length > 0" type="border-card">
                     <el-tab-pane v-for="(item, index) in datasetResamples" :label="item.outcome.original + ' (' + datasetResamples[index]['data'].length + ')'" :key="index" :name="String(index)" :v-model="0">
-                        <el-table :data="datasetResamples[index]['data']" :ref="'datasetResamplesTable_' + item.outcome.remapped" height="250" style="width: 100%" @select="selectResampleItem" @selection-change="
+                        <el-table 
+                        :data="datasetResamples[index]['data']" 
+                        :ref="'datasetResamplesTable_' + item.outcome.remapped" 
+                        height="250" 
+                        style="width: 100%"
+                        row-key="id"
+                        @select="selectResampleItem" @selection-change="
                                 selection => {
                                     resampleSelectionChange(selection, index, item.outcome.remapped);
                                 }
@@ -433,7 +439,7 @@ export default {
                                 dangerouslyUseHTMLString: true,
                                 message: messageInfo,
                                 type: "error",
-                                duration: 15000,
+                                duration: 10000,
                                 showClose: true
                             });
                         }

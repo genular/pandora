@@ -2,7 +2,7 @@
     <div class="app-container">
         <div v-if="selectedFiles.length > 0">
             <file-details></file-details>
-            <package-selection></package-selection>
+            <package-selection :preselectPackages="preselectPackages"></package-selection>
             <start-button></start-button>
         </div>
         <el-dialog :title="$t('views.apps.simon.analysis.index.dialog.title')" :visible.sync="errorDialogVisible" width="30%" center :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
@@ -39,7 +39,8 @@ export default {
             loadingInstance: null,
             errorDialogVisible: false,
             errorDialogMessage: "",
-            errorDialogType: "server_error"
+            errorDialogType: "server_error",
+            preselectPackages: []
         };
     },
     computed: {
@@ -222,8 +223,8 @@ export default {
         filterPackages(unique_count){
             console.log("Enabling packages based on selection: " + unique_count);
 
+            // Enable custom packages based on unique outcome values
             for (let i in this.avaliablePackages) {
-
                 if(unique_count < 2){
                     this.avaliablePackages[i].disabled = true;
                 }
@@ -244,6 +245,25 @@ export default {
                     }
                 }
             }
+
+            // Preselect packages
+            // if(unique_count > 0 && this.selectedPackages.length < 1){
+            //     const classificationDefaults = ["nb", "sda", "svmLinear2"];
+            //     // Add packages to selection
+            //     this.preselectPackages = this.avaliablePackages.filter(function(item) {
+            //             if (item.disabled === true) {
+            //                 return false;
+            //             } else {
+            //                 if(classificationDefaults.includes(item.internal_id)){
+            //                     return true;
+            //                 }else{
+            //                     return false;
+            //                 }
+            //             }
+            //         });;
+            // }else if(unique_count < 1 && this.selectedPackages.length > 0){
+            //     this.preselectPackages = [];
+            // }                
         }
     },
     watch: {

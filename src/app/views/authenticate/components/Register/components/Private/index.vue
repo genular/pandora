@@ -119,12 +119,11 @@
                     <el-col :span="10">
                         <el-card class="box-card" style="width: 90%; float: right; margin-top: 10px">
                             <div slot="header" class="clearfix"><span>You’ll love SIMON</span></div>
-                            <div class="box-card-item">Great <strong>Exploratory</strong> analysis</div>
-                            <div class="box-card-item"><strong>Unlimited</strong> Bandwidth</div>
-                            <div class="box-card-item"><strong>Automatic</strong> workflows</div>
-                            <div class="box-card-item"><strong>Great</strong> distributed computing infrastructure</div>
-                            <div class="box-card-item">Seamless <strong>deployments</strong></div>
-                            <div class="box-card-item"><strong>Constant</strong> system updates</div>
+                            <div class="box-card-item">200+ machine learning algorithms to run in parallel</div>
+                            <div class="box-card-item">Visual data analysis that supports clustering and correlation graphs</div>
+                            <div class="box-card-item">in-build data preprocessing (correlation filtering, normalization, imputation...)</div>
+                            <div class="box-card-item">Visual feature analysis</div>
+                            <div class="box-card-item">model performance comparison and model insights</div>
                         </el-card>
                     </el-col>
                 </el-row>
@@ -152,7 +151,7 @@
                     <el-col :span="24">
                         <p class="welcome_text">
                             <span>Your account is successfully created!</span><br /><br />
-                            If you did not already please confirm your email address via email we sent to you.
+                            If you did not already and if you are using cloud version of SIMON please confirm your email address via email we sent to you.
                         </p>
                         <p class="welcome_text">
                             You can now login to your user interface where you can start exploring.
@@ -162,7 +161,7 @@
                 <el-row style="margin-top: 25px;">
                     <el-button-group style="float: right;">
                         <el-button type="primary" @click="userLogin">
-                            login <i class="el-icon-arrow-right el-icon-right"></i>
+                            LOGIN <i class="el-icon-arrow-right el-icon-right"></i>
                         </el-button>
                     </el-button-group>
                 </el-row>
@@ -382,7 +381,7 @@ export default {
                 .catch(error => {
                     console.log(error);
                 });
-        }, 750)
+        }, 500)
     }
 };
 </script>

@@ -214,6 +214,9 @@ export default {
     components: {
         draggable
     },
+    props: {
+        preselectPackages: Array
+    },
     data() {
         return {
             /** Global Dragging Enabled/Disabled */
@@ -368,8 +371,10 @@ export default {
         filterPackages(currentSelection) {
             // Loop this.avaliablePackages and set disabled flag!
         },
+        // Select a package on user click
         selectPackage(item) {
             console.log("==> selectPackage");
+
             if (typeof item === "object") {
                 this.packagesSearch.input = "";
 
@@ -389,6 +394,29 @@ export default {
                 this.$message({
                     message: item.label + " selected!",
                     type: "success"
+                });
+            }
+        },
+        // deSelect a package on user click
+        deSelectPackage(item) {
+            console.log("==> deSelectPackage");
+
+            if (typeof item === "object") {
+                //this.packagesSearch.input = "";
+
+                const itemSelected = findObjectIndexByKey(this.selectedPackages, "id", item.id);
+
+                if (itemSelected > -1) {
+                    this.selectedPackages.splice(itemSelected, 1);
+                }
+
+                this.packagesSearch.results.unshift(item);
+
+                this.avaliablePackages.unshift(item);
+
+                this.$message({
+                    message: item.label + " de-selected!",
+                    type: "warning"
                 });
             }
         },
@@ -437,6 +465,17 @@ export default {
             this.$nextTick(() => {
                 this.delayedDragging = false;
             });
+        },
+        preselectPackages(preselectedPackages) {
+            if(preselectedPackages.length > 0) {
+                for (let i = 0; i < preselectedPackages.length; i++) {
+                    this.selectPackage(preselectedPackages[i]);
+                }
+            }else{
+              for (let i = 0; i < this.selectedPackages.length; i++) {
+                    this.deSelectPackage(this.selectedPackages[i]);
+                }
+            }
         }
     }
 };

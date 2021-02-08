@@ -910,6 +910,11 @@ export default {
             if (newVal === "") {
                 this.$refs.queueTable.clearSelection();
             }
+        },
+        selectedPerformace: function(newVal, oldVal) {
+            this.$nextTick(() => {
+                this.$refs.modelDetailsTable.doLayout();
+            });
         }
     }
 };
