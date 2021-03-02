@@ -19,6 +19,20 @@ export function fetchCorrPlotImage(query) {
         params: query
     });
 }
+
+/**
+ * [fetchEditingCorrPlotImage description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function fetchEditingCorrPlotImage(query) {
+    return request({
+        url: baseUrlPath + "/editing/correlation/render-plot",
+        method: "GET",
+        params: query
+    });
+}
+
 /**
  * [fetchHeatmapImage description]
  * @param  {[type]} query [description]

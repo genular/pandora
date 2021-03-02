@@ -114,7 +114,7 @@ export const constantRouterMap = [
                     icon: "fa fa-icon fa-play",
                     restrictions: { file: true, extension: ["csv"] }
                 },
-                hidden: true
+                hidden: false
             },
             {
                 path: "start-analysis",

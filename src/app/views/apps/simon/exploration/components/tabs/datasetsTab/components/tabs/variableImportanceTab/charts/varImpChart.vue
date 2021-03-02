@@ -61,7 +61,7 @@
                 <div v-if="renderedImage !== false" style="text-align: center;">
                     <img id="varImp-svg" class="animated fadeIn" :src="renderedImageDisplay" fit="scale-down">
                 </div>
-                <div class="plot-placeholder" v-else>
+                <div v-else class="plot-placeholder">
                     <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                 </div>
             </el-col>

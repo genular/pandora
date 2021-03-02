@@ -61,7 +61,7 @@ router.beforeEach((to, from, next) => {
                 });
         } else {
             // 3rd check some app specific restrictions
-            if (hasInAppPermission(store.getters.user_role, to.meta.roles)) {
+            if (hasInAppPermission(store.getters.user_role, to.meta.roles) === true) {
                 next(); //
             } else {
                 next({

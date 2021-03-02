@@ -359,3 +359,13 @@ export function generateSystemLogFileDownloadLink(submitData) {
         method: "GET"
     });
 }
+
+/**
+
+*/
+export function fetchSelectedFilesDetails(submitData) {
+    return request({
+        url: baseUrlPath + "/system/filesystem/file-details/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
+        method: "GET"
+    });
+}

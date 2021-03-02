@@ -54,6 +54,8 @@ const getters = {
     simonExplorationSelectedFeatureSetId: state => state.apps.simon.exploration.selectedFeatureSetId,
     simonExplorationSelectedModelId: state => state.apps.simon.exploration.selectedModelsIDs,
     simonExplorationActiveTabName: state => state.apps.simon.exploration.activeTabName,
-    datasetsTabMapOptions: state => state.apps.simon.exploration.datasetsTabMapOptions
+    datasetsTabMapOptions: state => state.apps.simon.exploration.datasetsTabMapOptions,
+    // editing
+    simonEditingActiveTabName: state => state.apps.simon.editing.activeTabName,
 };
 export default getters;

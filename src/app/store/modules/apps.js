@@ -41,6 +41,9 @@ const apps = {
                 selectedModelsIDs: estore.get("apps-simon-exploration-selectedModelsIDs") || [],
                 activeTabName: estore.get("apps-simon-exploration-activeTabName") || "datasetsTab",
                 datasetsTabMapOptions: estore.get("apps-simon-exploration-datasetsTabMapOptions") || []
+            },
+            editing: {
+                activeTabName: estore.get("apps-simon-editing-activeTabName") || "datasetsTab"
             }
         }
     },
@@ -74,6 +77,11 @@ const apps = {
         SET_SIMON_EXPLORATION_ACTIVE_DATASETS_TAB_MAP_OPTIONS: (state, datasetsTabMapOptions) => {
             state.simon.exploration.datasetsTabMapOptions = datasetsTabMapOptions;
             estore.set("apps-simon-exploration-datasetsTabMapOptions", datasetsTabMapOptions);
+        },
+        // editing
+        SET_SIMON_EDITING_ACTIVE_TAB_NAME: (state, activeTabName) => {
+            state.simon.editing.activeTabName = activeTabName;
+            estore.set("apps-simon-editing-activeTabName", activeTabName);
         },
         // analysis
         SET_SIMON_ANALYSIS_JOB_ID: (state, job_id) => {
@@ -312,6 +320,10 @@ const apps = {
         },
         setSimonExplorationDatasetsTabMapOptions({ commit }, datasetsTabMapOptions) {
             commit("SET_SIMON_EXPLORATION_ACTIVE_DATASETS_TAB_MAP_OPTIONS", datasetsTabMapOptions);
+        },
+        // editing
+        setSimonEditingActiveTabName({ commit }, activeTabName) {
+            commit("SET_SIMON_EDITING_ACTIVE_TAB_NAME", activeTabName);
         }
     }
 };
