@@ -10,6 +10,7 @@ const main = {
         language: estore.get("main-language") || "en",
         is_configured: estore.get("main-is_configured") || false,
         selectedFiles: estore.get("main-selectedFiles") || [],
+        selectedFileDetails: estore.get("main-selectedFileDetails") || {id: null, items: []},
         packageVersion: packageInfo.version || "N/A",
         packageEnviroment: packageInfo.environment || "development"
     },
@@ -36,6 +37,10 @@ const main = {
         SET_SELECTED_FILES: (state, selectedFiles) => {
             state.selectedFiles = selectedFiles;
             estore.set("main-selectedFiles", selectedFiles);
+        },
+        SET_SELECTED_FILE_DETAILS: (state, selectedFileDetails) => {
+            state.selectedFileDetails = selectedFileDetails;
+            estore.set("main-selectedFileDetails", selectedFileDetails);
         }
     },
     actions: {
@@ -55,6 +60,9 @@ const main = {
         },
         setSelectedFiles({ commit }, selectedFiles) {
             commit("SET_SELECTED_FILES", selectedFiles);
+        },
+        setSelectedFileDetails({ commit }, selectedFileDetails) {
+            commit("SET_SELECTED_FILE_DETAILS", selectedFileDetails);
         }
     }
 };

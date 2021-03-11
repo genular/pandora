@@ -2,7 +2,7 @@
     <div class="correlationTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row v-if="tabEnabled">
             <el-row type="flex" align="top">
-                <el-col :span="24" style="text-align: right;">
+                <el-col :span="24" style="text-align: right">
                     <el-button
                         :title="$t('views.apps.simon.exploration.components.tabs.correlationTab.buttons.download')"
                         type="success"
@@ -15,6 +15,23 @@
             <el-row type="flex" align="top">
                 <el-col :span="9">
                     <el-form class="corrolation-form" ref="settingsForm" :model="settingsForm" label-width="200px">
+                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.title')">
+                            <el-select
+                                v-model="settingsForm.selectedColumns"
+                                multiple
+                                filterable
+                                remote
+                                default-first-option
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :remote-method="querySearch"
+                            >
+                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item.remapped">
+                                    <span style="float: left">{{ item.original }}</span>
+                                    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.unique_count }}</span>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.correlation_method.label')">
                             <el-select
                                 v-model="settingsForm.correlation_method"
@@ -237,10 +254,10 @@
                         </el-form-item>
                     </el-form>
                 </el-col>
-                <el-col :span="15" class="correlation-svg-container" style="text-align: center;">
+                <el-col :span="15" class="correlation-svg-container" style="text-align: center">
                     <!-- Plot placeholder -->
-                    <div v-if="renderedImage !== false" style="text-align: center;">
-                        <img id="varImp-svg" class="animated fadeIn" :src="renderedImageDisplay" fit="scale-down">
+                    <div v-if="renderedImage !== false" style="text-align: center">
+                        <img id="varImp-svg" class="animated fadeIn" :src="renderedImageDisplay" fit="scale-down" />
                     </div>
                     <div v-else class="plot-placeholder">
                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
@@ -253,13 +270,12 @@
             <el-col :span="24">
                 <el-alert
                     :title="$t('views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.title')"
-                    description="Tab is currently disabled! Total columns in selected file: {selectedFileDetails.length}"
+                    description="Tab is currently disabled! Total columns in selected: selectedFileDetails"
                     type="warning"
-                    style="margin-top: 20px;"
+                    style="margin-top: 20px"
                     show-icon
                     :closable="false"
-                >
-                </el-alert>
+                ></el-alert>
             </el-col>
         </el-row>
     </div>
@@ -267,19 +283,15 @@
 <script>
 import { fetchEditingCorrPlotImage } from "@/api/plots";
 import { md5String } from "@/utils";
+import { debounce } from "@/utils/helpers";
 
-import line_chart_404 from "@/assets/404_images/charts/line_chart.svg";
+import Fuse from "fuse.js";
 
 export default {
     name: "correlationTab",
-    props: {
-        selectedFileDetails: {
-            type: Array,
-            default: []
-        }
-    },
     data() {
         return {
+            fuse: null,
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,
             loadingOptions: true,
@@ -289,13 +301,17 @@ export default {
             renderedImage: false,
             renderedImageDisplay: false,
             renderedImageData: "",
+
+            selectedFileDetailsDisplay: [],
+
             settingOptions: {
+                selectedColumns: [],
                 correlation_method: [{ id: "pearson" }, { id: "kendall" }, { id: "spearman" }],
                 na_action: [{ id: "everything" }, { id: "all.obs" }, { id: "complete.obs" }, { id: "na.or.complete" }, { id: "pairwise.complete.obs" }],
                 plot_method: [{ id: "mixed" }, { id: "circle" }, { id: "square" }, { id: "ellipse" }, { id: "number" }, { id: "shade" }, { id: "color" }, { id: "pie" }],
                 plot_method_mixed: {
                     lower_method: [{ id: "circle" }, { id: "square" }, { id: "ellipse" }, { id: "number" }, { id: "shade" }, { id: "color" }, { id: "pie" }],
-                    upper_method: [{ id: "circle" }, { id: "square" }, { id: "ellipse" }, { id: "number" }, { id: "shade" }, { id: "color" }, { id: "pie" }]
+                    upper_method: [{ id: "circle" }, { id: "square" }, { id: "ellipse" }, { id: "number" }, { id: "shade" }, { id: "color" }, { id: "pie" }],
                 },
                 plot_type: [{ id: "full" }, { id: "lower" }, { id: "upper" }],
                 reorder_correlation: [{ id: "original" }, { id: "AOE" }, { id: "FPC" }, { id: "hclust" }, { id: "alphabet" }],
@@ -309,53 +325,54 @@ export default {
                         { id: "average" },
                         { id: "mcquitty" },
                         { id: "median" },
-                        { id: "centroid" }
+                        { id: "centroid" },
                     ],
-                    number_of_rectangles: 3
+                    number_of_rectangles: 3,
                 },
                 text_size: {
                     min: 0.2,
                     max: 3,
-                    step: 0.2
+                    step: 0.2,
                 },
                 significance: {
                     level: {
                         min: 0,
                         max: 1,
-                        step: 0.05
+                        step: 0.05,
                     },
-                    insignificant_action: [{ id: "pch" }, { id: "p-value" }, { id: "blank" }, { id: "n" }]
+                    insignificant_action: [{ id: "pch" }, { id: "p-value" }, { id: "blank" }, { id: "n" }],
                 },
                 confidence: {
                     ploting_method: [{ id: "square" }, { id: "circle" }, { id: "rect" }],
                     level: {
                         min: 0,
                         max: 1,
-                        step: 0.05
-                    }
-                }
+                        step: 0.05,
+                    },
+                },
             },
             settingsForm: {
+                selectedColumns: [],
                 correlation_method: "pearson",
                 na_action: "everything",
                 // Only if confidence.enable is false
                 plot_method: "circle",
                 plot_method_mixed: {
                     lower_method: "circle",
-                    upper_method: "circle"
+                    upper_method: "circle",
                 },
                 // Only if plot_method is not mixed
                 plot_type: "full",
                 reorder_correlation: "original",
                 reorder_correlation_hclust: {
                     method: "complete",
-                    number_of_rectangles: 3
+                    number_of_rectangles: 3,
                 },
                 text_size: {
                     value: 0.4,
                     min: 0.2,
                     max: 3,
-                    step: 0.2
+                    step: 0.2,
                 },
                 significance: {
                     enable: false,
@@ -363,9 +380,9 @@ export default {
                         value: 0.05,
                         min: 0,
                         max: 1,
-                        step: 0.05
+                        step: 0.05,
                     },
-                    insignificant_action: "pch"
+                    insignificant_action: "pch",
                 },
                 confidence: {
                     enable: false,
@@ -374,10 +391,10 @@ export default {
                         value: 0.95,
                         min: 0,
                         max: 1,
-                        step: 0.05
-                    }
-                }
-            }
+                        step: 0.05,
+                    },
+                },
+            },
         };
     },
     computed: {
@@ -387,7 +404,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationnActiveTabName", value);
-            }
+            },
         },
         // Array of selected files from Workspace
         selectedFiles: {
@@ -396,26 +413,74 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSelectedFiles", value);
-            }
-        }
+            },
+        },
+        selectedFileDetails: {
+            get() {
+                return this.$store.getters.selectedFileDetails;
+            },
+            set(value) {
+                this.$store.dispatch("setSelectedFileDetails", value);
+            },
+        },
     },
     mounted() {
         console.log("mounted: " + this.$options.name);
         this.redrawImage();
+        this.initFuse(this.selectedFileDetails.items);
     },
-    activated(){
+    activated() {
         console.log("activated: " + this.$options.name);
         this.redrawImage();
     },
     methods: {
+        initFuse(searchItems) {
+            this.fuse = new Fuse(searchItems, {
+                shouldSort: true,
+                threshold: 0.4,
+                location: 0,
+                distance: 100,
+                maxPatternLength: 32,
+                minMatchCharLength: 0,
+                includeScore: false,
+                includeMatches: true,
+                keys: [
+                    {
+                        name: "original",
+                        weight: 0.7,
+                    },
+                    {
+                        name: "remapped",
+                        weight: 0.3,
+                    },
+                ],
+            });
+        },
+        querySearch(query) {
+            const items_found = this.fuse.search(query);
+            this.selectedFileDetailsDisplay = items_found.map((x) => x.item);
+        },
         redrawImage() {
-            if(this.tabEnabled === true){
+            this.isTabEnabled();
+
+            if (this.tabEnabled === true) {
                 this.handleFetchCorrPlotImage();
+            }
+        },
+        isTabEnabled() {
+            if (this.selectedFileDetails.items.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
+                this.tabEnabled = true;
+            } else {
+                this.tabEnabled = false;
+            }
+
+            if (this.tabEnabled === true && this.selectedFileDetailsDisplay.length === 0) {
+                this.selectedFileDetailsDisplay = this.selectedFileDetails.items;
             }
         },
         downloadPlotImage() {
             const svgBlob = new Blob([window.atob(decodeURIComponent(this.renderedImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
-                type: "image/svg+xml;charset=utf-8"
+                type: "image/svg+xml;charset=utf-8",
             });
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
@@ -427,30 +492,46 @@ export default {
         },
         handleFetchCorrPlotImage() {
             this.loadingPlot = true;
+            // Clone objects as an simple object
+            const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
+            // If no columns are selected select 250 columns
+            if (settingsForm.selectedColumns.length < 1) {
+                settingsForm.selectedColumns = this.selectedFileDetailsDisplay.map((x) => x.remapped).slice(0, 50);
+            }
 
-            fetchEditingCorrPlotImage({ selectedFileID: this.selectedFiles[0].id, settings: this.settingsForm })
-                .then(response => {
+            fetchEditingCorrPlotImage({ selectedFileID: this.selectedFiles[0].id, settings: settingsForm })
+                .then((response) => {
                     this.renderedImage = "data:image/svg+xml;base64," + encodeURIComponent(response.data.image);
                     this.renderedImageDisplay = "data:image/png;base64," + encodeURIComponent(response.data.image_png);
                     this.loadingPlot = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log("Server error occurred");
                     this.renderedImage = false;
                     this.renderedImageDisplay = false;
                     this.loadingPlot = false;
+
+                    this.$message({
+                        message: "There was error in generating plot. Please try again by selecting different options.",
+                        type: "error",
+                    });
                 });
-        }
+        },
     },
     watch: {
-        selectedFileDetails: function(newVal, oldVal) {
-            if(newVal.length > 1 && newVal.length < 5000){
+        selectedFileDetails: function (newVal, oldVal) {
+            console.log("File selected change detected " + this.$options.name);
+
+            if (newVal.items.length >= 1 && newVal.items.length < 5000) {
                 this.tabEnabled = true;
-            }else{
+                this.initFuse(newVal);
+                this.selectedFileDetailsDisplay = newVal;
+            } else {
                 this.tabEnabled = false;
             }
-        }
-    }
+        },
+        deep: true,
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">

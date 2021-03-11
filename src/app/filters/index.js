@@ -33,7 +33,7 @@ export function parseTime(time, cFormat) {
     if (arguments.length === 0) {
         return null;
     }
-    
+
     if ((time + "").length === 10) {
         time = +time * 1000;
     }
@@ -52,7 +52,7 @@ export function parseTime(time, cFormat) {
         h: date.getHours(),
         i: date.getMinutes(),
         s: date.getSeconds(),
-        a: date.getDay()
+        a: date.getDay(),
     };
     const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
         let value = formatObj[key];
@@ -64,7 +64,6 @@ export function parseTime(time, cFormat) {
     });
     return time_str;
 }
-
 
 /**
  * Truncates string and addds custom end to it

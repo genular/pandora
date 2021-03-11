@@ -2,9 +2,12 @@
     <div class="app-container" v-loading="pageLoading" :element-loading-text="$t('globals.page_loading')">
         <el-tabs v-model="activeEditingTabName" type="border-card" class="tab-container">
             <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key="item.key" :name="item.key" :disabled="isTabDisabled(item)">
-                <span slot="label"><i :class="item.icon"></i> {{ item.label }}</span>
+                <span slot="label">
+                    <i :class="item.icon"></i>
+                    {{ item.label }}
+                </span>
                 <keep-alive>
-                    <tab-pane v-if="activeEditingTabName == item.key" :currentView="item.key" :selectedFileDetails="selectedFileDetails"></tab-pane>
+                    <tab-pane v-if="activeEditingTabName == item.key" :currentView="item.key"></tab-pane>
                     <!-- inactive components will be cached! -->
                 </keep-alive>
             </el-tab-pane>
@@ -28,17 +31,37 @@ export default {
                 {
                     label: "Overview",
                     key: "overviewTab",
-                    icon: "el-icon-date"
+                    icon: "el-icon-date",
                 },
                 {
                     label: "Correlation",
                     key: "correlationTab",
                     icon: "el-icon-date",
                     restriction: "selectedFileDetails",
-                    restriction_details: -1
-                }
+                    restriction_details: -1,
+                },
+                {
+                    label: "Hierarchical clustering",
+                    key: "clusteringTab",
+                    icon: "el-icon-date",
+                    restriction: "selectedFileDetails",
+                    restriction_details: -1,
+                },
+                {
+                    label: "PCA Analysis",
+                    key: "pcaAnalysisTab",
+                    icon: "el-icon-date",
+                    restriction: "selectedFileDetails",
+                    restriction_details: -1,
+                },
+                {
+                    label: "t-SNE",
+                    key: "tSNETab",
+                    icon: "el-icon-date",
+                    restriction: "selectedFileDetails",
+                    restriction_details: -1,
+                },
             ],
-            selectedFileDetails: []
         };
     },
     computed: {
@@ -48,7 +71,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonEditingActiveTabName", value);
-            }
+            },
         },
         // Array of selected files from Workspace
         selectedFiles: {
@@ -57,47 +80,57 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSelectedFiles", value);
-            }
-        }
+            },
+        },
+        selectedFileDetails: {
+            get() {
+                return this.$store.getters.selectedFileDetails;
+            },
+            set(value) {
+                this.$store.dispatch("setSelectedFileDetails", value);
+            },
+        },
     },
     mounted() {
         console.log("mounted: " + this.$options.name);
         this.getFileDetails();
-
     },
     activated() {
         console.log("activated: " + this.$options.name);
         this.getFileDetails();
-
     },
     methods: {
         getFileDetails() {
-            const selectedFilesIDs = this.selectedFiles.map(x => x.id);
+            const selectedFilesIDs = this.selectedFiles.map((x) => x.id);
+            if (this.selectedFileDetails.id === selectedFilesIDs[0]) {
+                this.pageLoading = false;
+                return;
+            }
             this.pageLoading = true;
 
             ApiFetchSelectedFilesDetails({ selectedFilesIDs: selectedFilesIDs })
-                .then(response => {
+                .then((response) => {
                     if (response.data.success === true) {
-
-                        this.selectedFileDetails = response.data.message.details.header.formatted;
+                        this.selectedFileDetails = {
+                            id: selectedFilesIDs[0],
+                            items: response.data.message.details.header.formatted,
+                        };
                         console.log(this.selectedFileDetails);
-
                     } else {
                         // Something went wrong, cannot fetch details from Server
                         this.$message({
                             message: this.$t("globals.errors.request_general"),
                             type: "error",
                             duration: 10000,
-                            showClose: true
+                            showClose: true,
                         });
                     }
                     this.pageLoading = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                     this.pageLoading = false;
                 });
-
         },
         isTabDisabled(item) {
             let check = false;
@@ -107,7 +140,7 @@ export default {
                 if (Array.isArray(item.restriction)) {
                     console.log("== restriction - step 1");
                     let varCount = 0;
-                    item.restriction.forEach(element => {
+                    item.restriction.forEach((element) => {
                         if (varCount === 0) {
                             if (this[item.restriction] !== undefined) {
                                 restrictionVariable = this[item.restriction];
@@ -158,8 +191,8 @@ export default {
         },
         copyToClipboard(content, event) {
             clipboard(content, event);
-        }
-    }
+        },
+    },
 };
 </script>
 
@@ -168,6 +201,7 @@ export default {
 
 .tab-container {
     min-height: 500px;
+    height: 100%;
 }
 .is-disabled {
     opacity: 0.25;

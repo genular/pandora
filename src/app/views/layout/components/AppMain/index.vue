@@ -57,19 +57,21 @@ export default {
 @import "~scss_vars";
 .app-main {
     width: 100%;
-    height: calc(100% - 100px);
+    height: 100%;
 
     .app-main-inner {
         width: 100%;
         min-width: 1000px;
+
         height: 100%;
         overflow: auto;
+        padding-top: 10px;
 
         .app-container {
-            margin-top: 10px;
-            margin-bottom: 10px;
-            margin-right: 10px;
-            margin-left: 10px;
+
+            padding-right: 10px;
+            padding-left: 10px;
+            padding-bottom: 120px;
         }
 
         .lost-connectivity {

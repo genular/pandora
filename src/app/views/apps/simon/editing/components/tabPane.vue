@@ -1,29 +1,28 @@
 <template>
     <div>
-        <component v-bind:is="currentView" :selectedFileDetails="selectedFileDetails">
+        <component v-bind:is="currentView">
             <!-- component changes when vm.currentView changes! -->
         </component>
     </div>
 </template>
 
 <script>
-import { correlationTab, overviewTab } from "./tabs";
+import { overviewTab, correlationTab, clusteringTab, pcaAnalysisTab, tSNETab } from "./tabs";
 
 export default {
     name: "tabPane",
     props: {
         currentView: {
             type: String,
-            default: "overviewTab"
+            default: "overviewTab",
         },
-        selectedFileDetails: {
-            type: Array,
-            default: []
-        }
     },
     components: {
         overviewTab,
-        correlationTab
-    }
+        correlationTab,
+        clusteringTab,
+        pcaAnalysisTab,
+        tSNETab,
+    },
 };
 </script>

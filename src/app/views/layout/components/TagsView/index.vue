@@ -135,6 +135,8 @@ export default {
     height: 50px;
     line-height: 50px;
     box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 100;
 
     .tags-view-wrapper {
         background: #ffffff;

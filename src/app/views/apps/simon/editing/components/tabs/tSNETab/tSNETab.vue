@@ -1,9 +1,9 @@
 <template>
-    <div class="overviewTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
+    <div class="tSNETab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="top">
             <el-col :span="4">
                 <el-row>
-                    <el-form class="overviewTab-form" ref="settingsForm" :model="settingsForm">
+                    <el-form class="tSNETab-form" ref="settingsForm" :model="settingsForm">
                         <el-form-item label="Columns">
                             <el-select
                                 style="float: right"
@@ -36,6 +36,67 @@
                                 <div slot="content">Please select columns you wish to plot</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item label="Grouping variable">
+                            <el-select
+                                style="float: right"
+                                v-model="settingsForm.groupingVariable"
+                                filterable
+                                remote
+                                default-first-option
+                                reserve-keyword
+                                value-key="remapped"
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :remote-method="
+                                    (userInput) => {
+                                        querySearch(userInput);
+                                    }
+                                "
+                            >
+                                <el-option
+                                    v-for="item in selectedFileDetailsDisplay"
+                                    :key="item.remapped"
+                                    :label="item.original"
+                                    :value="item.remapped"
+                                    :disabled="item.valid_10p !== 1"
+                                >
+                                    <span style="float: left">
+                                        {{ item.original }}
+                                    </span>
+                                    <span style="float: right; color: #8492a6; font-size: 13px">
+                                        {{ item.valid_10p === 1 ? "*" : "" }}
+                                        {{ item.unique_count }}
+                                    </span>
+                                </el-option>
+                            </el-select>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">Please select categorical column to "group by" t-SNE plot</div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item label="Clustering alghoritam:">
+                            <el-select
+                                style="float: right"
+                                v-model="settingsForm.clusterType"
+                                filterable
+                                default-first-option
+                                reserve-keyword
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                            >
+                                <el-option v-for="item in settingsOptions.clusterType" :key="item.value" :label="item.name" :value="item.value">
+                                    <span style="float: left">
+                                        {{ item.name }}
+                                    </span>
+                                    <el-tooltip placement="top" style="float: right">
+                                        <div slot="content">
+                                            {{ item.description }}
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-option>
+                            </el-select>
                         </el-form-item>
 
                         <el-form-item label="Preprocess">
@@ -153,26 +214,28 @@
             </el-col>
             <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
                 <el-tabs v-model="activeTab">
-                    <el-tab-pane label="Table Plot" name="table_plot" :disabled="isTabDisabled('table_plot')">
+                    <el-tab-pane label="Main Plot" name="tsne_plot" :disabled="isTabDisabled('tsne_plot')">
                         <el-row
                             v-bind:class="{
-                                is_tab_active: isTabDisabled('table_plot'),
+                                is_tab_active: isTabDisabled('tsne_plot'),
                             }"
                         >
-                            <el-col :span="24" v-if="plot_data.table_plot_png !== false">
-                                <span>The tableplot is a visualization method that is used to explore and analyse large datasets.</span>
+                            <el-col :span="24" v-if="plot_data.tsne_plot_png !== false">
+                                <span>
+                                    t-distributed stochastic neighbor embedding (t-SNE) is a statistical method for visualizing high-dimensional data by giving each datapoint a
+                                    location in a two or three-dimensional map.
+                                </span>
                             </el-col>
-                            <el-col :span="24" v-if="plot_data.table_plot_png !== false">
-                                <div v-if="plot_data.table_plot_png !== false">
+                            <el-col :span="24" v-if="plot_data.tsne_plot_png !== false">
+                                <div v-if="plot_data.tsne_plot_png !== false">
                                     <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                         <div slot="content">
-                                            <el-button type="success" round @click="downloadPlotImage('table_plot')">Download (.svg)</el-button>
+                                            <el-button type="success" round @click="downloadPlotImage('tsne_plot')">Download (.svg)</el-button>
                                         </div>
-
                                         <img
-                                            id="analysis_images_table_plot"
+                                            id="analysis_images_tsne_plot"
                                             class="animated fadeIn analysis_images"
-                                            :src="'data:image/png;base64,' + plot_data.table_plot_png"
+                                            :src="'data:image/png;base64,' + plot_data.tsne_plot_png"
                                             fit="scale-down"
                                         />
                                     </el-tooltip>
@@ -183,28 +246,25 @@
                             </el-col>
                         </el-row>
                     </el-tab-pane>
-                    <el-tab-pane label="Distribution Plot" name="distribution_plot" :disabled="isTabDisabled('distribution_plot')">
+                    <el-tab-pane label="Clustered" name="tsne_knn_plot" :disabled="isTabDisabled('tsne_knn_plot')">
                         <el-row
                             v-bind:class="{
-                                is_tab_active: isTabDisabled('distribution_plot'),
+                                is_tab_active: isTabDisabled('tsne_knn_plot'),
                             }"
                         >
-                            <el-col :span="24" v-if="plot_data.table_plot_png !== false">
-                                <span>
-                                    Scatterplots of each pair of numeric variable are drawn on the left part of the figure. Pearson correlation is displayed on the right. Variable
-                                    distribution is available on the diagonal. We will take maximum 10 columns into consideration.
-                                </span>
+                            <el-col :span="24" v-if="plot_data.tsne_knn_plot_png !== false">
+                                <span>KNN graph and Louvain community detection</span>
                             </el-col>
-                            <el-col :span="24" v-if="plot_data.distribution_plot_png !== false">
-                                <div v-if="plot_data.distribution_plot_png !== false" style="text-align: center">
+                            <el-col :span="24" v-if="plot_data.tsne_knn_plot_png !== false">
+                                <div v-if="plot_data.tsne_knn_plot_png !== false">
                                     <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                         <div slot="content">
-                                            <el-button type="success" round @click="downloadPlotImage('distribution_plot')">Download (.svg)</el-button>
+                                            <el-button type="success" round @click="downloadPlotImage('tsne_knn_plot')">Download (.svg)</el-button>
                                         </div>
                                         <img
-                                            id="analysis_images_distribution_plot"
+                                            id="analysis_images_tsne_knn_plot"
                                             class="animated fadeIn analysis_images"
-                                            :src="'data:image/png;base64,' + plot_data.distribution_plot_png"
+                                            :src="'data:image/png;base64,' + plot_data.tsne_knn_plot_png"
                                             fit="scale-down"
                                         />
                                     </el-tooltip>
@@ -221,7 +281,7 @@
     </div>
 </template>
 <script>
-import { getOverViewAavailableColumns, fetchOverViewPlot } from "@/api/plots";
+import { getOverViewAavailableColumns, fetchTsnePlot } from "@/api/plots";
 import Fuse from "fuse.js";
 
 import plotColorPalettes from "@/assets/plots/color_palettes.json";
@@ -230,7 +290,7 @@ import plotThemes from "@/assets/plots/themes.json";
 import waves from "@/directive/waves";
 
 export default {
-    name: "overviewTab",
+    name: "tSNETab",
     directives: {
         waves,
     },
@@ -240,7 +300,7 @@ export default {
             tabEnabled: false,
             fuseIndex: null,
             loadingPlot: false,
-            activeTab: "table_plot",
+            activeTab: "tsne_plot",
 
             selectedFileDetailsDisplay: [],
 
@@ -248,6 +308,12 @@ export default {
                 availableColumns: [],
                 theme: plotThemes,
                 colorPalette: plotColorPalettes,
+                clusterType: [
+                    { value: "Louvain", name: "KNN graph and Louvain", description: "KNN graph and Louvain community detection" },
+                    { value: "Hierarchical", name: "Hierarchical clustering", description: "Doesnt scale well. High memory usage and computation time when >30K." },
+                    { value: "Mclust", name: "Mclust", description: "Can find the best K (number of clusters (although slowly)." },
+                    { value: "Density", name: "Density-based clustering", description: "Can find clusters with different shapes." },
+                ],
             },
 
             settingsForm: {
@@ -258,13 +324,14 @@ export default {
                 theme: "theme_bw",
                 colorPalette: "Set1",
                 aspect_ratio: 1,
+                clusterType: "Louvain",
             },
             plot_data: {
-                table_plot: false,
-                table_plot_png: false,
+                tsne_plot: false,
+                tsne_plot_png: false,
 
-                distribution_plot: false,
-                distribution_plot_png: false,
+                tsne_knn_plot: false,
+                tsne_knn_plot_png: false,
             },
         };
     },
@@ -357,11 +424,11 @@ export default {
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
             // If no columns are selected select all columns
             if (settingsForm.selectedColumns.length < 1) {
-                // settingsForm.selectedColumns = this.settingsOptions.availableColumns.map((x) => x.remapped);
-                settingsForm.selectedColumns = this.settingsOptions.availableColumns
-                    .filter((x) => x.valid_numeric)
-                    .map((x) => x.remapped)
-                    .slice(0, 10);
+                settingsForm.selectedColumns = this.settingsOptions.availableColumns.map((x) => x.remapped);
+                //settingsForm.selectedColumns = this.settingsOptions.availableColumns
+                //   .filter((x) => x.valid_zv && x.valid_numeric && x.na_percentage === 0)
+                //    .map((x) => x.remapped)
+                //    .slice(0, 10);
             } else {
                 settingsForm.selectedColumns = this.settingsForm.selectedColumns.map((x) => x.remapped);
             }
@@ -370,7 +437,7 @@ export default {
             if (settingsForm.groupingVariable.length > 0) {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.groupingVariable.includes(x));
             }
-            fetchOverViewPlot({
+            fetchTsnePlot({
                 selectedFileID: this.selectedFiles[0].id,
                 settings: settingsForm,
             })
@@ -380,12 +447,8 @@ export default {
                     for (let respIndex in respData) {
                         this.plot_data[respIndex] = false;
                         let respItem = respData[respIndex];
-                        if (respItem.length < 15 || typeof respItem == "undefined") {
-                            this.plot_data[respIndex] = "error";
-                            this.$message({
-                                message: "There was error in generating plot " + respIndex,
-                                type: "error",
-                            });
+                        if (respItem.length < 15) {
+                            this.plot_data[respIndex] = line_chart_404;
                         } else {
                             this.plot_data[respIndex] = encodeURIComponent(respItem);
                         }
@@ -466,40 +529,13 @@ export default {
             downloadLink.click();
             document.body.removeChild(downloadLink);
         },
-        resetVariables() {
-            this.fuseIndex = null;
-            this.activeTab = "table_plot";
-            this.selectedFileDetailsDisplay = [];
-
-            this.settingsOptions = {
-                availableColumns: [],
-            };
-
-            this.settingsForm = {
-                selectedColumns: [],
-                groupingVariable: [],
-                preProcessedData: true,
-                fontSize: 12,
-                theme: "theme_bw",
-                colorPalette: "Set1",
-                aspect_ratio: 1,
-            };
-
-            this.plot_data = {
-                table_plot: false,
-                table_plot_png: false,
-
-                distribution_plot: false,
-                distribution_plot_png: false,
-            };
-        },
     },
 
     watch: {
         selectedFileDetails: function (newVal, oldVal) {
             console.log("File selected change detected " + this.$options.name);
+
             if (newVal.items.length >= 1) {
-                this.resetVariables();
                 this.tabEnabled = true;
             } else {
                 this.tabEnabled = false;

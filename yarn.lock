@@ -5083,6 +5083,11 @@ klona@^2.0.4:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
   integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
 
+lasso-canvas-image@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/lasso-canvas-image/-/lasso-canvas-image-1.4.2.tgz#00b959982bae7fd7d2deca350891103905786759"
+  integrity sha512-8hEO44B0/swtz2gTuFdkV5+6grW4X3QK0wsqlQEv45j89p7iiOUICbnRG7iEtTFtoR1KYOKpJX03bEKBdLjQXw==
+
 lazy-cache@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"

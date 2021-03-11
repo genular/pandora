@@ -5,6 +5,7 @@ const getters = {
     language: state => state.main.language,
     is_configured: state => state.main.is_configured,
     selectedFiles: state => state.main.selectedFiles,
+    selectedFileDetails: state => state.main.selectedFileDetails,
     packageVersion: state => state.main.packageVersion,
     packageEnviroment: state => state.main.packageEnviroment,
     

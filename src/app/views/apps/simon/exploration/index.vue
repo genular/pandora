@@ -298,6 +298,7 @@ export default {
 
 .tab-container {
     min-height: 500px;
+    height: 100%;
 }
 .is-disabled {
     opacity: 0.25;

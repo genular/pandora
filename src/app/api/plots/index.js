@@ -1,9 +1,9 @@
 /*
-* @Author: LogIN-
-* @Date:   2018-03-22 13:10:06
-* @Last Modified by:   LogIN-
-* @Last Modified time: 2021-02-01 11:02:53
-*/
+ * @Author: LogIN-
+ * @Date:   2018-03-22 13:10:06
+ * @Last Modified by:   LogIN-
+ * @Last Modified time: 2021-02-01 11:02:53
+ */
 import request from "@/utils/request";
 const baseUrlPath = "/plots";
 
@@ -16,7 +16,7 @@ export function fetchCorrPlotImage(query) {
     return request({
         url: baseUrlPath + "/correlation/render-plot",
         method: "GET",
-        params: query
+        params: query,
     });
 }
 
@@ -29,7 +29,85 @@ export function fetchEditingCorrPlotImage(query) {
     return request({
         url: baseUrlPath + "/editing/correlation/render-plot",
         method: "GET",
-        params: query
+        params: query,
+    });
+}
+
+/**
+ * [fetchEditingPcaAnalysisPlot Fetch available columns for PCA analysis]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function getPCAavailableColumns(query) {
+    return request({
+        url: baseUrlPath + "/editing/pcaAnalysis/getAvaliableColumns",
+        method: "GET",
+        params: query,
+    });
+}
+
+/**
+ * [getOverViewAavailableColumns Fetch overview of available columns]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function getOverViewAavailableColumns(query) {
+    return request({
+        url: baseUrlPath + "/editing/overview/getAvaliableColumns",
+        method: "GET",
+        params: query,
+    });
+}
+
+/**
+ * [fetchEditingPcaAnalysisPlot description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function fetchEditingPcaAnalysisPlot(query) {
+    return request({
+        url: baseUrlPath + "/editing/pcaAnalysis/render-plot",
+        method: "GET",
+        params: query,
+    });
+}
+
+/**
+ * [fetchOverViewPlot description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function fetchOverViewPlot(query) {
+    return request({
+        url: baseUrlPath + "/editing/overview/render-plot",
+        method: "GET",
+        params: query,
+    });
+}
+
+/**
+ * [fetchTsnePlot description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function fetchTsnePlot(query) {
+    return request({
+        url: baseUrlPath + "/editing/tsne/render-plot",
+        method: "GET",
+        params: query,
+    });
+}
+
+/**
+ * [fetchEditingPcaAnalysisPlotZoomed description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function fetchEditingPcaAnalysisPlotZoomed(query) {
+    return request({
+        url: baseUrlPath + "/editing/pcaAnalysis/render-plot-zoomed",
+        method: "GET",
+        params: query,
     });
 }
 
@@ -42,7 +120,20 @@ export function fetchHeatmapImage(query) {
     return request({
         url: baseUrlPath + "/heatmap/render-plot",
         method: "GET",
-        params: query
+        params: query,
+    });
+}
+
+/**
+ * [fetchHeatmapImage description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function fetchEditingClusteringPlotImage(query) {
+    return request({
+        url: baseUrlPath + "/editing/heatmap/render-plot",
+        method: "GET",
+        params: query,
     });
 }
 /**
@@ -54,7 +145,7 @@ export function fetchGraphVariableImportance(query) {
     return request({
         url: baseUrlPath + "/variableImportance/render-plot",
         method: "GET",
-        params: query
+        params: query,
     });
 }
 /**
@@ -66,7 +157,7 @@ export function fetchDatasetStatisticsBoolean(query) {
     return request({
         url: baseUrlPath + "/stats/two-class",
         method: "GET",
-        params: query
+        params: query,
     });
 }
 /**
@@ -78,7 +169,7 @@ export function fetchDatasetStatisticsOther(query) {
     return request({
         url: baseUrlPath + "/stats/multi-class",
         method: "GET",
-        params: query
+        params: query,
     });
 }
 /**
@@ -90,7 +181,7 @@ export function fetchGraphSummary(query) {
     return request({
         url: baseUrlPath + "/summary/render-plot",
         method: "GET",
-        params: query
+        params: query,
     });
 }
 /**
@@ -102,10 +193,9 @@ export function fetchGraphModelSummary(query) {
     return request({
         url: baseUrlPath + "/model-summary/render-plot",
         method: "GET",
-        params: query
+        params: query,
     });
 }
-
 
 /**
  * [fetchGraphDistribution description]
@@ -116,6 +206,6 @@ export function fetchGraphDistribution(query) {
     return request({
         url: baseUrlPath + "/distribution/render-plot",
         method: "GET",
-        params: query
+        params: query,
     });
 }
