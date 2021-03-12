@@ -18,6 +18,7 @@
 import clipboard from "@/utils/clipboard";
 
 import { fetchSelectedFilesDetails as ApiFetchSelectedFilesDetails } from "@/api/backend";
+import { getOverViewAavailableColumns } from "@/api/plots";
 
 import tabPane from "./components/tabPane";
 
@@ -102,18 +103,20 @@ export default {
     methods: {
         getFileDetails() {
             const selectedFilesIDs = this.selectedFiles.map((x) => x.id);
+            // TODO: on new file selected reset selectedFileDetails variable
             if (this.selectedFileDetails.id === selectedFilesIDs[0]) {
                 this.pageLoading = false;
                 return;
             }
             this.pageLoading = true;
 
-            ApiFetchSelectedFilesDetails({ selectedFilesIDs: selectedFilesIDs })
+            getOverViewAavailableColumns({ selectedFileID: selectedFilesIDs[0] })
                 .then((response) => {
-                    if (response.data.success === true) {
+                    if (response.data.success === true && typeof response.data.message.columns !== "undefined") {
                         this.selectedFileDetails = {
                             id: selectedFilesIDs[0],
-                            items: response.data.message.details.header.formatted,
+                            columns: response.data.message.columns,
+                            summary: response.data.message.summary,
                         };
                         console.log(this.selectedFileDetails);
                     } else {

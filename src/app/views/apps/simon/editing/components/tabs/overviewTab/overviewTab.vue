@@ -91,10 +91,18 @@
                         <el-form-item label="Ratio">
                             <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                         </el-form-item>
-
-                        <el-form-item>
-                            <el-button style="float: right" type="danger" round @click="redrawImage">Plot selection</el-button>
-                        </el-form-item>
+                        <el-row>
+                            <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
+                                <el-form-item>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download raw object</el-button>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
+                                <el-form-item>
+                                    <el-button style="float: right" type="danger" round @click="redrawImage">Plot selection</el-button>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
                     </el-form>
                 </el-row>
                 <el-row v-for="(item, index) in reverseSelectedColumns" :key="item.remapped">
@@ -221,7 +229,7 @@
     </div>
 </template>
 <script>
-import { getOverViewAavailableColumns, fetchOverViewPlot } from "@/api/plots";
+import { fetchOverViewPlot } from "@/api/plots";
 import Fuse from "fuse.js";
 
 import plotColorPalettes from "@/assets/plots/color_palettes.json";
@@ -239,13 +247,13 @@ export default {
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,
             fuseIndex: null,
+
             loadingPlot: false,
             activeTab: "table_plot",
 
             selectedFileDetailsDisplay: [],
 
             settingsOptions: {
-                availableColumns: [],
                 theme: plotThemes,
                 colorPalette: plotColorPalettes,
             },
@@ -265,6 +273,8 @@ export default {
 
                 distribution_plot: false,
                 distribution_plot_png: false,
+
+                saveObjectHash: false,
             },
         };
     },
@@ -305,11 +315,10 @@ export default {
     activated() {
         console.log("activated: " + this.$options.name);
         this.isTabEnabled();
-        this.getAvailableColumns();
     },
     methods: {
         downloadTable() {
-            const exportData = this.settingsOptions.availableColumns;
+            const exportData = this.selectedFileDetails.columns;
             console.log(exportData);
 
             import("@/vendor/Export2Excel").then((excel) => {
@@ -333,10 +342,14 @@ export default {
             );
         },
         isTabEnabled() {
-            if (this.selectedFileDetails.items.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
+            if (this.selectedFileDetails.columns.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
                 this.tabEnabled = true;
             } else {
                 this.tabEnabled = false;
+            }
+
+            if (this.tabEnabled === true && this.fuseIndex === null) {
+                this.initFuse(this.selectedFileDetails.columns);
             }
         },
         isTabDisabled(tabName) {
@@ -351,14 +364,17 @@ export default {
                 this.handleFetchOverViewImage();
             }
         },
+        downloadRawData() {
+            console.log(this.plot_data.saveObjectHash);
+        },
         handleFetchOverViewImage() {
             this.loadingPlot = true;
             // Clone objects as an simple object
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
             // If no columns are selected select all columns
             if (settingsForm.selectedColumns.length < 1) {
-                // settingsForm.selectedColumns = this.settingsOptions.availableColumns.map((x) => x.remapped);
-                settingsForm.selectedColumns = this.settingsOptions.availableColumns
+                // settingsForm.selectedColumns = this.selectedFileDetails.columns.map((x) => x.remapped);
+                settingsForm.selectedColumns = this.selectedFileDetails.columns
                     .filter((x) => x.valid_numeric)
                     .map((x) => x.remapped)
                     .slice(0, 10);
@@ -378,16 +394,18 @@ export default {
                     let respData = response.data.message;
                     // Update the image data.
                     for (let respIndex in respData) {
-                        this.plot_data[respIndex] = false;
-                        let respItem = respData[respIndex];
-                        if (respItem.length < 15 || typeof respItem == "undefined") {
-                            this.plot_data[respIndex] = "error";
-                            this.$message({
-                                message: "There was error in generating plot " + respIndex,
-                                type: "error",
-                            });
-                        } else {
-                            this.plot_data[respIndex] = encodeURIComponent(respItem);
+                        if (typeof this.plot_data[respIndex] !== "undefined") {
+                            this.plot_data[respIndex] = false;
+                            let respItem = respData[respIndex];
+                            if (respItem.length < 15 || typeof respItem == "undefined") {
+                                this.plot_data[respIndex] = "error";
+                                this.$message({
+                                    message: "There was error in generating plot: " + respIndex,
+                                    type: "error",
+                                });
+                            } else {
+                                this.plot_data[respIndex] = encodeURIComponent(respItem);
+                            }
                         }
                     }
                     this.loadingPlot = false;
@@ -398,27 +416,7 @@ export default {
                     this.loadingPlot = false;
                 });
         },
-        getAvailableColumns() {
-            this.loadingPlot = true;
 
-            getOverViewAavailableColumns({
-                selectedFileID: this.selectedFiles[0].id,
-                settings: this.settingsForm,
-            })
-                .then((response) => {
-                    let respData = response.data.message;
-                    this.settingsOptions.availableColumns = respData.columns;
-
-                    this.initFuse(respData.columns);
-
-                    this.loadingPlot = false;
-                })
-                .catch((error) => {
-                    console.log("Server error occurred");
-                    console.log(error);
-                    this.loadingPlot = false;
-                });
-        },
         initFuse(searchItems) {
             this.selectedFileDetailsDisplay = searchItems;
 
@@ -471,10 +469,6 @@ export default {
             this.activeTab = "table_plot";
             this.selectedFileDetailsDisplay = [];
 
-            this.settingsOptions = {
-                availableColumns: [],
-            };
-
             this.settingsForm = {
                 selectedColumns: [],
                 groupingVariable: [],
@@ -498,11 +492,17 @@ export default {
     watch: {
         selectedFileDetails: function (newVal, oldVal) {
             console.log("File selected change detected " + this.$options.name);
-            if (newVal.items.length >= 1) {
-                this.resetVariables();
+
+            if (newVal.columns.length >= 1) {
                 this.tabEnabled = true;
             } else {
                 this.tabEnabled = false;
+            }
+
+            this.resetVariables();
+
+            if (this.tabEnabled === true) {
+                this.initFuse(newVal.columns);
             }
         },
         deep: true,

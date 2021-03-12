@@ -7,8 +7,8 @@
                         :title="$t('views.apps.simon.exploration.components.tabs.clusteringTab.buttons.download')"
                         type="success"
                         icon="el-icon-download"
-                        :disabled="renderedImage === '' || loadingPlot"
-                        @click="downloadPlotImage"
+                        :disabled="plot_data.clustering_plot_png === false || loadingPlot"
+                        @click="downloadPlotImage('clustering_plot')"
                     ></el-button>
                 </el-col>
             </el-row>
@@ -22,12 +22,23 @@
                                 filterable
                                 remote
                                 default-first-option
+                                reserve-keyword
+                                value-key="remapped"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
-                                :remote-method="querySearch"
+                                :remote-method="
+                                    (userInput) => {
+                                        querySearch(userInput);
+                                    }
+                                "
                             >
-                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item.remapped">
-                                    <span style="float: left">{{ item.original }}</span>
-                                    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.unique_count }}</span>
+                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1">
+                                    <span style="float: left">
+                                        {{ item.original }}
+                                    </span>
+                                    <span style="float: right; color: #8492a6; font-size: 13px">
+                                        {{ item.valid_10p === 1 ? "*" : "" }}
+                                        {{ item.unique_count }}
+                                    </span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -38,12 +49,29 @@
                                 filterable
                                 remote
                                 default-first-option
+                                reserve-keyword
+                                value-key="remapped"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.rows.placeholder')"
-                                :remote-method="querySearch"
+                                :remote-method="
+                                    (userInput) => {
+                                        querySearch(userInput);
+                                    }
+                                "
                             >
-                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item.remapped">
-                                    <span style="float: left">{{ item.original }}</span>
-                                    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.unique_count }}</span>
+                                <el-option
+                                    v-for="item in selectedFileDetailsDisplay"
+                                    :key="item.remapped"
+                                    :label="item.original"
+                                    :value="item"
+                                    :disabled="item.valid_numeric !== 1"
+                                >
+                                    <span style="float: left">
+                                        {{ item.original }}
+                                    </span>
+                                    <span style="float: right; color: #8492a6; font-size: 13px">
+                                        {{ item.valid_10p === 1 ? "*" : "" }}
+                                        {{ item.unique_count }}
+                                    </span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -51,6 +79,11 @@
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.remove_na')">
                             <el-checkbox v-model="settingsForm.removeNA"></el-checkbox>
                         </el-form-item>
+
+                        <el-form-item label="Preprocess">
+                            <el-checkbox v-model="settingsForm.preProcessDataset"></el-checkbox>
+                        </el-form-item>
+
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.scale.label')">
                             <el-select v-model="settingsForm.scale" placeholder="Select">
                                 <el-option
@@ -196,17 +229,31 @@
                                 controls-position="right"
                             ></el-input-number>
                         </el-form-item>
-                        <el-form-item label="">
-                            <el-button type="danger" size="mini" icon="el-icon-picture-outline" @click="redrawImage" round>
-                                {{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.buttons.plot_image") }}
-                            </el-button>
-                        </el-form-item>
+                        <el-row>
+                            <el-col :span="6" v-if="plot_data.saveObjectHash !== false">
+                                <el-form-item>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download raw object</el-button>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="plot_data.saveObjectHash !== false ? 6 : 6">
+                                <el-form-item>
+                                    <el-button type="danger" round @click="redrawImage" style="float: left">
+                                        {{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.buttons.plot_image") }}
+                                    </el-button>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
                     </el-form>
                 </el-col>
                 <el-col :span="15" class="correlation-svg-container" style="text-align: center">
                     <!-- Plot placeholder -->
-                    <div v-if="renderedImage !== false" style="text-align: center">
-                        <img id="plot_output_image" class="animated fadeIn" :src="renderedImageDisplay" fit="scale-down" />
+                    <div v-if="plot_data.clustering_plot_png !== false" style="text-align: center">
+                        <img
+                            id="analysis_images_clustering_plot"
+                            class="animated fadeIn analysis_images"
+                            :src="'data:image/png;base64,' + plot_data.clustering_plot_png"
+                            fit="scale-down"
+                        />
                     </div>
                     <div v-else class="plot-placeholder">
                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
@@ -241,22 +288,22 @@ export default {
     data() {
         return {
             // This tab is disabled and we will enable it on initialization if there is no too much data
+            fuseIndex: null,
+            // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,
             loadingOptions: true,
 
             loadingPlot: false,
 
-            renderedImage: false,
-            renderedImageDisplay: false,
-            renderedImageData: "",
+            plot_data: {
+                clustering_plot: false,
+                clustering_plot_png: false,
 
+                saveObjectHash: false,
+            },
             selectedFileDetailsDisplay: [],
 
-            resample: [],
             settingOptions: {
-                columns: [],
-                features: [],
-                // removeNA: false,
                 scale: [{ id: "row" }, { id: "column" }, { id: "none" }],
                 displayOptions: [{ id: "numbers" }, { id: "legend" }, { id: "colnames" }, { id: "rownames" }],
 
@@ -308,7 +355,8 @@ export default {
                 selectedColumns: [],
                 selectedRows: [],
 
-                removeNA: false,
+                removeNA: true,
+                preProcessDataset: true,
                 scale: "column",
 
                 displayOptions: ["legend", "colnames", "rownames"],
@@ -329,12 +377,11 @@ export default {
     },
     mounted() {
         console.log("mounted: " + this.$options.name);
-        this.redrawImage();
-        this.initFuse(this.selectedFileDetails.items);
+        this.isTabEnabled();
     },
     activated() {
         console.log("activated: " + this.$options.name);
-        this.redrawImage();
+        this.isTabEnabled();
     },
     computed: {
         activeTabName: {
@@ -365,7 +412,9 @@ export default {
     },
     methods: {
         initFuse(searchItems) {
-            this.fuse = new Fuse(searchItems, {
+            this.selectedFileDetailsDisplay = searchItems;
+
+            this.fuseIndex = new Fuse(searchItems, {
                 shouldSort: true,
                 threshold: 0.4,
                 location: 0,
@@ -391,76 +440,111 @@ export default {
             this.selectedFileDetailsDisplay = items_found.map((x) => x.item);
         },
         redrawImage() {
-            this.isTabEnabled();
-
             if (this.tabEnabled === true) {
                 this.handleFetchEditingClusteringPlotImage();
             }
         },
+        downloadRawData() {
+            console.log(this.plot_data.saveObjectHash);
+        },
         isTabEnabled() {
-            if (this.selectedFileDetails.items.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
+            if (this.selectedFileDetails.columns.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
                 this.tabEnabled = true;
             } else {
                 this.tabEnabled = false;
             }
 
-            if (this.tabEnabled === true && this.selectedFileDetailsDisplay.length === 0) {
-                this.selectedFileDetailsDisplay = this.selectedFileDetails.items;
+            if (this.tabEnabled === true && this.fuseIndex === null) {
+                this.initFuse(this.selectedFileDetails.columns);
             }
         },
-        downloadPlotImage() {
-            const svgBlob = new Blob([window.atob(decodeURIComponent(this.renderedImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
+        downloadPlotImage(imageType) {
+            if (typeof this.plot_data[imageType] === "undefined") {
+                return;
+            }
+
+            const svgImage = "data:image/svg+xml;base64," + this.plot_data[imageType];
+
+            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
                 type: "image/svg+xml;charset=utf-8",
             });
+
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
-            downloadLink.download = "editing-correlation.svg";
+            downloadLink.download = this.$options.name + "_" + imageType + ".svg";
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
         },
         handleFetchEditingClusteringPlotImage() {
             this.loadingPlot = true;
+            // Clone objects as an simple object
+            const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
+            const availableColumns = this.selectedFileDetails.columns;
+            availableColumns.sort((a, b) => (a.na_percentage < b.na_percentage ? -1 : 1));
 
-            fetchEditingClusteringPlotImage({ selectedFileID: this.selectedFiles[0].id, settings: this.settingsForm })
+            // If no columns are selected
+            if (settingsForm.selectedColumns.length < 1) {
+                settingsForm.selectedColumns = availableColumns
+                    .filter((x) => x.valid_10p)
+                    .map((x) => x.remapped)
+                    .slice(0, 2);
+            } else {
+                settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped);
+            }
+            // If no columns are selected
+            if (settingsForm.selectedRows.length < 1) {
+                settingsForm.selectedRows = availableColumns
+                    .filter((x) => x.valid_numeric)
+                    .map((x) => x.remapped)
+                    .slice(0, 25);
+            } else {
+                settingsForm.selectedRows = settingsForm.selectedRows.map((x) => x.remapped);
+            }
+
+            settingsForm.selectedRows = settingsForm.selectedRows.filter((x) => !settingsForm.selectedColumns.includes(x));
+
+            fetchEditingClusteringPlotImage({ selectedFileID: this.selectedFiles[0].id, settings: settingsForm })
                 .then((response) => {
-                    if (response.data.status === true) {
-                        this.renderedImage = "data:image/svg+xml;base64," + encodeURIComponent(response.data.image);
-                        this.renderedImageDisplay = "data:image/png;base64," + encodeURIComponent(response.data.image_png);
-                    } else {
-                        this.$message({
-                            message: response.data.error_message,
-                            type: "error",
-                        });
-                        this.renderedImage = false;
-                        this.renderedImageDisplay = false;
-                        this.loadingPlot = false;
+                    let respData = response.data.message;
+                    // Update the image data.
+                    for (let respIndex in respData) {
+                        if (typeof this.plot_data[respIndex] !== "undefined") {
+                            this.plot_data[respIndex] = false;
+                            let respItem = respData[respIndex];
+                            if (respItem.length < 15 || typeof respItem == "undefined") {
+                                this.plot_data[respIndex] = "error";
+                                this.$message({
+                                    message: "There was error in generating plot: " + respIndex,
+                                    type: "error",
+                                });
+                            } else {
+                                this.plot_data[respIndex] = encodeURIComponent(respItem);
+                            }
+                        }
                     }
-
                     this.loadingPlot = false;
                 })
                 .catch((error) => {
-                    this.$message({
-                        message: this.$t("globals.errors.request_general"),
-                        type: "error",
-                    });
+                    console.log("Server error occurred");
                     console.log(error);
-                    this.renderedImage = false;
-                    this.renderedImageDisplay = false;
                     this.loadingPlot = false;
                 });
         },
+        resetVariables() {},
     },
     watch: {
         selectedFileDetails: function (newVal, oldVal) {
             console.log("File selected change detected " + this.$options.name);
-            if (newVal.items.length >= 1 && newVal.items.length < 5000) {
+            if (newVal.columns.length >= 1) {
                 this.tabEnabled = true;
-                this.initFuse(newVal);
-                this.selectedFileDetailsDisplay = newVal;
             } else {
                 this.tabEnabled = false;
+            }
+            this.resetVariables();
+            if (this.tabEnabled === true) {
+                this.initFuse(newVal.columns);
             }
         },
         deep: true,

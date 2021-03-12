@@ -4,18 +4,18 @@ import axios from "axios";
 const main = {
     state: {
         sidebar: {
-            opened: !+estore.get("main-sidebar-opened")
+            opened: !+estore.get("main-sidebar-opened"),
         },
         is_online: false,
         language: estore.get("main-language") || "en",
         is_configured: estore.get("main-is_configured") || false,
         selectedFiles: estore.get("main-selectedFiles") || [],
-        selectedFileDetails: estore.get("main-selectedFileDetails") || {id: null, items: []},
+        selectedFileDetails: estore.get("main-selectedFileDetails") || { id: null, columns: [], summary: [] },
         packageVersion: packageInfo.version || "N/A",
-        packageEnviroment: packageInfo.environment || "development"
+        packageEnviroment: packageInfo.environment || "development",
     },
     mutations: {
-        TOGGLE_SIDEBAR: state => {
+        TOGGLE_SIDEBAR: (state) => {
             if (state.sidebar.opened) {
                 estore.set("main-sidebar-opened", 1);
             } else {
@@ -41,7 +41,7 @@ const main = {
         SET_SELECTED_FILE_DETAILS: (state, selectedFileDetails) => {
             state.selectedFileDetails = selectedFileDetails;
             estore.set("main-selectedFileDetails", selectedFileDetails);
-        }
+        },
     },
     actions: {
         toggleSideBar({ commit }) {
@@ -63,8 +63,8 @@ const main = {
         },
         setSelectedFileDetails({ commit }, selectedFileDetails) {
             commit("SET_SELECTED_FILE_DETAILS", selectedFileDetails);
-        }
-    }
+        },
+    },
 };
 
 export default main;

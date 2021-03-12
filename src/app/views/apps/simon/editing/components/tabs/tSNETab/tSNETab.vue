@@ -246,31 +246,29 @@
                             </el-col>
                         </el-row>
                     </el-tab-pane>
-                    <el-tab-pane label="Clustered" name="tsne_knn_plot" :disabled="isTabDisabled('tsne_knn_plot')">
+                    <el-tab-pane label="Clustered" name="tsne_cluster_plot" :disabled="isTabDisabled('tsne_cluster_plot')">
                         <el-row
                             v-bind:class="{
-                                is_tab_active: isTabDisabled('tsne_knn_plot'),
+                                is_tab_active: isTabDisabled('tsne_cluster_plot'),
                             }"
                         >
-                            <el-col :span="24" v-if="plot_data.tsne_knn_plot_png !== false">
-                                <span>KNN graph and Louvain community detection</span>
+                            <el-col :span="24" v-if="plot_data.tsne_cluster_plot_png !== false">
+                                <span>Clustered t-SNE plot using: {{ settingsForm.clusterType }}</span>
                             </el-col>
-                            <el-col :span="24" v-if="plot_data.tsne_knn_plot_png !== false">
-                                <div v-if="plot_data.tsne_knn_plot_png !== false">
+
+                            <el-col :span="24" v-if="plot_data.tsne_cluster_plot_png !== false">
+                                <div>
                                     <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                         <div slot="content">
-                                            <el-button type="success" round @click="downloadPlotImage('tsne_knn_plot')">Download (.svg)</el-button>
+                                            <el-button type="success" round @click="downloadPlotImage('tsne_cluster_plot')">Download (.svg)</el-button>
                                         </div>
                                         <img
-                                            id="analysis_images_tsne_knn_plot"
+                                            id="analysis_images_tsne_clustered_plot"
                                             class="animated fadeIn analysis_images"
-                                            :src="'data:image/png;base64,' + plot_data.tsne_knn_plot_png"
+                                            :src="'data:image/png;base64,' + plot_data.tsne_cluster_plot_png"
                                             fit="scale-down"
                                         />
                                     </el-tooltip>
-                                </div>
-                                <div class="plot-placeholder" v-else>
-                                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                 </div>
                             </el-col>
                         </el-row>
@@ -330,8 +328,8 @@ export default {
                 tsne_plot: false,
                 tsne_plot_png: false,
 
-                tsne_knn_plot: false,
-                tsne_knn_plot_png: false,
+                tsne_cluster_plot: false,
+                tsne_cluster_plot_png: false,
             },
         };
     },
@@ -445,12 +443,14 @@ export default {
                     let respData = response.data.message;
                     // Update the image data.
                     for (let respIndex in respData) {
-                        this.plot_data[respIndex] = false;
-                        let respItem = respData[respIndex];
-                        if (respItem.length < 15) {
-                            this.plot_data[respIndex] = line_chart_404;
-                        } else {
-                            this.plot_data[respIndex] = encodeURIComponent(respItem);
+                        if (typeof this.plot_data[respIndex] !== "undefined") {
+                            this.plot_data[respIndex] = false;
+                            let respItem = respData[respIndex];
+                            if (respItem.length < 15) {
+                                this.plot_data[respIndex] = line_chart_404;
+                            } else {
+                                this.plot_data[respIndex] = encodeURIComponent(respItem);
+                            }
                         }
                     }
                     this.loadingPlot = false;
