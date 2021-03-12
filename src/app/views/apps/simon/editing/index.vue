@@ -117,6 +117,7 @@ export default {
                             id: selectedFilesIDs[0],
                             columns: response.data.message.columns,
                             summary: response.data.message.summary,
+                            saveObjectHash: response.data.message.saveObjectHash,
                         };
                         console.log(this.selectedFileDetails);
                     } else {

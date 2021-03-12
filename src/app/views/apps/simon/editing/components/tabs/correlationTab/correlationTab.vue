@@ -31,7 +31,7 @@
                                     }
                                 "
                             >
-                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_zv !== 1">
                                     <span style="float: left">
                                         {{ item.original }}
                                     </span>
@@ -568,7 +568,14 @@ export default {
                     this.loadingPlot = false;
                 });
         },
-        resetVariables() {},
+        resetVariables() {
+            this.fuseIndex = null;
+            this.plot_data = {
+                correlation_plot: false,
+                correlation_plot_png: false,
+                saveObjectHash: false,
+            };
+        },
     },
     watch: {
         selectedFileDetails: function (newVal, oldVal) {

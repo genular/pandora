@@ -13,6 +13,7 @@
                                 remote
                                 default-first-option
                                 reserve-keyword
+                                value-key="remapped"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -20,11 +21,12 @@
                                     }
                                 "
                             >
-                                <el-option v-for="item in selectedOptions.columns_all" :key="item.remapped" :label="item.original" :value="item.remapped">
+                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
                                     <span style="float: left">
                                         {{ item.original }}
                                     </span>
                                     <span style="float: right; color: #8492a6; font-size: 13px">
+                                        {{ item.valid_10p === 1 ? "*" : "" }}
                                         {{ item.unique_count }}
                                     </span>
                                 </el-option>
@@ -43,7 +45,11 @@
                                 style="float: right"
                                 v-model="settingsForm.groupingVariable"
                                 filterable
+                                remote
                                 default-first-option
+                                reserve-keyword
+                                value-key="remapped"
+                                clearable
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -51,11 +57,12 @@
                                     }
                                 "
                             >
-                                <el-option v-for="item in selectedOptions.columns_grouping" :key="item.remapped" :label="item.original" :value="item.remapped">
+                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1">
                                     <span style="float: left">
                                         {{ item.original }}
                                     </span>
                                     <span style="float: right; color: #8492a6; font-size: 13px">
+                                        {{ item.valid_10p === 1 ? "*" : "" }}
                                         {{ item.unique_count }}
                                     </span>
                                 </el-option>
@@ -113,14 +120,25 @@
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.displayLoadings"></el-switch>
                         </el-form-item>
 
-                        <el-form-item>
-                            <el-button style="float: right" type="danger" round @click="redrawImage">Compute</el-button>
-                        </el-form-item>
+                        <el-row>
+                            <el-col :span="6" v-if="plot_data.saveObjectHash !== false">
+                                <el-form-item>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download raw object</el-button>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="plot_data.saveObjectHash !== false ? 6 : 6">
+                                <el-form-item>
+                                    <el-button type="danger" round @click="redrawImage" style="float: left">
+                                        {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
+                                    </el-button>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
                     </el-form>
                 </el-col>
                 <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
                     <el-row>
-                        <el-tabs v-model="activePCATabName" @tab-click="handleTabClick">
+                        <el-tabs v-model="activePCATabName">
                             <el-tab-pane label="Bartlett's sphericity" name="summary_bartlett" :disabled="isTabDisabled('plot_pca')">
                                 <el-row
                                     v-bind:class="{
@@ -210,26 +228,6 @@
                                             <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                         </div>
                                     </el-col>
-                                    <!--
-                                    <el-col :span="12" v-if="plot_data.plot_pca_zoomed_png !== false">
-                                        <div v-if="plot_data.plot_pca_zoomed_png !== false" style="text-align: center">
-                                            <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                <div slot="content">
-                                                    <el-button type="success" round @click="downloadPlotImage('plot_pca_zoomed')">Download (.svg)</el-button>
-                                                </div>
-                                                <img
-                                                    id="analysis_images_pca_zoomed"
-                                                    class="animated fadeIn analysis_images"
-                                                    :src="'data:image/png;base64,' + plot_data.plot_pca_zoomed_png"
-                                                    fit="scale-down"
-                                                />
-                                            </el-tooltip>
-                                        </div>
-                                        <div class="plot-placeholder" v-else>
-                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                                        </div>
-                                    </el-col>
-                                    -->
                                 </el-row>
                             </el-tab-pane>
                             <el-tab-pane label="PCA Output" name="plot_output" :disabled="isTabDisabled('plot_pca')">
@@ -244,17 +242,6 @@
                                                 {{ data_summary.pca_summary }}
                                             </div>
                                         </div>
-                                        <!--
-                                        <el-table
-                                              :data="data_summary.pca_dataframe"
-                                              style="width: 100%">
-                                            <el-table-column v-for="column in data_summary.pca_dataframe_columns" 
-                                                             :key="column"
-                                                             :prop="column"
-                                                             :label="column">
-                                            </el-table-column>
-                                        </el-table>
-                                        -->
                                     </el-col>
                                 </el-row>
                             </el-tab-pane>
@@ -279,21 +266,21 @@
     </div>
 </template>
 <script>
-import { fetchEditingPcaAnalysisPlot, fetchEditingPcaAnalysisPlotZoomed, getPCAavailableColumns } from "@/api/plots";
+import { fetchEditingPcaAnalysisPlot, getPCAavailableColumns } from "@/api/plots";
 import { md5String } from "@/utils";
 import { debounce } from "@/utils/helpers";
 
 import Fuse from "fuse.js";
 
-import { createLasso } from "@/vendor/lasso.js";
-
 export default {
     name: "pcaAnalysisTab",
     data() {
         return {
+            fuseIndex: null,
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,
             loadingOptions: true,
+
             loadingPlot: false,
 
             activePCATabName: "summary_bartlett",
@@ -305,9 +292,11 @@ export default {
                 plot_pca: false,
                 plot_pca_png: false,
 
-                plot_pca_zoomed: false,
-                plot_pca_zoomed_png: false,
+                saveObjectHash: false,
             },
+
+            selectedFileDetailsDisplay: [],
+
             data_summary: {
                 pca_summary: false,
                 summary_bartlett: false,
@@ -321,10 +310,6 @@ export default {
             selectedFileDetailsDisplay: [],
 
             selectedOptions: {
-                columns_all: [],
-                columns_grouping: [],
-                columns_excluded_all: [],
-                columns_excluded_grouping: [],
                 pca_components_x: [],
                 pca_components_y: [],
             },
@@ -332,16 +317,9 @@ export default {
                 selectedColumns: [],
                 pcaComponentsDisplayX: [],
                 pcaComponentsDisplayY: [],
-                groupingVariable: [],
+                groupingVariable: null,
                 displayLoadings: true,
             },
-            fuseIndex: {
-                columns_all: null,
-                columns_grouping: null,
-                pca_components: null,
-            },
-            lasso: null,
-            selected_cordinates: null,
         };
     },
     computed: {
@@ -378,39 +356,21 @@ export default {
     activated() {
         console.log("activated: " + this.$options.name);
         this.isTabEnabled();
-        this.getAvailableColumns();
     },
     methods: {
-        getAvailableColumns() {
-            this.loadingPlot = true;
-            getPCAavailableColumns({
-                selectedFileID: this.selectedFiles[0].id,
-                settings: this.settingsForm,
-            })
-                .then((response) => {
-                    let respData = response.data.message;
-                    for (let respIndex in respData) {
-                        let respItem = respData[respIndex];
-                        this.selectedOptions[respIndex] = respItem;
-                        // Initialize new FUSE index
-                        if (respIndex !== "columns_excluded_all" || respIndex !== "columns_excluded_grouping") {
-                            this.initFuse(respItem, respIndex);
-                        }
-                    }
+        initFuse(searchItems) {
+            this.selectedFileDetailsDisplay = searchItems;
 
-                    this.loadingPlot = false;
-                })
-                .catch((error) => {
-                    console.log("Server error occurred");
-                    console.log(error);
-                    this.loadingPlot = false;
-                });
-        },
-        initFuse(searchItems, indexType) {
-            let mapping_keys = null;
-
-            if (indexType !== "pca_components") {
-                mapping_keys = [
+            this.fuseIndex = new Fuse(searchItems, {
+                shouldSort: true,
+                threshold: 0.4,
+                location: 0,
+                distance: 100,
+                maxPatternLength: 32,
+                minMatchCharLength: 0,
+                includeScore: false,
+                includeMatches: true,
+                keys: [
                     {
                         name: "original",
                         weight: 0.7,
@@ -419,46 +379,30 @@ export default {
                         name: "remapped",
                         weight: 0.3,
                     },
-                ];
-            }
-            if (typeof this.fuseIndex[indexType] !== "undefined") {
-                console.log("Initializing FUSE index: " + indexType);
-                console.log(searchItems);
-                this.fuseIndex[indexType] = new Fuse(searchItems, {
-                    keys: mapping_keys,
-                });
-            } else {
-                console.log("Unknown FUSE index: " + indexType);
-            }
+                ],
+            });
         },
-        querySearch(query, indexType) {
-            if (this.fuseIndex[indexType] !== null) {
-                console.log("Searching FUSE index: " + indexType);
-                console.log(query);
-                let items_found = [];
-                if (query.length > 1) {
-                    items_found = this.fuseIndex[indexType].search(query);
-                }
-                console.log(items_found);
-                if (items_found.length > 0) {
-                    this.selectedOptions[indexType] = items_found.map((x) => x.item);
-                } else {
-                    this.selectedOptions[indexType] = [];
-                }
-            } else {
-                console.log("FUSE index is null: " + indexType);
-            }
+        querySearch(query) {
+            const items_found = this.fuseIndex.search(query);
+            this.selectedFileDetailsDisplay = items_found.map((x) => x.item);
         },
         redrawImage() {
             if (this.tabEnabled === true) {
                 this.handleFetchCorrPlotImage();
             }
         },
+        downloadRawData() {
+            console.log(this.plot_data.saveObjectHash);
+        },
         isTabEnabled() {
-            if (this.selectedFileDetails.items.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
+            if (this.selectedFileDetails.columns.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
                 this.tabEnabled = true;
             } else {
                 this.tabEnabled = false;
+            }
+
+            if (this.tabEnabled === true && this.fuseIndex === null) {
+                this.initFuse(this.selectedFileDetails.columns);
             }
         },
         isTabDisabled(tabName) {
@@ -489,21 +433,22 @@ export default {
         },
         handleFetchCorrPlotImage() {
             this.loadingPlot = true;
-            // Clone objects as an simple object
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
-            // If no columns are selected select all columns
+            // If no columns are selected
             if (settingsForm.selectedColumns.length < 1) {
-                settingsForm.selectedColumns = this.selectedOptions.columns_all.map((x) => x.remapped);
+                settingsForm.selectedColumns = this.selectedFileDetails.columns
+                    .filter((x) => x.valid_numeric)
+                    .map((x) => x.remapped)
+                    .slice(0, 25);
+            } else {
+                settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped);
             }
-
             // Remove any grouping variable from selected columns
-            if (settingsForm.groupingVariable.length > 0) {
-                settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.groupingVariable.includes(x));
-            }
-
-            if (this.lasso !== null) {
-                this.lasso.destroy();
-                this.lasso = null;
+            if (settingsForm.groupingVariable !== null && typeof settingsForm.groupingVariable === "object") {
+                console.log("settingsForm.groupingVariable detected");
+                console.log(settingsForm.groupingVariable);
+                settingsForm.groupingVariable = settingsForm.groupingVariable.remapped;
+                settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => x !== settingsForm.groupingVariable);
             }
 
             fetchEditingPcaAnalysisPlot({
@@ -512,31 +457,40 @@ export default {
             })
                 .then((response) => {
                     let respData = response.data.message;
-                    let respDataDetails = response.data.details;
 
-                    this.data_summary.pca_dataframe = respDataDetails.pca_dataframe;
-                    this.data_summary.pca_dataframe_columns = Object.keys(respDataDetails.pca_dataframe[0]);
-
-                    console.log(this.data_summary.pca_dataframe_columns);
-
-                    this.data_summary.pca_summary = window.atob(respDataDetails.pca_summary);
-                    this.data_summary.summary_bartlett = window.atob(respDataDetails.summary_bartlett);
-                    this.data_summary.summary_kmo = window.atob(respDataDetails.summary_kmo);
-
-                    this.data_summary.panel_scales_y = respDataDetails.panel_scales_y;
-                    this.data_summary.panel_scales_x = respDataDetails.panel_scales_x;
-
-                    this.selectedOptions.pca_components_x = respDataDetails.pca_components;
-                    this.selectedOptions.pca_components_y = respDataDetails.pca_components;
+                    if (typeof response.data.details !== "undefined") {
+                        let respDataDetails = response.data.details;
+                        this.data_summary.pca_dataframe = respDataDetails.pca_dataframe;
+                        this.data_summary.pca_dataframe_columns = Object.keys(respDataDetails.pca_dataframe[0]);
+                        this.data_summary.pca_summary = window.atob(respDataDetails.pca_summary);
+                        this.data_summary.summary_bartlett = window.atob(respDataDetails.summary_bartlett);
+                        this.data_summary.summary_kmo = window.atob(respDataDetails.summary_kmo);
+                        this.selectedOptions.pca_components_x = respDataDetails.pca_components;
+                        this.selectedOptions.pca_components_y = respDataDetails.pca_components;
+                    } else {
+                        this.data_summary = {
+                            pca_summary: false,
+                            summary_bartlett: false,
+                            summary_kmo: false,
+                            pca_dataframe: false,
+                            pca_dataframe_columns: [],
+                        };
+                    }
 
                     // Update the image data.
                     for (let respIndex in respData) {
-                        this.plot_data[respIndex] = false;
-                        let respItem = respData[respIndex];
-                        if (respItem.length < 15) {
-                            this.plot_data[respIndex] = line_chart_404;
-                        } else {
-                            this.plot_data[respIndex] = encodeURIComponent(respItem);
+                        if (typeof this.plot_data[respIndex] !== "undefined") {
+                            this.plot_data[respIndex] = false;
+                            let respItem = respData[respIndex];
+                            if (respItem.length < 15 || typeof respItem == "undefined") {
+                                this.plot_data[respIndex] = "error";
+                                this.$message({
+                                    message: "There was error in generating plot: " + respIndex,
+                                    type: "error",
+                                });
+                            } else {
+                                this.plot_data[respIndex] = encodeURIComponent(respItem);
+                            }
                         }
                     }
                     this.loadingPlot = false;
@@ -547,101 +501,37 @@ export default {
                     this.loadingPlot = false;
                 });
         },
-        processCordinates(details) {
-            console.log("processing coordinates");
-            console.log(details);
+        resetVariables() {
+            this.fuseIndex = null;
 
-            let x_cord = details.cord.map((item) => item.x);
-            let y_cord = details.cord.map((item) => item.y);
-
-            let x_width = this.data_summary.panel_scales_x.reduce((a, b) => Math.abs(a) + Math.abs(b));
-            let y_width = this.data_summary.panel_scales_y.reduce((a, b) => Math.abs(a) + Math.abs(b));
-
-            console.log(x_cord);
-            console.log(y_cord);
-
-            // Original plot width
-            console.log(x_width);
-            console.log(y_width);
-
-            // Displayed plot width
-            console.log(details.display.width);
-            console.log(details.display.height);
-
-            // x_cord = x_cord.map(x => x * scale_factor)
-            // y_cord = y_cord.map(x => x * scale_factor)
-
-            //const display_width_x = Math.max(...nums) - Math.min(...nums);
-
-            return;
-        },
-        handleFetchCorrPlotImageZoomed() {
-            this.loadingPlot = true;
-
-            const cordinates = this.selected_cordinates.cord.map(({ x, y }) => x + "," + y).join(" ");
-            console.log(cordinates);
-            return;
-
-            fetchEditingPcaAnalysisPlotZoomed({
-                selectedFileID: this.selectedFiles[0].id,
-                settings: this.settingsForm,
-                selected_cordinates: cordinates,
-            })
-                .then((response) => {
-                    let respData = response.data.message;
-                    for (let respIndex in respData) {
-                        let respItem = respData[respIndex];
-                        if (respItem.length < 15) {
-                            this.plot_data[respIndex] = line_chart_404;
-                        } else {
-                            this.plot_data[respIndex] = encodeURIComponent(respItem);
-                        }
-                    }
-
-                    this.loadingPlot = false;
-                })
-                .catch((error) => {
-                    console.log("Server error occurred");
-                    console.log(error);
-                    this.loadingPlot = false;
-                });
-        },
-        handleTabClick(tab, event) {
-            console.log("Initializing new canvas object; ");
-            console.log(this.activePCATabName);
-            console.log(this.lasso);
-            if (this.activePCATabName === "plot_pca" && this.lasso === null) {
-                this.$nextTick(() => {
-                    // setTimeout(() => this.initCanvas("analysis_images_pca"), 1000);
-                });
-            }
-        },
-        initCanvas(imageID) {
-            this.lasso = createLasso({
-                element: document.getElementById(imageID),
-                radius: 10,
-                onComplete: (path) => {
-                    this.selected_cordinates = path;
-                },
-            });
+            this.data_summary = {
+                pca_summary: false,
+                summary_bartlett: false,
+                summary_kmo: false,
+                pca_dataframe: false,
+                pca_dataframe_columns: [],
+            };
+            this.plot_data = {
+                plot_scree: false,
+                plot_scree_png: false,
+                plot_pca: false,
+                plot_pca_png: false,
+                saveObjectHash: false,
+            };
         },
     },
     watch: {
         selectedFileDetails: function (newVal, oldVal) {
             console.log("File selected change detected " + this.$options.name);
-
-            if (newVal.items.length >= 1) {
+            if (newVal.columns.length >= 1) {
                 this.tabEnabled = true;
             } else {
                 this.tabEnabled = false;
             }
-            // Refresh column choices
+            this.resetVariables();
             if (this.tabEnabled === true) {
-                this.getAvailableColumns();
+                this.initFuse(newVal.columns);
             }
-        },
-        selected_cordinates: function (newVal, oldVal) {
-            this.processCordinates(newVal);
         },
         deep: true,
     },

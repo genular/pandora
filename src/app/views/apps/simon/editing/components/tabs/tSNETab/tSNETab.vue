@@ -47,6 +47,7 @@
                                 default-first-option
                                 reserve-keyword
                                 value-key="remapped"
+                                clearable
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -153,9 +154,20 @@
                             <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                         </el-form-item>
 
-                        <el-form-item>
-                            <el-button style="float: right" type="danger" round @click="redrawImage">Plot selection</el-button>
-                        </el-form-item>
+                        <el-row>
+                            <el-col :span="6" v-if="plot_data.saveObjectHash !== false">
+                                <el-form-item>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download raw object</el-button>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="plot_data.saveObjectHash !== false ? 6 : 6">
+                                <el-form-item>
+                                    <el-button type="danger" round @click="redrawImage" style="float: left">
+                                        {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
+                                    </el-button>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
                     </el-form>
                 </el-row>
                 <el-row v-for="(item, index) in reverseSelectedColumns" :key="item.remapped">
@@ -316,7 +328,7 @@ export default {
 
             settingsForm: {
                 selectedColumns: [],
-                groupingVariable: [],
+                groupingVariable: null,
                 preProcessedData: true,
                 fontSize: 12,
                 theme: "theme_bw",
@@ -330,6 +342,8 @@ export default {
 
                 tsne_cluster_plot: false,
                 tsne_cluster_plot_png: false,
+
+                saveObjectHash: false,
             },
         };
     },
@@ -370,13 +384,10 @@ export default {
     activated() {
         console.log("activated: " + this.$options.name);
         this.isTabEnabled();
-        this.getAvailableColumns();
     },
     methods: {
         downloadTable() {
-            const exportData = this.settingsOptions.availableColumns;
-            console.log(exportData);
-
+            const exportData = this.selectedFileDetails.columns;
             import("@/vendor/Export2Excel").then((excel) => {
                 const tHeader = ["Feature", "Remapped", "Unique values", "Numeric", "Zero variance", "10% Unique", "NA percentage"];
                 const filterVal = ["original", "remapped", "unique_count", "valid_numeric", "valid_zv", "valid_10p", "na_percentage"];
@@ -398,10 +409,14 @@ export default {
             );
         },
         isTabEnabled() {
-            if (this.selectedFileDetails.items.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
+            if (this.selectedFileDetails.columns.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
                 this.tabEnabled = true;
             } else {
                 this.tabEnabled = false;
+            }
+
+            if (this.tabEnabled === true && this.fuseIndex === null) {
+                this.initFuse(this.selectedFileDetails.columns);
             }
         },
         isTabDisabled(tabName) {
@@ -416,14 +431,17 @@ export default {
                 this.handleFetchOverViewImage();
             }
         },
+        downloadRawData() {
+            console.log(this.plot_data.saveObjectHash);
+        },
         handleFetchOverViewImage() {
             this.loadingPlot = true;
             // Clone objects as an simple object
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
             // If no columns are selected select all columns
             if (settingsForm.selectedColumns.length < 1) {
-                settingsForm.selectedColumns = this.settingsOptions.availableColumns.map((x) => x.remapped);
-                //settingsForm.selectedColumns = this.settingsOptions.availableColumns
+                settingsForm.selectedColumns = this.selectedFileDetails.columns.map((x) => x.remapped);
+                //settingsForm.selectedColumns = this.selectedFileDetails.columns
                 //   .filter((x) => x.valid_zv && x.valid_numeric && x.na_percentage === 0)
                 //    .map((x) => x.remapped)
                 //    .slice(0, 10);
@@ -432,9 +450,11 @@ export default {
             }
 
             // Remove any grouping variable from selected columns
-            if (settingsForm.groupingVariable.length > 0) {
-                settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.groupingVariable.includes(x));
+            if (settingsForm.groupingVariable !== null && typeof settingsForm.groupingVariable === "object") {
+                settingsForm.groupingVariable = settingsForm.groupingVariable.remapped;
+                settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => x !== settingsForm.groupingVariable);
             }
+
             fetchTsnePlot({
                 selectedFileID: this.selectedFiles[0].id,
                 settings: settingsForm,
@@ -453,27 +473,6 @@ export default {
                             }
                         }
                     }
-                    this.loadingPlot = false;
-                })
-                .catch((error) => {
-                    console.log("Server error occurred");
-                    console.log(error);
-                    this.loadingPlot = false;
-                });
-        },
-        getAvailableColumns() {
-            this.loadingPlot = true;
-
-            getOverViewAavailableColumns({
-                selectedFileID: this.selectedFiles[0].id,
-                settings: this.settingsForm,
-            })
-                .then((response) => {
-                    let respData = response.data.message;
-                    this.settingsOptions.availableColumns = respData.columns;
-
-                    this.initFuse(respData.columns);
-
                     this.loadingPlot = false;
                 })
                 .catch((error) => {
@@ -514,13 +513,10 @@ export default {
             if (typeof this.plot_data[imageType] === "undefined") {
                 return;
             }
-
             const svgImage = "data:image/svg+xml;base64," + this.plot_data[imageType];
-
             const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
                 type: "image/svg+xml;charset=utf-8",
             });
-
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
@@ -529,16 +525,32 @@ export default {
             downloadLink.click();
             document.body.removeChild(downloadLink);
         },
+        resetVariables() {
+            this.fuseIndex = null;
+            this.plot_data = {
+                tsne_plot: false,
+                tsne_plot_png: false,
+
+                tsne_cluster_plot: false,
+                tsne_cluster_plot_png: false,
+
+                saveObjectHash: false,
+            };
+        },
     },
 
     watch: {
         selectedFileDetails: function (newVal, oldVal) {
             console.log("File selected change detected " + this.$options.name);
-
-            if (newVal.items.length >= 1) {
+            if (newVal.columns.length >= 1) {
                 this.tabEnabled = true;
             } else {
                 this.tabEnabled = false;
+            }
+            this.resetVariables();
+
+            if (this.tabEnabled === true) {
+                this.initFuse(newVal.columns);
             }
         },
         deep: true,

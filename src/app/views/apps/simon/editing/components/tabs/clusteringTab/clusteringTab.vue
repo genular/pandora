@@ -532,7 +532,14 @@ export default {
                     this.loadingPlot = false;
                 });
         },
-        resetVariables() {},
+        resetVariables() {
+            this.fuseIndex = null;
+            this.plot_data = {
+                clustering_plot: false,
+                clustering_plot_png: false,
+                saveObjectHash: false,
+            };
+        },
     },
     watch: {
         selectedFileDetails: function (newVal, oldVal) {
