@@ -32,13 +32,15 @@
                                 "
                             >
                                 <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1">
-                                    <span style="float: left">
-                                        {{ item.original }}
-                                    </span>
-                                    <span style="float: right; color: #8492a6; font-size: 13px">
-                                        {{ item.valid_10p === 1 ? "*" : "" }}
-                                        {{ item.unique_count }}
-                                    </span>
+                                    <el-row style="max-width: 250px">
+                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                            {{ item.original }}
+                                        </el-col>
+                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                            {{ item.valid_10p === 1 ? "*" : "" }}
+                                            {{ item.unique_count }}
+                                        </el-col>
+                                    </el-row>
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -65,13 +67,15 @@
                                     :value="item"
                                     :disabled="item.valid_numeric !== 1"
                                 >
-                                    <span style="float: left">
-                                        {{ item.original }}
-                                    </span>
-                                    <span style="float: right; color: #8492a6; font-size: 13px">
-                                        {{ item.valid_10p === 1 ? "*" : "" }}
-                                        {{ item.unique_count }}
-                                    </span>
+                                    <el-row style="max-width: 250px">
+                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                            {{ item.original }}
+                                        </el-col>
+                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                            {{ item.valid_10p === 1 ? "*" : "" }}
+                                            {{ item.unique_count }}
+                                        </el-col>
+                                    </el-row>
                                 </el-option>
                             </el-select>
                         </el-form-item>

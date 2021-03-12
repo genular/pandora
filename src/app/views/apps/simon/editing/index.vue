@@ -211,4 +211,12 @@ export default {
     opacity: 0.25;
     cursor: no-drop !important;
 }
+
+.el-select__tags-text {
+    display: inline-flex;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 125px;
+    white-space: nowrap;
+}
 </style>

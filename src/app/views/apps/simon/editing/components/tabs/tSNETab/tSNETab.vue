@@ -22,13 +22,15 @@
                                 "
                             >
                                 <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
-                                    <span style="float: left">
-                                        {{ item.original }}
-                                    </span>
-                                    <span style="float: right; color: #8492a6; font-size: 13px">
-                                        {{ item.valid_10p === 1 ? "*" : "" }}
-                                        {{ item.unique_count }}
-                                    </span>
+                                    <el-row style="max-width: 250px">
+                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                            {{ item.original }}
+                                        </el-col>
+                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                            {{ item.valid_10p === 1 ? "*" : "" }}
+                                            {{ item.unique_count }}
+                                        </el-col>
+                                    </el-row>
                                 </el-option>
                             </el-select>
                             <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
@@ -62,13 +64,15 @@
                                     :value="item.remapped"
                                     :disabled="item.valid_10p !== 1"
                                 >
-                                    <span style="float: left">
-                                        {{ item.original }}
-                                    </span>
-                                    <span style="float: right; color: #8492a6; font-size: 13px">
-                                        {{ item.valid_10p === 1 ? "*" : "" }}
-                                        {{ item.unique_count }}
-                                    </span>
+                                    <el-row style="max-width: 250px">
+                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                            {{ item.original }}
+                                        </el-col>
+                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                            {{ item.valid_10p === 1 ? "*" : "" }}
+                                            {{ item.unique_count }}
+                                        </el-col>
+                                    </el-row>
                                 </el-option>
                             </el-select>
                             <el-tooltip placement="top" style="padding-left: 5px">
@@ -285,6 +289,33 @@
                             </el-col>
                         </el-row>
                     </el-tab-pane>
+                    <el-tab-pane label="Clustered heatmap" name="tsne_cluster_heatmap_plot_png" :disabled="isTabDisabled('tsne_cluster_heatmap_plot')">
+                        <el-row
+                            v-bind:class="{
+                                is_tab_active: isTabDisabled('tsne_cluster_heatmap_plot'),
+                            }"
+                        >
+                            <el-col :span="24" v-if="plot_data.tsne_cluster_heatmap_plot_png !== false">
+                                <span>Clustered t-SNE plot using: {{ settingsForm.clusterType }}</span>
+                            </el-col>
+
+                            <el-col :span="24" v-if="plot_data.tsne_cluster_heatmap_plot_png !== false">
+                                <div>
+                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                        <div slot="content">
+                                            <el-button type="success" round @click="downloadPlotImage('tsne_cluster_heatmap_plot')">Download (.svg)</el-button>
+                                        </div>
+                                        <img
+                                            id="analysis_images_tsne_clustered_plot"
+                                            class="animated fadeIn analysis_images"
+                                            :src="'data:image/png;base64,' + plot_data.tsne_cluster_heatmap_plot_png"
+                                            fit="scale-down"
+                                        />
+                                    </el-tooltip>
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </el-tab-pane>
                 </el-tabs>
             </el-col>
         </el-row>
@@ -342,6 +373,9 @@ export default {
 
                 tsne_cluster_plot: false,
                 tsne_cluster_plot_png: false,
+
+                tsne_cluster_heatmap_plot: false,
+                tsne_cluster_heatmap_plot_png: false,
 
                 saveObjectHash: false,
             },
@@ -533,6 +567,9 @@ export default {
 
                 tsne_cluster_plot: false,
                 tsne_cluster_plot_png: false,
+
+                tsne_cluster_heatmap_plot: false,
+                tsne_cluster_heatmap_plot_png: false,
 
                 saveObjectHash: false,
             };
