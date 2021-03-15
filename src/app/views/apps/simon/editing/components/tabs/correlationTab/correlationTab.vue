@@ -1,22 +1,12 @@
 <template>
-    <div class="correlationTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
+    <div class="editing-correlation-tab" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row v-if="tabEnabled">
             <el-row type="flex" align="top">
-                <el-col :span="24" style="text-align: right">
-                    <el-button
-                        :title="$t('views.apps.simon.exploration.components.tabs.correlationTab.buttons.download')"
-                        type="success"
-                        icon="el-icon-download"
-                        :disabled="plot_data.correlation_plot_png === false || loadingPlot"
-                        @click="downloadPlotImage('correlation_plot')"
-                    ></el-button>
-                </el-col>
-            </el-row>
-            <el-row type="flex" align="top">
-                <el-col :span="9">
-                    <el-form class="corrolation-form" ref="settingsForm" :model="settingsForm" label-width="200px">
+                <el-col :span="4">
+                    <el-form ref="settingsForm" :model="settingsForm">
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.title')">
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.selectedColumns"
                                 multiple
                                 filterable
@@ -24,6 +14,7 @@
                                 default-first-option
                                 reserve-keyword
                                 value-key="remapped"
+                                clearable
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -43,10 +34,27 @@
                                     </el-row>
                                 </el-option>
                             </el-select>
+                            <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">Please select columns you wish to plot. If nothing is selected we will take all valid numerical columns.</div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item label="First (n) columns">
+                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="10000"></el-input-number>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    If you have not selected any Columns we will take first n columns from your dataset, based on this value, that have number of unique values less
+                                    than 10%.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
                         </el-form-item>
 
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.correlation_method.label')">
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.correlation_method"
                                 :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.correlation_method.placeholder')"
                             >
@@ -61,7 +69,11 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.na_action.label')">
-                            <el-select v-model="settingsForm.na_action" :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.na_action.placeholder')">
+                            <el-select
+                                style="float: right"
+                                v-model="settingsForm.na_action"
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.na_action.placeholder')"
+                            >
                                 <el-option
                                     v-for="item in settingOptions.na_action"
                                     :key="item.id"
@@ -78,6 +90,7 @@
                             :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method.label')"
                         >
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.plot_method"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method.placeholder')"
                             >
@@ -97,6 +110,7 @@
                             :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.lower_method.label')"
                         >
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.plot_method_mixed.lower_method"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.lower_method.placeholder')"
                             >
@@ -116,6 +130,7 @@
                             :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.upper_method.label')"
                         >
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.plot_method_mixed.upper_method"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_method_mixed.upper_method.placeholder')"
                             >
@@ -131,7 +146,11 @@
                         </el-form-item>
 
                         <el-form-item v-if="settingsForm.plot_method !== 'mixed'" :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_type.label')">
-                            <el-select v-model="settingsForm.plot_type" :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_type.placeholder')">
+                            <el-select
+                                style="float: right"
+                                v-model="settingsForm.plot_type"
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.plot_type.placeholder')"
+                            >
                                 <el-option
                                     v-for="item in settingOptions.plot_type"
                                     :key="item.id"
@@ -145,6 +164,7 @@
 
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation.label')">
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.reorder_correlation"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation.placeholder')"
                             >
@@ -163,6 +183,7 @@
                             :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation_hclust.method.label')"
                         >
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.reorder_correlation_hclust.method"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation_hclust.method.label')"
                             >
@@ -180,32 +201,32 @@
                             v-if="settingsForm.reorder_correlation === 'hclust'"
                             :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.reorder_correlation_hclust.number_of_rectangles')"
                         >
-                            <el-input-number v-model="settingsForm.reorder_correlation_hclust.number_of_rectangles" :min="1"></el-input-number>
+                            <el-input-number style="float: right" v-model="settingsForm.reorder_correlation_hclust.number_of_rectangles" :min="1"></el-input-number>
                         </el-form-item>
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.text_size')">
                             <el-input-number
+                                style="float: right"
                                 v-model="settingsForm.text_size.value"
                                 :value="settingsForm.text_size.value"
                                 :min="settingOptions.text_size.min"
                                 :max="settingOptions.text_size.max"
                                 :step="settingOptions.text_size.step"
-                                controls-position="right"
                             ></el-input-number>
                         </el-form-item>
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.significance.enable')">
-                            <el-checkbox v-model="settingsForm.significance.enable"></el-checkbox>
+                            <el-checkbox style="float: right" v-model="settingsForm.significance.enable"></el-checkbox>
                         </el-form-item>
                         <el-form-item
                             :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.significance.level')"
                             v-if="settingsForm.significance.enable === true"
                         >
                             <el-input-number
+                                style="float: right"
                                 v-model="settingsForm.significance.level.value"
                                 :value="settingsForm.significance.level.value"
                                 :min="settingOptions.significance.level.min"
                                 :max="settingOptions.significance.level.max"
                                 :step="settingOptions.significance.level.step"
-                                controls-position="right"
                             ></el-input-number>
                         </el-form-item>
                         <el-form-item
@@ -213,6 +234,7 @@
                             v-if="settingsForm.significance.enable === true"
                         >
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.significance.insignificant_action"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.significance.insignificant_action.placeholder')"
                             >
@@ -235,11 +257,11 @@
                             v-if="settingsForm.confidence.enable === true"
                         >
                             <el-input-number
+                                style="float: right"
                                 v-model="settingsForm.confidence.level.value"
                                 :min="settingOptions.confidence.level.min"
                                 :max="settingOptions.confidence.level.max"
                                 :step="settingOptions.confidence.level.step"
-                                controls-position="right"
                             ></el-input-number>
                         </el-form-item>
                         <el-form-item
@@ -247,6 +269,7 @@
                             v-if="settingsForm.confidence.enable === true"
                         >
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.confidence.ploting_method"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.confidence.ploting_method.placeholder')"
                             >
@@ -262,14 +285,25 @@
                         </el-form-item>
 
                         <el-row>
-                            <el-col :span="6" v-if="plot_data.saveObjectHash !== false">
+                            <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download raw object</el-button>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download Rdata object</el-button>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            Here you can download R data object with all data that was used to make to analysis.
+                                            <br />
+                                            R object can be loaded in R/RStudio using: "load('/path/to/the/file')" command.
+                                            <br />
+                                            This can be useful if you wish to change the analysis, modify plot colors etc.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
                                 </el-form-item>
                             </el-col>
-                            <el-col :span="plot_data.saveObjectHash !== false ? 6 : 6">
+
+                            <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                                 <el-form-item>
-                                    <el-button type="danger" round @click="redrawImage" style="float: left">
+                                    <el-button type="danger" round @click="redrawImage" style="float: right">
                                         {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
                                     </el-button>
                                 </el-form-item>
@@ -277,19 +311,23 @@
                         </el-row>
                     </el-form>
                 </el-col>
-                <el-col :span="15" class="correlation-svg-container" style="text-align: center">
-                    <!-- Plot placeholder -->
-                    <div v-if="plot_data.correlation_plot_png !== false" style="text-align: center">
-                        <img
-                            id="analysis_images_correlation_plot"
-                            class="animated fadeIn analysis_images"
-                            :src="'data:image/png;base64,' + plot_data.correlation_plot_png"
-                            fit="scale-down"
-                        />
-                    </div>
-                    <div v-else class="plot-placeholder">
+                <el-col :span="19" :offset="1">
+                    <el-row v-if="plot_data.correlation_plot_png !== false">
+                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                            <div slot="content">
+                                <el-button type="success" round @click="downloadPlotImage('correlation_plot')">Download (.svg)</el-button>
+                            </div>
+                            <img
+                                id="analysis_images_clustering_plot"
+                                class="animated fadeIn analysis_images"
+                                :src="'data:image/png;base64,' + plot_data.correlation_plot_png"
+                                fit="scale-down"
+                            />
+                        </el-tooltip>
+                    </el-row>
+                    <el-row else class="plot-placeholder">
                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                    </div>
+                    </el-row>
                 </el-col>
             </el-row>
         </el-row>
@@ -315,8 +353,13 @@ import { debounce } from "@/utils/helpers";
 
 import Fuse from "fuse.js";
 
+import waves from "@/directive/waves";
+
 export default {
     name: "correlationTab",
+    directives: {
+        waves,
+    },
     data() {
         return {
             fuseIndex: null,
@@ -382,6 +425,7 @@ export default {
             },
             settingsForm: {
                 selectedColumns: [],
+                cutOffColumnSize: 100,
                 correlation_method: "pearson",
                 na_action: "everything",
                 // Only if confidence.enable is false
@@ -462,6 +506,25 @@ export default {
         this.isTabEnabled();
     },
     methods: {
+        downloadTable() {
+            const exportData = this.selectedFileDetails.columns;
+            import("@/vendor/Export2Excel").then((excel) => {
+                const tHeader = ["Feature", "Remapped", "Unique values", "Numeric", "Zero variance", "10% Unique", "NA percentage"];
+                const filterVal = ["original", "remapped", "unique_count", "valid_numeric", "valid_zv", "valid_10p", "na_percentage"];
+                excel.export_json_to_excel(tHeader, this.formatJson(filterVal, exportData), "column_info");
+            });
+        },
+        formatJson(filterVal, jsonData) {
+            return jsonData.map((v) =>
+                filterVal.map((j) => {
+                    if (j === "submitted") {
+                        return parseTime(v[j]);
+                    } else {
+                        return v[j];
+                    }
+                })
+            );
+        },
         initFuse(searchItems) {
             this.selectedFileDetailsDisplay = searchItems;
 
@@ -496,7 +559,8 @@ export default {
             }
         },
         downloadRawData() {
-            console.log(this.plot_data.saveObjectHash);
+            const downloadLink = this.$store.getters.user_settings_server_address_plots + "/plots/general/download-saved-object?objectHash=" + this.plot_data.saveObjectHash;
+            window.open(downloadLink, "_blank");
         },
         isTabEnabled() {
             if (this.selectedFileDetails.columns.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
@@ -513,13 +577,10 @@ export default {
             if (typeof this.plot_data[imageType] === "undefined") {
                 return;
             }
-
             const svgImage = "data:image/svg+xml;base64," + this.plot_data[imageType];
-
             const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
                 type: "image/svg+xml;charset=utf-8",
             });
-
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
@@ -538,7 +599,7 @@ export default {
                 settingsForm.selectedColumns = this.selectedFileDetails.columns
                     .filter((x) => x.valid_numeric)
                     .map((x) => x.remapped)
-                    .slice(0, 25);
+                    .slice(0, settingsForm.cutOffColumnSize);
             } else {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped);
             }
@@ -552,7 +613,7 @@ export default {
                             this.plot_data[respIndex] = false;
                             let respItem = respData[respIndex];
                             if (respItem.length < 15 || typeof respItem == "undefined") {
-                                this.plot_data[respIndex] = "error";
+                                this.plot_data[respIndex] = false;
                                 this.$message({
                                     message: "There was error in generating plot: " + respIndex,
                                     type: "error",
@@ -596,14 +657,4 @@ export default {
     },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss">
-.corrolation-form {
-    .el-form-item {
-        margin-bottom: 5px;
-        label {
-            color: #333333;
-            font-weight: 500;
-        }
-    }
-}
-</style>
+<style rel="stylesheet/scss" lang="scss"></style>

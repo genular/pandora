@@ -1,9 +1,9 @@
 <template>
-    <div class="tSNETab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
+    <div class="editing-tsne-tab" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="top">
             <el-col :span="4">
                 <el-row>
-                    <el-form class="tSNETab-form" ref="settingsForm" :model="settingsForm">
+                    <el-form ref="settingsForm" :model="settingsForm">
                         <el-form-item label="Columns">
                             <el-select
                                 style="float: right"
@@ -14,6 +14,7 @@
                                 default-first-option
                                 reserve-keyword
                                 value-key="remapped"
+                                clearable
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -35,7 +36,43 @@
                             </el-select>
                             <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                             <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">Please select columns you wish to plot</div>
+                                <div slot="content">Please select columns you wish to analyze and plot. Leaving this empty will take all columns except excluded ones.</div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item label="Exclude Columns">
+                            <el-select
+                                style="float: right"
+                                v-model="settingsForm.excludedColumns"
+                                multiple
+                                filterable
+                                remote
+                                default-first-option
+                                reserve-keyword
+                                value-key="remapped"
+                                clearable
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :remote-method="
+                                    (userInput) => {
+                                        querySearch(userInput);
+                                    }
+                                "
+                            >
+                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                                    <el-row style="max-width: 250px">
+                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                            {{ item.original }}
+                                        </el-col>
+                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                            {{ item.valid_10p === 1 ? "*" : "" }}
+                                            {{ item.unique_count }}
+                                        </el-col>
+                                    </el-row>
+                                </el-option>
+                            </el-select>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">Please select any columns you wish to exclude from analysis.</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
@@ -76,7 +113,10 @@
                                 </el-option>
                             </el-select>
                             <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">Please select categorical column to "group by" t-SNE plot</div>
+                                <div slot="content">
+                                    Please select categorical column to "group by" t-SNE plot. Grouping variable will be excluded from t-SNE analysis and only t-SNE results will be
+                                    colored by it.
+                                </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
@@ -159,14 +199,25 @@
                         </el-form-item>
 
                         <el-row>
-                            <el-col :span="6" v-if="plot_data.saveObjectHash !== false">
+                            <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download raw object</el-button>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download Rdata object</el-button>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            Here you can download R data object with all data that was used to make to analysis.
+                                            <br />
+                                            R object can be loaded in R/RStudio using: "load('/path/to/the/file')" command.
+                                            <br />
+                                            This can be useful if you wish to change the analysis, modify plot colors etc.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
                                 </el-form-item>
                             </el-col>
-                            <el-col :span="plot_data.saveObjectHash !== false ? 6 : 6">
+
+                            <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                                 <el-form-item>
-                                    <el-button type="danger" round @click="redrawImage" style="float: left">
+                                    <el-button type="danger" round @click="redrawImage" style="float: right">
                                         {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
                                     </el-button>
                                 </el-form-item>
@@ -236,29 +287,31 @@
                                 is_tab_active: isTabDisabled('tsne_plot'),
                             }"
                         >
-                            <el-col :span="24" v-if="plot_data.tsne_plot_png !== false">
-                                <span>
-                                    t-distributed stochastic neighbor embedding (t-SNE) is a statistical method for visualizing high-dimensional data by giving each datapoint a
-                                    location in a two or three-dimensional map.
-                                </span>
+                            <el-col v-if="plot_data.tsne_plot_png !== false">
+                                <el-row>
+                                    <el-col :span="24">
+                                        <span>
+                                            t-distributed stochastic neighbor embedding (t-SNE) is a statistical method for visualizing high-dimensional data by giving each
+                                            datapoint a location in a two or three-dimensional map.
+                                        </span>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <div slot="content">
+                                                <el-button type="success" round @click="downloadPlotImage('tsne_plot')">Download (.svg)</el-button>
+                                            </div>
+                                            <img
+                                                id="analysis_images_tsne_plot"
+                                                class="animated fadeIn analysis_images"
+                                                :src="'data:image/png;base64,' + plot_data.tsne_plot_png"
+                                                fit="scale-down"
+                                            />
+                                        </el-tooltip>
+                                    </el-col>
+                                </el-row>
                             </el-col>
-                            <el-col :span="24" v-if="plot_data.tsne_plot_png !== false">
-                                <div v-if="plot_data.tsne_plot_png !== false">
-                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                        <div slot="content">
-                                            <el-button type="success" round @click="downloadPlotImage('tsne_plot')">Download (.svg)</el-button>
-                                        </div>
-                                        <img
-                                            id="analysis_images_tsne_plot"
-                                            class="animated fadeIn analysis_images"
-                                            :src="'data:image/png;base64,' + plot_data.tsne_plot_png"
-                                            fit="scale-down"
-                                        />
-                                    </el-tooltip>
-                                </div>
-                                <div class="plot-placeholder" v-else>
-                                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                                </div>
+                            <el-col else class="plot-placeholder">
+                                <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                             </el-col>
                         </el-row>
                     </el-tab-pane>
@@ -268,24 +321,28 @@
                                 is_tab_active: isTabDisabled('tsne_cluster_plot'),
                             }"
                         >
-                            <el-col :span="24" v-if="plot_data.tsne_cluster_plot_png !== false">
-                                <span>Clustered t-SNE plot using: {{ settingsForm.clusterType }}</span>
+                            <el-col v-if="plot_data.tsne_plot_png !== false">
+                                <el-row>
+                                    <el-col :span="24">
+                                        <span>Clustered t-SNE plot using: {{ settingsForm.clusterType }}</span>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <div slot="content">
+                                                <el-button type="success" round @click="downloadPlotImage('tsne_cluster_plot')">Download (.svg)</el-button>
+                                            </div>
+                                            <img
+                                                id="analysis_images_tsne_clustered_plot"
+                                                class="animated fadeIn analysis_images"
+                                                :src="'data:image/png;base64,' + plot_data.tsne_cluster_plot_png"
+                                                fit="scale-down"
+                                            />
+                                        </el-tooltip>
+                                    </el-col>
+                                </el-row>
                             </el-col>
-
-                            <el-col :span="24" v-if="plot_data.tsne_cluster_plot_png !== false">
-                                <div>
-                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                        <div slot="content">
-                                            <el-button type="success" round @click="downloadPlotImage('tsne_cluster_plot')">Download (.svg)</el-button>
-                                        </div>
-                                        <img
-                                            id="analysis_images_tsne_clustered_plot"
-                                            class="animated fadeIn analysis_images"
-                                            :src="'data:image/png;base64,' + plot_data.tsne_cluster_plot_png"
-                                            fit="scale-down"
-                                        />
-                                    </el-tooltip>
-                                </div>
+                            <el-col else class="plot-placeholder">
+                                <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                             </el-col>
                         </el-row>
                     </el-tab-pane>
@@ -359,6 +416,7 @@ export default {
 
             settingsForm: {
                 selectedColumns: [],
+                excludedColumns: [],
                 groupingVariable: null,
                 preProcessedData: true,
                 fontSize: 12,
@@ -466,7 +524,8 @@ export default {
             }
         },
         downloadRawData() {
-            console.log(this.plot_data.saveObjectHash);
+            const downloadLink = this.$store.getters.user_settings_server_address_plots + "/plots/general/download-saved-object?objectHash=" + this.plot_data.saveObjectHash;
+            window.open(downloadLink, "_blank");
         },
         handleFetchOverViewImage() {
             this.loadingPlot = true;
@@ -475,18 +534,23 @@ export default {
             // If no columns are selected select all columns
             if (settingsForm.selectedColumns.length < 1) {
                 settingsForm.selectedColumns = this.selectedFileDetails.columns.map((x) => x.remapped);
-                //settingsForm.selectedColumns = this.selectedFileDetails.columns
-                //   .filter((x) => x.valid_zv && x.valid_numeric && x.na_percentage === 0)
-                //    .map((x) => x.remapped)
-                //    .slice(0, 10);
             } else {
                 settingsForm.selectedColumns = this.settingsForm.selectedColumns.map((x) => x.remapped);
+            }
+
+            // Remove any excluded columns from selected columns
+            if (settingsForm.excludedColumns !== null && typeof settingsForm.excludedColumns === "object") {
+                settingsForm.excludedColumns = this.settingsForm.excludedColumns.map((x) => x.remapped);
+                settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.excludedColumns.includes(x));
             }
 
             // Remove any grouping variable from selected columns
             if (settingsForm.groupingVariable !== null && typeof settingsForm.groupingVariable === "object") {
                 settingsForm.groupingVariable = settingsForm.groupingVariable.remapped;
+                // Remove Grouping variable from selected columns
                 settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => x !== settingsForm.groupingVariable);
+                // Remove Grouping variable from excluded columns
+                settingsForm.excludedColumns = settingsForm.excludedColumns.filter((x) => x !== settingsForm.groupingVariable);
             }
 
             fetchTsnePlot({
@@ -501,7 +565,7 @@ export default {
                             this.plot_data[respIndex] = false;
                             let respItem = respData[respIndex];
                             if (respItem.length < 15) {
-                                this.plot_data[respIndex] = line_chart_404;
+                                this.plot_data[respIndex] = false;
                             } else {
                                 this.plot_data[respIndex] = encodeURIComponent(respItem);
                             }

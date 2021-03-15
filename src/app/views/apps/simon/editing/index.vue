@@ -206,6 +206,12 @@ export default {
 .tab-container {
     min-height: 500px;
     height: 100%;
+
+    .el-form-item--small .el-form-item__label {
+        line-height: 32px;
+        font-weight: normal;
+        color: #413053;
+    }
 }
 .is-disabled {
     opacity: 0.25;
@@ -218,5 +224,71 @@ export default {
     overflow: hidden;
     max-width: 125px;
     white-space: nowrap;
+}
+
+.el-tooltip__popper.is-light[x-placement^="top"] .popper__arrow {
+    border-top-color: transparent !important;
+    border: 0 !important;
+}
+
+.el-tooltip__popper.is-light[x-placement^="top"] .popper__arrow:after {
+    border-top-color: transparent !important;
+    border: 0 !important;
+}
+
+.download_tooltip {
+    background: none !important;
+    border: none !important;
+    border-top-color: transparent !important;
+}
+.plot-placeholder {
+    text-align: center;
+    height: 100%;
+    font-size: 256px;
+    opacity: 0.2;
+
+    i {
+        margin: 0 auto;
+        margin-top: 50px;
+    }
+}
+
+.is_tab_active {
+    opacity: 0.1;
+}
+.code-output {
+    max-height: 1000px;
+    font-size: 12px;
+    overflow: auto;
+    margin-top: 15px;
+    text-align: left;
+
+    .highlight_code {
+        font-family: monospace;
+        white-space: pre;
+        background-color: #20262e;
+        color: #afff00;
+        border-radius: 15px;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .code-header {
+        font-size: 16px;
+        padding-bottom: 15px;
+    }
+}
+
+.box-column-item {
+    margin-top: 10px;
+
+    .box-column-item-text {
+        font-size: 14px;
+        padding-top: 5px;
+
+        .box-column-item-details {
+            float: right;
+        }
+    }
 }
 </style>

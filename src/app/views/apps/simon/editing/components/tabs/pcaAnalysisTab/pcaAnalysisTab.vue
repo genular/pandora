@@ -1,9 +1,9 @@
 <template>
-    <div class="pcaAnalysisTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
+    <div class="editing-pca-tab" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row v-if="tabEnabled">
             <el-row type="flex" align="top">
                 <el-col :span="4">
-                    <el-form class="corrolation-form" ref="settingsForm" :model="settingsForm">
+                    <el-form ref="settingsForm" :model="settingsForm">
                         <el-form-item label="Columns:">
                             <el-select
                                 style="float: right"
@@ -14,6 +14,7 @@
                                 default-first-option
                                 reserve-keyword
                                 value-key="remapped"
+                                clearable
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -35,9 +36,55 @@
                             </el-select>
                             <el-tooltip placement="top">
                                 <div slot="content">
+                                    Please select columns you wish to analyze and plot. Leaving this empty will take all valid numerical columns except excluded ones.
+                                    <br />
                                     Rows that contain one or more NAs will be excluded from the PCA. Variables with zero variance have been automatically removed because they're
                                     not useful in a PCA.
                                 </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item label="First (n) columns">
+                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="10000"></el-input-number>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">If you have not selected any columns we will take first n columns from your dataset, based on this value.</div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item label="Exclude Columns">
+                            <el-select
+                                style="float: right"
+                                v-model="settingsForm.excludedColumns"
+                                multiple
+                                filterable
+                                remote
+                                default-first-option
+                                reserve-keyword
+                                value-key="remapped"
+                                clearable
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :remote-method="
+                                    (userInput) => {
+                                        querySearch(userInput);
+                                    }
+                                "
+                            >
+                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                                    <el-row style="max-width: 250px">
+                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                            {{ item.original }}
+                                        </el-col>
+                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                            {{ item.valid_10p === 1 ? "*" : "" }}
+                                            {{ item.unique_count }}
+                                        </el-col>
+                                    </el-row>
+                                </el-option>
+                            </el-select>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">Please select any columns you wish to exclude from analysis.</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
@@ -73,6 +120,10 @@
                             </el-select>
                             <el-tooltip placement="top">
                                 <div slot="content">
+                                    Grouping variables are not taken in consideration when calculation PCA. Preprocessing is also not applied to them.
+                                    <br />
+                                    They are used only for plotting and displaying PCA results.
+                                    <br />
                                     Only variables where the number of unique values is less than 10% of the total number of observations are shown here (because seeing groups with
                                     1-2 observations is usually not very useful).
                                 </div>
@@ -125,14 +176,25 @@
                         </el-form-item>
 
                         <el-row>
-                            <el-col :span="6" v-if="plot_data.saveObjectHash !== false">
+                            <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download raw object</el-button>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download Rdata object</el-button>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            Here you can download R data object with all data that was used to make to analysis.
+                                            <br />
+                                            R object can be loaded in R/RStudio using: "load('/path/to/the/file')" command.
+                                            <br />
+                                            This can be useful if you wish to change the analysis, modify plot colors etc.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
                                 </el-form-item>
                             </el-col>
-                            <el-col :span="plot_data.saveObjectHash !== false ? 6 : 6">
+
+                            <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                                 <el-form-item>
-                                    <el-button type="danger" round @click="redrawImage" style="float: left">
+                                    <el-button type="danger" round @click="redrawImage" style="float: right">
                                         {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
                                     </el-button>
                                 </el-form-item>
@@ -162,7 +224,6 @@
                                                 {{ data_summary.summary_bartlett }}
                                             </div>
                                         </div>
-
                                         <div class="code-output">
                                             <div class="code-header">
                                                 Here is the output of the Kaiser-Meyer-Olkin (KMO) index test. The overall measure varies between 0 and 1, and values closer to 1
@@ -173,6 +234,9 @@
                                             </div>
                                         </div>
                                     </el-col>
+                                    <el-col else class="plot-placeholder">
+                                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                    </el-col>
                                 </el-row>
                             </el-tab-pane>
                             <el-tab-pane label="Plot Scree" name="plot_scree" :disabled="isTabDisabled('plot_pca')">
@@ -181,30 +245,32 @@
                                         is_tab_active: isTabDisabled('plot_pca'),
                                     }"
                                 >
-                                    <el-col :span="24" v-if="plot_data.plot_scree_png !== false">
-                                        <span>
-                                            A Scree Plot is a simple line segment plot that shows the eigenvalues for each individual PC. When the eigenvalues drop dramatically in
-                                            size, an additional factor would add relatively little to the information already extracted. Cumulative variance is explained by each PC
-                                            (in %)
-                                        </span>
+                                    <el-col v-if="plot_data.plot_scree_png !== false">
+                                        <el-row>
+                                            <el-col :span="24">
+                                                <span>
+                                                    A Scree Plot is a simple line segment plot that shows the eigenvalues for each individual PC. When the eigenvalues drop
+                                                    dramatically in size, an additional factor would add relatively little to the information already extracted. Cumulative variance
+                                                    is explained by each PC (in %)
+                                                </span>
+                                            </el-col>
+                                            <el-col :span="24">
+                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                    <div slot="content">
+                                                        <el-button type="success" round @click="downloadPlotImage('plot_scree')">Download (.svg)</el-button>
+                                                    </div>
+                                                    <img
+                                                        id="analysis_images_scree"
+                                                        class="animated fadeIn"
+                                                        :src="'data:image/png;base64,' + plot_data.plot_scree_png"
+                                                        fit="scale-down"
+                                                    />
+                                                </el-tooltip>
+                                            </el-col>
+                                        </el-row>
                                     </el-col>
-                                    <el-col :span="24" v-if="plot_data.plot_scree_png !== false">
-                                        <div v-if="plot_data.plot_scree_png !== false">
-                                            <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                <div slot="content">
-                                                    <el-button type="success" round @click="downloadPlotImage('plot_scree')">Download (.svg)</el-button>
-                                                </div>
-                                                <img
-                                                    id="analysis_images_scree"
-                                                    class="animated fadeIn"
-                                                    :src="'data:image/png;base64,' + plot_data.plot_scree_png"
-                                                    fit="scale-down"
-                                                />
-                                            </el-tooltip>
-                                        </div>
-                                        <div class="plot-placeholder" v-else>
-                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                                        </div>
+                                    <el-col else class="plot-placeholder">
+                                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                     </el-col>
                                 </el-row>
                             </el-tab-pane>
@@ -214,23 +280,25 @@
                                         is_tab_active: isTabDisabled('plot_pca'),
                                     }"
                                 >
-                                    <el-col :span="24" v-if="plot_data.plot_pca_png !== false">
-                                        <div v-if="plot_data.plot_pca_png !== false" style="text-align: center">
-                                            <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                <div slot="content">
-                                                    <el-button type="success" round @click="downloadPlotImage('plot_pca')">Download (.svg)</el-button>
-                                                </div>
-                                                <img
-                                                    id="analysis_images_pca"
-                                                    class="animated fadeIn analysis_images"
-                                                    :src="'data:image/png;base64,' + plot_data.plot_pca_png"
-                                                    fit="scale-down"
-                                                />
-                                            </el-tooltip>
-                                        </div>
-                                        <div class="plot-placeholder" v-else>
-                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                                        </div>
+                                    <el-col v-if="plot_data.plot_pca_png !== false">
+                                        <el-row>
+                                            <el-col :span="24">
+                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                    <div slot="content">
+                                                        <el-button type="success" round @click="downloadPlotImage('plot_pca')">Download (.svg)</el-button>
+                                                    </div>
+                                                    <img
+                                                        id="analysis_images_pca"
+                                                        class="animated fadeIn analysis_images"
+                                                        :src="'data:image/png;base64,' + plot_data.plot_pca_png"
+                                                        fit="scale-down"
+                                                    />
+                                                </el-tooltip>
+                                            </el-col>
+                                        </el-row>
+                                    </el-col>
+                                    <el-col else class="plot-placeholder">
+                                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                     </el-col>
                                 </el-row>
                             </el-tab-pane>
@@ -319,6 +387,8 @@ export default {
             },
             settingsForm: {
                 selectedColumns: [],
+                cutOffColumnSize: 100,
+                excludedColumns: [],
                 pcaComponentsDisplayX: [],
                 pcaComponentsDisplayY: [],
                 groupingVariable: null,
@@ -396,7 +466,8 @@ export default {
             }
         },
         downloadRawData() {
-            console.log(this.plot_data.saveObjectHash);
+            const downloadLink = this.$store.getters.user_settings_server_address_plots + "/plots/general/download-saved-object?objectHash=" + this.plot_data.saveObjectHash;
+            window.open(downloadLink, "_blank");
         },
         isTabEnabled() {
             if (this.selectedFileDetails.columns.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
@@ -443,16 +514,24 @@ export default {
                 settingsForm.selectedColumns = this.selectedFileDetails.columns
                     .filter((x) => x.valid_numeric)
                     .map((x) => x.remapped)
-                    .slice(0, 25);
+                    .slice(0, settingsForm.cutOffColumnSize);
             } else {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped);
             }
+
+            // Remove any excluded columns from selected columns
+            if (settingsForm.excludedColumns !== null && typeof settingsForm.excludedColumns === "object") {
+                settingsForm.excludedColumns = this.settingsForm.excludedColumns.map((x) => x.remapped);
+                settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.excludedColumns.includes(x));
+            }
+
             // Remove any grouping variable from selected columns
             if (settingsForm.groupingVariable !== null && typeof settingsForm.groupingVariable === "object") {
-                console.log("settingsForm.groupingVariable detected");
-                console.log(settingsForm.groupingVariable);
                 settingsForm.groupingVariable = settingsForm.groupingVariable.remapped;
+                // Remove Grouping variable from selected columns
                 settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => x !== settingsForm.groupingVariable);
+                // Remove Grouping variable from excluded columns
+                settingsForm.excludedColumns = settingsForm.excludedColumns.filter((x) => x !== settingsForm.groupingVariable);
             }
 
             fetchEditingPcaAnalysisPlot({
@@ -487,7 +566,7 @@ export default {
                             this.plot_data[respIndex] = false;
                             let respItem = respData[respIndex];
                             if (respItem.length < 15 || typeof respItem == "undefined") {
-                                this.plot_data[respIndex] = "error";
+                                this.plot_data[respIndex] = false;
                                 this.$message({
                                     message: "There was error in generating plot: " + respIndex,
                                     type: "error",
@@ -541,50 +620,4 @@ export default {
     },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss">
-.el-tooltip__popper.is-light[x-placement^="top"] .popper__arrow {
-    border-top-color: transparent !important;
-    border: 0 !important;
-}
-
-.el-tooltip__popper.is-light[x-placement^="top"] .popper__arrow:after {
-    border-top-color: transparent !important;
-    border: 0 !important;
-}
-
-.download_tooltip {
-    background: none !important;
-    border: none !important;
-    border-top-color: transparent !important;
-}
-.is_tab_active {
-    opacity: 0.1;
-}
-.code-output {
-    max-height: 1000px;
-    font-size: 12px;
-    overflow: auto;
-    margin-top: 15px;
-    text-align: left;
-
-    .highlight_code {
-        font-family: monospace;
-        white-space: pre;
-        background-color: #20262e;
-        color: #afff00;
-        border-radius: 15px;
-        padding: 10px;
-        font-size: 14px;
-    }
-
-    .code-header {
-        font-size: 16px;
-        padding-bottom: 15px;
-    }
-}
-.analysis_images {
-    // width: 700px;
-    // max-height: 700px;
-    // float: left;
-}
-</style>
+<style rel="stylesheet/scss" lang="scss"></style>

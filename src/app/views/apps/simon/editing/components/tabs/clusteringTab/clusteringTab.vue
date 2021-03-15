@@ -1,22 +1,12 @@
 <template>
-    <div class="clusteringTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
+    <div class="editing-clustering-tab" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row v-if="tabEnabled">
             <el-row type="flex" align="top">
-                <el-col :span="24" style="text-align: right">
-                    <el-button
-                        :title="$t('views.apps.simon.exploration.components.tabs.clusteringTab.buttons.download')"
-                        type="success"
-                        icon="el-icon-download"
-                        :disabled="plot_data.clustering_plot_png === false || loadingPlot"
-                        @click="downloadPlotImage('clustering_plot')"
-                    ></el-button>
-                </el-col>
-            </el-row>
-            <el-row type="flex" align="top">
-                <el-col :span="9">
-                    <el-form ref="settingsForm" :model="settingsForm" class="clustering_form" label-width="200px">
+                <el-col :span="4">
+                    <el-form ref="settingsForm" :model="settingsForm">
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.title')">
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.selectedColumns"
                                 multiple
                                 filterable
@@ -24,6 +14,7 @@
                                 default-first-option
                                 reserve-keyword
                                 value-key="remapped"
+                                clearable
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -43,9 +34,31 @@
                                     </el-row>
                                 </el-option>
                             </el-select>
+                            <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    Please select columns you wish to cluster by your data. This should be a categorical value.
+                                    <br />
+                                    Leaving this empty will take n valid unique 10% columns based on maximum cutoff size.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
                         </el-form-item>
+
+                        <el-form-item label="First (n) columns">
+                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="1" :min="1" :max="15"></el-input-number>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    If you have not selected any Columns we will take first n columns from your dataset, based on this value, that have number of unique values less
+                                    than 10%.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.rows.title')">
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.selectedRows"
                                 multiple
                                 filterable
@@ -53,6 +66,7 @@
                                 default-first-option
                                 reserve-keyword
                                 value-key="remapped"
+                                clearable
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.rows.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -80,16 +94,26 @@
                             </el-select>
                         </el-form-item>
 
+                        <el-form-item label="First (n) rows">
+                            <el-input-number style="float: right" v-model="settingsForm.cutOffRowSize" :step="10" :min="10" :max="10000"></el-input-number>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    If you have not selected any Rows we will take first n columns, based on this value, from your dataset to be used in as Rows in plot.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.remove_na')">
-                            <el-checkbox v-model="settingsForm.removeNA"></el-checkbox>
+                            <el-checkbox style="float: right" v-model="settingsForm.removeNA"></el-checkbox>
                         </el-form-item>
 
                         <el-form-item label="Preprocess">
-                            <el-checkbox v-model="settingsForm.preProcessDataset"></el-checkbox>
+                            <el-checkbox style="float: right" v-model="settingsForm.preProcessDataset"></el-checkbox>
                         </el-form-item>
 
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.scale.label')">
-                            <el-select v-model="settingsForm.scale" placeholder="Select">
+                            <el-select v-model="settingsForm.scale" style="float: right" placeholder="Select">
                                 <el-option
                                     v-for="item in settingOptions.scale"
                                     :key="item.id"
@@ -103,7 +127,7 @@
 
                         <!-- ["numbers", "legend", "colnames", "rownames"] -->
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.display.label')">
-                            <el-checkbox-group class="checkbox_group" v-model="settingsForm.displayOptions" size="mini">
+                            <el-checkbox-group style="float: right" class="checkbox_group" v-model="settingsForm.displayOptions" size="mini">
                                 <el-checkbox
                                     v-for="(item, index) in settingOptions.displayOptions"
                                     :style="index !== 0 && index % 2 === 0 ? 'clear: left;float: left;margin-left: 0;' : ''"
@@ -121,12 +145,12 @@
                             :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.numbers_size')"
                         >
                             <el-input-number
+                                style="float: right"
                                 v-model="settingsForm.fontSizeNumbers"
                                 :value="settingsForm.fontSizeNumbers"
                                 :min="settingOptions.fontSizeNumbers.min"
                                 :max="settingOptions.fontSizeNumbers.max"
                                 :step="settingOptions.fontSizeNumbers.step"
-                                controls-position="right"
                             ></el-input-number>
                         </el-form-item>
                         <el-form-item
@@ -134,12 +158,12 @@
                             :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.colnames_size')"
                         >
                             <el-input-number
+                                style="float: right"
                                 v-model="settingsForm.fontSizeCol"
                                 :value="settingsForm.fontSizeCol"
                                 :min="settingOptions.fontSizeCol.min"
                                 :max="settingOptions.fontSizeCol.max"
                                 :step="settingOptions.fontSizeCol.step"
-                                controls-position="right"
                             ></el-input-number>
                         </el-form-item>
                         <el-form-item
@@ -147,38 +171,39 @@
                             :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.rownames_size')"
                         >
                             <el-input-number
+                                style="float: right"
                                 v-model="settingsForm.fontSizeRow"
                                 :value="settingsForm.fontSizeRow"
                                 :min="settingOptions.fontSizeRow.min"
                                 :max="settingOptions.fontSizeRow.max"
                                 :step="settingOptions.fontSizeRow.step"
-                                controls-position="right"
                             ></el-input-number>
                         </el-form-item>
 
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.plot_width')">
                             <el-input-number
+                                style="float: right"
                                 v-model="settingsForm.plotWidth"
                                 :value="settingsForm.plotWidth"
                                 :min="settingOptions.plotWidth.min"
                                 :max="settingOptions.plotWidth.max"
                                 :step="settingOptions.plotWidth.step"
-                                controls-position="right"
                             ></el-input-number>
                         </el-form-item>
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.plot_ratio')">
                             <el-input-number
+                                style="float: right"
                                 v-model="settingsForm.plotRatio"
                                 :value="settingsForm.plotRatio"
                                 :min="settingOptions.plotRatio.min"
                                 :max="settingOptions.plotRatio.max"
                                 :step="settingOptions.plotRatio.step"
-                                controls-position="right"
                             ></el-input-number>
                         </el-form-item>
 
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_distance.label')">
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.clustDistance"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_distance.placeholder')"
                             >
@@ -194,6 +219,7 @@
                         </el-form-item>
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.label')">
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.clustLinkage"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.placeholder')"
                             >
@@ -209,6 +235,7 @@
                         </el-form-item>
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.tree_ordering.label')">
                             <el-select
+                                style="float: right"
                                 v-model="settingsForm.clustOrdering"
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.tree_ordering.placeholder')"
                             >
@@ -225,43 +252,60 @@
 
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.font_size')">
                             <el-input-number
+                                style="float: right"
                                 v-model="settingsForm.fontSizeGeneral"
                                 :value="settingsForm.fontSizeGeneral"
                                 :min="settingOptions.fontSizeGeneral.min"
                                 :max="settingOptions.fontSizeGeneral.max"
                                 :step="settingOptions.fontSizeGeneral.step"
-                                controls-position="right"
                             ></el-input-number>
                         </el-form-item>
+
                         <el-row>
-                            <el-col :span="6" v-if="plot_data.saveObjectHash !== false">
+                            <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download raw object</el-button>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download Rdata object</el-button>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            Here you can download R data object with all data that was used to make to analysis.
+                                            <br />
+                                            R object can be loaded in R/RStudio using: "load('/path/to/the/file')" command.
+                                            <br />
+                                            This can be useful if you wish to change the analysis, modify plot colors etc.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
                                 </el-form-item>
                             </el-col>
-                            <el-col :span="plot_data.saveObjectHash !== false ? 6 : 6">
+
+                            <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                                 <el-form-item>
-                                    <el-button type="danger" round @click="redrawImage" style="float: left">
-                                        {{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.buttons.plot_image") }}
+                                    <el-button type="danger" round @click="redrawImage" style="float: right">
+                                        {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
                                     </el-button>
                                 </el-form-item>
                             </el-col>
                         </el-row>
                     </el-form>
                 </el-col>
-                <el-col :span="15" class="correlation-svg-container" style="text-align: center">
-                    <!-- Plot placeholder -->
-                    <div v-if="plot_data.clustering_plot_png !== false" style="text-align: center">
-                        <img
-                            id="analysis_images_clustering_plot"
-                            class="animated fadeIn analysis_images"
-                            :src="'data:image/png;base64,' + plot_data.clustering_plot_png"
-                            fit="scale-down"
-                        />
-                    </div>
-                    <div v-else class="plot-placeholder">
+
+                <el-col :span="19" :offset="1">
+                    <el-row v-if="plot_data.clustering_plot !== false">
+                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                            <div slot="content">
+                                <el-button type="success" round @click="downloadPlotImage('clustering_plot')">Download (.svg)</el-button>
+                            </div>
+                            <img
+                                id="analysis_images_clustering_plot"
+                                class="animated fadeIn analysis_images"
+                                :src="'data:image/png;base64,' + plot_data.clustering_plot_png"
+                                fit="scale-down"
+                            />
+                        </el-tooltip>
+                    </el-row>
+                    <el-row else class="plot-placeholder">
                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                    </div>
+                    </el-row>
                 </el-col>
             </el-row>
         </el-row>
@@ -287,8 +331,13 @@ import { md5String } from "@/utils";
 import { debounce } from "@/utils/helpers";
 import Fuse from "fuse.js";
 
+import waves from "@/directive/waves";
+
 export default {
     name: "clusteringTab",
+    directives: {
+        waves,
+    },
     data() {
         return {
             // This tab is disabled and we will enable it on initialization if there is no too much data
@@ -359,6 +408,9 @@ export default {
                 selectedColumns: [],
                 selectedRows: [],
 
+                cutOffColumnSize: 2,
+                cutOffRowSize: 25,
+
                 removeNA: true,
                 preProcessDataset: true,
                 scale: "column",
@@ -415,6 +467,25 @@ export default {
         },
     },
     methods: {
+        downloadTable() {
+            const exportData = this.selectedFileDetails.columns;
+            import("@/vendor/Export2Excel").then((excel) => {
+                const tHeader = ["Feature", "Remapped", "Unique values", "Numeric", "Zero variance", "10% Unique", "NA percentage"];
+                const filterVal = ["original", "remapped", "unique_count", "valid_numeric", "valid_zv", "valid_10p", "na_percentage"];
+                excel.export_json_to_excel(tHeader, this.formatJson(filterVal, exportData), "column_info");
+            });
+        },
+        formatJson(filterVal, jsonData) {
+            return jsonData.map((v) =>
+                filterVal.map((j) => {
+                    if (j === "submitted") {
+                        return parseTime(v[j]);
+                    } else {
+                        return v[j];
+                    }
+                })
+            );
+        },
         initFuse(searchItems) {
             this.selectedFileDetailsDisplay = searchItems;
 
@@ -449,7 +520,8 @@ export default {
             }
         },
         downloadRawData() {
-            console.log(this.plot_data.saveObjectHash);
+            const downloadLink = this.$store.getters.user_settings_server_address_plots + "/plots/general/download-saved-object?objectHash=" + this.plot_data.saveObjectHash;
+            window.open(downloadLink, "_blank");
         },
         isTabEnabled() {
             if (this.selectedFileDetails.columns.length >= 1 && this.selectedFileDetails.id === this.selectedFiles.map((x) => x.id)[0]) {
@@ -466,13 +538,10 @@ export default {
             if (typeof this.plot_data[imageType] === "undefined") {
                 return;
             }
-
             const svgImage = "data:image/svg+xml;base64," + this.plot_data[imageType];
-
             const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
                 type: "image/svg+xml;charset=utf-8",
             });
-
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
@@ -493,7 +562,7 @@ export default {
                 settingsForm.selectedColumns = availableColumns
                     .filter((x) => x.valid_10p)
                     .map((x) => x.remapped)
-                    .slice(0, 2);
+                    .slice(0, settingsForm.cutOffColumnSize);
             } else {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped);
             }
@@ -502,13 +571,27 @@ export default {
                 settingsForm.selectedRows = availableColumns
                     .filter((x) => x.valid_numeric)
                     .map((x) => x.remapped)
-                    .slice(0, 25);
+                    .slice(0, settingsForm.cutOffRowSize);
             } else {
                 settingsForm.selectedRows = settingsForm.selectedRows.map((x) => x.remapped);
             }
 
             settingsForm.selectedRows = settingsForm.selectedRows.filter((x) => !settingsForm.selectedColumns.includes(x));
 
+            if (settingsForm.selectedColumns.length < 1) {
+                this.$message({
+                    message: "Cannot generate plot with current selection of columns. Not enough columns were found that have valid categorical values or no columns are selected.",
+                    type: "error",
+                });
+                return;
+            }
+            if (settingsForm.selectedRows < 1) {
+                this.$message({
+                    message: "Cannot generate plot with current selection of rows. Not enough rows were found that have valid numerical values or no row/columns where selected.",
+                    type: "error",
+                });
+                return;
+            }
             fetchEditingClusteringPlotImage({ selectedFileID: this.selectedFiles[0].id, settings: settingsForm })
                 .then((response) => {
                     let respData = response.data.message;
@@ -518,7 +601,7 @@ export default {
                             this.plot_data[respIndex] = false;
                             let respItem = respData[respIndex];
                             if (respItem.length < 15 || typeof respItem == "undefined") {
-                                this.plot_data[respIndex] = "error";
+                                this.plot_data[respIndex] = false;
                                 this.$message({
                                     message: "There was error in generating plot: " + respIndex,
                                     type: "error",
@@ -562,23 +645,4 @@ export default {
     },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss">
-#plot_output_image {
-    width: 100%;
-}
-.clustering_form {
-    .el-form-item {
-        margin-bottom: 5px;
-        .checkbox_group {
-            .el-checkbox {
-                float: left;
-                min-width: 100px;
-            }
-        }
-        label {
-            color: #333333;
-            font-weight: 500;
-        }
-    }
-}
-</style>
+<style rel="stylesheet/scss" lang="scss"></style>

@@ -1,9 +1,9 @@
 <template>
-    <div class="overviewTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
+    <div class="editing-overview-tab" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="top">
             <el-col :span="4">
                 <el-row>
-                    <el-form class="overviewTab-form" ref="settingsForm" :model="settingsForm">
+                    <el-form ref="settingsForm" :model="settingsForm">
                         <el-form-item label="Columns">
                             <el-select
                                 style="float: right"
@@ -14,6 +14,7 @@
                                 default-first-option
                                 reserve-keyword
                                 value-key="remapped"
+                                clearable
                                 :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -35,7 +36,18 @@
                             </el-select>
                             <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                             <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">Please select columns you wish to plot</div>
+                                <div slot="content">Please select columns you wish to plot. If nothing is selected we will take all valid numerical columns.</div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item label="First (n) columns">
+                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="10000"></el-input-number>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    If you have not selected any Columns we will take first n columns from your dataset, based on this value, that have number of unique values less
+                                    than 10%.
+                                </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
@@ -96,12 +108,25 @@
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download raw object</el-button>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download Rdata object</el-button>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            Here you can download R data object with all data that was used to make to analysis.
+                                            <br />
+                                            R object can be loaded in R/RStudio using: "load('/path/to/the/file')" command.
+                                            <br />
+                                            This can be useful if you wish to change the analysis, modify plot colors etc.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
                                 </el-form-item>
                             </el-col>
+
                             <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                                 <el-form-item>
-                                    <el-button style="float: right" type="danger" round @click="redrawImage">Plot selection</el-button>
+                                    <el-button type="danger" round @click="redrawImage" style="float: right">
+                                        {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
+                                    </el-button>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -169,27 +194,29 @@
                                 is_tab_active: isTabDisabled('table_plot'),
                             }"
                         >
-                            <el-col :span="24" v-if="plot_data.table_plot_png !== false">
-                                <span>The tableplot is a visualization method that is used to explore and analyse large datasets.</span>
-                            </el-col>
-                            <el-col :span="24" v-if="plot_data.table_plot_png !== false">
-                                <div v-if="plot_data.table_plot_png !== false">
-                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                        <div slot="content">
-                                            <el-button type="success" round @click="downloadPlotImage('table_plot')">Download (.svg)</el-button>
-                                        </div>
+                            <el-col v-if="plot_data.table_plot_png !== false">
+                                <el-row>
+                                    <el-col :span="24">
+                                        <span>The tableplot is a visualization method that is used to explore and analyse large datasets.</span>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <div slot="content">
+                                                <el-button type="success" round @click="downloadPlotImage('table_plot')">Download (.svg)</el-button>
+                                            </div>
 
-                                        <img
-                                            id="analysis_images_table_plot"
-                                            class="animated fadeIn analysis_images"
-                                            :src="'data:image/png;base64,' + plot_data.table_plot_png"
-                                            fit="scale-down"
-                                        />
-                                    </el-tooltip>
-                                </div>
-                                <div class="plot-placeholder" v-else>
-                                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                                </div>
+                                            <img
+                                                id="analysis_images_table_plot"
+                                                class="animated fadeIn analysis_images"
+                                                :src="'data:image/png;base64,' + plot_data.table_plot_png"
+                                                fit="scale-down"
+                                            />
+                                        </el-tooltip>
+                                    </el-col>
+                                </el-row>
+                            </el-col>
+                            <el-col else class="plot-placeholder">
+                                <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                             </el-col>
                         </el-row>
                     </el-tab-pane>
@@ -199,29 +226,31 @@
                                 is_tab_active: isTabDisabled('distribution_plot'),
                             }"
                         >
-                            <el-col :span="24" v-if="plot_data.table_plot_png !== false">
-                                <span>
-                                    Scatterplots of each pair of numeric variable are drawn on the left part of the figure. Pearson correlation is displayed on the right. Variable
-                                    distribution is available on the diagonal. We will take maximum 10 columns into consideration.
-                                </span>
+                            <el-col v-if="plot_data.distribution_plot_png !== false">
+                                <el-row>
+                                    <el-col :span="24">
+                                        <span>
+                                            Scatterplots of each pair of numeric variable are drawn on the left part of the figure. Pearson correlation is displayed on the right.
+                                            Variable distribution is available on the diagonal. We will take maximum 10 columns into consideration.
+                                        </span>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <div slot="content">
+                                                <el-button type="success" round @click="downloadPlotImage('distribution_plot')">Download (.svg)</el-button>
+                                            </div>
+                                            <img
+                                                id="analysis_images_distribution_plot"
+                                                class="animated fadeIn analysis_images"
+                                                :src="'data:image/png;base64,' + plot_data.distribution_plot_png"
+                                                fit="scale-down"
+                                            />
+                                        </el-tooltip>
+                                    </el-col>
+                                </el-row>
                             </el-col>
-                            <el-col :span="24" v-if="plot_data.distribution_plot_png !== false">
-                                <div v-if="plot_data.distribution_plot_png !== false" style="text-align: center">
-                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                        <div slot="content">
-                                            <el-button type="success" round @click="downloadPlotImage('distribution_plot')">Download (.svg)</el-button>
-                                        </div>
-                                        <img
-                                            id="analysis_images_distribution_plot"
-                                            class="animated fadeIn analysis_images"
-                                            :src="'data:image/png;base64,' + plot_data.distribution_plot_png"
-                                            fit="scale-down"
-                                        />
-                                    </el-tooltip>
-                                </div>
-                                <div class="plot-placeholder" v-else>
-                                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                                </div>
+                            <el-col else class="plot-placeholder">
+                                <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                             </el-col>
                         </el-row>
                     </el-tab-pane>
@@ -262,6 +291,7 @@ export default {
 
             settingsForm: {
                 selectedColumns: [],
+                cutOffColumnSize: 10,
                 groupingVariable: [],
                 preProcessedData: true,
                 fontSize: 12,
@@ -321,14 +351,9 @@ export default {
     methods: {
         downloadTable() {
             const exportData = this.selectedFileDetails.columns;
-            console.log(exportData);
-
             import("@/vendor/Export2Excel").then((excel) => {
                 const tHeader = ["Feature", "Remapped", "Unique values", "Numeric", "Zero variance", "10% Unique", "NA percentage"];
                 const filterVal = ["original", "remapped", "unique_count", "valid_numeric", "valid_zv", "valid_10p", "na_percentage"];
-
-                console.log(tHeader);
-
                 excel.export_json_to_excel(tHeader, this.formatJson(filterVal, exportData), "column_info");
             });
         },
@@ -367,7 +392,8 @@ export default {
             }
         },
         downloadRawData() {
-            console.log(this.plot_data.saveObjectHash);
+            const downloadLink = this.$store.getters.user_settings_server_address_plots + "/plots/general/download-saved-object?objectHash=" + this.plot_data.saveObjectHash;
+            window.open(downloadLink, "_blank");
         },
         handleFetchOverViewImage() {
             this.loadingPlot = true;
@@ -379,7 +405,7 @@ export default {
                 settingsForm.selectedColumns = this.selectedFileDetails.columns
                     .filter((x) => x.valid_numeric)
                     .map((x) => x.remapped)
-                    .slice(0, 10);
+                    .slice(0, settingsForm.cutOffColumnSize);
             } else {
                 settingsForm.selectedColumns = this.settingsForm.selectedColumns.map((x) => x.remapped);
             }
@@ -400,7 +426,7 @@ export default {
                             this.plot_data[respIndex] = false;
                             let respItem = respData[respIndex];
                             if (respItem.length < 15 || typeof respItem == "undefined") {
-                                this.plot_data[respIndex] = "error";
+                                this.plot_data[respIndex] = false;
                                 this.$message({
                                     message: "There was error in generating plot: " + respIndex,
                                     type: "error",
@@ -511,20 +537,4 @@ export default {
     },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss">
-.box-column-item {
-    margin-top: 10px;
-
-    .box-column-item-text {
-        font-size: 14px;
-        padding-top: 5px;
-
-        .box-column-item-details {
-            float: right;
-        }
-    }
-}
-.analysis_images {
-    max-width: 100%;
-}
-</style>
+<style rel="stylesheet/scss" lang="scss"></style>
