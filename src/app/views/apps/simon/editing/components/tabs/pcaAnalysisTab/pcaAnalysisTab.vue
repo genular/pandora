@@ -219,6 +219,10 @@
                             <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                         </el-form-item>
 
+                        <el-form-item label="Plot size">
+                            <el-input-number style="float: right" size="mini" v-model="settingsForm.plot_size" :step="1" :max="24" :min="12"></el-input-number>
+                        </el-form-item>
+
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
@@ -249,13 +253,13 @@
                 <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
                     <el-row>
                         <el-tabs v-model="activePCATabName">
-                            <el-tab-pane label="Bartlett's sphericity" name="summary_bartlett" :disabled="isTabDisabled('plot_pca')">
+                            <el-tab-pane label="Bartlett's sphericity" name="bartlett" :disabled="isTabDisabled('plot_scree')">
                                 <el-row
                                     v-bind:class="{
-                                        is_tab_active: isTabDisabled('plot_pca'),
+                                        is_tab_active: isTabDisabled('plot_scree'),
                                     }"
                                 >
-                                    <el-col :span="24" v-if="data_summary.summary_bartlett !== false">
+                                    <el-col :span="24" v-if="details.bartlett !== false">
                                         <div class="code-output">
                                             <div class="code-header">
                                                 Among SPSS users, these tests are considered to provide some guidelines on the suitability of the data for a principal components
@@ -265,7 +269,7 @@
                                                 normal distribution with zero covariances. If p > 0.05 then PCA may not be very informative
                                             </div>
                                             <div class="highlight_code">
-                                                {{ data_summary.summary_bartlett }}
+                                                {{ details.bartlett }}
                                             </div>
                                         </div>
                                         <div class="code-output">
@@ -274,88 +278,569 @@
                                                 are better. A value of 0.6 is a suggested minimum.
                                             </div>
                                             <div class="highlight_code">
-                                                {{ data_summary.summary_kmo }}
+                                                {{ details.kmo }}
                                             </div>
                                         </div>
                                     </el-col>
-                                    <el-col else class="plot-placeholder">
+                                    <el-col v-else class="plot-placeholder">
                                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                     </el-col>
                                 </el-row>
                             </el-tab-pane>
-                            <el-tab-pane label="Plot Scree" name="plot_scree" :disabled="isTabDisabled('plot_pca')">
+
+                            <el-tab-pane label="Eigenvalues / Variances" name="tab_eigenvalues" :disabled="isTabDisabled('plot_scree')">
                                 <el-row
                                     v-bind:class="{
-                                        is_tab_active: isTabDisabled('plot_pca'),
+                                        is_tab_active: isTabDisabled('plot_scree'),
                                     }"
                                 >
-                                    <el-col v-if="plot_data.plot_scree_png !== false">
-                                        <el-row>
-                                            <el-col :span="24">
-                                                <span>
-                                                    A Scree Plot is a simple line segment plot that shows the eigenvalues for each individual PC. When the eigenvalues drop
-                                                    dramatically in size, an additional factor would add relatively little to the information already extracted. Cumulative variance
-                                                    is explained by each PC (in %)
-                                                </span>
-                                            </el-col>
-                                            <el-col :span="24">
-                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                    <div slot="content">
-                                                        <el-button type="success" round @click="downloadPlotImage('plot_scree')">Download (.svg)</el-button>
-                                                    </div>
-                                                    <img
-                                                        id="analysis_images_scree"
-                                                        class="animated fadeIn"
-                                                        :src="'data:image/png;base64,' + plot_data.plot_scree_png"
-                                                        fit="scale-down"
-                                                    />
-                                                </el-tooltip>
-                                            </el-col>
-                                        </el-row>
+                                    <el-col v-if="plot_data.plot_scree !== false">
+                                        <el-tabs :tab-position="'left'">
+                                            <el-tab-pane label="Scree Plot">
+                                                <el-row>
+                                                    <el-col :span="24">
+                                                        <span class="tab_intro_text">
+                                                            Eigenvalues measure the amount of variation retained by each principal component. Eigenvalues are large for the first
+                                                            PCs and small for the subsequent PCs. That is, the first PCs corresponds to the directions with the maximum amount of
+                                                            variation in the data set.
+                                                            <br />
+                                                            Eigenvalues can be used to determine the number of principal components to retain after PCA (Kaiser 1961):
+                                                            <br />
+                                                            The number of component is determined at the point, beyond which the remaining eigenvalues are all relatively small and
+                                                            of comparable size (Jollife 2002, Peres-Neto, Jackson, and Somers (2005)).
+                                                            <br />
+                                                            An eigenvalue > 1 indicates that PCs account for more variance than accounted by one of the original variables in
+                                                            standardized data. This is commonly used as a cutoff point for which PCs are retained. This holds true only when the
+                                                            data are standardized.
+                                                            <br />
+                                                            You can also limit the number of component to that number that accounts for a certain fraction of the total variance.
+                                                            For example, if you are satisfied with 70% of the total variance explained then use the number of components to achieve
+                                                            that.
+                                                        </span>
+                                                    </el-col>
+
+                                                    <el-col :span="24">
+                                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                            <div slot="content">
+                                                                <el-button type="success" round @click="downloadPlotImage('plot_scree')">Download (.svg)</el-button>
+                                                            </div>
+                                                            <img
+                                                                id="analysis_images_pca"
+                                                                class="animated fadeIn analysis_images"
+                                                                :src="'data:image/png;base64,' + plot_data.plot_scree_png"
+                                                                fit="scale-down"
+                                                            />
+                                                        </el-tooltip>
+                                                    </el-col>
+                                                </el-row>
+                                            </el-tab-pane>
+                                            <el-tab-pane label="Eigenvalues">
+                                                <el-row>
+                                                    <el-col :span="24">
+                                                        <div class="code-output">
+                                                            <div class="code-header">
+                                                                The sum of all the eigenvalues give a total variance of 10. The proportion of variation explained by each eigenvalue
+                                                                is given in the second column. For example, 4.124 divided by 10 equals 0.4124, or, about 41.24% of the variation is
+                                                                explained by this first eigenvalue. The cumulative percentage explained is obtained by adding the successive
+                                                                proportions of variation explained to obtain the running total. For instance, 41.242% plus 18.385% equals 59.627%,
+                                                                and so forth. Therefore, about 59.627% of the variation is explained by the first two eigenvalues together.
+                                                            </div>
+                                                            <div class="highlight_code">
+                                                                {{ details.eig }}
+                                                            </div>
+                                                        </div>
+                                                    </el-col>
+                                                </el-row>
+                                            </el-tab-pane>
+                                        </el-tabs>
                                     </el-col>
                                     <el-col v-else class="plot-placeholder">
                                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                     </el-col>
                                 </el-row>
                             </el-tab-pane>
-                            <el-tab-pane label="PCA Components" name="plot_pca" :disabled="isTabDisabled('plot_pca')">
+
+                            <el-tab-pane label="Variables" name="tab_variables" :disabled="isTabDisabled('plot_var_cos2_correlation')">
                                 <el-row
                                     v-bind:class="{
-                                        is_tab_active: isTabDisabled('plot_pca'),
+                                        is_tab_active: isTabDisabled('plot_var_cos2_correlation'),
                                     }"
                                 >
-                                    <el-col v-if="plot_data.plot_pca_png !== false">
-                                        <el-row>
-                                            <el-col :span="24">
-                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                    <div slot="content">
-                                                        <el-button type="success" round @click="downloadPlotImage('plot_pca')">Download (.svg)</el-button>
-                                                    </div>
-                                                    <img
-                                                        id="analysis_images_pca"
-                                                        class="animated fadeIn analysis_images"
-                                                        :src="'data:image/png;base64,' + plot_data.plot_pca_png"
-                                                        fit="scale-down"
-                                                    />
-                                                </el-tooltip>
-                                            </el-col>
-                                        </el-row>
-                                    </el-col>
-                                    <el-col v-else class="plot-placeholder">
-                                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                    <el-col :span="24">
+                                        <el-tabs :tab-position="'left'">
+                                            <el-tab-pane label="Correlation circle">
+                                                <el-col v-if="plot_data.plot_var_cos2_correlation !== false">
+                                                    <el-row>
+                                                        <el-col :span="24">
+                                                            <span class="tab_intro_text">
+                                                                The correlation between a variable and a principal component (PC) is used as the coordinates of the variable on the
+                                                                PC. The representation of variables differs from the plot of the observations: The observations are represented by
+                                                                their projections, but the variables are represented by their correlations (Abdi and Williams 2010).
+                                                                <br />
+                                                                The plot below is also known as variable correlation plots. It shows the relationships between all variables. It can
+                                                                be interpreted as follow:
+                                                                <br />
+                                                                Positively correlated variables are grouped together.
+                                                                <br />
+                                                                Negatively correlated variables are positioned on opposite sides of the plot origin (opposed quadrants).
+                                                                <br />
+                                                                The distance between variables and the origin measures the quality of the variables on the factor map. Variables
+                                                                that are away from the origin are well represented on the factor map.
+                                                            </span>
+                                                        </el-col>
+                                                        <el-col :span="24">
+                                                            <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                <div slot="content">
+                                                                    <el-button type="success" round @click="downloadPlotImage('plot_var_cos2_correlation')">
+                                                                        Download (.svg)
+                                                                    </el-button>
+                                                                </div>
+                                                                <img
+                                                                    id="analysis_images_pca"
+                                                                    class="animated fadeIn analysis_images"
+                                                                    :src="'data:image/png;base64,' + plot_data.plot_var_cos2_correlation_png"
+                                                                    fit="scale-down"
+                                                                />
+                                                            </el-tooltip>
+                                                        </el-col>
+                                                    </el-row>
+                                                </el-col>
+                                                <el-col v-else class="plot-placeholder">
+                                                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                </el-col>
+                                            </el-tab-pane>
+                                            <el-tab-pane label="Quality of representation">
+                                                <el-tabs :tab-position="'top'">
+                                                    <el-tab-pane label="Correlation plot">
+                                                        <el-col v-if="plot_data.plot_var_cos2_corrplot !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span class="tab_intro_text">
+                                                                        The quality of representation of the variables on factor map is called cos2 (square cosine, squared
+                                                                        coordinates).
+                                                                    </span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_var_cos2_corrplot')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_var_cos2_corrplot_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                    <el-tab-pane label="Bar plot">
+                                                        <el-col v-if="plot_data.plot_var_bar_plot !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span class="tab_intro_text">
+                                                                        A high cos2 indicates a good representation of the variable on the principal component. In this case the
+                                                                        variable is positioned close to the circumference of the correlation circle.
+                                                                        <br />
+                                                                        A low cos2 indicates that the variable is not perfectly represented by the PCs. In this case the variable is
+                                                                        close to the center of the circle.
+                                                                        <br />
+                                                                        For a given variable, the sum of the cos2 on all the principal components is equal to one.
+                                                                    </span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_var_bar_plot')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_var_bar_plot_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                </el-tabs>
+                                            </el-tab-pane>
+                                            <el-tab-pane label="Contributions of variables to PCs">
+                                                <el-tabs :tab-position="'top'">
+                                                    <el-tab-pane label="Correlation plot">
+                                                        <el-col v-if="plot_data.plot_var_contrib_corrplot !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span class="tab_intro_text">
+                                                                        The contributions of variables in accounting for the variability in a given principal component are
+                                                                        expressed in percentage.
+                                                                        <br />
+                                                                        Variables that are correlated with PC1 (i.e., Dim.1) and PC2 (i.e., Dim.2) are the most important in
+                                                                        explaining the variability in the data set.
+                                                                        <br />
+                                                                        Variables that do not correlated with any PC or correlated with the last dimensions are variables with low
+                                                                        contribution and might be removed to simplify the overall analysis.
+                                                                    </span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_var_contrib_corrplot')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_var_contrib_corrplot_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                    <el-tab-pane label="Bar plot">
+                                                        <el-col v-if="plot_data.plot_var_contrib_bar_plot !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span class="tab_intro_text">
+                                                                        Bar plot of variable contributions. The graph below shows the top 10 variables contributing to the principal
+                                                                        components:
+                                                                    </span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_var_contrib_bar_plot')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_var_contrib_bar_plot_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                    <el-tab-pane label="Other">
+                                                        <el-col v-if="plot_data.plot_var_contrib_correlation !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span style="text-align: left"></span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_var_contrib_correlation')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_var_contrib_correlation_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                    <el-tab-pane label="Dimension description">
+                                                        <el-col v-if="details.desc_dim_1 !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <div class="code-output">
+                                                                        <div class="code-header">
+                                                                            In the output below, we can see results for quantitative variables. Note that, variables are sorted by
+                                                                            the p-value of the correlation. They are also rounded to 4 digits. For more details inspect raw data
+                                                                            file under "data$res.desc$Dim.1"
+                                                                            <br />
+                                                                            <br />
+                                                                            Dimension 1:
+                                                                        </div>
+                                                                        <div class="highlight_code">
+                                                                            {{ details.desc_dim_1 }}
+                                                                        </div>
+                                                                    </div>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <div class="code-output">
+                                                                        <div class="code-header">Dimension 2:</div>
+                                                                        <div class="highlight_code">
+                                                                            {{ details.desc_dim_2 }}
+                                                                        </div>
+                                                                    </div>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                </el-tabs>
+                                            </el-tab-pane>
+                                        </el-tabs>
                                     </el-col>
                                 </el-row>
                             </el-tab-pane>
-                            <el-tab-pane label="PCA Output" name="plot_output" :disabled="isTabDisabled('plot_pca')">
+
+                            <el-tab-pane label="Individuals" name="tab_individuals" :disabled="isTabDisabled('plot_ind_cos2_correlation')">
                                 <el-row
                                     v-bind:class="{
-                                        is_tab_active: isTabDisabled('plot_pca'),
+                                        is_tab_active: isTabDisabled('plot_ind_cos2_correlation'),
                                     }"
                                 >
-                                    <el-col :span="24" v-if="data_summary.pca_summary !== false">
+                                    <el-col :span="24">
+                                        <el-tabs :tab-position="'left'">
+                                            <el-tab-pane label="Correlation circle">
+                                                <el-col v-if="plot_data.plot_ind_cos2_correlation !== false">
+                                                    <el-row>
+                                                        <el-col :span="24">
+                                                            <span class="tab_intro_text">
+                                                                The correlation between a variable and a principal component (PC) is used as the coordinates of the variable on the
+                                                                PC. The representation of variables differs from the plot of the observations: The observations are represented by
+                                                                their projections, but the variables are represented by their correlations (Abdi and Williams 2010).
+                                                                <br />
+                                                                The plot below is also known as variable correlation plots. It shows the relationships between all variables. It can
+                                                                be interpreted as follow:
+                                                                <br />
+                                                                Positively correlated variables are grouped together.
+                                                                <br />
+                                                                Negatively correlated variables are positioned on opposite sides of the plot origin (opposed quadrants).
+                                                                <br />
+                                                                The distance between variables and the origin measures the quality of the variables on the factor map. Variables
+                                                                that are away from the origin are well represented on the factor map.
+                                                            </span>
+                                                        </el-col>
+                                                        <el-col :span="24">
+                                                            <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                <div slot="content">
+                                                                    <el-button type="success" round @click="downloadPlotImage('plot_ind_cos2_correlation')">
+                                                                        Download (.svg)
+                                                                    </el-button>
+                                                                </div>
+                                                                <img
+                                                                    id="analysis_images_pca"
+                                                                    class="animated fadeIn analysis_images"
+                                                                    :src="'data:image/png;base64,' + plot_data.plot_ind_cos2_correlation_png"
+                                                                    fit="scale-down"
+                                                                />
+                                                            </el-tooltip>
+                                                        </el-col>
+                                                    </el-row>
+                                                </el-col>
+                                                <el-col v-else class="plot-placeholder">
+                                                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                </el-col>
+                                            </el-tab-pane>
+                                            <el-tab-pane label="Quality of representation">
+                                                <el-tabs :tab-position="'top'">
+                                                    <el-tab-pane label="Correlation plot">
+                                                        <el-col v-if="plot_data.plot_ind_cos2_corrplot !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span class="tab_intro_text">
+                                                                        The quality of representation of the variables on factor map is called cos2 (square cosine, squared
+                                                                        coordinates).
+                                                                    </span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_ind_cos2_corrplot')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_ind_cos2_corrplot_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                    <el-tab-pane label="Bar plot">
+                                                        <el-col v-if="plot_data.plot_ind_bar_plot !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span class="tab_intro_text">
+                                                                        A high cos2 indicates a good representation of the variable on the principal component. In this case the
+                                                                        variable is positioned close to the circumference of the correlation circle.
+                                                                        <br />
+                                                                        A low cos2 indicates that the variable is not perfectly represented by the PCs. In this case the variable is
+                                                                        close to the center of the circle.
+                                                                        <br />
+                                                                        For a given variable, the sum of the cos2 on all the principal components is equal to one.
+                                                                    </span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_ind_bar_plot')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_ind_bar_plot_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                </el-tabs>
+                                            </el-tab-pane>
+                                            <el-tab-pane label="Contributions of variables to PCs">
+                                                <el-tabs :tab-position="'top'">
+                                                    <el-tab-pane label="Correlation plot">
+                                                        <el-col v-if="plot_data.plot_ind_contrib_corrplot !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span class="tab_intro_text">
+                                                                        The contributions of variables in accounting for the variability in a given principal component are
+                                                                        expressed in percentage.
+                                                                        <br />
+                                                                        Variables that are correlated with PC1 (i.e., Dim.1) and PC2 (i.e., Dim.2) are the most important in
+                                                                        explaining the variability in the data set.
+                                                                        <br />
+                                                                        Variables that do not correlated with any PC or correlated with the last dimensions are variables with low
+                                                                        contribution and might be removed to simplify the overall analysis.
+                                                                    </span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_ind_contrib_corrplot')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_ind_contrib_corrplot_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                    <el-tab-pane label="Bar plot">
+                                                        <el-col v-if="plot_data.plot_ind_contrib_bar_plot !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span class="tab_intro_text">
+                                                                        Bar plot of variable contributions. The graph below shows the top 10 variables contributing to the principal
+                                                                        components:
+                                                                    </span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_ind_contrib_bar_plot')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_ind_contrib_bar_plot_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                    <el-tab-pane label="Other">
+                                                        <el-col v-if="plot_data.plot_ind_contrib_correlation !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span style="text-align: left"></span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_ind_contrib_correlation')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_ind_contrib_correlation_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                </el-tabs>
+                                            </el-tab-pane>
+                                        </el-tabs>
+                                    </el-col>
+                                </el-row>
+                            </el-tab-pane>
+                            <el-tab-pane label="PCA Output" name="tab_pca_details" :disabled="isTabDisabled('plot_var_cos2_correlation')">
+                                <el-row
+                                    v-bind:class="{
+                                        is_tab_active: isTabDisabled('plot_var_cos2_correlation'),
+                                    }"
+                                >
+                                    <el-col :span="24" v-if="details.pca !== false">
                                         <div class="code-output">
                                             <div class="highlight_code">
-                                                {{ data_summary.pca_summary }}
+                                                {{ details.pca }}
                                             </div>
                                         </div>
                                     </el-col>
@@ -402,28 +887,60 @@ export default {
 
             loadingPlot: false,
 
-            activePCATabName: "summary_bartlett",
+            activePCATabName: "bartlett",
 
             plot_data: {
                 plot_scree: false,
                 plot_scree_png: false,
 
-                plot_pca: false,
-                plot_pca_png: false,
+                plot_var_cos2_correlation: false,
+                plot_var_cos2_correlation_png: false,
+
+                plot_var_cos2_corrplot: false,
+                plot_var_cos2_corrplot_png: false,
+
+                plot_var_bar_plot: false,
+                plot_var_bar_plot_png: false,
+
+                plot_var_contrib_correlation: false,
+                plot_var_contrib_correlation_png: false,
+
+                plot_var_contrib_corrplot: false,
+                plot_var_contrib_corrplot_png: false,
+
+                plot_var_contrib_bar_plot: false,
+                plot_var_contrib_bar_plot_png: false,
+
+                plot_ind_cos2_correlation: false,
+                plot_ind_cos2_correlation_png: false,
+
+                plot_ind_cos2_corrplot: false,
+                plot_ind_cos2_corrplot_png: false,
+
+                plot_ind_bar_plot: false,
+                plot_ind_bar_plot_png: false,
+
+                plot_ind_contrib_correlation: false,
+                plot_ind_contrib_correlation_png: false,
+
+                plot_ind_contrib_corrplot: false,
+                plot_ind_contrib_corrplot_png: false,
+
+                plot_ind_contrib_bar_plot: false,
+                plot_ind_contrib_bar_plot_png: false,
 
                 saveObjectHash: false,
             },
 
             selectedFileDetailsDisplay: [],
 
-            data_summary: {
-                pca_summary: false,
-                summary_bartlett: false,
-                summary_kmo: false,
-                panel_scales_y: false,
-                panel_scales_x: false,
-                pca_dataframe: false,
-                pca_dataframe_columns: [],
+            details: {
+                pca: false,
+                bartlett: false,
+                kmo: false,
+                eig: false,
+                desc_dim_1: false,
+                desc_dim_2: false,
             },
             // Placeholder for dropdown columns - not used in this case
             selectedFileDetailsDisplay: [],
@@ -446,6 +963,7 @@ export default {
                 theme: "theme_bw",
                 colorPalette: "Set1",
                 aspect_ratio: 1,
+                plot_size: 12,
             },
         };
     },
@@ -592,31 +1110,14 @@ export default {
                 settings: settingsForm,
             })
                 .then((response) => {
-                    let respData = response.data.message;
-
-                    if (typeof response.data.details !== "undefined") {
-                        let respDataDetails = response.data.details;
-                        this.data_summary.pca_dataframe = respDataDetails.pca_dataframe;
-                        this.data_summary.pca_dataframe_columns = Object.keys(respDataDetails.pca_dataframe[0]);
-                        this.data_summary.pca_summary = window.atob(respDataDetails.pca_summary);
-                        this.data_summary.summary_bartlett = window.atob(respDataDetails.summary_bartlett);
-                        this.data_summary.summary_kmo = window.atob(respDataDetails.summary_kmo);
-                        this.selectedOptions.pca_components_x = respDataDetails.pca_components;
-                        this.selectedOptions.pca_components_y = respDataDetails.pca_components;
-                    } else {
-                        this.data_summary = {
-                            pca_summary: false,
-                            summary_bartlett: false,
-                            summary_kmo: false,
-                            pca_dataframe: false,
-                            pca_dataframe_columns: [],
-                        };
-                    }
+                    const respData = response.data.message;
+                    const details = response.data.details;
 
                     // Update the image data.
                     for (let respIndex in respData) {
                         if (typeof this.plot_data[respIndex] !== "undefined") {
                             this.plot_data[respIndex] = false;
+
                             let respItem = respData[respIndex];
                             if (respItem.length < 15 || typeof respItem == "undefined") {
                                 this.plot_data[respIndex] = false;
@@ -625,7 +1126,27 @@ export default {
                                     type: "error",
                                 });
                             } else {
+                                console.log("setting plot data for: " + respIndex);
+
                                 this.plot_data[respIndex] = encodeURIComponent(respItem);
+                            }
+                        }
+                    }
+
+                    // Update the details data.
+                    for (let respIndex in details) {
+                        if (typeof this.details[respIndex] !== "undefined") {
+                            this.details[respIndex] = false;
+                            let respItem = details[respIndex];
+                            if (respItem.length < 15 || typeof respItem == "undefined") {
+                                this.details[respIndex] = false;
+                                this.$message({
+                                    message: "There was error in processing details: " + respIndex,
+                                    type: "error",
+                                });
+                            } else {
+                                console.log("setting details data for: " + respIndex);
+                                this.details[respIndex] = window.atob(respItem);
                             }
                         }
                     }
@@ -639,21 +1160,6 @@ export default {
         },
         resetVariables() {
             this.fuseIndex = null;
-
-            this.data_summary = {
-                pca_summary: false,
-                summary_bartlett: false,
-                summary_kmo: false,
-                pca_dataframe: false,
-                pca_dataframe_columns: [],
-            };
-            this.plot_data = {
-                plot_scree: false,
-                plot_scree_png: false,
-                plot_pca: false,
-                plot_pca_png: false,
-                saveObjectHash: false,
-            };
         },
     },
     watch: {
@@ -673,4 +1179,11 @@ export default {
     },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss"></style>
+<style rel="stylesheet/scss" lang="scss">
+.tab_intro_text {
+    text-align: left;
+    float: left;
+    font-size: 16px;
+    padding: 20px;
+}
+</style>
