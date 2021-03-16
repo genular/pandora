@@ -290,7 +290,7 @@
                 </el-col>
 
                 <el-col :span="19" :offset="1">
-                    <el-row v-if="plot_data.clustering_plot !== false">
+                    <el-row v-if="plot_data.clustering_plot !== false" style="text-align: center">
                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                             <div slot="content">
                                 <el-button type="success" round @click="downloadPlotImage('clustering_plot')">Download (.svg)</el-button>
@@ -303,7 +303,7 @@
                             />
                         </el-tooltip>
                     </el-row>
-                    <el-row else class="plot-placeholder">
+                    <el-row v-else class="plot-placeholder">
                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                     </el-row>
                 </el-col>

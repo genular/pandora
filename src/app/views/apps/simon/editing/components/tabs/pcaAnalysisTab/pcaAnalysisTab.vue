@@ -175,6 +175,50 @@
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.displayLoadings"></el-switch>
                         </el-form-item>
 
+                        <el-form-item label="Theme">
+                            <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
+                                <el-option v-for="item in selectedOptions.theme" :key="item.id" :label="item.name" :value="item.id">
+                                    <span style="float: left">{{ item.name }}</span>
+                                    <span style="float: right; color: #8492a6; font-size: 13px">
+                                        <el-tooltip placement="top">
+                                            <div slot="content" style="text-align: center">
+                                                <img :src="'static/images/plot_styles/' + item.id + '_' + settingsForm.colorPalette + '.svg'" style="height: 125px" />
+                                                <br />
+                                                <span style="max-width: 125px; width: 150px; display: block">{{ item.description }}</span>
+                                            </div>
+                                            <span class="el-icon-info"></span>
+                                        </el-tooltip>
+                                    </span>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="Color">
+                            <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
+                                <el-option v-for="item in selectedOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
+                                    <span style="float: left">{{ item.value }}</span>
+                                    <span style="float: right; color: #8492a6; font-size: 13px">
+                                        <el-tooltip placement="top">
+                                            <div slot="content" style="text-align: center">
+                                                <img :src="'static/images/plot_styles/' + settingsForm.theme + '_' + item.id + '.svg'" style="height: 125px" />
+                                                <br />
+                                                <span style="max-width: 125px; width: 150px; display: block">colorblind: {{ item.colorblind }}</span>
+                                            </div>
+                                            <span class="el-icon-info"></span>
+                                        </el-tooltip>
+                                    </span>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="Font size">
+                            <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="24"></el-input-number>
+                        </el-form-item>
+
+                        <el-form-item label="Ratio">
+                            <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
+                        </el-form-item>
+
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
@@ -269,7 +313,7 @@
                                             </el-col>
                                         </el-row>
                                     </el-col>
-                                    <el-col else class="plot-placeholder">
+                                    <el-col v-else class="plot-placeholder">
                                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                     </el-col>
                                 </el-row>
@@ -297,7 +341,7 @@
                                             </el-col>
                                         </el-row>
                                     </el-col>
-                                    <el-col else class="plot-placeholder">
+                                    <el-col v-else class="plot-placeholder">
                                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                     </el-col>
                                 </el-row>
@@ -342,6 +386,9 @@ import { fetchEditingPcaAnalysisPlot, getPCAavailableColumns } from "@/api/plots
 import { md5String } from "@/utils";
 import { debounce } from "@/utils/helpers";
 
+import plotColorPalettes from "@/assets/plots/color_palettes.json";
+import plotThemes from "@/assets/plots/themes.json";
+
 import Fuse from "fuse.js";
 
 export default {
@@ -384,6 +431,8 @@ export default {
             selectedOptions: {
                 pca_components_x: [],
                 pca_components_y: [],
+                theme: plotThemes,
+                colorPalette: plotColorPalettes,
             },
             settingsForm: {
                 selectedColumns: [],
@@ -393,6 +442,10 @@ export default {
                 pcaComponentsDisplayY: [],
                 groupingVariable: null,
                 displayLoadings: true,
+                fontSize: 12,
+                theme: "theme_bw",
+                colorPalette: "Set1",
+                aspect_ratio: 1,
             },
         };
     },

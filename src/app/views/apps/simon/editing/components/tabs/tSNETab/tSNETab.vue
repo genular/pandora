@@ -341,7 +341,7 @@
                                     </el-col>
                                 </el-row>
                             </el-col>
-                            <el-col else class="plot-placeholder">
+                            <el-col v-else class="plot-placeholder">
                                 <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                             </el-col>
                         </el-row>
@@ -352,24 +352,29 @@
                                 is_tab_active: isTabDisabled('tsne_cluster_heatmap_plot'),
                             }"
                         >
-                            <el-col :span="24" v-if="plot_data.tsne_cluster_heatmap_plot_png !== false">
-                                <span>Clustered t-SNE plot using: {{ settingsForm.clusterType }}</span>
-                            </el-col>
+                            <el-col v-if="plot_data.tsne_cluster_heatmap_plot_png !== false">
+                                <el-row>
+                                    <el-col :span="24">
+                                        <span>Clustered t-SNE plot using: {{ settingsForm.clusterType }}</span>
+                                    </el-col>
 
-                            <el-col :span="24" v-if="plot_data.tsne_cluster_heatmap_plot_png !== false">
-                                <div>
-                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                        <div slot="content">
-                                            <el-button type="success" round @click="downloadPlotImage('tsne_cluster_heatmap_plot')">Download (.svg)</el-button>
-                                        </div>
-                                        <img
-                                            id="analysis_images_tsne_clustered_plot"
-                                            class="animated fadeIn analysis_images"
-                                            :src="'data:image/png;base64,' + plot_data.tsne_cluster_heatmap_plot_png"
-                                            fit="scale-down"
-                                        />
-                                    </el-tooltip>
-                                </div>
+                                    <el-col :span="24">
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <div slot="content">
+                                                <el-button type="success" round @click="downloadPlotImage('tsne_cluster_heatmap_plot')">Download (.svg)</el-button>
+                                            </div>
+                                            <img
+                                                id="analysis_images_tsne_clustered_plot"
+                                                class="animated fadeIn analysis_images"
+                                                :src="'data:image/png;base64,' + plot_data.tsne_cluster_heatmap_plot_png"
+                                                fit="scale-down"
+                                            />
+                                        </el-tooltip>
+                                    </el-col>
+                                </el-row>
+                            </el-col>
+                            <el-col v-else class="plot-placeholder">
+                                <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                             </el-col>
                         </el-row>
                     </el-tab-pane>
@@ -564,7 +569,7 @@ export default {
                         if (typeof this.plot_data[respIndex] !== "undefined") {
                             this.plot_data[respIndex] = false;
                             let respItem = respData[respIndex];
-                            if (respItem.length < 15) {
+                            if (typeof respItem === "object" || respItem.length < 15) {
                                 this.plot_data[respIndex] = false;
                             } else {
                                 this.plot_data[respIndex] = encodeURIComponent(respItem);

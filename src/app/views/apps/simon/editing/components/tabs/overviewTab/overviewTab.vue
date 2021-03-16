@@ -197,7 +197,10 @@
                             <el-col v-if="plot_data.table_plot_png !== false">
                                 <el-row>
                                     <el-col :span="24">
-                                        <span>The tableplot is a visualization method that is used to explore and analyse large datasets.</span>
+                                        <span>
+                                            The tableplot is a visualization method that is used to explore and analyze large datasets, is able to display the aggregated
+                                            distribution patterns of a dozen of variables in one single figure.
+                                        </span>
                                     </el-col>
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
@@ -215,7 +218,7 @@
                                     </el-col>
                                 </el-row>
                             </el-col>
-                            <el-col else class="plot-placeholder">
+                            <el-col v-else class="plot-placeholder">
                                 <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                             </el-col>
                         </el-row>
@@ -249,7 +252,7 @@
                                     </el-col>
                                 </el-row>
                             </el-col>
-                            <el-col else class="plot-placeholder">
+                            <el-col v-else class="plot-placeholder">
                                 <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                             </el-col>
                         </el-row>
