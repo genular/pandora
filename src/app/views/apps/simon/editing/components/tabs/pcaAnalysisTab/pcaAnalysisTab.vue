@@ -92,7 +92,8 @@
                         <el-form-item label="Grouping variable:">
                             <el-select
                                 style="float: right"
-                                v-model="settingsForm.groupingVariable"
+                                v-model="settingsForm.groupingVariables"
+                                multiple
                                 filterable
                                 remote
                                 default-first-option
@@ -106,7 +107,13 @@
                                     }
                                 "
                             >
-                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1">
+                                <el-option
+                                    v-for="item in selectedFileDetailsDisplay"
+                                    :key="item.remapped"
+                                    :label="item.original"
+                                    :value="item"
+                                    :disabled="item.valid_10p !== 1 || item.unique_count < 2"
+                                >
                                     <el-row style="max-width: 250px">
                                         <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
@@ -124,8 +131,7 @@
                                     <br />
                                     They are used only for plotting and displaying PCA results.
                                     <br />
-                                    Only variables where the number of unique values is less than 10% of the total number of observations are shown here (because seeing groups with
-                                    1-2 observations is usually not very useful).
+                                    Only variables where the number of unique values is less than 10% of the total number of observations are shown here.
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
@@ -295,8 +301,8 @@
                                     }"
                                 >
                                     <el-col v-if="plot_data.plot_scree !== false">
-                                        <el-tabs :tab-position="'left'">
-                                            <el-tab-pane label="Scree Plot">
+                                        <el-tabs :value="'tab_eigenvalues_scree_plot'" :tab-position="'left'">
+                                            <el-tab-pane label="Scree Plot" name="tab_eigenvalues_scree_plot">
                                                 <el-row>
                                                     <el-col :span="24">
                                                         <span class="tab_intro_text">
@@ -334,7 +340,7 @@
                                                     </el-col>
                                                 </el-row>
                                             </el-tab-pane>
-                                            <el-tab-pane label="Eigenvalues">
+                                            <el-tab-pane label="Eigenvalues" name="tab_eigenvalues_table">
                                                 <el-row>
                                                     <el-col :span="24">
                                                         <div class="code-output">
@@ -367,51 +373,87 @@
                                     }"
                                 >
                                     <el-col :span="24">
-                                        <el-tabs :tab-position="'left'">
-                                            <el-tab-pane label="Correlation circle">
-                                                <el-col v-if="plot_data.plot_var_cos2_correlation !== false">
-                                                    <el-row>
-                                                        <el-col :span="24">
-                                                            <span class="tab_intro_text">
-                                                                The correlation between a variable and a principal component (PC) is used as the coordinates of the variable on the
-                                                                PC. The representation of variables differs from the plot of the observations: The observations are represented by
-                                                                their projections, but the variables are represented by their correlations (Abdi and Williams 2010).
-                                                                <br />
-                                                                The plot below is also known as variable correlation plots. It shows the relationships between all variables. It can
-                                                                be interpreted as follow:
-                                                                <br />
-                                                                Positively correlated variables are grouped together.
-                                                                <br />
-                                                                Negatively correlated variables are positioned on opposite sides of the plot origin (opposed quadrants).
-                                                                <br />
-                                                                The distance between variables and the origin measures the quality of the variables on the factor map. Variables
-                                                                that are away from the origin are well represented on the factor map.
-                                                            </span>
+                                        <el-tabs :value="'tab_variables_correlation_circle'" :tab-position="'left'">
+                                            <el-tab-pane label="Correlation circle(s)" name="tab_variables_correlation_circle">
+                                                <el-tabs :value="'tab_variables_correlation_circle_correlation_plot'" :tab-position="'top'">
+                                                    <el-tab-pane label="Correlation plot" name="tab_variables_correlation_circle_correlation_plot">
+                                                        <el-col v-if="plot_data.plot_var_cos2_correlation !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span class="tab_intro_text">
+                                                                        The correlation between a variable and a principal component (PC) is used as the coordinates of the variable
+                                                                        on the PC. The representation of variables differs from the plot of the observations: The observations are
+                                                                        represented by their projections, but the variables are represented by their correlations (Abdi and Williams
+                                                                        2010).
+                                                                        <br />
+                                                                        The plot below is also known as variable correlation plots. It shows the relationships between all
+                                                                        variables. It can be interpreted as follow:
+                                                                        <br />
+                                                                        Positively correlated variables are grouped together.
+                                                                        <br />
+                                                                        Negatively correlated variables are positioned on opposite sides of the plot origin (opposed quadrants).
+                                                                        <br />
+                                                                        The distance between variables and the origin measures the quality of the variables on the factor map.
+                                                                        Variables that are away from the origin are well represented on the factor map.
+                                                                    </span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_var_cos2_correlation')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_var_cos2_correlation_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
                                                         </el-col>
-                                                        <el-col :span="24">
-                                                            <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                                <div slot="content">
-                                                                    <el-button type="success" round @click="downloadPlotImage('plot_var_cos2_correlation')">
-                                                                        Download (.svg)
-                                                                    </el-button>
-                                                                </div>
-                                                                <img
-                                                                    id="analysis_images_pca"
-                                                                    class="animated fadeIn analysis_images"
-                                                                    :src="'data:image/png;base64,' + plot_data.plot_var_cos2_correlation_png"
-                                                                    fit="scale-down"
-                                                                />
-                                                            </el-tooltip>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                                         </el-col>
-                                                    </el-row>
-                                                </el-col>
-                                                <el-col v-else class="plot-placeholder">
-                                                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                                                </el-col>
+                                                    </el-tab-pane>
+                                                    <el-tab-pane label="Correlation plot clustered" name="tab_variables_correlation_circle_correlation_plot_clustered">
+                                                        <el-col v-if="plot_data.plot_var_cos2_correlation_cluster !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span class="tab_intro_text">
+                                                                        Following plot shows classified coordinates variable into 3 groups using the kmeans clustering algorithm.
+                                                                        <br />
+                                                                        We use the clusters returned by the kmeans algorithm to color variables.
+                                                                    </span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_var_cos2_correlation')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_var_cos2_correlation_cluster_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
+                                                        </el-col>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                        </el-col>
+                                                    </el-tab-pane>
+                                                </el-tabs>
                                             </el-tab-pane>
-                                            <el-tab-pane label="Quality of representation">
-                                                <el-tabs :tab-position="'top'">
-                                                    <el-tab-pane label="Correlation plot">
+                                            <el-tab-pane label="Quality of representation" name="tab_variables_quality">
+                                                <el-tabs :value="'tab_variables_quality_correlation'" :tab-position="'top'">
+                                                    <el-tab-pane label="Correlation plot" name="tab_variables_quality_correlation">
                                                         <el-col v-if="plot_data.plot_var_cos2_corrplot !== false">
                                                             <el-row>
                                                                 <el-col :span="24">
@@ -441,7 +483,7 @@
                                                             <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                                         </el-col>
                                                     </el-tab-pane>
-                                                    <el-tab-pane label="Bar plot">
+                                                    <el-tab-pane label="Bar plot" name="tab_variables_quality_bar">
                                                         <el-col v-if="plot_data.plot_var_bar_plot !== false">
                                                             <el-row>
                                                                 <el-col :span="24">
@@ -478,9 +520,9 @@
                                                     </el-tab-pane>
                                                 </el-tabs>
                                             </el-tab-pane>
-                                            <el-tab-pane label="Contributions of variables to PCs">
-                                                <el-tabs :tab-position="'top'">
-                                                    <el-tab-pane label="Correlation plot">
+                                            <el-tab-pane label="Contributions of variables to PCs" name="tab_variables_contributions">
+                                                <el-tabs :tab-position="'top'" :value="'tab_variables_contributions_correlation'">
+                                                    <el-tab-pane label="Correlation plot" name="tab_variables_contributions_correlation">
                                                         <el-col v-if="plot_data.plot_var_contrib_corrplot !== false">
                                                             <el-row>
                                                                 <el-col :span="24">
@@ -516,7 +558,7 @@
                                                             <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                                         </el-col>
                                                     </el-tab-pane>
-                                                    <el-tab-pane label="Bar plot">
+                                                    <el-tab-pane label="Bar plot" name="tab_variables_contributions_bar">
                                                         <el-col v-if="plot_data.plot_var_contrib_bar_plot !== false">
                                                             <el-row>
                                                                 <el-col :span="24">
@@ -546,7 +588,7 @@
                                                             <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                                         </el-col>
                                                     </el-tab-pane>
-                                                    <el-tab-pane label="Other">
+                                                    <el-tab-pane label="Correlation Circle" name="tab_variables_contributions_correlation_circle">
                                                         <el-col v-if="plot_data.plot_var_contrib_correlation !== false">
                                                             <el-row>
                                                                 <el-col :span="24">
@@ -573,7 +615,7 @@
                                                             <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                                         </el-col>
                                                     </el-tab-pane>
-                                                    <el-tab-pane label="Dimension description">
+                                                    <el-tab-pane label="Dimension description" name="tab_variables_contributions_dimension">
                                                         <el-col v-if="details.desc_dim_1 !== false">
                                                             <el-row>
                                                                 <el-col :span="24">
@@ -619,47 +661,124 @@
                                     }"
                                 >
                                     <el-col :span="24">
-                                        <el-tabs :tab-position="'left'">
-                                            <el-tab-pane label="Correlation circle">
-                                                <el-col v-if="plot_data.plot_ind_cos2_correlation !== false">
-                                                    <el-row>
-                                                        <el-col :span="24">
-                                                            <span class="tab_intro_text">
-                                                                The correlation between a variable and a principal component (PC) is used as the coordinates of the variable on the
-                                                                PC. The representation of variables differs from the plot of the observations: The observations are represented by
-                                                                their projections, but the variables are represented by their correlations (Abdi and Williams 2010).
-                                                                <br />
-                                                                The plot below is also known as variable correlation plots. It shows the relationships between all variables. It can
-                                                                be interpreted as follow:
-                                                                <br />
-                                                                Positively correlated variables are grouped together.
-                                                                <br />
-                                                                Negatively correlated variables are positioned on opposite sides of the plot origin (opposed quadrants).
-                                                                <br />
-                                                                The distance between variables and the origin measures the quality of the variables on the factor map. Variables
-                                                                that are away from the origin are well represented on the factor map.
-                                                            </span>
+                                        <el-tabs :tab-position="'left'" :value="'tab_individuals_correlation_circle'">
+                                            <el-tab-pane label="Correlation circle(s)" name="tab_individuals_correlation_circle">
+                                                <el-tabs :value="'tab_individuals_correlation_circle_original'" :tab-position="'top'">
+                                                    <el-tab-pane label="Circle" name="tab_individuals_correlation_circle_original">
+                                                        <el-col v-if="plot_data.plot_ind_cos2_correlation !== false">
+                                                            <el-row>
+                                                                <el-col :span="24">
+                                                                    <span class="tab_intro_text">Graph of individuals.</span>
+                                                                </el-col>
+                                                                <el-col :span="24">
+                                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                        <div slot="content">
+                                                                            <el-button type="success" round @click="downloadPlotImage('plot_ind_cos2_correlation')">
+                                                                                Download (.svg)
+                                                                            </el-button>
+                                                                        </div>
+                                                                        <img
+                                                                            id="analysis_images_pca"
+                                                                            class="animated fadeIn analysis_images"
+                                                                            :src="'data:image/png;base64,' + plot_data.plot_ind_cos2_correlation_png"
+                                                                            fit="scale-down"
+                                                                        />
+                                                                    </el-tooltip>
+                                                                </el-col>
+                                                            </el-row>
                                                         </el-col>
-                                                        <el-col :span="24">
-                                                            <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                                <div slot="content">
-                                                                    <el-button type="success" round @click="downloadPlotImage('plot_ind_cos2_correlation')">
-                                                                        Download (.svg)
-                                                                    </el-button>
-                                                                </div>
-                                                                <img
-                                                                    id="analysis_images_pca"
-                                                                    class="animated fadeIn analysis_images"
-                                                                    :src="'data:image/png;base64,' + plot_data.plot_ind_cos2_correlation_png"
-                                                                    fit="scale-down"
-                                                                />
-                                                            </el-tooltip>
+                                                        <el-col v-else class="plot-placeholder">
+                                                            <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                                                         </el-col>
-                                                    </el-row>
-                                                </el-col>
-                                                <el-col v-else class="plot-placeholder">
-                                                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                                                </el-col>
+                                                    </el-tab-pane>
+                                                    <el-tab-pane
+                                                        label="Grouped"
+                                                        name="tab_individuals_correlation_circle_grouped"
+                                                        :disabled="plot_data.plot_ind_cos2_correlation_grouped.length === 0"
+                                                    >
+                                                        <el-tabs
+                                                            :value="plot_data.plot_ind_cos2_correlation_grouped.length > 0 ? 'tab_individuals_correlation_circle_grouped_0' : null"
+                                                            :tab-position="'right'"
+                                                        >
+                                                            <el-tab-pane
+                                                                v-for="(plotData, plotIndex) in plot_data.plot_ind_cos2_correlation_grouped"
+                                                                :key="'tab_individuals_correlation_circle_grouped_' + plotIndex"
+                                                                :label="plotData.name"
+                                                                :name="'tab_individuals_correlation_circle_grouped_' + plotIndex"
+                                                            >
+                                                                <el-row>
+                                                                    <el-col :span="24">
+                                                                        <span class="tab_intro_text">
+                                                                            Graph of individuals colored by group "{{ plotData.name }}". Additionally, we added concentration
+                                                                            ellipses and confidence ellipses by groups.
+                                                                        </span>
+                                                                    </el-col>
+                                                                    <el-col :span="24" v-if="true === true">
+                                                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                            <div slot="content">
+                                                                                <el-button type="success" round>Download (.svg)</el-button>
+                                                                            </div>
+                                                                            <img
+                                                                                id="analysis_images_pca"
+                                                                                class="animated fadeIn analysis_images"
+                                                                                :src="'data:image/png;base64,' + plotData.png"
+                                                                                fit="scale-down"
+                                                                            />
+                                                                        </el-tooltip>
+                                                                    </el-col>
+                                                                    <el-col v-else class="plot-placeholder">
+                                                                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                                    </el-col>
+                                                                </el-row>
+                                                            </el-tab-pane>
+                                                        </el-tabs>
+                                                    </el-tab-pane>
+                                                    <el-tab-pane
+                                                        label="Biplot"
+                                                        name="tab_individuals_correlation_circle_biplot"
+                                                        :disabled="plot_data.plot_ind_cos2_correlation_grouped_biplot.length === 0"
+                                                    >
+                                                        <el-tabs
+                                                            :value="
+                                                                plot_data.plot_ind_cos2_correlation_grouped_biplot.length > 0 ? 'tab_individuals_correlation_circle_biplot_0' : null
+                                                            "
+                                                            :tab-position="'right'"
+                                                        >
+                                                            <el-tab-pane
+                                                                v-for="(plotData, plotIndex) in plot_data.plot_ind_cos2_correlation_grouped_biplot"
+                                                                :key="'tab_individuals_correlation_circle_biplot_' + plotIndex"
+                                                                :label="plotData.name"
+                                                                :name="'tab_individuals_correlation_circle_biplot_' + plotIndex"
+                                                            >
+                                                                <el-row>
+                                                                    <el-col :span="24">
+                                                                        <span class="tab_intro_text">
+                                                                            Color individuals by group "{{ plotData.name }}" (discrete color) and variables by their contributions
+                                                                            to the principal components (gradient colors). Additionally, we’ll change the transparency of variables
+                                                                            by their contributions.
+                                                                        </span>
+                                                                    </el-col>
+                                                                    <el-col :span="24" v-if="true === true">
+                                                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                                            <div slot="content">
+                                                                                <el-button type="success" round>Download (.svg)</el-button>
+                                                                            </div>
+                                                                            <img
+                                                                                id="analysis_images_pca"
+                                                                                class="animated fadeIn analysis_images"
+                                                                                :src="'data:image/png;base64,' + plotData.png"
+                                                                                fit="scale-down"
+                                                                            />
+                                                                        </el-tooltip>
+                                                                    </el-col>
+                                                                    <el-col v-else class="plot-placeholder">
+                                                                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                                    </el-col>
+                                                                </el-row>
+                                                            </el-tab-pane>
+                                                        </el-tabs>
+                                                    </el-tab-pane>
+                                                </el-tabs>
                                             </el-tab-pane>
                                             <el-tab-pane label="Quality of representation">
                                                 <el-tabs :tab-position="'top'">
@@ -896,6 +1015,9 @@ export default {
                 plot_var_cos2_correlation: false,
                 plot_var_cos2_correlation_png: false,
 
+                plot_var_cos2_correlation_cluster: false,
+                plot_var_cos2_correlation_cluster_png: false,
+
                 plot_var_cos2_corrplot: false,
                 plot_var_cos2_corrplot_png: false,
 
@@ -913,6 +1035,10 @@ export default {
 
                 plot_ind_cos2_correlation: false,
                 plot_ind_cos2_correlation_png: false,
+
+                // Here we can have multiple plots based on how many grouping variables are selected
+                plot_ind_cos2_correlation_grouped: [],
+                plot_ind_cos2_correlation_grouped_biplot: [],
 
                 plot_ind_cos2_corrplot: false,
                 plot_ind_cos2_corrplot_png: false,
@@ -957,7 +1083,7 @@ export default {
                 excludedColumns: [],
                 pcaComponentsDisplayX: [],
                 pcaComponentsDisplayY: [],
-                groupingVariable: null,
+                groupingVariables: [],
                 displayLoadings: true,
                 fontSize: 12,
                 theme: "theme_bw",
@@ -1096,13 +1222,13 @@ export default {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.excludedColumns.includes(x));
             }
 
-            // Remove any grouping variable from selected columns
-            if (settingsForm.groupingVariable !== null && typeof settingsForm.groupingVariable === "object") {
-                settingsForm.groupingVariable = settingsForm.groupingVariable.remapped;
+            // Remove any grouping variables from selected columns
+            if (settingsForm.groupingVariables.length > 0) {
+                settingsForm.groupingVariables = settingsForm.groupingVariables.map((x) => x.remapped);
                 // Remove Grouping variable from selected columns
-                settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => x !== settingsForm.groupingVariable);
+                settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.groupingVariables.includes(x));
                 // Remove Grouping variable from excluded columns
-                settingsForm.excludedColumns = settingsForm.excludedColumns.filter((x) => x !== settingsForm.groupingVariable);
+                settingsForm.excludedColumns = settingsForm.excludedColumns.filter((x) => !settingsForm.groupingVariables.includes(x));
             }
 
             fetchEditingPcaAnalysisPlot({
@@ -1112,40 +1238,38 @@ export default {
                 .then((response) => {
                     const respData = response.data.message;
                     const details = response.data.details;
+                    // Reset multiple plots arrays
+                    this.plot_data["plot_ind_cos2_correlation_grouped"] = [];
+                    this.plot_data["plot_ind_cos2_correlation_grouped_biplot"] = [];
 
                     // Update the image data.
                     for (let respIndex in respData) {
                         if (typeof this.plot_data[respIndex] !== "undefined") {
-                            this.plot_data[respIndex] = false;
-
                             let respItem = respData[respIndex];
-                            if (respItem.length < 15 || typeof respItem == "undefined") {
-                                this.plot_data[respIndex] = false;
-                                this.$message({
-                                    message: "There was error in generating plot: " + respIndex,
-                                    type: "error",
-                                });
-                            } else {
-                                console.log("setting plot data for: " + respIndex);
 
+                            console.log("==> Main type: " + respIndex);
+                            console.log("==> Main type: " + typeof respItem);
+
+                            if (typeof respItem === "object" && Object.keys(respItem).length === 0) {
+                                this.plot_data[respIndex] = false;
+                            } else if (typeof respItem === "object") {
+                                for (let respItemIndex in respItem) {
+                                    let respItemSub = respItem[respItemIndex];
+                                    this.plot_data[respIndex].push(respItemSub);
+                                }
+                            } else {
                                 this.plot_data[respIndex] = encodeURIComponent(respItem);
                             }
                         }
                     }
-
                     // Update the details data.
                     for (let respIndex in details) {
                         if (typeof this.details[respIndex] !== "undefined") {
                             this.details[respIndex] = false;
                             let respItem = details[respIndex];
-                            if (respItem.length < 15 || typeof respItem == "undefined") {
+                            if (typeof respItem === "object" || respItem.length < 15) {
                                 this.details[respIndex] = false;
-                                this.$message({
-                                    message: "There was error in processing details: " + respIndex,
-                                    type: "error",
-                                });
                             } else {
-                                console.log("setting details data for: " + respIndex);
                                 this.details[respIndex] = window.atob(respItem);
                             }
                         }

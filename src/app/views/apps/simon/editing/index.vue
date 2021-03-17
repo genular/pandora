@@ -259,7 +259,6 @@ export default {
 .code-output {
     max-height: 1000px;
     font-size: 12px;
-    overflow: auto;
     margin-top: 15px;
     text-align: left;
 
@@ -271,6 +270,7 @@ export default {
         border-radius: 15px;
         padding: 10px;
         font-size: 14px;
+        overflow: auto;
     }
 
     .code-header {
