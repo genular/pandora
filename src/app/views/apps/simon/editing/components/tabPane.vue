@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { overviewTab, correlationTab, clusteringTab, pcaAnalysisTab, tSNETab } from "./tabs";
+import { overviewTab, correlationTab, clusteringTab, pcaAnalysisTab, tSNETab, umapTab } from "./tabs";
 
 export default {
     name: "tabPane",
@@ -23,6 +23,7 @@ export default {
         clusteringTab,
         pcaAnalysisTab,
         tSNETab,
+        umapTab,
     },
 };
 </script>

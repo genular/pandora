@@ -310,18 +310,67 @@
                                                             PCs and small for the subsequent PCs. That is, the first PCs corresponds to the directions with the maximum amount of
                                                             variation in the data set.
                                                             <br />
-                                                            Eigenvalues can be used to determine the number of principal components to retain after PCA (Kaiser 1961):
+                                                            <br />
+                                                            Eigenvalues can be used to determine the number of principal components to retain after PCA (Kaiser 1961).
+                                                            <el-tooltip placement="top">
+                                                                <div slot="content">
+                                                                    Henry F Kaiser. A note on guttman's lower bound for the number of common factors 1. British Journal of
+                                                                    Statistical Psychology, 14(1):1--2, 1961.
+                                                                    <br />
+                                                                </div>
+
+                                                                <i class="el-icon-question"></i>
+                                                            </el-tooltip>
+                                                            A more data driven result is known as the Guttman-Kaiser {Guttman (1954), Kaiser (1960), Kaiser (1961)} criterion.
+                                                            <el-tooltip placement="top">
+                                                                <div slot="content">
+                                                                    Louis Guttman. Some necessary conditions for common-factor analysis. Psychometrika, 19(2):149--161, 1954.
+                                                                    <br />
+                                                                    Henry F Kaiser. The application of electronic computers to factor analysis. Educational and psychological
+                                                                    measurement, 20(1):141--151, 1960.
+                                                                    <br />
+                                                                    Henry F Kaiser. A note on guttman's lower bound for the number of common factors 1. British Journal of
+                                                                    Statistical Psychology, 14(1):1--2, 1961.
+                                                                    <br />
+                                                                </div>
+                                                                <i class="el-icon-question"></i>
+                                                            </el-tooltip>
+                                                            <br />
                                                             <br />
                                                             The number of component is determined at the point, beyond which the remaining eigenvalues are all relatively small and
                                                             of comparable size (Jollife 2002, Peres-Neto, Jackson, and Somers (2005)).
+                                                            <el-tooltip placement="top">
+                                                                <div slot="content">
+                                                                    Jollife, I.T. 2002. Principal Component Analysis. 2nd ed. New York: Springer-Verlag. https://bit.ly/3lrxHK2
+                                                                    <br />
+                                                                    Peres-Neto, Pedro R., Donald A. Jackson, and Keith M. Somers. 2005. “How Many Principal Components? Stopping
+                                                                    Rules for Determining the Number of Non-Trivial Axes Revisited.” British Journal of Statistical Psychology 49:
+                                                                    974–97.
+                                                                    <br />
+                                                                </div>
+                                                                <i class="el-icon-question"></i>
+                                                            </el-tooltip>
                                                             <br />
                                                             An eigenvalue > 1 indicates that PCs account for more variance than accounted by one of the original variables in
                                                             standardized data. This is commonly used as a cutoff point for which PCs are retained. This holds true only when the
                                                             data are standardized.
                                                             <br />
+                                                            <br />
                                                             You can also limit the number of component to that number that accounts for a certain fraction of the total variance.
                                                             For example, if you are satisfied with 70% of the total variance explained then use the number of components to achieve
-                                                            that.
+                                                            that. More about Eigenvectors
+                                                            <a href="https://stats.stackexchange.com/a/143949" target="_blank" rel="noopener noreferrer">here</a>
+                                                            ,
+                                                            <a href="https://stats.stackexchange.com/a/35653" target="_blank" rel="noopener noreferrer">here</a>
+                                                            &
+                                                            <a
+                                                                href="https://web.archive.org/web/20210221232219/http://www.sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/112-pca-principal-component-analysis-essentials/"
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                here
+                                                            </a>
+                                                            .
                                                         </span>
                                                     </el-col>
 
@@ -716,7 +765,13 @@
                                                                     <el-col :span="24" v-if="true === true">
                                                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                             <div slot="content">
-                                                                                <el-button type="success" round>Download (.svg)</el-button>
+                                                                                <el-button
+                                                                                    type="success"
+                                                                                    round
+                                                                                    @click="downloadPlotImage('plot_ind_cos2_correlation_grouped', plotIndex)"
+                                                                                >
+                                                                                    Download (.svg)
+                                                                                </el-button>
                                                                             </div>
                                                                             <img
                                                                                 id="analysis_images_pca"
@@ -761,7 +816,13 @@
                                                                     <el-col :span="24" v-if="true === true">
                                                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                             <div slot="content">
-                                                                                <el-button type="success" round>Download (.svg)</el-button>
+                                                                                <el-button
+                                                                                    type="success"
+                                                                                    round
+                                                                                    @click="downloadPlotImage('plot_ind_cos2_correlation_grouped_biplot', plotIndex)"
+                                                                                >
+                                                                                    Download (.svg)
+                                                                                </el-button>
                                                                             </div>
                                                                             <img
                                                                                 id="analysis_images_pca"
@@ -1178,19 +1239,41 @@ export default {
             }
         },
         isTabDisabled(tabName) {
-            if (this.plot_data[tabName] !== false) {
-                return false;
+            let isDisabled = true;
+            if (Array.isArray(this.plot_data[tabName]) === false && this.plot_data[tabName] !== false) {
+                isDisabled = false;
+            } else if (Array.isArray(this.plot_data[tabName]) === true && this.plot_data[tabName].length === 0) {
+                isDisabled = true;
+            } else if (typeof this.plot_data[tabName] === "undefined") {
+                isDisabled = true;
+            } else if (this.plot_data[tabName].length > 0) {
+                isDisabled = false;
             } else {
-                return true;
+                isDisabled = true;
             }
+            return isDisabled;
         },
-        downloadPlotImage(imageType) {
+        downloadPlotImage(imageType, itemIndex = null) {
             if (typeof this.plot_data[imageType] === "undefined") {
                 return;
             }
+            let svgString = "";
+            let downloadName = this.$options.name + "_" + imageType;
+            if (itemIndex !== null) {
+                if (typeof this.plot_data[imageType][itemIndex] !== "undefined") {
+                    svgString = this.plot_data[imageType][itemIndex].svg;
+                    downloadName = downloadName + "_" + itemIndex;
+                }
+            } else {
+                svgString = this.plot_data[imageType];
+            }
+            if (svgString === "") {
+                return;
+            }
 
-            const svgImage = "data:image/svg+xml;base64," + this.plot_data[imageType];
+            downloadName = downloadName + ".svg";
 
+            const svgImage = "data:image/svg+xml;base64," + svgString;
             const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
                 type: "image/svg+xml;charset=utf-8",
             });
@@ -1198,7 +1281,8 @@ export default {
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
             downloadLink.href = svgUrl;
-            downloadLink.download = this.$options.name + "_" + imageType + ".svg";
+            downloadLink.download = downloadName;
+
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
@@ -1246,10 +1330,6 @@ export default {
                     for (let respIndex in respData) {
                         if (typeof this.plot_data[respIndex] !== "undefined") {
                             let respItem = respData[respIndex];
-
-                            console.log("==> Main type: " + respIndex);
-                            console.log("==> Main type: " + typeof respItem);
-
                             if (typeof respItem === "object" && Object.keys(respItem).length === 0) {
                                 this.plot_data[respIndex] = false;
                             } else if (typeof respItem === "object") {

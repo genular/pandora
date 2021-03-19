@@ -99,6 +99,19 @@ export function fetchTsnePlot(query) {
 }
 
 /**
+ * [fetchUmapPlot description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function fetchUmapPlot(query) {
+    return request({
+        url: baseUrlPath + "/editing/umap/render-plot",
+        method: "GET",
+        params: query,
+    });
+}
+
+/**
  * [fetchEditingPcaAnalysisPlotZoomed description]
  * @param  {[type]} query [description]
  * @return {[type]}       [description]

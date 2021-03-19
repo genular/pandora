@@ -10,3 +10,4 @@ export { default as correlationTab } from "./correlationTab/correlationTab.vue";
 export { default as clusteringTab } from "./clusteringTab/clusteringTab.vue";
 export { default as pcaAnalysisTab } from "./pcaAnalysisTab/pcaAnalysisTab.vue";
 export { default as tSNETab } from "./tSNETab/tSNETab.vue";
+export { default as umapTab } from "./umapTab/umapTab.vue";

@@ -62,6 +62,13 @@ export default {
                     restriction: "selectedFileDetails",
                     restriction_details: -1,
                 },
+                {
+                    label: "UMAP",
+                    key: "umapTab",
+                    icon: "el-icon-date",
+                    restriction: "selectedFileDetails",
+                    restriction_details: -1,
+                },
             ],
         };
     },
@@ -251,6 +258,10 @@ export default {
         margin: 0 auto;
         margin-top: 50px;
     }
+}
+
+.item_danger {
+    opacity: 0.4;
 }
 
 .is_tab_active {

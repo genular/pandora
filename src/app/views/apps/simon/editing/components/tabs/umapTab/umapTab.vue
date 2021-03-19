@@ -1,5 +1,5 @@
 <template>
-    <div class="editing-tsne-tab" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
+    <div class="editing-umap-tab" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="top">
             <el-col :span="4">
                 <el-row>
@@ -138,62 +138,40 @@
                             </el-tooltip>
                         </el-form-item>
 
-                        <el-form-item label="Clustering alghoritam:">
-                            <el-select
-                                style="float: right"
-                                v-model="settingsForm.clusterType"
-                                filterable
-                                default-first-option
-                                reserve-keyword
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
-                            >
-                                <el-option v-for="item in settingsOptions.clusterType" :key="item.value" :label="item.name" :value="item.value">
-                                    <span style="float: left">
-                                        {{ item.name }}
-                                    </span>
-                                    <el-tooltip placement="top" style="float: right">
-                                        <div slot="content">
-                                            {{ item.description }}
-                                        </div>
-                                        <i class="el-icon-question"></i>
-                                    </el-tooltip>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-                        <el-form-item label="Clustering method" v-if="['Hierarchical'].includes(settingsForm.clusterType)">
-                            <el-select
-                                style="float: right"
-                                v-model="settingsForm.clustLinkage"
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.placeholder')"
-                            >
-                                <el-option
-                                    v-for="item in settingsOptions.clustLinkage"
-                                    :key="item.id"
-                                    :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
-                                    :value="item.id"
-                                >
-                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-                        <el-form-item label="KNN clusters" v-if="['Louvain'].includes(settingsForm.clusterType)">
-                            <el-input-number style="float: right" v-model="settingsForm.knn_clusters" :step="1" :min="2" :max="2048"></el-input-number>
-                        </el-form-item>
-
-                        <el-form-item label="Cluster groups" v-if="['Hierarchical', 'Mclust'].includes(settingsForm.clusterType)">
-                            <el-input-number style="float: right" v-model="settingsForm.clustGroups" :step="1" :min="2" :max="128"></el-input-number>
-                        </el-form-item>
-
-                        <el-form-item label="Reachability distance" v-if="['Density'].includes(settingsForm.clusterType)">
-                            <el-input-number style="float: right" v-model="settingsForm.reachabilityDistance" :step="1" :min="1" :max="512"></el-input-number>
+                        <el-form-item label="Keep groups?">
+                            <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.includeOtherGroups"></el-switch>
+                            <el-tooltip placement="top">
+                                <div slot="content">
+                                    When we process each umap computation for each group selected should we drop other group columns if any selected or keep them in analysis?
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
                         </el-form-item>
 
                         <el-form-item label="Preprocess">
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.preProcessDataset"></el-switch>
                             <el-tooltip placement="top">
                                 <div slot="content">Should we apply preprocessing ("medianImpute", "center", "scale") to dataset before drawing any plots?</div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item label="Partition split">
+                            <el-slider
+                                style="clear: both; width: 100%; float: right"
+                                v-model="settingsForm.selectedPartitionSplit"
+                                :step="5"
+                                :min="50"
+                                :max="100"
+                                show-input
+                                :format-tooltip="formatPartitionSplitTooltip"
+                                show-stops
+                            ></el-slider>
+                            <el-tooltip placement="top">
+                                <div slot="content">
+                                    If you wish to compute Supervised Learning on umap please mark what percentage should we use for Train and Test dataset. They will be split
+                                    based on distribution of grouping variables.
+                                </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
@@ -327,74 +305,61 @@
             </el-col>
             <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
                 <el-tabs v-model="activeTab">
-                    <el-tab-pane label="Main Plot" name="tsne_plot" :disabled="isTabDisabled('tsne_plot')">
-                        <el-tabs :value="plot_data.tsne_plot.length > 0 ? 'tab_tsne_grouped_0' : null" :tab-position="'right'">
+                    <el-tab-pane label="UMAP Plot" name="umap_plot" :disabled="isTabDisabled('umap_plot')">
+                        <el-tabs :value="plot_data.umap_plot.length > 0 ? 'tab_umap_grouped_0' : null" :tab-position="'right'">
                             <el-tab-pane
-                                v-for="(plotData, plotIndex) in plot_data.tsne_plot"
-                                :key="'tab_tsne_grouped_' + plotIndex"
+                                v-for="(plotData, plotIndex) in plot_data.umap_plot"
+                                :key="'tab_umap_grouped_' + plotIndex"
                                 :label="plotData.name"
-                                :name="'tab_tsne_grouped_' + plotIndex"
+                                :name="'tab_umap_grouped_' + plotIndex"
                             >
                                 <el-row>
                                     <el-col :span="24">
                                         <span class="tab_intro_text" v-if="plotData.name === 'Main Plot'">
-                                            Barnes-Hut t-Distributed Stochastic Neighbor Embedding. t-SNE is a method for constructing a low dimensional embedding of
-                                            high-dimensional data, distances or similarities.
+                                            UMAP Display of Supervised Learning embedding, where numeric values are leveraged so that similar points are closer together.
                                         </span>
-                                        <span class="tab_intro_text" v-else>Graph of individuals colored by group: "{{ plotData.name }}".</span>
+                                        <span class="tab_intro_text" v-else>
+                                            UMAP Display of Metric Learning embedding, where numeric values are leveraged so that similar points are closer together.
+                                            <br />
+                                            {{ plotData.text }}
+                                        </span>
                                     </el-col>
-                                    <el-col :span="24" v-if="true === true">
+
+                                    <el-col :span="plotData.test ? 12 : 24" v-if="plotData.train" class="umap_training">
+                                        Training
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
-                                                <el-button type="success" round @click="downloadPlotImage('tsne_plot', plotIndex)">Download (.svg)</el-button>
-                                            </div>
-                                            <img id="analysis_images_pca" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plotData.png" fit="scale-down" />
-                                        </el-tooltip>
-                                    </el-col>
-                                    <el-col v-else class="plot-placeholder">
-                                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                                    </el-col>
-                                </el-row>
-                            </el-tab-pane>
-                        </el-tabs>
-                    </el-tab-pane>
-                    <el-tab-pane label="Clustered" name="tsne_cluster_plot" :disabled="isTabDisabled('tsne_cluster_plot')">
-                        <el-row
-                            v-bind:class="{
-                                is_tab_active: isTabDisabled('tsne_cluster_plot'),
-                            }"
-                        >
-                            <el-col v-if="plot_data.tsne_cluster_plot_png !== false">
-                                <el-row>
-                                    <el-col :span="24">
-                                        <span>Clustered t-SNE plot using: {{ settingsForm.clusterType }}</span>
-                                    </el-col>
-                                    <el-col :span="24">
-                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                            <div slot="content">
-                                                <el-button type="success" round @click="downloadPlotImage('tsne_cluster_plot')">Download (.svg)</el-button>
+                                                <el-button type="success" round @click="downloadPlotImage('umap_plot', plotIndex)">Download (.svg)</el-button>
                                             </div>
                                             <img
-                                                id="analysis_images_tsne_clustered_plot"
+                                                id="analysis_images_pca"
                                                 class="animated fadeIn analysis_images"
-                                                :src="'data:image/png;base64,' + plot_data.tsne_cluster_plot_png"
+                                                :src="'data:image/png;base64,' + plotData.train.png"
+                                                fit="scale-down"
+                                            />
+                                        </el-tooltip>
+                                    </el-col>
+
+                                    <el-col :span="12" v-if="plotData.test" class="umap_testing">
+                                        Testing
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <div slot="content">
+                                                <el-button type="success" round @click="downloadPlotImage('umap_plot', plotIndex)">Download (.svg)</el-button>
+                                            </div>
+                                            <img
+                                                id="analysis_images_pca"
+                                                class="animated fadeIn analysis_images"
+                                                :src="'data:image/png;base64,' + plotData.test.png"
                                                 fit="scale-down"
                                             />
                                         </el-tooltip>
                                     </el-col>
                                 </el-row>
-                            </el-col>
-                            <el-col v-else class="plot-placeholder">
-                                <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                            </el-col>
-                        </el-row>
+                            </el-tab-pane>
+                        </el-tabs>
                     </el-tab-pane>
-                    <el-tab-pane label="Interactive t-SNE" name="tsne_cluster_heatmap_plot_png" :disabled="isTabDisabled('tsne_cluster_heatmap_plot')">
-                        <el-row
-                            v-bind:class="{
-                                is_tab_active: isTabDisabled('tsne_cluster_heatmap_plot'),
-                            }"
-                        >
+                    <el-tab-pane label="SVM" name="umap_svm" :disabled="true">
+                        <el-row>
                             <el-col :span="24"></el-col>
                         </el-row>
                     </el-tab-pane>
@@ -404,7 +369,7 @@
     </div>
 </template>
 <script>
-import { getOverViewAavailableColumns, fetchTsnePlot } from "@/api/plots";
+import { getOverViewAavailableColumns, fetchUmapPlot } from "@/api/plots";
 import Fuse from "fuse.js";
 
 import plotColorPalettes from "@/assets/plots/color_palettes.json";
@@ -413,7 +378,7 @@ import plotThemes from "@/assets/plots/themes.json";
 import waves from "@/directive/waves";
 
 export default {
-    name: "tSNETab",
+    name: "umapTab",
     directives: {
         waves,
     },
@@ -423,7 +388,7 @@ export default {
             tabEnabled: false,
             fuseIndex: null,
             loadingPlot: false,
-            activeTab: "tsne_plot",
+            activeTab: "umap_plot",
 
             selectedFileDetailsDisplay: [],
 
@@ -431,22 +396,6 @@ export default {
                 availableColumns: [],
                 theme: plotThemes,
                 colorPalette: plotColorPalettes,
-                clusterType: [
-                    { value: "Louvain", name: "KNN graph and Louvain", description: "KNN graph and Louvain community detection" },
-                    { value: "Hierarchical", name: "Hierarchical clustering", description: "Doesnt scale well. High memory usage and computation time when >30K." },
-                    { value: "Mclust", name: "Mclust", description: "Can find the best K (number of clusters (although slowly)." },
-                    { value: "Density", name: "Density-based clustering", description: "Can find clusters with different shapes." },
-                ],
-                clustLinkage: [
-                    { id: "single" },
-                    { id: "complete" },
-                    { id: "average" },
-                    { id: "mcquitty" },
-                    { id: "median" },
-                    { id: "centroid" },
-                    { id: "ward.D2" },
-                    { id: "ward.D" },
-                ],
             },
 
             settingsForm: {
@@ -458,23 +407,15 @@ export default {
                 theme: "theme_bw",
                 colorPalette: "Set1",
                 aspect_ratio: 1,
-                clusterType: "Louvain",
+
                 cutOffColumnSize: 1000,
                 removeNA: false,
-                perplexity: 30,
-                knn_clusters: 250,
-                clustLinkage: "ward.D2",
-                clustGroups: 9,
-                reachabilityDistance: 2,
+
+                selectedPartitionSplit: 85,
+                includeOtherGroups: false,
             },
             plot_data: {
-                tsne_plot: [],
-
-                tsne_cluster_plot: false,
-                tsne_cluster_plot_png: false,
-
-                tsne_cluster_heatmap_plot: false,
-                tsne_cluster_heatmap_plot_png: false,
+                umap_plot: [],
 
                 saveObjectHash: false,
             },
@@ -519,6 +460,21 @@ export default {
         this.isTabEnabled();
     },
     methods: {
+        formatPartitionSplitTooltip(val) {
+            const training = Math.round(val);
+            const testing = Math.round(100 - training);
+            const message =
+                this.$t("views.apps.simon.analysis.components.FileDetails.other.training") +
+                ": " +
+                training +
+                "% - " +
+                this.$t("views.apps.simon.analysis.components.FileDetails.other.testing") +
+                ": " +
+                testing +
+                "%";
+
+            return message;
+        },
         downloadTable() {
             const exportData = this.selectedFileDetails.columns;
             import("@/vendor/Export2Excel").then((excel) => {
@@ -605,13 +561,23 @@ export default {
                 settingsForm.excludedColumns = settingsForm.excludedColumns.filter((x) => !settingsForm.groupingVariables.includes(x));
             }
 
-            fetchTsnePlot({
+            if (settingsForm.selectedPartitionSplit !== 100 && settingsForm.groupingVariables.length === 0) {
+                settingsForm.selectedPartitionSplit = 100;
+                this.settingsForm.selectedPartitionSplit = 100;
+            }
+
+            if (settingsForm.selectedPartitionSplit === 100 && settingsForm.groupingVariables.length !== 0) {
+                settingsForm.selectedPartitionSplit = 75;
+                this.settingsForm.selectedPartitionSplit = 75;
+            }
+
+            fetchUmapPlot({
                 selectedFileID: this.selectedFiles[0].id,
                 settings: settingsForm,
             })
                 .then((response) => {
                     let respData = response.data.message;
-                    this.plot_data["tsne_plot"] = [];
+                    this.plot_data["umap_plot"] = [];
                     // Update the image data.
                     for (let respIndex in respData) {
                         if (typeof this.plot_data[respIndex] !== "undefined") {
@@ -701,14 +667,7 @@ export default {
         resetVariables() {
             this.fuseIndex = null;
             this.plot_data = {
-                tsne_plot: false,
-                tsne_plot_png: false,
-
-                tsne_cluster_plot: false,
-                tsne_cluster_plot_png: false,
-
-                tsne_cluster_heatmap_plot: false,
-                tsne_cluster_heatmap_plot_png: false,
+                umap_plot: false,
 
                 saveObjectHash: false,
             };
@@ -748,17 +707,5 @@ export default {
 }
 .analysis_images {
     max-width: 100%;
-}
-
-#tsne-three {
-    width: 100%;
-    height: 100vh;
-}
-#tsnethree-text {
-    color: #ffdbe1;
-    font-weight: 700;
-    font-family: "Roboto Mono";
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
 }
 </style>
