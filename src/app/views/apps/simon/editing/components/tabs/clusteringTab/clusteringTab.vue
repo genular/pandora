@@ -4,7 +4,7 @@
             <el-row type="flex" align="top">
                 <el-col :span="4">
                     <el-form ref="settingsForm" :model="settingsForm">
-                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.title')">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.columns.title')">
                             <el-select
                                 style="float: right"
                                 v-model="settingsForm.selectedColumns"
@@ -15,7 +15,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -37,26 +37,23 @@
                             <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
-                                    Please select columns you wish to cluster by your data. This should be a categorical value.
-                                    <br />
-                                    Leaving this empty will take n valid unique 10% columns based on maximum cutoff size.
+                                    {{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.columns.description") }}
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
 
-                        <el-form-item label="First (n) columns">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_columns.title')">
                             <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="1" :min="1" :max="15"></el-input-number>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
-                                    If you have not selected any Columns we will take first n columns from your dataset, based on this value, that have number of unique values less
-                                    than 10%.
+                                    {{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_columns.description") }}
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.rows.title')">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.rows.title')">
                             <el-select
                                 style="float: right"
                                 v-model="settingsForm.selectedRows"
@@ -67,7 +64,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.rows.placeholder')"
+                                :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.rows.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -94,17 +91,17 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="First (n) rows">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_rows.title')">
                             <el-input-number style="float: right" v-model="settingsForm.cutOffRowSize" :step="10" :min="10" :max="10000"></el-input-number>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
-                                    If you have not selected any Rows we will take first n columns, based on this value, from your dataset to be used in as Rows in plot.
+                                    {{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_rows.description") }}
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.remove_na')">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.remove_na')">
                             <el-checkbox style="float: right" v-model="settingsForm.removeNA"></el-checkbox>
                         </el-form-item>
 
@@ -112,37 +109,37 @@
                             <el-checkbox style="float: right" v-model="settingsForm.preProcessDataset"></el-checkbox>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.scale.label')">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.scale.label')">
                             <el-select v-model="settingsForm.scale" style="float: right" placeholder="Select">
                                 <el-option
                                     v-for="item in settingOptions.scale"
                                     :key="item.id"
-                                    :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.scale.options.', item.id].join(''))"
+                                    :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.scale.options.', item.id].join(''))"
                                     :value="item.id"
                                 >
-                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.scale.options." + item.id) }}</span>
+                                    <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.scale.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
 
                         <!-- ["numbers", "legend", "colnames", "rownames"] -->
-                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.display.label')">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.display.label')">
                             <el-checkbox-group style="float: right" class="checkbox_group" v-model="settingsForm.displayOptions" size="mini">
                                 <el-checkbox
                                     v-for="(item, index) in settingOptions.displayOptions"
                                     :style="index !== 0 && index % 2 === 0 ? 'clear: left;float: left;margin-left: 0;' : ''"
                                     :key="item.id"
-                                    :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.display.options.', item.id].join(''))"
+                                    :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.display.options.', item.id].join(''))"
                                     :value="item.id"
                                 >
-                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.display.options." + item.id) }}</span>
+                                    <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.display.options." + item.id) }}</span>
                                 </el-checkbox>
                             </el-checkbox-group>
                         </el-form-item>
 
                         <el-form-item
                             v-if="settingsForm.displayOptions.indexOf('numbers') !== -1"
-                            :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.numbers_size')"
+                            :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.numbers_size')"
                         >
                             <el-input-number
                                 style="float: right"
@@ -155,7 +152,7 @@
                         </el-form-item>
                         <el-form-item
                             v-if="settingsForm.displayOptions.indexOf('colnames') !== -1"
-                            :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.colnames_size')"
+                            :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.colnames_size')"
                         >
                             <el-input-number
                                 style="float: right"
@@ -168,7 +165,7 @@
                         </el-form-item>
                         <el-form-item
                             v-if="settingsForm.displayOptions.indexOf('rownames') !== -1"
-                            :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.rownames_size')"
+                            :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.rownames_size')"
                         >
                             <el-input-number
                                 style="float: right"
@@ -180,7 +177,7 @@
                             ></el-input-number>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.plot_width')">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.plot_width')">
                             <el-input-number
                                 style="float: right"
                                 v-model="settingsForm.plotWidth"
@@ -190,7 +187,7 @@
                                 :step="settingOptions.plotWidth.step"
                             ></el-input-number>
                         </el-form-item>
-                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.plot_ratio')">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.plot_ratio')">
                             <el-input-number
                                 style="float: right"
                                 v-model="settingsForm.plotRatio"
@@ -201,56 +198,56 @@
                             ></el-input-number>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_distance.label')">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.label')">
                             <el-select
                                 style="float: right"
                                 v-model="settingsForm.clustDistance"
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_distance.placeholder')"
+                                :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.placeholder')"
                             >
                                 <el-option
                                     v-for="item in settingOptions.clustDistance"
                                     :key="item.id"
-                                    :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_distance.options.', item.id].join(''))"
+                                    :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.options.', item.id].join(''))"
                                     :value="item.id"
                                 >
-                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_distance.options." + item.id) }}</span>
+                                    <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.label')">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.label')">
                             <el-select
                                 style="float: right"
                                 v-model="settingsForm.clustLinkage"
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.placeholder')"
+                                :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.placeholder')"
                             >
                                 <el-option
                                     v-for="item in settingOptions.clustLinkage"
                                     :key="item.id"
-                                    :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
+                                    :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
                                     :value="item.id"
                                 >
-                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
+                                    <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.tree_ordering.label')">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.label')">
                             <el-select
                                 style="float: right"
                                 v-model="settingsForm.clustOrdering"
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.tree_ordering.placeholder')"
+                                :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.placeholder')"
                             >
                                 <el-option
                                     v-for="item in settingOptions.clustOrdering"
                                     :key="item.id"
-                                    :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.tree_ordering.options.', item.id].join(''))"
+                                    :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.options.', item.id].join(''))"
                                     :value="item.id"
                                 >
-                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.tree_ordering.options." + item.id) }}</span>
+                                    <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.font_size')">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.font_size')">
                             <el-input-number
                                 style="float: right"
                                 v-model="settingsForm.fontSizeGeneral"
@@ -264,14 +261,12 @@
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download Rdata object</el-button>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">
+                                        {{ $t("views.apps.simon.editing.index.button.download_r_data.title") }}
+                                    </el-button>
                                     <el-tooltip placement="top">
                                         <div slot="content">
-                                            Here you can download R data object with all data that was used to make to analysis.
-                                            <br />
-                                            R object can be loaded in R/RStudio using: "load('/path/to/the/file')" command.
-                                            <br />
-                                            This can be useful if you wish to change the analysis, modify plot colors etc.
+                                            {{ $t("views.apps.simon.editing.index.button.download_r_data.description") }}
                                         </div>
                                         <i class="el-icon-question"></i>
                                     </el-tooltip>
@@ -281,7 +276,7 @@
                             <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                                 <el-form-item>
                                     <el-button type="danger" round @click="redrawImage" style="float: right">
-                                        {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
+                                        {{ $t("views.apps.simon.editing.components.tabs.correlationTab.buttons.plot_image") }}
                                     </el-button>
                                 </el-form-item>
                             </el-col>
@@ -293,7 +288,9 @@
                     <el-row v-if="plot_data.clustering_plot !== false" style="text-align: center">
                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                             <div slot="content">
-                                <el-button type="success" round @click="downloadPlotImage('clustering_plot')">Download (.svg)</el-button>
+                                <el-button type="success" round @click="downloadPlotImage('clustering_plot')">
+                                    {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
+                                </el-button>
                             </div>
                             <img
                                 id="analysis_images_clustering_plot"
@@ -313,7 +310,7 @@
         <el-row v-else>
             <el-col :span="24">
                 <el-alert
-                    :title="$t('views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.title')"
+                    :title="$t('views.apps.simon.editing.components.tabs.correlationTab.alert.function_disabled.title')"
                     description="Tab is currently disabled! Total columns in selected: selectedFileDetails"
                     type="warning"
                     style="margin-top: 20px"
@@ -470,7 +467,15 @@ export default {
         downloadTable() {
             const exportData = this.selectedFileDetails.columns;
             import("@/vendor/Export2Excel").then((excel) => {
-                const tHeader = ["Feature", "Remapped", "Unique values", "Numeric", "Zero variance", "10% Unique", "NA percentage"];
+                const tHeader = [
+                    "Feature",
+                    "Remapped",
+                    $t("views.apps.simon.editing.index.validation.unique_count.title"),
+                    $t("views.apps.simon.editing.index.validation.valid_numeric.title"),
+                    $t("views.apps.simon.editing.index.validation.valid_zv.title"),
+                    $t("views.apps.simon.editing.index.validation.valid_10p.title"),
+                    $t("views.apps.simon.editing.index.validation.na_percentage.title"),
+                ];
                 const filterVal = ["original", "remapped", "unique_count", "valid_numeric", "valid_zv", "valid_10p", "na_percentage"];
                 excel.export_json_to_excel(tHeader, this.formatJson(filterVal, exportData), "column_info");
             });
@@ -603,7 +608,7 @@ export default {
                             if (respItem.length < 15 || typeof respItem == "undefined") {
                                 this.plot_data[respIndex] = false;
                                 this.$message({
-                                    message: "There was error in generating plot: " + respIndex,
+                                    message: $t("views.apps.simon.editing.index.errors.plot_response.title"),
                                     type: "error",
                                 });
                             } else {

@@ -4,7 +4,7 @@
             <!-- AVATAR -->
             <el-col :span="4">
                 <el-card>
-                    <img :src="user_settings_server_address_backend + '/backend/user/avatar?id=' + user_id + '&size=256'" class="image" style="max-width: 100%; max-height: 100%;" />
+                    <img :src="user_settings_server_address_backend + '/backend/user/avatar?id=' + user_id + '&size=256'" class="image" style="max-width: 100%; max-height: 100%" />
                 </el-card>
             </el-col>
             <!-- ACTION BOXES -->
@@ -25,14 +25,14 @@
                                 <el-input name="password" type="password" value="" disabled></el-input>
                             </el-form-item>
                         </el-form>
-                        <div style="text-align: right;">
-                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">{{
-                                $t("views.settings.account_information.save_button")
-                            }}</el-button>
+                        <div style="text-align: right">
+                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="updateAccount">
+                                {{ $t("views.settings.account_information.save_button") }}
+                            </el-button>
                         </div>
                     </div>
                 </el-card>
-                <el-card class="box-card" style="margin-top: 15px;">
+                <el-card class="box-card" style="margin-top: 15px">
                     <div slot="header" class="clearfix">
                         <span>{{ $t("views.settings.profile_information.title") }}</span>
                     </div>
@@ -48,10 +48,10 @@
                                 <el-input name="phone" type="text" prop="phone" v-model="settingsForm.phone"></el-input>
                             </el-form-item>
                         </el-form>
-                        <div style="text-align: right;">
-                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">{{
-                                $t("views.settings.profile_information.save_button")
-                            }}</el-button>
+                        <div style="text-align: right">
+                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="updateProfile">
+                                {{ $t("views.settings.profile_information.save_button") }}
+                            </el-button>
                         </div>
                     </div>
                 </el-card>
@@ -59,43 +59,48 @@
             <!-- ACTION BOXES -->
             <el-col :span="10">
                 <el-card class="box-card">
-                    <div slot="header" class="clearfix"><span>{{ $t("views.settings.profile_picture.title") }}</span></div>
+                    <div slot="header" class="clearfix">
+                        <span>{{ $t("views.settings.profile_picture.title") }}</span>
+                    </div>
                     <div>
                         {{ $t("views.settings.profile_picture.description") }}
                     </div>
                 </el-card>
-                <el-card class="box-card" style="margin-top: 15px;">
-                    <div slot="header" class="clearfix"><span>{{ $t("views.settings.danger_area.title") }}</span></div>
-                    <div style="text-align: right;">
-                        <el-button type="danger" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true">
+                <el-card class="box-card" style="margin-top: 15px">
+                    <div slot="header" class="clearfix">
+                        <span>{{ $t("views.settings.danger_area.title") }}</span>
+                    </div>
+                    <div style="text-align: right">
+                        <el-button type="danger" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="deleteAccount">
                             {{ $t("views.settings.danger_area.delete_button") }}
                         </el-button>
                     </div>
                 </el-card>
-                <el-card class="box-card" style="margin-top: 15px;">
+                <el-card class="box-card" style="margin-top: 15px">
                     <div slot="header" class="clearfix"><span>System debugging</span></div>
                     <el-row type="flex" class="row-bg" justify="space-between">
-                        <el-col :span="6">
-                            <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">
-                                Update minor SIMON version
-                            </el-button>
+                        <el-col :span="12" style="text-align: left">
+                            <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">Update minor SIMON version</el-button>
                         </el-col>
-                        <el-col :span="6">
-                            <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">
-                                Generate system log file
-                            </el-button>
+                        <el-col :span="12" style="text-align: right">
+                            <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">Generate system log file</el-button>
+                            <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="generateBrowserLogFile">Generate browser log file</el-button>
                         </el-col>
                     </el-row>
                 </el-card>
             </el-col>
         </el-row>
 
-        <el-row style="position: fixed;bottom: 15px;right: 15px;">
+        <el-row style="position: fixed; bottom: 15px; right: 15px">
             <el-col :span="24">
-                <div style="color: #781717;font-size: 13px;text-align: right;">
-                    Version information:<br />
-                    genular {{ packageVersion }} ({{ packageEnviroment }})<br />
-                    Developed by the genular community.
+                <div style="color: #781717; font-size: 13px; text-align: right">
+                    Version information:
+                    <br />
+                    genular {{ packageVersion }} ({{ packageEnviroment }})
+                    <br />
+                    Developed by the
+                    <a href="https://github.com/genular/simon-frontend" target="_blank">genular community</a>
+                    .
                 </div>
             </el-col>
         </el-row>
@@ -112,8 +117,8 @@ export default {
     props: {
         startIndex: {
             default: 0,
-            type: [Number, String]
-        }
+            type: [Number, String],
+        },
     },
     components: {},
     data() {
@@ -129,8 +134,8 @@ export default {
                 phone: null,
                 profile_picture: null,
                 account_type: null,
-                oid: null
-            }
+                oid: null,
+            },
         };
     },
     mounted() {
@@ -141,13 +146,32 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["packageVersion", "packageEnviroment", "user_id", "user_settings_server_address_backend"])
+        ...mapGetters(["packageVersion", "packageEnviroment", "user_id", "user_settings_server_address_backend"]),
     },
     methods: {
+        downloadText(filename, text, type = "text/plain") {
+            // Create an invisible A element
+            const a = document.createElement("a");
+            a.style.display = "none";
+            document.body.appendChild(a);
+
+            // Set the HREF to a Blob representation of the data to be downloaded
+            a.href = window.URL.createObjectURL(new Blob([text], { type }));
+
+            // Use download attribute to set set desired file name
+            a.setAttribute("download", filename);
+
+            // Trigger the download by simulating click
+            a.click();
+
+            // Cleanup
+            window.URL.revokeObjectURL(a.href);
+            document.body.removeChild(a);
+        },
         getUserDetails() {
             this.requestLoading = true;
             ApiBackendUserDetails()
-                .then(response => {
+                .then((response) => {
                     if (response.data.success === true) {
                         this.settingsForm = response.data.message;
                     } else {
@@ -155,46 +179,91 @@ export default {
                     }
                     this.requestLoading = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                     this.requestLoading = false;
                 });
         },
+        deleteAccount() {
+            this.$message({
+                type: "info",
+                message: "Not available in this version",
+            });
+        },
+        updateProfile() {
+            this.$message({
+                type: "info",
+                message: "Not available in this version",
+            });
+        },
+        updateAccount() {
+            this.$message({
+                type: "info",
+                message: "Not available in this version",
+            });
+        },
         generateSystemLogFile() {
             this.requestLoading = true;
-            ApiGenerateSystemLogFileDownloadLink({  })
-                .then(response => {
+            ApiGenerateSystemLogFileDownloadLink({})
+                .then((response) => {
                     if (response.data.success === true && response.data.message.length > 0) {
                         this.$alert(downloadItemsTemplate(response.data.message), "Download links", {
                             dangerouslyUseHTMLString: true,
-                            callback: action => {}
+                            callback: (action) => {},
                         });
                     }
                     this.requestLoading = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                     this.requestLoading = false;
                 });
         },
-        updateSimonVersion(){
-            this.$confirm('This can permanently destroy all your SIMON data and settings. Continue?', 'Update minor SIMON version', {
-                confirmButtonText: 'OK',
-                cancelButtonText: 'Cancel',
-                type: 'warning'
-            }).then(() => {
+        generateBrowserLogFile() {
+            if (typeof console.everything !== "undefined") {
+                if (console.everything.length > 0) {
+                    let browserLog = JSON.stringify(console.everything);
+                    this.downloadText("browser.log", browserLog);
+                } else {
+                    this.$message({
+                        type: "info",
+                        message: "not empty",
+                    });
+                }
+            } else {
                 this.$message({
-                    type: 'info',
-                    message: 'Update canceled'
-                }); 
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: 'Update canceled'
-                });          
+                    type: "info",
+                    message: "not found",
+                });
+            }
+        },
+        updateSimonVersion() {
+            this.$message({
+                type: "info",
+                message: "Not available in this version",
             });
-        }
-    }
+
+            return;
+
+            this.$confirm("This can permanently destroy all your SIMON data and settings. Continue?", "Update minor SIMON version", {
+                confirmButtonText: "OK",
+                cancelButtonText: "Cancel",
+                type: "warning",
+            })
+                .then(() => {
+                    this.$message({
+                        type: "info",
+                        message: "Update canceled",
+                    });
+                })
+                .catch(() => {
+                    this.$message({
+                        type: "info",
+                        message: "Update canceled",
+                    });
+                });
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">

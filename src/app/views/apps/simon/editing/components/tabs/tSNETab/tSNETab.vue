@@ -247,14 +247,12 @@
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download Rdata object</el-button>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">
+                                        {{ $t("views.apps.simon.editing.index.button.download_r_data.title") }}
+                                    </el-button>
                                     <el-tooltip placement="top">
                                         <div slot="content">
-                                            Here you can download R data object with all data that was used to make to analysis.
-                                            <br />
-                                            R object can be loaded in R/RStudio using: "load('/path/to/the/file')" command.
-                                            <br />
-                                            This can be useful if you wish to change the analysis, modify plot colors etc.
+                                            {{ $t("views.apps.simon.editing.index.button.download_r_data.description") }}
                                         </div>
                                         <i class="el-icon-question"></i>
                                     </el-tooltip>
@@ -346,7 +344,9 @@
                                     <el-col :span="24" v-if="true === true">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
-                                                <el-button type="success" round @click="downloadPlotImage('tsne_plot', plotIndex)">Download (.svg)</el-button>
+                                                <el-button type="success" round @click="downloadPlotImage('tsne_plot', plotIndex)">
+                                                    {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
+                                                </el-button>
                                             </div>
                                             <img id="analysis_images_pca" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plotData.png" fit="scale-down" />
                                         </el-tooltip>
@@ -372,7 +372,9 @@
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
-                                                <el-button type="success" round @click="downloadPlotImage('tsne_cluster_plot')">Download (.svg)</el-button>
+                                                <el-button type="success" round @click="downloadPlotImage('tsne_cluster_plot')">
+                                                    {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
+                                                </el-button>
                                             </div>
                                             <img
                                                 id="analysis_images_tsne_clustered_plot"

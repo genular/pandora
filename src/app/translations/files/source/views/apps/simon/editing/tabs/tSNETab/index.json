@@ -1,0 +1,15 @@
+{
+	"views": {
+		"apps": {
+			"simon": {
+				"editing": {
+					"components": {
+						"tabs": {
+							"tSNETab": { "title": "t-SNE analysis" }
+						}
+					}
+				}
+			}
+		}
+	}
+}

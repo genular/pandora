@@ -1,7 +1,7 @@
 import {
     fetchSimonAvailablePackages as ApiFetchSimonAvailablePackages,
     simonHeaderVerify as ApiSimonHeaderVerify,
-    submitDatasetQueueTask as ApiSubmitDatasetQueueTask
+    submitDatasetQueueTask as ApiSubmitDatasetQueueTask,
 } from "@/api/backend";
 
 import estore from "@/utils/storage/settings";
@@ -32,20 +32,20 @@ const apps = {
                     features: estore.get("apps-simon-analysis-filter-features") || false,
                     outcome: estore.get("apps-simon-analysis-filter-outcome") || false,
                     extraction: estore.get("apps-simon-analysis-filter-extraction") || false,
-                    backwardSelection: estore.get("apps-simon-analysis-filter-backwardSelection") || false
-                }
+                    backwardSelection: estore.get("apps-simon-analysis-filter-backwardSelection") || false,
+                },
             },
             exploration: {
                 queueIDs: estore.get("apps-simon-exploration-queueIDs") || "",
                 selectedFeatureSetId: estore.get("apps-simon-exploration-selectedFeatureSetId") || 0,
                 selectedModelsIDs: estore.get("apps-simon-exploration-selectedModelsIDs") || [],
                 activeTabName: estore.get("apps-simon-exploration-activeTabName") || "datasetsTab",
-                datasetsTabMapOptions: estore.get("apps-simon-exploration-datasetsTabMapOptions") || []
+                datasetsTabMapOptions: estore.get("apps-simon-exploration-datasetsTabMapOptions") || [],
             },
             editing: {
-                activeTabName: estore.get("apps-simon-editing-activeTabName") || "datasetsTab"
-            }
-        }
+                activeTabName: estore.get("apps-simon-editing-activeTabName") || "overviewTab",
+            },
+        },
     },
 
     mutations: {
@@ -155,14 +155,14 @@ const apps = {
         SET_SIMON_ANALYSIS_BACKWARD_SELECTION: (state, backwardSelection) => {
             state.simon.analysis.filter.backwardSelection = backwardSelection;
             estore.set("apps-simon-analysis-filter-backwardSelection", backwardSelection);
-        }
+        },
     },
 
     actions: {
         addSimonJobAnalysis({ commit, state }, submitData) {
             return new Promise((resolve, reject) => {
                 ApiSubmitDatasetQueueTask(submitData)
-                    .then(response => {
+                    .then((response) => {
                         if (response.data.success === true) {
                             resolve(true);
                         } else {
@@ -170,7 +170,7 @@ const apps = {
                             resolve(false);
                         }
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.log(error);
                         resolve(false);
                     });
@@ -181,22 +181,22 @@ const apps = {
         setSimonAvailablePackages({ commit, state }, selectedFiles) {
             return new Promise((resolve, reject) => {
                 ApiFetchSimonAvailablePackages(selectedFiles)
-                    .then(response => {
+                    .then((response) => {
                         if (response.data.success === true) {
                             commit(
                                 "SET_SIMON_AVALIABLE_PACKAGES",
-                                response.data.message.filter(obj => obj.preselected === 0)
+                                response.data.message.filter((obj) => obj.preselected === 0)
                             );
                             commit(
                                 "SET_SIMON_SELECTED_PACKAGES",
-                                response.data.message.filter(obj => obj.preselected === 1)
+                                response.data.message.filter((obj) => obj.preselected === 1)
                             );
                             resolve(true);
                         } else {
                             reject(response.data);
                         }
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         reject(error);
                     });
             });
@@ -206,7 +206,7 @@ const apps = {
         setSimonAnalysisFeatures({ commit }, selectedFiles) {
             return new Promise((resolve, reject) => {
                 ApiSimonHeaderVerify(selectedFiles)
-                    .then(function(response) {
+                    .then(function (response) {
                         const success = response.data.success;
                         const message = response.data.message;
 
@@ -218,7 +218,7 @@ const apps = {
                         } else if (success === true) {
                             commit("SET_SIMON_ANALYSIS_AVALIABLE_FEATURES", message);
                             console.log("Reseting all available features");
-                            
+
                             // Reset submission fields from prev analysis
                             commit("SET_SIMON_ANALYSIS_SELECTED_FEATURES", []);
                             commit("SET_SIMON_ANALYSIS_EXCLUDE_FEATURES", []);
@@ -240,7 +240,7 @@ const apps = {
                             reject("Invalid response");
                         }
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         reject(error);
                     });
             });
@@ -324,8 +324,8 @@ const apps = {
         // editing
         setSimonEditingActiveTabName({ commit }, activeTabName) {
             commit("SET_SIMON_EDITING_ACTIVE_TAB_NAME", activeTabName);
-        }
-    }
+        },
+    },
 };
 
 export default apps;

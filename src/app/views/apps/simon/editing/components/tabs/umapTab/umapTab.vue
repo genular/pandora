@@ -130,14 +130,11 @@
                                 </el-option>
                             </el-select>
                             <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    Please select categorical column to "group by" t-SNE plot. Grouping variable will be excluded from t-SNE analysis and only t-SNE results will be
-                                    colored by it.
-                                </div>
+                                <div slot="content">Please select categorical column to "group by" UMAP plot. Grouping variable(s) will be excluded from UMAP analysis.</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
-
+                        <!--
                         <el-form-item label="Keep groups?">
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.includeOtherGroups"></el-switch>
                             <el-tooltip placement="top">
@@ -147,6 +144,7 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
+                        -->
 
                         <el-form-item label="Preprocess">
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.preProcessDataset"></el-switch>
@@ -225,14 +223,12 @@
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download Rdata object</el-button>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">
+                                        {{ $t("views.apps.simon.editing.index.button.download_r_data.title") }}
+                                    </el-button>
                                     <el-tooltip placement="top">
                                         <div slot="content">
-                                            Here you can download R data object with all data that was used to make to analysis.
-                                            <br />
-                                            R object can be loaded in R/RStudio using: "load('/path/to/the/file')" command.
-                                            <br />
-                                            This can be useful if you wish to change the analysis, modify plot colors etc.
+                                            {{ $t("views.apps.simon.editing.index.button.download_r_data.description") }}
                                         </div>
                                         <i class="el-icon-question"></i>
                                     </el-tooltip>
@@ -321,15 +317,23 @@
                                         <span class="tab_intro_text" v-else>
                                             UMAP Display of Metric Learning embedding, where numeric values are leveraged so that similar points are closer together.
                                             <br />
-                                            {{ plotData.text }}
+                                            <div v-if="typeof plotData.text !== 'undefined' && plotData.text.length > 0">
+                                                {{ plotData.text }}
+                                            </div>
                                         </span>
                                     </el-col>
 
-                                    <el-col :span="plotData.test ? 12 : 24" v-if="plotData.train" class="umap_training">
+                                    <el-col
+                                        :span="typeof plotData.test !== 'undefined' && typeof plotData.test.png !== 'undefined' ? 12 : 24"
+                                        v-if="plotData.train"
+                                        class="umap_training"
+                                    >
                                         Training
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
-                                                <el-button type="success" round @click="downloadPlotImage('umap_plot', plotIndex)">Download (.svg)</el-button>
+                                                <el-button type="success" round @click="downloadPlotImage('umap_plot', plotIndex)">
+                                                    {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
+                                                </el-button>
                                             </div>
                                             <img
                                                 id="analysis_images_pca"
@@ -340,11 +344,13 @@
                                         </el-tooltip>
                                     </el-col>
 
-                                    <el-col :span="12" v-if="plotData.test" class="umap_testing">
+                                    <el-col :span="12" v-if="typeof plotData.test !== 'undefined' && typeof plotData.test.png !== 'undefined'" class="umap_testing">
                                         Testing
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
-                                                <el-button type="success" round @click="downloadPlotImage('umap_plot', plotIndex)">Download (.svg)</el-button>
+                                                <el-button type="success" round @click="downloadPlotImage('umap_plot', plotIndex)">
+                                                    {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
+                                                </el-button>
                                             </div>
                                             <img
                                                 id="analysis_images_pca"
@@ -409,9 +415,9 @@ export default {
                 aspect_ratio: 1,
 
                 cutOffColumnSize: 1000,
-                removeNA: false,
+                removeNA: true,
 
-                selectedPartitionSplit: 85,
+                selectedPartitionSplit: 100,
                 includeOtherGroups: false,
             },
             plot_data: {
@@ -564,11 +570,6 @@ export default {
             if (settingsForm.selectedPartitionSplit !== 100 && settingsForm.groupingVariables.length === 0) {
                 settingsForm.selectedPartitionSplit = 100;
                 this.settingsForm.selectedPartitionSplit = 100;
-            }
-
-            if (settingsForm.selectedPartitionSplit === 100 && settingsForm.groupingVariables.length !== 0) {
-                settingsForm.selectedPartitionSplit = 75;
-                this.settingsForm.selectedPartitionSplit = 75;
             }
 
             fetchUmapPlot({

@@ -4,7 +4,7 @@
             <el-col :span="4">
                 <el-row>
                     <el-form ref="settingsForm" :model="settingsForm">
-                        <el-form-item label="Columns">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.overviewTab.form.columns.title')">
                             <el-select
                                 style="float: right"
                                 v-model="settingsForm.selectedColumns"
@@ -15,7 +15,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.simon.editing.components.tabs.overviewTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -36,33 +36,32 @@
                             </el-select>
                             <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                             <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">Please select columns you wish to plot. If nothing is selected we will take all valid numerical columns.</div>
+                                <div slot="content">{{ $t("views.apps.simon.editing.components.tabs.overviewTab.form.columns.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
 
-                        <el-form-item label="First (n) columns">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.overviewTab.form.first_n_columns.title')">
                             <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="10000"></el-input-number>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
-                                    If you have not selected any Columns we will take first n columns from your dataset, based on this value, that have number of unique values less
-                                    than 10%.
+                                    {{ $t("views.apps.simon.editing.components.tabs.overviewTab.form.first_n_columns.description") }}
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
 
-                        <el-form-item label="Preprocess">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.overviewTab.form.preprocess.title')">
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.preProcessedData"></el-switch>
                             <el-tooltip placement="top">
-                                <div slot="content">Should we apply preprocessing ("medianImpute", "center", "scale") to dataset before drawing any plots?</div>
+                                <div slot="content">{{ $t("views.apps.simon.editing.components.tabs.overviewTab.form.preprocess.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
 
                         <el-divider></el-divider>
 
-                        <el-form-item label="Theme">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.overviewTab.form.theme.title')">
                             <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
                                 <el-option v-for="item in settingsOptions.theme" :key="item.id" :label="item.name" :value="item.id">
                                     <span style="float: left">{{ item.name }}</span>
@@ -80,7 +79,7 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="Color">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.overviewTab.form.color.title')">
                             <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
                                 <el-option v-for="item in settingsOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
                                     <span style="float: left">{{ item.value }}</span>
@@ -98,24 +97,22 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="Font size">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.overviewTab.form.font_size.title')">
                             <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="24"></el-input-number>
                         </el-form-item>
 
-                        <el-form-item label="Ratio">
+                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.overviewTab.form.ratio.title')">
                             <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                         </el-form-item>
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">Download Rdata object</el-button>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">
+                                        {{ $t("views.apps.simon.editing.index.button.download_r_data.title") }}
+                                    </el-button>
                                     <el-tooltip placement="top">
                                         <div slot="content">
-                                            Here you can download R data object with all data that was used to make to analysis.
-                                            <br />
-                                            R object can be loaded in R/RStudio using: "load('/path/to/the/file')" command.
-                                            <br />
-                                            This can be useful if you wish to change the analysis, modify plot colors etc.
+                                            {{ $t("views.apps.simon.editing.index.button.download_r_data.description") }}
                                         </div>
                                         <i class="el-icon-question"></i>
                                     </el-tooltip>
@@ -139,48 +136,42 @@
                         </div>
                         <div class="box-column-item-text">
                             <el-tooltip placement="top">
-                                <div slot="content">Total number of unique/distinct values in the column</div>
+                                <div slot="content">{{ $t("views.apps.simon.editing.index.validation.unique_count.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            Number of unique values:
+                            {{ $t("views.apps.simon.editing.index.validation.unique_count.title") }}
                             <div class="box-column-item-details">{{ item.unique_count }}</div>
                         </div>
                         <div class="box-column-item-text">
                             <el-tooltip placement="top">
-                                <div slot="content">
-                                    Checks if selected column valid numeric one. If it contains anything else than numeric values this check will not pass. Such columns will be
-                                    excluded from PCA and other types of analysis.
-                                </div>
+                                <div slot="content">{{ $t("views.apps.simon.editing.index.validation.valid_numeric.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            Valid numeric:
+                            {{ $t("views.apps.simon.editing.index.validation.valid_numeric.title") }}
                             <div class="box-column-item-details">{{ item.valid_numeric === 1 ? "Yes" : "No" }}</div>
                         </div>
                         <div class="box-column-item-text">
                             <el-tooltip placement="top">
-                                <div slot="content">Checks if selected column is zero variance. Such columns will be excluded from PCA and other types of analysis.</div>
+                                <div slot="content">{{ $t("views.apps.simon.editing.index.validation.valid_zv.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            Zero variance:
+                            {{ $t("views.apps.simon.editing.index.validation.valid_zv.title") }}
                             <div class="box-column-item-details">{{ item.valid_zv === 1 ? "Yes" : "No" }}</div>
                         </div>
                         <div class="box-column-item-text">
                             <el-tooltip placement="top">
-                                <div slot="content">
-                                    Checks if number of unique values in the column are less than 10% the number of observations. We would use such columns as Grouping variables in
-                                    PCA and other types of analysis.
-                                </div>
+                                <div slot="content">{{ $t("views.apps.simon.editing.index.validation.valid_10p.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            Unique 10%:
+                            {{ $t("views.apps.simon.editing.index.validation.valid_10p.title") }}
                             <div class="box-column-item-details">{{ item.valid_10p === 1 ? "Yes" : "No" }}</div>
                         </div>
                         <div class="box-column-item-text">
                             <el-tooltip placement="top">
-                                <div slot="content">Total percentage of NA values found in selected column.</div>
+                                <div slot="content">{{ $t("views.apps.simon.editing.index.validation.na_percentage.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            Percentage of NA values:
+                            {{ $t("views.apps.simon.editing.index.validation.na_percentage.title") }}
                             <div class="box-column-item-details">{{ item.na_percentage }}</div>
                         </div>
                     </el-card>
@@ -188,7 +179,11 @@
             </el-col>
             <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
                 <el-tabs v-model="activeTab">
-                    <el-tab-pane label="Table Plot" name="table_plot" :disabled="isTabDisabled('table_plot')">
+                    <el-tab-pane
+                        :label="$t('views.apps.simon.editing.components.tabs.overviewTab.tabs.TablePlotTab.title')"
+                        name="table_plot"
+                        :disabled="isTabDisabled('table_plot')"
+                    >
                         <el-row
                             v-bind:class="{
                                 is_tab_active: isTabDisabled('table_plot'),
@@ -198,14 +193,15 @@
                                 <el-row>
                                     <el-col :span="24">
                                         <span>
-                                            The tableplot is a visualization method that is used to explore and analyze large datasets, is able to display the aggregated
-                                            distribution patterns of a dozen of variables in one single figure.
+                                            {{ $t("views.apps.simon.editing.components.tabs.overviewTab.tabs.TablePlotTab.description") }}
                                         </span>
                                     </el-col>
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
-                                                <el-button type="success" round @click="downloadPlotImage('table_plot')">Download (.svg)</el-button>
+                                                <el-button type="success" round @click="downloadPlotImage('table_plot')">
+                                                    {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
+                                                </el-button>
                                             </div>
 
                                             <img
@@ -223,7 +219,11 @@
                             </el-col>
                         </el-row>
                     </el-tab-pane>
-                    <el-tab-pane label="Distribution Plot" name="distribution_plot" :disabled="isTabDisabled('distribution_plot')">
+                    <el-tab-pane
+                        :label="$t('views.apps.simon.editing.components.tabs.overviewTab.tabs.DistributionPlotTab.title')"
+                        name="distribution_plot"
+                        :disabled="isTabDisabled('distribution_plot')"
+                    >
                         <el-row
                             v-bind:class="{
                                 is_tab_active: isTabDisabled('distribution_plot'),
@@ -233,14 +233,15 @@
                                 <el-row>
                                     <el-col :span="24">
                                         <span>
-                                            Scatterplots of each pair of numeric variable are drawn on the left part of the figure. Pearson correlation is displayed on the right.
-                                            Variable distribution is available on the diagonal. We will take maximum 10 columns into consideration.
+                                            {{ $t("views.apps.simon.editing.components.tabs.overviewTab.tabs.TablePlotTab.description") }}
                                         </span>
                                     </el-col>
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
-                                                <el-button type="success" round @click="downloadPlotImage('distribution_plot')">Download (.svg)</el-button>
+                                                <el-button type="success" round @click="downloadPlotImage('distribution_plot')">
+                                                    {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
+                                                </el-button>
                                             </div>
                                             <img
                                                 id="analysis_images_distribution_plot"
@@ -355,7 +356,16 @@ export default {
         downloadTable() {
             const exportData = this.selectedFileDetails.columns;
             import("@/vendor/Export2Excel").then((excel) => {
-                const tHeader = ["Feature", "Remapped", "Unique values", "Numeric", "Zero variance", "10% Unique", "NA percentage"];
+                const tHeader = [
+                    "Feature",
+                    "Remapped",
+                    $t("views.apps.simon.editing.index.validation.unique_count.title"),
+                    $t("views.apps.simon.editing.index.validation.valid_numeric.title"),
+                    $t("views.apps.simon.editing.index.validation.valid_zv.title"),
+                    $t("views.apps.simon.editing.index.validation.valid_10p.title"),
+                    $t("views.apps.simon.editing.index.validation.na_percentage.title"),
+                ];
+
                 const filterVal = ["original", "remapped", "unique_count", "valid_numeric", "valid_zv", "valid_10p", "na_percentage"];
                 excel.export_json_to_excel(tHeader, this.formatJson(filterVal, exportData), "column_info");
             });
@@ -431,7 +441,7 @@ export default {
                             if (respItem.length < 15 || typeof respItem == "undefined") {
                                 this.plot_data[respIndex] = false;
                                 this.$message({
-                                    message: "There was error in generating plot: " + respIndex,
+                                    message: $t("views.apps.simon.editing.index.errors.plot_response.title"),
                                     type: "error",
                                 });
                             } else {

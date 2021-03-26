@@ -3,9 +3,10 @@
 		"dashboard": "Dashboard",
 		"settings": "Settings",
 		"workspace": "Workspace",
+		"editing": "Dataset Exploration",
 		"simon": "SIMON",
 		"analysis": "Analysis",
-		"exploratory-analysis": "Exploration"
+		"exploratory-analysis": "Analysis Exploration"
 	},
 	"globals": {
 		"page_loading": "Processing",

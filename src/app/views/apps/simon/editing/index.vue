@@ -30,40 +30,40 @@ export default {
             pageLoading: true,
             tabMapOptions: [
                 {
-                    label: "Overview",
+                    label: $t("views.apps.simon.editing.components.tabs.overviewTab.title"),
                     key: "overviewTab",
                     icon: "el-icon-date",
                 },
                 {
-                    label: "Correlation",
+                    label: $t("views.apps.simon.editing.components.tabs.correlationTab.title"),
                     key: "correlationTab",
                     icon: "el-icon-date",
                     restriction: "selectedFileDetails",
                     restriction_details: -1,
                 },
                 {
-                    label: "Hierarchical clustering",
+                    label: $t("views.apps.simon.editing.components.tabs.clusteringTab.title"),
                     key: "clusteringTab",
                     icon: "el-icon-date",
                     restriction: "selectedFileDetails",
                     restriction_details: -1,
                 },
                 {
-                    label: "PCA Analysis",
+                    label: $t("views.apps.simon.editing.components.tabs.pcaAnalysisTab.title"),
                     key: "pcaAnalysisTab",
                     icon: "el-icon-date",
                     restriction: "selectedFileDetails",
                     restriction_details: -1,
                 },
                 {
-                    label: "t-SNE",
+                    label: $t("views.apps.simon.editing.components.tabs.tSNETab.title"),
                     key: "tSNETab",
                     icon: "el-icon-date",
                     restriction: "selectedFileDetails",
                     restriction_details: -1,
                 },
                 {
-                    label: "UMAP",
+                    label: $t("views.apps.simon.editing.components.tabs.umapTab.title"),
                     key: "umapTab",
                     icon: "el-icon-date",
                     restriction: "selectedFileDetails",
@@ -116,6 +116,7 @@ export default {
                 return;
             }
             this.pageLoading = true;
+            this.activeEditingTabName = "overviewTab";
 
             getOverViewAavailableColumns({ selectedFileID: selectedFilesIDs[0] })
                 .then((response) => {

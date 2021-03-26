@@ -1,0 +1,15 @@
+{
+	"views": {
+		"apps": {
+			"simon": {
+				"editing": {
+					"components": {
+						"tabs": {
+							"pcaAnalysisTab": { "title": "PCA analysis" }
+						}
+					}
+				}
+			}
+		}
+	}
+}
