@@ -23,13 +23,13 @@ export default {
         Navbar,
         Sidebar,
         AppMain,
-        TagsView
+        TagsView,
     },
     computed: {
-        ...mapGetters(["sidebar"])
+        ...mapGetters(["sidebar"]),
     },
     mounted() {
-        this.$nextTick(function() {
+        this.$nextTick(function () {
             window.addEventListener("online", this.changeOnlineStatus);
             window.addEventListener("offline", this.changeOnlineStatus);
             // Init
@@ -39,12 +39,12 @@ export default {
     methods: {
         changeOnlineStatus() {
             this.$store.dispatch("setIsOnline", navigator.onLine);
-        }
+        },
     },
     beforeDestroy() {
         window.removeEventListener("online", this.changeOnlineStatus);
         window.removeEventListener("offline", this.changeOnlineStatus);
-    }
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
