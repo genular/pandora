@@ -14,7 +14,7 @@ export default {
     name: "scrollBar",
     data() {
         return {
-            top: 0
+            top: 0,
         };
     },
     methods: {
@@ -37,14 +37,15 @@ export default {
                     this.top = 0;
                 }
             }
-        }
-    }
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .scroll-wrapper {
     position: relative;
     height: 100%;
-    width: 200px;
+    max-width: 300px;
+    width: 250px;
 }
 </style>

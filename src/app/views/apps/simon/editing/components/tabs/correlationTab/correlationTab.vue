@@ -506,11 +506,11 @@ export default {
                 const tHeader = [
                     "Feature",
                     "Remapped",
-                    $t("views.apps.simon.editing.index.validation.unique_count.title"),
-                    $t("views.apps.simon.editing.index.validation.valid_numeric.title"),
-                    $t("views.apps.simon.editing.index.validation.valid_zv.title"),
-                    $t("views.apps.simon.editing.index.validation.valid_10p.title"),
-                    $t("views.apps.simon.editing.index.validation.na_percentage.title"),
+                    this.$t("views.apps.simon.editing.index.validation.unique_count.title"),
+                    this.$t("views.apps.simon.editing.index.validation.valid_numeric.title"),
+                    this.$t("views.apps.simon.editing.index.validation.valid_zv.title"),
+                    this.$t("views.apps.simon.editing.index.validation.valid_10p.title"),
+                    this.$t("views.apps.simon.editing.index.validation.na_percentage.title"),
                 ];
                 const filterVal = ["original", "remapped", "unique_count", "valid_numeric", "valid_zv", "valid_10p", "na_percentage"];
                 excel.export_json_to_excel(tHeader, this.formatJson(filterVal, exportData), "column_info");
@@ -617,7 +617,7 @@ export default {
                             if (respItem.length < 15 || typeof respItem == "undefined") {
                                 this.plot_data[respIndex] = false;
                                 this.$message({
-                                    message: $t("views.apps.simon.editing.index.errors.plot_response.title"),
+                                    message: this.$t("views.apps.simon.editing.index.errors.plot_response.title"),
                                     type: "error",
                                 });
                             } else {
