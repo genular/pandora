@@ -2,8 +2,8 @@
     <div class="app-container workspace-container" v-loading="loading" :element-loading-text="$t('globals.page_loading')" @click="closeContextMenus">
         <el-row type="flex" align="top">
             <el-col :span="24">
-                <public-import style="float:left;" ref="publicImporte" v-on:refresh-items="refreshFilesInDirectory"></public-import>
-                <el-button style="float:right;" icon="el-icon-delete" size="mini" type="primary" round @click.prevent.stop="deleteFilesInDirectory">
+                <public-import style="float: left" ref="publicImporte" v-on:refresh-items="refreshFilesInDirectory"></public-import>
+                <el-button style="float: right" icon="el-icon-delete" size="mini" type="primary" round @click.prevent.stop="deleteFilesInDirectory">
                     {{ $t("views.workspace.index.buttons.delete_all") }}
                 </el-button>
             </el-col>
@@ -24,16 +24,22 @@
                     :authToken="auth_token"
                     acceptedFiles=".txt,.csv"
                     :url="user_settings_server_address_backend + '/backend/system/filesystem/upload'"
-                >
-                </dropzone>
+                ></dropzone>
             </el-col>
         </el-row>
-        <el-row type="flex" align="top" style="padding-top: 10px;text-align: right;">
+        <el-row type="flex" align="top" style="padding-top: 10px; text-align: right">
             <el-col :span="24">
-                <el-select @change="refreshFilesInDirectory" style="width: 140px; padding-right: 10px;" class="filter-item" v-model="fetchSettings.args.sort_by">
-                    <el-option v-for="item in fetchSettings.options.sort" :key="item.key" :label="item.label" :value="item.key"> </el-option>
+                <el-select @change="refreshFilesInDirectory" style="width: 140px; padding-right: 10px" class="filter-item" v-model="fetchSettings.args.sort_by">
+                    <el-option v-for="item in fetchSettings.options.sort" :key="item.key" :label="item.label" :value="item.key"></el-option>
                 </el-select>
-                 <el-switch v-model="fetchSettings.args.sort" @change="refreshFilesInDirectory" active-color="#13ce66" inactive-color="#ff4949" active-text="ASC" inactive-text="DESC"> </el-switch>
+                <el-switch
+                    v-model="fetchSettings.args.sort"
+                    @change="refreshFilesInDirectory"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    active-text="ASC"
+                    inactive-text="DESC"
+                ></el-switch>
             </el-col>
         </el-row>
         <el-row class="files-container" type="flex" align="top">
@@ -64,7 +70,7 @@ export default {
 
     components: {
         Dropzone,
-        publicImport
+        publicImport,
     },
     data() {
         return {
@@ -76,17 +82,21 @@ export default {
             fetchSettings: {
                 args: {
                     sort_by: "display_filename",
-                    sort: true
+                    sort: true,
                 },
                 options: {
-                    sort: [{ label: "Name", key: "display_filename" }, { label: "Date", key: "created" }, { label: "Size", key: "size" }]
-                }
+                    sort: [
+                        { label: "Name", key: "display_filename" },
+                        { label: "Date", key: "created" },
+                        { label: "Size", key: "size" },
+                    ],
+                },
             },
             contextmenu: {
                 element: null,
                 visible: false,
-                selectedFile: null
-            }
+                selectedFile: null,
+            },
         };
     },
     mounted() {
@@ -101,28 +111,36 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSelectedFiles", value);
-            }
-        }
+            },
+        },
+        selectedFileDetails: {
+            get() {
+                return this.$store.getters.selectedFileDetails;
+            },
+            set(value) {
+                this.$store.dispatch("setSelectedFileDetails", value);
+            },
+        },
     },
     methods: {
         deleteFilesInDirectory() {
             this.$confirm(this.$t("views.workspace.index.operations.delete_all.dialog.description"), this.$t("views.workspace.index.operations.delete_all.dialog.title"), {
-                type: "warning"
+                type: "warning",
             })
-                .then(_ => {
+                .then((_) => {
                     if (!this.$config.isDemoServer) {
                         this.$refs.workspaceDropzone.removeAllFiles(false);
                     } else {
                         this.$message({
                             type: "warning",
-                            message: this.$t("globals.demo_server.function_disabled")
+                            message: this.$t("globals.demo_server.function_disabled"),
                         });
                     }
                 })
-                .catch(_ => {
+                .catch((_) => {
                     this.$message({
                         type: "info",
-                        message: this.$t("globals.messages.canceled")
+                        message: this.$t("globals.messages.canceled"),
                     });
                 });
         },
@@ -137,7 +155,7 @@ export default {
                         basename: file.display_filename,
                         extension: file.extension.replace(".", ""),
                         mime_type: file.mime_type || "text/plain",
-                        type: file.item_type
+                        type: file.item_type,
                     });
                 });
             }
@@ -163,7 +181,7 @@ export default {
             } else {
                 this.$message({
                     type: "info",
-                    message: this.$t("globals.messages.not_implemented")
+                    message: this.$t("globals.messages.not_implemented"),
                 });
             }
         },
@@ -182,7 +200,7 @@ export default {
 
                 this.setPosition({
                     left: item.event.pageX,
-                    top: item.event.pageY
+                    top: item.event.pageY,
                 });
                 return false;
             }
@@ -191,9 +209,9 @@ export default {
                 id: parseInt(item.file.fileId),
                 basename: item.file.name,
                 extension: item.file.extension,
-                type: item.file.type
+                type: item.file.type,
             };
-            let isAlreadySelected = this.selectedFiles.some(file => file.id === selectedFile.id);
+            let isAlreadySelected = this.selectedFiles.some((file) => file.id === selectedFile.id);
 
             // if no files are selected select this one
             if (this.selectedFiles.length === 0) {
@@ -220,7 +238,7 @@ export default {
             } else {
                 let errorMessage = uploadResponse.name + " " + this.$t("globals.messages.upload_unsucessfull") + "<br /><br />";
                 let counter = 1;
-                uploadResponse.remote_message.forEach(item => {
+                uploadResponse.remote_message.forEach((item) => {
                     errorMessage += counter + ". " + this.$t("views.workspace.components.dropzone.messages." + item) + "<br />";
                     counter++;
                 });
@@ -230,7 +248,7 @@ export default {
                     message: errorMessage,
                     dangerouslyUseHTMLString: true,
                     duration: 10000,
-                    type: "error"
+                    type: "error",
                 });
             }
         },
@@ -244,10 +262,10 @@ export default {
 
             this.loading = true;
             ApiDeleteFile({ selectedFiles: [file.fileId] })
-                .then(response => {
+                .then((response) => {
                     if (response.data.success === true) {
                         this.$message({ message: file.name + " " + this.$t("globals.messages.deleted"), type: "success" });
-                        this.selectedFiles = this.selectedFiles.filter(function(item) {
+                        this.selectedFiles = this.selectedFiles.filter(function (item) {
                             return file.fileId !== item.id;
                         });
                     } else {
@@ -256,7 +274,7 @@ export default {
                     }
                     this.loading = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                     this.loading = false;
                     this.$message({ message: this.$t("globals.errors.request_general"), type: "warning" });
@@ -265,7 +283,7 @@ export default {
         fetchReadFilesInDirectory() {
             this.loading = true;
             ApiReadFilesInUserDirectory({ selectedDirectory: "uploads", settings: this.fetchSettings.args })
-                .then(response => {
+                .then((response) => {
                     if (response.data.success === true) {
                         const directoryFilesHash = md5String(JSON.stringify(response.data.message));
                         if (this.directoryFilesHash !== directoryFilesHash) {
@@ -280,7 +298,7 @@ export default {
                     }
                     this.loading = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                     this.loading = false;
                 });
@@ -290,15 +308,17 @@ export default {
             this.$refs.workspaceDropzone.removeAllFiles(false);
             this.fetchReadFilesInDirectory();
             this.refreshLoading = false;
-        }
+        },
     },
     watch: {
         selectedFiles(newVal, oldVal) {
             if (newVal.length === 0) {
                 this.$refs.workspaceDropzone.deselectAllFiles();
+                // Reset selected file details that are set in editing module
+                this.selectedFileDetails = { id: null, columns: [], summary: [] };
             }
-        }
-    }
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>

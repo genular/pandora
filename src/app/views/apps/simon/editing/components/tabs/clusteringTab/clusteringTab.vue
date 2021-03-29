@@ -261,14 +261,14 @@
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">
-                                        {{ $t("views.apps.simon.editing.index.button.download_r_data.title") }}
-                                    </el-button>
                                     <el-tooltip placement="top">
                                         <div slot="content">
                                             {{ $t("views.apps.simon.editing.index.button.download_r_data.description") }}
                                         </div>
-                                        <i class="el-icon-question"></i>
+                                        <el-button style="float: left" type="danger" round @click="downloadRawData">
+                                            {{ $t("views.apps.simon.editing.index.button.download_r_data.title") }}
+                                            <i class="el-icon-download el-icon-right"></i>
+                                        </el-button>
                                     </el-tooltip>
                                 </el-form-item>
                             </el-col>

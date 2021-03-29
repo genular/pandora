@@ -29,7 +29,7 @@
 <script>
 export default {
     props: ["file", "filekey"],
-    methods: {}
+    methods: {},
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">

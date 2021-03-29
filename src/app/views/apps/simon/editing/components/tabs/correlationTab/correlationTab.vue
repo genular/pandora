@@ -281,14 +281,14 @@
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">
-                                        {{ $t("views.apps.simon.editing.index.button.download_r_data.title") }}
-                                    </el-button>
                                     <el-tooltip placement="top">
                                         <div slot="content">
                                             {{ $t("views.apps.simon.editing.index.button.download_r_data.description") }}
                                         </div>
-                                        <i class="el-icon-question"></i>
+                                        <el-button style="float: left" type="danger" round @click="downloadRawData">
+                                            {{ $t("views.apps.simon.editing.index.button.download_r_data.title") }}
+                                            <i class="el-icon-download el-icon-right"></i>
+                                        </el-button>
                                     </el-tooltip>
                                 </el-form-item>
                             </el-col>
@@ -330,12 +330,16 @@
             <el-col :span="24">
                 <el-alert
                     :title="$t('views.apps.simon.editing.components.tabs.correlationTab.alert.function_disabled.title')"
-                    description="Tab is currently disabled! Total columns in selected: selectedFileDetails"
+                    description="Tab is currently disabled! Total columns in selected didnt pass check."
                     type="warning"
                     style="margin-top: 20px"
                     show-icon
                     :closable="false"
                 ></el-alert>
+                <pre>
+                    Total columns: {{ selectedFileDetails.columns.length }}
+                    selectedFileDetails id: {{ selectedFileDetails.id }} - selectedFiles id: {{ selectedFiles.map((x) => x.id)[0] }}
+                </pre>
             </el-col>
         </el-row>
     </div>

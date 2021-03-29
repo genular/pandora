@@ -3,18 +3,31 @@
         "LangSelect": {
             "language_changed": "Language successfully switched",
             "language": {
+                "ar": "Arabic",
+                "az": "Azerbaijani",
+                "be": "Belarusian",
+                "cs": "Czech",
+                "da": "Danish",
                 "de": "German",
                 "en": "English",
-                "es": "Spanish",
-                "it": "Italian",
-                "ru": "Russian",
+                "et": "Estonian",
                 "fr": "French",
-                "ar": "Arabic",
-                "zh": "Chinese",
-                "pt": "Portuguese",
-                "id": "Indonesian",
-                "ja": "Japanese",
-                "fa": "Persian"
+                "hr": "Croatian",
+                "hu": "Hungarian",
+                "it": "Italian",
+                "ka": "Georgian",
+                "lv": "Latvian",
+                "mn": "Mongolian",
+                "nl": "Dutch",
+                "no": "Norwegian",
+                "pl": "Polish",
+                "ro": "Romanian",
+                "ru": "Russian",
+                "sk": "Slovak",
+                "sr": "Serbian (Cyrillic)",
+                "tr": "Turkish",
+                "vi": "Vietnamese",
+                "zh": "Chinese"
             }
         }
     }
