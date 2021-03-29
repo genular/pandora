@@ -22,17 +22,17 @@
 
 ## Intro
 
-`SIMON` is a powerful, flexible, open-source and easy to use Machine Learning Knowledge Discovery software. Check out <a href="https://dashboard.genular.org" target="_blank">live demo</a> or <a href="https://genular.org/simon-screenshots/" target="_blank">maybe better, view screenshots</a>.
-Currently `SIMON` implements Machine Learning and many other statistical data discovery features that will help you to illustrate dynamic relationships and provide you with a structural sense of your data.
+`SIMON` is a powerful, flexible, open-source and easy to use Data Science Knowledge Discovery software. Check out <a href="https://dashboard.genular.org" target="_blank">live demo</a> or <a href="https://genular.org/simon-screenshots/" target="_blank">maybe better, view screenshots</a>.
+Currently `SIMON` implements Machine Learning and many other statistical data discovery features ([Hierarchical clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering), [Correlation](https://en.wikipedia.org/wiki/Correlation_and_dependence), [PCA Analysis](https://en.wikipedia.org/wiki/Principal_component_analysis), [UMAP](https://en.wikipedia.org/wiki/Nonlinear_dimensionality_reduction), [t-SNE](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) and others) that will help you to illustrate dynamic relationships and provide you with a structural sense of your data.
 
-Goal of this project is to make user interface that will empower scientists, makers and others to extract meaningful information from their data and enable them to rapidly use and quickly prototype with different machine learning algorithms. At the end `SIMON gives you freedom and control over your own models.` `genular` is an entirely open source organization, if you wish to learn more visit us [here](https://genular.org)
+Goal of this project is to make user interface that will empower scientists, makers and other domain experts to extract meaningful information from their data and enable them to rapidly use and quickly prototype with different machine learning algorithms `genular` is an entirely open source community behind `SIMON`, if you wish to learn more visit us [here](https://genular.org)
 
 ## Why is this so cool?
 
 -   :file_folder: **feature discovery** you can discover relevant trends and patterns inside your data with ease, that would usually take years of manual handcrafting
 -   :chart: **machine learning** Build Machine Learning models with ease, and quickly compare them via our innovative interface
 -   :package: **exploratory data analysis** visual analysis of multiple different machine learning results will give you instant insights with help of many different visualization algorithms
--   :arrows_counterclockwise: **sharing is caring** you can share your results with others, deploy your models instantly\* _(in progress)_ or download your data for external use
+-   :arrows*counterclockwise: **sharing is caring** you can share your results with others, deploy your models instantly\* *(in progress)\_ or download your data for external use
 -   :closed_lock_with_key: **privacy and security** hosting `SIMON` on your own dedicated servers or laptop you don't have to worry about someone else is looking after your data and your models
 
 ## Current version features
@@ -41,7 +41,7 @@ Goal of this project is to make user interface that will empower scientists, mak
 
 -   **200+** machine learning algorithms to <a href="https://topepo.github.io/caret/available-models.html" target="_blank">choose from</a>
 -   nicely designed **drag&drop** user interface to easily apply _data modeling techniques_
--   supports **high sparsity** data via imputation or <a href="https://cran.r-project.org/web/packages/mulset/index.html" target="_blank">mulset</a>
+-   supports **high sparsity** data via data imputation or <a href="https://cran.r-project.org/web/packages/mulset/index.html" target="_blank" title="Multiset Intersection Generator">mulset</a>
 -   supports **local** and **cloud** backend data storage
 -   compare all **model performance measures** in one place
 -   visual **data analysis** that supports _clustering_ and _correlation graphs_
@@ -50,8 +50,8 @@ Goal of this project is to make user interface that will empower scientists, mak
 -   in-build **data preprocessing** (correlation filtering, normalization, imputation...)
 -   public dataset repository import to **easily import** and **analyze** already published data\* _(in progress)_
 -   integrated **SAM (Significance Analysis of Microarrays)** technique for finding significant genes in a set of microarray experiments
--   supports translation to **multiple languages**
--   **model export** take your models, reproducibility code and associated data with you on the go\* _(in progress)_
+-   **multi-language** localization support
+-   **model & data export** take your ML models and other performed analysis, reproducibility code and associated data with you on the go\* _(in progress)_
 
 ---
 
@@ -91,13 +91,23 @@ docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='tru
 
 -   If you get asked, please _allow connections_ through your _Windows Firewall_.
 
-_To run latest Released version (0.2.0), please use following docker image `genular/simon:0.2.0`_
+#### Reinstalling SIMON
+
+In order to re-install `SIMON` you need to delete previously installed `SIMON` Docker container and associate data/volumes. More info about that on ,<a href ="https://docs.docker.com/config/pruning/"  target="_blank">official Docker documentation.</a> To delete all Docker Images, Containers, Volumes, and Networks execute following:
+
+```bash
+docker system prune -a
+```
+
+Please be sure to delete `SIMON` data volume and container before reinstalling otherwise you will maybe still use old `SIMON` instance when you run it!
+
+##### Other information
+
+_To run latest Released version (0.2.0), please use following Docker image `genular/simon:0.2.0`_
 
 ```bash
 docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:0.2.0
 ```
-
-##### Other information
 
 `SIMON` will now run until you _shutdown/restart_ your machine or _stop it manually_.
 To manually stop `SIMON` container please type following command:
@@ -106,7 +116,7 @@ To manually stop `SIMON` container please type following command:
 docker stop genular
 ```
 
-When you wish to start and use `SIMON` again please type-in docker run command from above, again!
+When you wish to start and use `SIMON` again please type-in Docker run command from above, again!
 
 To delete all data and reset `SIMON` to factory defaults you need to clear data inside volume you configured.
 If you used default run configuration please execute following command:
@@ -141,7 +151,7 @@ Here you can find [bug report template](.github/ISSUE_TEMPLATE/bug_report.md) an
 
 Contributions are very much welcome!
 
-If you need any help, please contact us [via email](mailto:info@genular.com).
+If you need any help, please use [community forums](https://community.genular.org).
 
 1. Check out our [public issues board][0]. If your issue isn't on the board, [open a new one][1].
 2. Pick an issue that nobody has claimed and start working on it.
@@ -165,11 +175,11 @@ In addition to contributing, optimizing and reviewing code, writing bug and feat
 | Localization  | Help us translate `SIMON` into your language. If some translation is missing or incorrect you can easily help us by correcting it. | [Join our Translation Community](https://crowdin.com/project/genular) |
 | Tutorials     | Help others use and understand `SIMON`                                                                                             | Write a tutorial or record it, with usage examples                    |
 | Organizing    | Ask clarifying questions on recently opened GitHub issues to move the discussion forward                                           | [Here](https://github.com/genular/simon-frontend/issues)              |
-| Write article | Help other understand what is Machine Learning & how can they apply it, by publishing blog post                                    | [e-mail us](mailto:info@genular.com)                                  |
+| Write article | Help others understand what is Machine Learning & how can they apply it, by publishing blog post                                   | [e-mail us](mailto:info@genular.com)                                  |
 
 ## Browser Support
 
-Tested on `Firefox Quantum 64` or above. As much as we like other browsers we are focusing here to primary provide support for open source ones.
+Tested on `Firefox Version 86`. As much as we like other browsers we are focusing here to primary provide support for open source ones.
 
 ### Reaching Out
 
