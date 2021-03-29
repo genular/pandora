@@ -32,7 +32,7 @@ Goal of this project is to make user interface that will empower scientists, mak
 -   :file_folder: **feature discovery** you can discover relevant trends and patterns inside your data with ease, that would usually take years of manual handcrafting
 -   :chart: **machine learning** Build Machine Learning models with ease, and quickly compare them via our innovative interface
 -   :package: **exploratory data analysis** visual analysis of multiple different machine learning results will give you instant insights with help of many different visualization algorithms
--   :arrows*counterclockwise: **sharing is caring** you can share your results with others, deploy your models instantly\* *(in progress)\_ or download your data for external use
+-   :arrows_counterclockwise: **sharing is caring** you can share your results with others, deploy your models instantly\* \*(in progress)\_ or download your data for external use
 -   :closed_lock_with_key: **privacy and security** hosting `SIMON` on your own dedicated servers or laptop you don't have to worry about someone else is looking after your data and your models
 
 ## Current version features
