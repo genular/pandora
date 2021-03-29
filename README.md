@@ -93,9 +93,10 @@ docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='tru
 
 #### Reinstalling SIMON
 
-In order to re-install `SIMON` you need to delete previously installed `SIMON` Docker container and associate data/volumes. More info about that on ,<a href ="https://docs.docker.com/config/pruning/"  target="_blank">official Docker documentation.</a> To delete all Docker Images, Containers, Volumes, and Networks execute following:
+In order to re-install `SIMON` you need to delete previously installed `SIMON` Docker container and associate data/volumes. More info about that on ,<a href ="https://docs.docker.com/config/pruning/"  target="_blank">official Docker documentation.</a> Be sure to stop currently running container (if any). To delete all Docker Images, Containers, Volumes, and Networks execute following:
 
 ```bash
+docker stop genular
 docker system prune -a
 ```
 
