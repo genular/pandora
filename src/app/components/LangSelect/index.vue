@@ -20,7 +20,7 @@ export default {
     computed: {
         language() {
             return this.$store.getters.language;
-        }
+        },
     },
     mounted() {
         console.log("Detected languages: " + this.getLanguages());
@@ -35,32 +35,33 @@ export default {
             }
         },
         getLanguages() {
-            return supportedLocales;
+            return supportedLocales.filter((lang) => lang !== "ach");
         },
         setI18nLanguage(lang) {
             this.$i18n.locale = lang;
             document.querySelector("html").setAttribute("lang", lang);
             this.$store.dispatch("setLanguage", lang);
-            
+
             this.$message({
                 message: this.$t("components.LangSelect.language_changed"),
-                type: "success"
+                type: "success",
             });
         },
         handleSetLanguage(lang) {
             if (!Object.keys(this.$i18n.messages).includes(lang)) {
                 import(/*   webpackMode:      "lazy",
-                                webpackChunkName: "language-`${lang}`" */
-                `@/translations/files/translated/${lang}.json`).then(msgs => {
-                    this.$i18n.setLocaleMessage(lang, msgs.default);
+                                webpackChunkName: "language-`${lang}`" */ `@/translations/files/translated/${lang}.json`).then(
+                    (msgs) => {
+                        this.$i18n.setLocaleMessage(lang, msgs.default);
 
-                    this.setI18nLanguage(lang);
-                });
+                        this.setI18nLanguage(lang);
+                    }
+                );
             } else {
                 this.setI18nLanguage(lang);
             }
-        }
-    }
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
