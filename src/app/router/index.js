@@ -40,9 +40,9 @@ export const constantRouterMap = [
         }),
     },
     {
-        path: "/home",
+        path: "/",
         component: Layout,
-        redirect: "/home/dashboard",
+        redirect: "/dashboard",
         children: [
             {
                 path: "dashboard",

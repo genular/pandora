@@ -278,7 +278,7 @@ export default {
                 .dispatch("userLogin", this.userForm)
                 .then(() => {
                     this.$router.push({
-                        path: "/home",
+                        path: "/",
                     });
                 })
                 .catch((error) => {

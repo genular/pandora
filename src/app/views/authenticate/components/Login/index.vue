@@ -122,7 +122,7 @@ export default {
                             this.loadingWizard = false;
                             if (status === true) {
                                 this.$router.push({
-                                    path: "/home",
+                                    path: "/",
                                 });
                             } else {
                                 console.log("Cannot login user!");
