@@ -104,13 +104,13 @@ Please be sure to delete `SIMON` data volume and container before reinstalling o
 
 ##### Other information
 
-_To run latest Released version (0.2.0), please use following Docker image `genular/simon:0.2.0`_
+_To run latest Released version (0.2.1), please use following Docker image `genular/simon:0.2.1`_
 
 ```bash
-docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:0.2.0
+docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:0.2.1
 ```
 
-`SIMON` will now run until you _shutdown/restart_ your machine or _stop it manually_.
+`SIMON` will now run until you _shutdown/restart_ your machine or _stop docker container manually_.
 To manually stop `SIMON` container please type following command:
 
 ```bash
