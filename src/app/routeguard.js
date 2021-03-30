@@ -19,7 +19,7 @@ function hasInAppPermission(role, permissionRoles) {
 }
 // Check if URL is publicly accessible
 function hasOutAppPermission(whiteListURLs, currentURL) {
-    return whiteListURLs.some(url => currentURL.startsWith(url));
+    return whiteListURLs.some((url) => currentURL.startsWith(url));
 }
 
 const whiteList = ["/authenticate/?action=login", "/authenticate/?action=register", "/authenticate/?action=reset"];
@@ -44,20 +44,29 @@ router.beforeEach((to, from, next) => {
         if (store.getters.user_role === 0) {
             store
                 .dispatch("getUserDetails")
-                .then(response => {
+                .then((response) => {
                     if (response !== false) {
-                        store.dispatch("generateUserSpecificRoutes", response.account_type).then(() => {
-                            router.addRoutes(store.getters.addRouters);
+                        // Not used all routes are already defined in Router
+                        store.dispatch("generateUserSpecificRoutes", response.account_type).then((response) => {
+                            console.log("Adding user / application routes");
                             next({ ...to, replace: true });
                         });
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
+                    console.log("Auth error: store.getters.user_role 1:");
                     console.log(error);
-                    store.dispatch("userLogout").then(() => {
-                        Message.error("Verification failed, please authenticate again");
-                        next({ path: "/authenticate/?action=login" });
-                    });
+
+                    store
+                        .dispatch("userLogout")
+                        .then((response) => {
+                            Message.error("Verification failed, please authenticate again");
+                            next({ path: "/authenticate/?action=login" });
+                        })
+                        .catch((error) => {
+                            console.log("Auth error: store.getters.user_role 2:");
+                            console.log(error);
+                        });
                 });
         } else {
             // 3rd check some app specific restrictions
@@ -67,7 +76,7 @@ router.beforeEach((to, from, next) => {
                 next({
                     path: "/401",
                     replace: true,
-                    query: { noGoBack: true }
+                    query: { noGoBack: true },
                 });
             }
         }
@@ -82,6 +91,6 @@ router.beforeEach((to, from, next) => {
     }
 });
 
-router.afterEach(() => {
+router.afterEach((to, from) => {
     NProgress.done();
 });

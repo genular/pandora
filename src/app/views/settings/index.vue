@@ -104,9 +104,6 @@
                 </div>
             </el-col>
         </el-row>
-
-        <div id="crowdjet-container" data-project-id="300177" style="bottom: 140px; right: 20px"></div>
-        <div id="crowdjet-expand-container" style="bottom: 60px; right: 20px"></div>
     </div>
 </template>
 <script>

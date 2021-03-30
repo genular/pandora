@@ -1,7 +1,7 @@
 <template>
     <div class="register-tab-container">
-        <div class="title">User registration</div>
-        <div class="lead">The best way to design, build, and ship machine learning models.</div>
+        <div class="title">New user registration</div>
+        <div class="lead">SIMON - Data Science Knowledge Discovery platform</div>
         <el-row class="register-options-container" v-if="registrationType == null">
             <el-col :span="12">
                 <div class="register-options-user" @click.prevent.stop="navigateTo('private')">
@@ -30,24 +30,24 @@ export default {
     props: {
         action: {
             default: "register",
-            type: String
+            type: String,
         },
         usertype: {
             default: "",
-            type: String
+            type: String,
         },
         step: {
             default: 0,
-            type: Number
-        }
+            type: Number,
+        },
     },
     components: {
         Private,
-        Organization
+        Organization,
     },
     data() {
         return {
-            registrationType: null
+            registrationType: null,
         };
     },
     created() {
@@ -58,11 +58,11 @@ export default {
     methods: {
         navigateTo(usertype) {
             this.$router.push({
-                path: "/authenticate/?action=" + this.action + "&usertype=" + usertype + "&step=0"
+                path: "/authenticate/?action=" + this.action + "&usertype=" + usertype + "&step=0",
             });
             this.registrationType = usertype;
-        }
-    }
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">

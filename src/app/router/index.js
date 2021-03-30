@@ -26,8 +26,8 @@ import Layout from "../views/layout/Layout";
 **/
 
 export const constantRouterMap = [
-    // { path: "/login", component: _import("login/index"), hidden: true },
-    // { path: "/register", component: _import("register/index"), hidden: true },
+    { path: "/404", component: _import("errorPage/404"), hidden: true },
+    { path: "/401", component: _import("errorPage/401"), hidden: true },
     {
         path: "/authenticate",
         name: "authenticate",
@@ -36,15 +36,13 @@ export const constantRouterMap = [
         props: (route) => ({
             action: route.query.action || "login", // login  or register
             usertype: route.query.usertype, // private or organization
-            step: parseInt(route.query.step) || 0 // current step number
-        })
+            step: parseInt(route.query.step) || 0, // current step number
+        }),
     },
-    { path: "/404", component: _import("errorPage/404"), hidden: true },
-    { path: "/401", component: _import("errorPage/401"), hidden: true },
     {
-        path: "",
+        path: "/home",
         component: Layout,
-        redirect: "dashboard",
+        redirect: "/home/dashboard",
         children: [
             {
                 path: "dashboard",
@@ -53,10 +51,10 @@ export const constantRouterMap = [
                 meta: {
                     title: "dashboard",
                     icon: "fa fa-icon fa-tachometer",
-                    noCache: true
-                }
-            }
-        ]
+                    noCache: true,
+                },
+            },
+        ],
     },
     {
         path: "/settings",
@@ -72,10 +70,10 @@ export const constantRouterMap = [
                 meta: {
                     title: "settings",
                     icon: "fa fa-icon fa-plus",
-                    noCache: true
-                }
-            }
-        ]
+                    noCache: true,
+                },
+            },
+        ],
     },
     {
         path: "/workspace",
@@ -89,10 +87,10 @@ export const constantRouterMap = [
                 meta: {
                     title: "workspace",
                     icon: "fa fa-icon fa-sitemap",
-                    noCache: true
-                }
-            }
-        ]
+                    noCache: true,
+                },
+            },
+        ],
     },
 
     {
@@ -102,7 +100,7 @@ export const constantRouterMap = [
         name: "simon",
         meta: {
             title: "simon",
-            icon: "fa fa-icon fa-plus"
+            icon: "fa fa-icon fa-plus",
         },
         children: [
             {
@@ -112,9 +110,9 @@ export const constantRouterMap = [
                 meta: {
                     title: "editing",
                     icon: "fa fa-icon fa-play",
-                    restrictions: { file: true, extension: ["csv"] }
+                    restrictions: { file: true, extension: ["csv"] },
                 },
-                hidden: false
+                hidden: false,
             },
             {
                 path: "start-analysis",
@@ -123,8 +121,8 @@ export const constantRouterMap = [
                 meta: {
                     title: "analysis",
                     icon: "fa fa-icon fa-play",
-                    restrictions: { file: true, extension: ["csv"] }
-                }
+                    restrictions: { file: true, extension: ["csv"] },
+                },
             },
             {
                 path: "start-exploration",
@@ -134,33 +132,16 @@ export const constantRouterMap = [
                     title: "exploratory-analysis",
                     icon: "fa fa-icon fa-area-chart",
                     // simonAnalysisJobId is store getter
-                    restrictions: { action: true, actionType: "simonExplorationQueueIDs" }
-                }
-            }
-        ]
-    }
-    // {
-    //     path: "/apps/heatmap",
-    //     component: Layout,
-    //     redirect: "/apps/heatmap",
-    //     children: [
-    //         {
-    //             path: "index",
-    //             component: _import("apps/heatmap/index"),
-    //             name: "other",
-    //             meta: {
-    //                 title: "other",
-    //                 icon: "fa fa-icon fa-plus",
-    //                 restrictions: { file: true, extension: ["csv", "fcs"] }
-    //             }
-    //         }
-    //     ]
-    // }
+                    restrictions: { action: true, actionType: "simonExplorationQueueIDs" },
+                },
+            },
+        ],
+    },
 ];
 
 export default new Router({
     scrollBehavior: () => ({ y: 0 }),
-    routes: constantRouterMap
+    routes: constantRouterMap,
 });
 
 export const asyncRouterMap = [{ path: "*", redirect: "/404", hidden: true }];

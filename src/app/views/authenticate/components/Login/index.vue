@@ -7,20 +7,29 @@
                         <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" :placeholder="$t('views.authenticate.components.Login.username')" />
                     </el-form-item>
                     <el-form-item prop="password">
-                        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" :placeholder="$t('views.authenticate.components.Login.password')"  />
+                        <el-input
+                            name="password"
+                            :type="passwordType"
+                            @keyup.enter.native="handleLogin"
+                            v-model="loginForm.password"
+                            autoComplete="on"
+                            :placeholder="$t('views.authenticate.components.Login.password')"
+                        />
                         <span class="show-pwd" @click="showPassword">
                             <i class="fa fa-icon fa-eye"></i>
                         </span>
                     </el-form-item>
                     <el-row>
                         <el-col :span="24">
-                            <el-button style="float:right;" round @click.prevent.stop="navigateTo('reset')">{{ $t('views.authenticate.components.Login.reset_password') }}</el-button>
+                            <el-button style="float: right" round @click.prevent.stop="navigateTo('reset')">
+                                {{ $t("views.authenticate.components.Login.reset_password") }}
+                            </el-button>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="24">
-                            <el-button  type="primary" class="button-login" :loading="loadingWizard" @click.native.prevent="handleLogin">
-                                {{ $t('views.authenticate.components.Login.sign_in') }}
+                            <el-button type="primary" class="button-login" :loading="loadingWizard" @click.native.prevent="handleLogin">
+                                {{ $t("views.authenticate.components.Login.sign_in") }}
                             </el-button>
                         </el-col>
                     </el-row>
@@ -28,7 +37,7 @@
                 <el-row class="bottom-info">
                     <el-col :span="24" class="info-button">
                         <el-button plain round @click.prevent.stop="navigateTo('register&usertype=private&step=0')">
-                            {{ $t('views.authenticate.components.Login.sign_up') }}
+                            {{ $t("views.authenticate.components.Login.sign_up") }}
                         </el-button>
                     </el-col>
                 </el-row>
@@ -44,33 +53,33 @@ export default {
     props: {
         action: {
             default: "login",
-            type: String
-        }
+            type: String,
+        },
     },
     data() {
         return {
             loginForm: {
                 username: "",
-                password: ""
+                password: "",
             },
             loginRules: {
                 username: [
                     {
                         required: true,
                         trigger: "blur",
-                        validator: isValidUsername
-                    }
+                        validator: isValidUsername,
+                    },
                 ],
                 password: [
                     {
                         required: true,
                         trigger: "blur",
-                        validator: isValidPassword
-                    }
-                ]
+                        validator: isValidPassword,
+                    },
+                ],
             },
             passwordType: "password",
-            loadingWizard: false
+            loadingWizard: false,
         };
     },
     mounted() {
@@ -86,12 +95,12 @@ export default {
         navigateTo(action) {
             if (!this.$config.isDemoServer) {
                 this.$router.push({
-                    path: "/authenticate/?action=" + action
+                    path: "/authenticate/?action=" + action,
                 });
             } else {
                 this.$message({
                     type: "warning",
-                    message: this.$t('globals.demo_server.function_disabled')
+                    message: this.$t("globals.demo_server.function_disabled"),
                 });
             }
         },
@@ -104,37 +113,37 @@ export default {
         },
 
         handleLogin() {
-            this.$refs.loginForm.validate(valid => {
+            this.$refs.loginForm.validate((valid) => {
                 if (valid) {
                     this.loadingWizard = true;
                     this.$store
                         .dispatch("userLogin", this.loginForm)
-                        .then(status => {
+                        .then((status) => {
                             this.loadingWizard = false;
-                            if(status === true){
+                            if (status === true) {
                                 this.$router.push({
-                                    path: "/"
+                                    path: "/home",
                                 });
-                            }else{
-                                console.log("Cannot login user!")
+                            } else {
+                                console.log("Cannot login user!");
                             }
                         })
-                        .catch(error => {
+                        .catch((error) => {
                             console.log(error);
                             this.loadingWizard = false;
                             this.$message({
-                                message: this.$t('views.authenticate.components.Login.login_error'),
+                                message: this.$t("views.authenticate.components.Login.login_error"),
                                 type: "error",
                                 duration: 2500,
-                                showClose: true
+                                showClose: true,
                             });
                         });
                 } else {
                     return false;
                 }
             });
-        }
-    }
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">

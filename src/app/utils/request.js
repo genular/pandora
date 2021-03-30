@@ -9,17 +9,17 @@ import * as dataReceiver from "crypto-js";
 // Create new axios instance
 const service = axios.create({
     crossDomain: true,
-    // 10 min request timeout
-    timeout: 600000
+    // 20 min request timeout
+    timeout: 1200000,
 });
 
 // Request interceptor
 service.interceptors.request.use(
-    function(config) {
+    function (config) {
         if (store.getters.auth_token) {
             config.headers["X-Token"] = store.getters.auth_token;
         }
-        
+
         if (store.getters.language) {
             config.headers["Accept-Language"] = store.getters.language;
         }
@@ -41,7 +41,7 @@ service.interceptors.request.use(
 
         return config;
     },
-    function(error) {
+    function (error) {
         // Do something with request error
         console.log(error);
         Promise.reject(error);
@@ -50,7 +50,7 @@ service.interceptors.request.use(
 
 // Request response interceptor
 service.interceptors.response.use(
-    function(response) {
+    function (response) {
         /** Decrypt server return data */
         if (typeof response.data !== "undefined" && IsJsonString(response.data) === true) {
             const data = dataReceiver.AES.decrypt(response.data, "1337", {
@@ -64,13 +64,13 @@ service.interceptors.response.use(
                     parse(jsonStr) {
                         const j = JSON.parse(jsonStr);
                         const cipherParams = dataReceiver.lib.CipherParams.create({
-                            ciphertext: dataReceiver.enc.Base64.parse(j.ct)
+                            ciphertext: dataReceiver.enc.Base64.parse(j.ct),
                         });
                         if (j.iv) cipherParams.iv = dataReceiver.enc.Hex.parse(j.iv);
                         if (j.s) cipherParams.salt = dataReceiver.enc.Hex.parse(j.s);
                         return cipherParams;
-                    }
-                }
+                    },
+                },
             }).toString(dataReceiver.enc.Utf8);
             if (data !== "") {
                 response.data = JSON.parse(new Buffer(data, "base64").toString("utf8"));
@@ -78,7 +78,7 @@ service.interceptors.response.use(
         }
         return response;
     },
-    function(error) {
+    function (error) {
         // Error message displayed to user
         let errorMessage = "";
 
@@ -86,7 +86,7 @@ service.interceptors.response.use(
         if (typeof error.response !== "undefined") {
             if (error.response.status === 401) {
                 errorMessage = "You are logged out. Please login again using Settings panel.";
-                setTimeout(function() {
+                setTimeout(function () {
                     window.location.href = [location.protocol, "//", location.host, location.pathname].join("") + "#/authenticate/?action=login";
                 }, 5000);
             }
@@ -100,10 +100,10 @@ service.interceptors.response.use(
 
         if (errorMessage !== "") {
             Notification({
-                title: 'Request error',
+                title: "Remote request failed",
                 message: errorMessage,
                 type: "error",
-                duration: 5000
+                duration: 5000,
             });
         }
 
