@@ -16,12 +16,12 @@ const baseUrlPath = "/backend";
 export function userLogin(username, password) {
     const data = {
         username,
-        password
+        password,
     };
     return request({
         url: baseUrlPath + "/user/login",
         method: "POST",
-        data
+        data,
     });
 }
 /**
@@ -30,25 +30,25 @@ export function userLogin(username, password) {
 export function userLogout() {
     return request({
         url: baseUrlPath + "/user/logout",
-        method: "POST"
+        method: "POST",
     });
 }
 
 export function userRegister(userForm, planForm) {
     const data = {
         user: userForm,
-        plan: planForm
+        plan: planForm,
     };
     return request({
         url: baseUrlPath + "/user/register",
         method: "POST",
-        data
+        data,
     });
 }
 export function userDetials() {
     return request({
         url: baseUrlPath + "/user/details",
-        method: "GET"
+        method: "GET",
     });
 }
 /**
@@ -70,7 +70,7 @@ export function checkDatabaseAvailability(validationTable, validationField, vali
             encodeURIComponent(window.btoa(validationField)) +
             "/" +
             encodeURIComponent(window.btoa(validationValue)),
-        method: "GET"
+        method: "GET",
     });
 }
 /**
@@ -80,7 +80,7 @@ export function checkDatabaseAvailability(validationTable, validationField, vali
 export function retrieveAllActivePlans(customerType) {
     return request({
         url: baseUrlPath + "/system/plans/list/" + encodeURIComponent(window.btoa(customerType)),
-        method: "GET"
+        method: "GET",
     });
 }
 /**
@@ -89,7 +89,7 @@ export function retrieveAllActivePlans(customerType) {
 export function fetchServerStats() {
     return request({
         url: baseUrlPath + "/dashboard/stats",
-        method: "GET"
+        method: "GET",
     });
 }
 
@@ -97,14 +97,14 @@ export function systemConfigure(newBaseURL) {
     return request({
         url: baseUrlPath + "/system/status/bb5dc8842ca31d4603d6aa11448d1654",
         method: "GET",
-        baseURL: newBaseURL
+        baseURL: newBaseURL,
     });
 }
 
 export function searchCountry(input) {
     return request({
         url: "https://restcountries.eu/rest/v2/name/" + encodeURIComponent(input) + "?fields=name;alpha2Code",
-        method: "GET"
+        method: "GET",
     });
 }
 
@@ -112,7 +112,7 @@ export function searchAddressSuggest(input, app_code, app_id) {
     return request({
         url: "http://places.cit.api.here.com/places/v1/suggest?app_code=" + app_code + "&app_id=" + app_id + "&pretty=true&q=" + encodeURIComponent(input),
         method: "GET",
-        headers: { "X-Map-Viewport": "13.3704,52.5122,13.4194,52.5262" }
+        headers: { "X-Map-Viewport": "13.3704,52.5122,13.4194,52.5262" },
     });
 }
 
@@ -126,7 +126,7 @@ export function searchAddressDetails(input, app_code, app_id) {
             "&app_code=" +
             app_code +
             "&gen=9&jsonattributes=1&locationattributes=address&maxresults=1&addressattributes=country,city,postalCode,addressLines&language=en-US",
-        method: "GET"
+        method: "GET",
     });
 }
 
@@ -139,7 +139,7 @@ export function fetchQueueList(query) {
     return request({
         url: baseUrlPath + "/queue/list",
         method: "GET",
-        params: query
+        params: query,
     });
 }
 
@@ -150,12 +150,12 @@ export function fetchQueueList(query) {
  */
 export function updateQueueName(submitData) {
     const data = {
-        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData)))
+        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData))),
     };
     return request({
         url: baseUrlPath + "/queue/update",
         method: "POST",
-        data
+        data,
     });
 }
 
@@ -164,7 +164,7 @@ export function fetchQueueExplorationDetails(query) {
     return request({
         url: baseUrlPath + "/queue/exploration/list",
         method: "GET",
-        params: query
+        params: query,
     });
 }
 
@@ -173,7 +173,7 @@ export function fetchQueueResamples(query) {
     return request({
         url: baseUrlPath + "/queue/details",
         method: "GET",
-        params: query
+        params: query,
     });
 }
 
@@ -181,7 +181,7 @@ export function fetchResampleModels(query) {
     return request({
         url: baseUrlPath + "/queue/resamples/details",
         method: "GET",
-        params: query
+        params: query,
     });
 }
 
@@ -193,7 +193,7 @@ export function fetchResampleModels(query) {
 export function readFilesInUserDirectory(submitData) {
     return request({
         url: baseUrlPath + "/system/filesystem/list/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
-        method: "GET"
+        method: "GET",
     });
 }
 
@@ -205,31 +205,31 @@ export function readFilesInUserDirectory(submitData) {
 export function deleteFile(submitData) {
     return request({
         url: baseUrlPath + "/system/filesystem/delete/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
-        method: "GET"
+        method: "GET",
     });
 }
 
 export function fetchSimonAvailablePackages(selectedFiles) {
     const data = {
-        selectedFiles: encodeURIComponent(window.btoa(JSON.stringify(selectedFiles)))
+        selectedFiles: encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))),
     };
     return request({
         url: baseUrlPath + "/system/simon/available-packages",
         method: "POST",
-        data
+        data,
     });
 }
 
 export function simonHeaderVerify(selectedFiles) {
     return request({
         url: baseUrlPath + "/system/simon/header/" + encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))) + "/verify",
-        method: "GET"
+        method: "GET",
     });
 }
 export function getSimonHeaderSuggest(selectedFiles, input) {
     return request({
         url: baseUrlPath + "/system/simon/header/" + encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))) + "/suggest/" + encodeURIComponent(window.btoa(input)),
-        method: "GET"
+        method: "GET",
     });
 }
 
@@ -242,42 +242,46 @@ export function getSimonHeaderSuggest(selectedFiles, input) {
 export function resamplesFeaturesSuggest(submitData) {
     return request({
         url: baseUrlPath + "/queue/resamples/features/suggest/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
-        method: "GET"
+        method: "GET",
     });
 }
 
 export function getSimonPreAnalysisDetails(submitData) {
     // URL Encode two times, since sometimes utf8 characters from column names are issue for JS btoa
     const data = {
-        submitData: encodeURIComponent(window.btoa(encodeURIComponent(JSON.stringify(submitData))))
+        submitData: encodeURIComponent(window.btoa(encodeURIComponent(JSON.stringify(submitData)))),
     };
 
     return request({
         url: baseUrlPath + "/system/simon/pre-analysis",
         method: "POST",
-        data
+        data,
     });
 }
 
 export function submitDatasetQueueTask(submitData) {
+    console.log("submitDatasetQueueTask encoding start:");
+    // console.log(submitData);
+
     const data = {
-        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData)))
+        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData))),
     };
+    console.log("submitDatasetQueueTask request start:");
     return request({
         url: baseUrlPath + "/system/simon/dataset-queue",
         method: "POST",
-        data
+        data,
     });
 }
 
 export function cancelDatasetQueueTask(submitData) {
     const data = {
-        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData)))
+        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData))),
     };
     return request({
         url: baseUrlPath + "/system/simon/dataset-queue/cancel",
         method: "POST",
-        data
+        data,
     });
 }
 
@@ -288,12 +292,12 @@ export function cancelDatasetQueueTask(submitData) {
  */
 export function deleteDatasetQueueTask(submitData) {
     const data = {
-        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData)))
+        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData))),
     };
     return request({
         url: baseUrlPath + "/system/simon/dataset-queue/delete",
         method: "POST",
-        data
+        data,
     });
 }
 
@@ -305,7 +309,7 @@ export function deleteDatasetQueueTask(submitData) {
 export function deleteDatasetResampleTask(submitData) {
     return request({
         url: baseUrlPath + "/system/simon/dataset-resample/delete/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
-        method: "GET"
+        method: "GET",
     });
 }
 
@@ -319,7 +323,7 @@ export function deleteDatasetResampleTask(submitData) {
 export function genarateFileDownloadLink(submitData) {
     return request({
         url: baseUrlPath + "/system/filesystem/download/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
-        method: "GET"
+        method: "GET",
     });
 }
 
@@ -327,24 +331,23 @@ export function getVariableImportance(query) {
     return request({
         url: baseUrlPath + "/queue/exploration/variableImportance",
         method: "GET",
-        params: query
+        params: query,
     });
 }
 
 export function getPublicDatasets(submitData) {
     return request({
         url: baseUrlPath + "/dataset/import/public/list/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
-        method: "GET"
+        method: "GET",
     });
 }
 
 export function importPublicDatasets(submitData) {
     return request({
         url: baseUrlPath + "/dataset/import/public/import/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
-        method: "GET"
+        method: "GET",
     });
 }
-
 
 /**
  * Generates publicly accessible download link for specific file ID
@@ -356,7 +359,7 @@ export function importPublicDatasets(submitData) {
 export function generateSystemLogFileDownloadLink(submitData) {
     return request({
         url: baseUrlPath + "/system/simon/generate-log-file/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
-        method: "GET"
+        method: "GET",
     });
 }
 
@@ -366,6 +369,6 @@ export function generateSystemLogFileDownloadLink(submitData) {
 export function fetchSelectedFilesDetails(submitData) {
     return request({
         url: baseUrlPath + "/system/filesystem/file-details/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
-        method: "GET"
+        method: "GET",
     });
 }

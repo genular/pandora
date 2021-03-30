@@ -163,6 +163,7 @@ const apps = {
             return new Promise((resolve, reject) => {
                 ApiSubmitDatasetQueueTask(submitData)
                     .then((response) => {
+                        console.log("ApiSubmitDatasetQueueTask reponse:");
                         if (response.data.success === true) {
                             resolve(true);
                         } else {
