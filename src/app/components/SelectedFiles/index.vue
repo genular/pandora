@@ -6,7 +6,8 @@
             <span class="close-container" @click="closeSelectedFile(file.id)">x</span>
         </div>
         <div v-if="selectedQueueIDs != ''" class="files-view-item selectedQueueIDs animated flipInY" closable>
-            Queue ID: <span style="font-weight: bold;">{{ selectedQueueIDs }}</span>
+            Queue ID:
+            <span style="font-weight: bold">{{ selectedQueueIDs }}</span>
             <span class="close-container" @click.prevent.stop="handleCloseExplorationJobId()">x</span>
         </div>
     </div>
@@ -14,13 +15,22 @@
 <script>
 export default {
     computed: {
+        // Array of selected files from Workspace
         selectedFiles: {
             get() {
                 return this.$store.getters.selectedFiles;
             },
             set(value) {
                 this.$store.dispatch("setSelectedFiles", value);
-            }
+            },
+        },
+        selectedFileDetails: {
+            get() {
+                return this.$store.getters.selectedFileDetails;
+            },
+            set(value) {
+                this.$store.dispatch("setSelectedFileDetails", value);
+            },
         },
         selectedQueueIDs: {
             get() {
@@ -28,19 +38,20 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationQueueIDs", value);
-            }
-        }
+            },
+        },
     },
     methods: {
         handleCloseExplorationJobId() {
             this.selectedQueueIDs = "";
         },
         closeSelectedFile(selectdFileID) {
-            this.selectedFiles = this.selectedFiles.filter(function(item) {
+            this.selectedFiles = this.selectedFiles.filter(function (item) {
                 return selectdFileID !== item.id;
             });
-        }
-    }
+            this.selectedFileDetails = { id: null, columns: [], summary: [] };
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -76,7 +87,7 @@ export default {
             text-align: center;
             font-weight: bold;
             cursor: pointer;
-            font-size: 15px; 
+            font-size: 15px;
             float: right;
             line-height: 17px;
             margin-top: 10px;
