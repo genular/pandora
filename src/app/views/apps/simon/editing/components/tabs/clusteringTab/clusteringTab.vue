@@ -1,322 +1,313 @@
 <template>
     <div class="editing-clustering-tab" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
-        <el-row v-if="tabEnabled">
-            <el-row type="flex" align="top">
-                <el-col :span="4">
-                    <el-form ref="settingsForm" :model="settingsForm">
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.columns.title')">
-                            <el-select
-                                style="float: right"
-                                v-model="settingsForm.selectedColumns"
-                                multiple
-                                filterable
-                                remote
-                                default-first-option
-                                reserve-keyword
-                                value-key="remapped"
-                                clearable
-                                :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.columns.placeholder')"
-                                :remote-method="
-                                    (userInput) => {
-                                        querySearch(userInput);
-                                    }
-                                "
-                            >
-                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1">
-                                    <el-row style="max-width: 250px">
-                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
-                                            {{ item.original }}
-                                        </el-col>
-                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
-                                            {{ item.valid_10p === 1 ? "*" : "" }}
-                                            {{ item.unique_count }}
-                                        </el-col>
-                                    </el-row>
-                                </el-option>
-                            </el-select>
-                            <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    {{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.columns.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_columns.title')">
-                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="1" :min="1" :max="15"></el-input-number>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    {{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_columns.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.rows.title')">
-                            <el-select
-                                style="float: right"
-                                v-model="settingsForm.selectedRows"
-                                multiple
-                                filterable
-                                remote
-                                default-first-option
-                                reserve-keyword
-                                value-key="remapped"
-                                clearable
-                                :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.rows.placeholder')"
-                                :remote-method="
-                                    (userInput) => {
-                                        querySearch(userInput);
-                                    }
-                                "
-                            >
-                                <el-option
-                                    v-for="item in selectedFileDetailsDisplay"
-                                    :key="item.remapped"
-                                    :label="item.original"
-                                    :value="item"
-                                    :disabled="item.valid_numeric !== 1"
-                                >
-                                    <el-row style="max-width: 250px">
-                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
-                                            {{ item.original }}
-                                        </el-col>
-                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
-                                            {{ item.valid_10p === 1 ? "*" : "" }}
-                                            {{ item.unique_count }}
-                                        </el-col>
-                                    </el-row>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_rows.title')">
-                            <el-input-number style="float: right" v-model="settingsForm.cutOffRowSize" :step="10" :min="10" :max="10000"></el-input-number>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    {{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_rows.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.remove_na')">
-                            <el-checkbox style="float: right" v-model="settingsForm.removeNA"></el-checkbox>
-                        </el-form-item>
-
-                        <el-form-item label="Preprocess">
-                            <el-checkbox style="float: right" v-model="settingsForm.preProcessDataset"></el-checkbox>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.scale.label')">
-                            <el-select v-model="settingsForm.scale" style="float: right" placeholder="Select">
-                                <el-option
-                                    v-for="item in settingOptions.scale"
-                                    :key="item.id"
-                                    :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.scale.options.', item.id].join(''))"
-                                    :value="item.id"
-                                >
-                                    <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.scale.options." + item.id) }}</span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-                        <!-- ["numbers", "legend", "colnames", "rownames"] -->
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.display.label')">
-                            <el-checkbox-group style="float: right" class="checkbox_group" v-model="settingsForm.displayOptions" size="mini">
-                                <el-checkbox
-                                    v-for="(item, index) in settingOptions.displayOptions"
-                                    :style="index !== 0 && index % 2 === 0 ? 'clear: left;float: left;margin-left: 0;' : ''"
-                                    :key="item.id"
-                                    :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.display.options.', item.id].join(''))"
-                                    :value="item.id"
-                                >
-                                    <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.display.options." + item.id) }}</span>
-                                </el-checkbox>
-                            </el-checkbox-group>
-                        </el-form-item>
-
-                        <el-form-item
-                            v-if="settingsForm.displayOptions.indexOf('numbers') !== -1"
-                            :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.numbers_size')"
-                        >
-                            <el-input-number
-                                style="float: right"
-                                v-model="settingsForm.fontSizeNumbers"
-                                :value="settingsForm.fontSizeNumbers"
-                                :min="settingOptions.fontSizeNumbers.min"
-                                :max="settingOptions.fontSizeNumbers.max"
-                                :step="settingOptions.fontSizeNumbers.step"
-                            ></el-input-number>
-                        </el-form-item>
-                        <el-form-item
-                            v-if="settingsForm.displayOptions.indexOf('colnames') !== -1"
-                            :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.colnames_size')"
-                        >
-                            <el-input-number
-                                style="float: right"
-                                v-model="settingsForm.fontSizeCol"
-                                :value="settingsForm.fontSizeCol"
-                                :min="settingOptions.fontSizeCol.min"
-                                :max="settingOptions.fontSizeCol.max"
-                                :step="settingOptions.fontSizeCol.step"
-                            ></el-input-number>
-                        </el-form-item>
-                        <el-form-item
-                            v-if="settingsForm.displayOptions.indexOf('rownames') !== -1"
-                            :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.rownames_size')"
-                        >
-                            <el-input-number
-                                style="float: right"
-                                v-model="settingsForm.fontSizeRow"
-                                :value="settingsForm.fontSizeRow"
-                                :min="settingOptions.fontSizeRow.min"
-                                :max="settingOptions.fontSizeRow.max"
-                                :step="settingOptions.fontSizeRow.step"
-                            ></el-input-number>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.plot_width')">
-                            <el-input-number
-                                style="float: right"
-                                v-model="settingsForm.plotWidth"
-                                :value="settingsForm.plotWidth"
-                                :min="settingOptions.plotWidth.min"
-                                :max="settingOptions.plotWidth.max"
-                                :step="settingOptions.plotWidth.step"
-                            ></el-input-number>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.plot_ratio')">
-                            <el-input-number
-                                style="float: right"
-                                v-model="settingsForm.plotRatio"
-                                :value="settingsForm.plotRatio"
-                                :min="settingOptions.plotRatio.min"
-                                :max="settingOptions.plotRatio.max"
-                                :step="settingOptions.plotRatio.step"
-                            ></el-input-number>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.label')">
-                            <el-select
-                                style="float: right"
-                                v-model="settingsForm.clustDistance"
-                                :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.placeholder')"
-                            >
-                                <el-option
-                                    v-for="item in settingOptions.clustDistance"
-                                    :key="item.id"
-                                    :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.options.', item.id].join(''))"
-                                    :value="item.id"
-                                >
-                                    <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.options." + item.id) }}</span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.label')">
-                            <el-select
-                                style="float: right"
-                                v-model="settingsForm.clustLinkage"
-                                :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.placeholder')"
-                            >
-                                <el-option
-                                    v-for="item in settingOptions.clustLinkage"
-                                    :key="item.id"
-                                    :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
-                                    :value="item.id"
-                                >
-                                    <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.label')">
-                            <el-select
-                                style="float: right"
-                                v-model="settingsForm.clustOrdering"
-                                :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.placeholder')"
-                            >
-                                <el-option
-                                    v-for="item in settingOptions.clustOrdering"
-                                    :key="item.id"
-                                    :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.options.', item.id].join(''))"
-                                    :value="item.id"
-                                >
-                                    <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.options." + item.id) }}</span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.font_size')">
-                            <el-input-number
-                                style="float: right"
-                                v-model="settingsForm.fontSizeGeneral"
-                                :value="settingsForm.fontSizeGeneral"
-                                :min="settingOptions.fontSizeGeneral.min"
-                                :max="settingOptions.fontSizeGeneral.max"
-                                :step="settingOptions.fontSizeGeneral.step"
-                            ></el-input-number>
-                        </el-form-item>
-
-                        <el-row>
-                            <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
-                                <el-form-item>
-                                    <el-tooltip placement="top">
-                                        <div slot="content">
-                                            {{ $t("views.apps.simon.editing.index.button.download_r_data.description") }}
-                                        </div>
-                                        <el-button style="float: left" type="danger" round @click="downloadRawData">
-                                            {{ $t("views.apps.simon.editing.index.button.download_r_data.title") }}
-                                            <i class="el-icon-download el-icon-right"></i>
-                                        </el-button>
-                                    </el-tooltip>
-                                </el-form-item>
-                            </el-col>
-
-                            <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
-                                <el-form-item>
-                                    <el-button type="danger" round @click="redrawImage" style="float: right">
-                                        {{ $t("views.apps.simon.editing.components.tabs.correlationTab.buttons.plot_image") }}
-                                    </el-button>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                    </el-form>
-                </el-col>
-
-                <el-col :span="19" :offset="1">
-                    <el-row v-if="plot_data.clustering_plot !== false" style="text-align: center">
-                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                            <div slot="content">
-                                <el-button type="success" round @click="downloadPlotImage('clustering_plot')">
-                                    {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
-                                </el-button>
-                            </div>
-                            <img
-                                id="analysis_images_clustering_plot"
-                                class="animated fadeIn analysis_images"
-                                :src="'data:image/png;base64,' + plot_data.clustering_plot_png"
-                                fit="scale-down"
-                            />
-                        </el-tooltip>
-                    </el-row>
-                    <el-row v-else class="plot-placeholder">
-                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                    </el-row>
-                </el-col>
-            </el-row>
-        </el-row>
-        <!-- ELSE if Tab is DISABLED -->
-        <el-row v-else>
+        <el-row type="flex" align="top" v-if="tabEnabled === false">
             <el-col :span="24">
                 <el-alert
                     :title="$t('views.apps.simon.editing.components.tabs.correlationTab.alert.function_disabled.title')"
-                    description="Tab is currently disabled! Total columns in selected: selectedFileDetails"
+                    description="Tab is currently disabled. Please try to refresh or choose another file from Workspace."
                     type="warning"
                     style="margin-top: 20px"
                     show-icon
                     :closable="false"
                 ></el-alert>
+            </el-col>
+        </el-row>
+        <el-row v-else type="flex" align="top">
+            <el-col :span="4">
+                <el-form ref="settingsForm" :model="settingsForm">
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.columns.title')">
+                        <el-select
+                            style="float: right"
+                            v-model="settingsForm.selectedColumns"
+                            multiple
+                            filterable
+                            remote
+                            default-first-option
+                            reserve-keyword
+                            value-key="remapped"
+                            clearable
+                            :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.columns.placeholder')"
+                            :remote-method="
+                                (userInput) => {
+                                    querySearch(userInput);
+                                }
+                            "
+                        >
+                            <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1">
+                                <el-row style="max-width: 250px">
+                                    <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                        {{ item.original }}
+                                    </el-col>
+                                    <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                        {{ item.valid_10p === 1 ? "*" : "" }}
+                                        {{ item.unique_count }}
+                                    </el-col>
+                                </el-row>
+                            </el-option>
+                        </el-select>
+                        <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                        <el-tooltip placement="top" style="padding-left: 5px">
+                            <div slot="content">
+                                {{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.columns.description") }}
+                            </div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                    </el-form-item>
+
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_columns.title')">
+                        <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="1" :min="1" :max="15"></el-input-number>
+                        <el-tooltip placement="top" style="padding-left: 5px">
+                            <div slot="content">
+                                {{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_columns.description") }}
+                            </div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                    </el-form-item>
+
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.rows.title')">
+                        <el-select
+                            style="float: right"
+                            v-model="settingsForm.selectedRows"
+                            multiple
+                            filterable
+                            remote
+                            default-first-option
+                            reserve-keyword
+                            value-key="remapped"
+                            clearable
+                            :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.rows.placeholder')"
+                            :remote-method="
+                                (userInput) => {
+                                    querySearch(userInput);
+                                }
+                            "
+                        >
+                            <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_numeric !== 1">
+                                <el-row style="max-width: 250px">
+                                    <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                        {{ item.original }}
+                                    </el-col>
+                                    <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                        {{ item.valid_10p === 1 ? "*" : "" }}
+                                        {{ item.unique_count }}
+                                    </el-col>
+                                </el-row>
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_rows.title')">
+                        <el-input-number style="float: right" v-model="settingsForm.cutOffRowSize" :step="10" :min="10" :max="10000"></el-input-number>
+                        <el-tooltip placement="top" style="padding-left: 5px">
+                            <div slot="content">
+                                {{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.first_n_rows.description") }}
+                            </div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                    </el-form-item>
+
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.remove_na')">
+                        <el-checkbox style="float: right" v-model="settingsForm.removeNA"></el-checkbox>
+                    </el-form-item>
+
+                    <el-form-item label="Preprocess">
+                        <el-checkbox style="float: right" v-model="settingsForm.preProcessDataset"></el-checkbox>
+                    </el-form-item>
+
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.scale.label')">
+                        <el-select v-model="settingsForm.scale" style="float: right" placeholder="Select">
+                            <el-option
+                                v-for="item in settingOptions.scale"
+                                :key="item.id"
+                                :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.scale.options.', item.id].join(''))"
+                                :value="item.id"
+                            >
+                                <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.scale.options." + item.id) }}</span>
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <!-- ["numbers", "legend", "colnames", "rownames"] -->
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.display.label')">
+                        <el-checkbox-group style="float: right" class="checkbox_group" v-model="settingsForm.displayOptions" size="mini">
+                            <el-checkbox
+                                v-for="(item, index) in settingOptions.displayOptions"
+                                :style="index !== 0 && index % 2 === 0 ? 'clear: left;float: left;margin-left: 0;' : ''"
+                                :key="item.id"
+                                :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.display.options.', item.id].join(''))"
+                                :value="item.id"
+                            >
+                                <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.display.options." + item.id) }}</span>
+                            </el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+
+                    <el-form-item
+                        v-if="settingsForm.displayOptions.indexOf('numbers') !== -1"
+                        :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.numbers_size')"
+                    >
+                        <el-input-number
+                            style="float: right"
+                            v-model="settingsForm.fontSizeNumbers"
+                            :value="settingsForm.fontSizeNumbers"
+                            :min="settingOptions.fontSizeNumbers.min"
+                            :max="settingOptions.fontSizeNumbers.max"
+                            :step="settingOptions.fontSizeNumbers.step"
+                        ></el-input-number>
+                    </el-form-item>
+                    <el-form-item
+                        v-if="settingsForm.displayOptions.indexOf('colnames') !== -1"
+                        :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.colnames_size')"
+                    >
+                        <el-input-number
+                            style="float: right"
+                            v-model="settingsForm.fontSizeCol"
+                            :value="settingsForm.fontSizeCol"
+                            :min="settingOptions.fontSizeCol.min"
+                            :max="settingOptions.fontSizeCol.max"
+                            :step="settingOptions.fontSizeCol.step"
+                        ></el-input-number>
+                    </el-form-item>
+                    <el-form-item
+                        v-if="settingsForm.displayOptions.indexOf('rownames') !== -1"
+                        :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.rownames_size')"
+                    >
+                        <el-input-number
+                            style="float: right"
+                            v-model="settingsForm.fontSizeRow"
+                            :value="settingsForm.fontSizeRow"
+                            :min="settingOptions.fontSizeRow.min"
+                            :max="settingOptions.fontSizeRow.max"
+                            :step="settingOptions.fontSizeRow.step"
+                        ></el-input-number>
+                    </el-form-item>
+
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.plot_width')">
+                        <el-input-number
+                            style="float: right"
+                            v-model="settingsForm.plotWidth"
+                            :value="settingsForm.plotWidth"
+                            :min="settingOptions.plotWidth.min"
+                            :max="settingOptions.plotWidth.max"
+                            :step="settingOptions.plotWidth.step"
+                        ></el-input-number>
+                    </el-form-item>
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.plot_ratio')">
+                        <el-input-number
+                            style="float: right"
+                            v-model="settingsForm.plotRatio"
+                            :value="settingsForm.plotRatio"
+                            :min="settingOptions.plotRatio.min"
+                            :max="settingOptions.plotRatio.max"
+                            :step="settingOptions.plotRatio.step"
+                        ></el-input-number>
+                    </el-form-item>
+
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.label')">
+                        <el-select
+                            style="float: right"
+                            v-model="settingsForm.clustDistance"
+                            :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.placeholder')"
+                        >
+                            <el-option
+                                v-for="item in settingOptions.clustDistance"
+                                :key="item.id"
+                                :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.options.', item.id].join(''))"
+                                :value="item.id"
+                            >
+                                <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.clust_distance.options." + item.id) }}</span>
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.label')">
+                        <el-select
+                            style="float: right"
+                            v-model="settingsForm.clustLinkage"
+                            :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.placeholder')"
+                        >
+                            <el-option
+                                v-for="item in settingOptions.clustLinkage"
+                                :key="item.id"
+                                :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
+                                :value="item.id"
+                            >
+                                <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.label')">
+                        <el-select
+                            style="float: right"
+                            v-model="settingsForm.clustOrdering"
+                            :placeholder="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.placeholder')"
+                        >
+                            <el-option
+                                v-for="item in settingOptions.clustOrdering"
+                                :key="item.id"
+                                :label="$t(['views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.options.', item.id].join(''))"
+                                :value="item.id"
+                            >
+                                <span>{{ $t("views.apps.simon.editing.components.tabs.clusteringTab.form.tree_ordering.options." + item.id) }}</span>
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item :label="$t('views.apps.simon.editing.components.tabs.clusteringTab.form.font_size')">
+                        <el-input-number
+                            style="float: right"
+                            v-model="settingsForm.fontSizeGeneral"
+                            :value="settingsForm.fontSizeGeneral"
+                            :min="settingOptions.fontSizeGeneral.min"
+                            :max="settingOptions.fontSizeGeneral.max"
+                            :step="settingOptions.fontSizeGeneral.step"
+                        ></el-input-number>
+                    </el-form-item>
+
+                    <el-row>
+                        <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
+                            <el-form-item>
+                                <el-tooltip placement="top">
+                                    <div slot="content">
+                                        {{ $t("views.apps.simon.editing.index.button.download_r_data.description") }}
+                                    </div>
+                                    <el-button style="float: left" type="danger" round @click="downloadRawData">
+                                        {{ $t("views.apps.simon.editing.index.button.download_r_data.title") }}
+                                        <i class="el-icon-download el-icon-right"></i>
+                                    </el-button>
+                                </el-tooltip>
+                            </el-form-item>
+                        </el-col>
+
+                        <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
+                            <el-form-item>
+                                <el-button type="danger" round @click="redrawImage" style="float: right">
+                                    {{ $t("views.apps.simon.editing.components.tabs.correlationTab.buttons.plot_image") }}
+                                </el-button>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </el-form>
+            </el-col>
+
+            <el-col :span="19" :offset="1">
+                <el-row v-if="plot_data.clustering_plot !== false" style="text-align: center">
+                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                        <div slot="content">
+                            <el-button type="success" round @click="downloadPlotImage('clustering_plot')">
+                                {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
+                            </el-button>
+                        </div>
+                        <img
+                            id="analysis_images_clustering_plot"
+                            class="animated fadeIn analysis_images"
+                            :src="'data:image/png;base64,' + plot_data.clustering_plot_png"
+                            fit="scale-down"
+                        />
+                    </el-tooltip>
+                </el-row>
+                <el-row v-else class="plot-placeholder">
+                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                </el-row>
             </el-col>
         </el-row>
     </div>
@@ -405,7 +396,7 @@ export default {
                 selectedColumns: [],
                 selectedRows: [],
 
-                cutOffColumnSize: 2,
+                cutOffColumnSize: 1,
                 cutOffRowSize: 25,
 
                 removeNA: true,

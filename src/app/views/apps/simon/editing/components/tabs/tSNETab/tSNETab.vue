@@ -1,6 +1,18 @@
 <template>
     <div class="editing-tsne-tab" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
-        <el-row type="flex" align="top">
+        <el-row type="flex" align="top" v-if="tabEnabled === false">
+            <el-col :span="24">
+                <el-alert
+                    :title="$t('views.apps.simon.editing.components.tabs.correlationTab.alert.function_disabled.title')"
+                    description="Tab is currently disabled. Please try to refresh or choose another file from Workspace."
+                    type="warning"
+                    style="margin-top: 20px"
+                    show-icon
+                    :closable="false"
+                ></el-alert>
+            </el-col>
+        </el-row>
+        <el-row v-else type="flex" align="top">
             <el-col :span="4">
                 <el-row>
                     <el-form ref="settingsForm" :model="settingsForm">
@@ -138,6 +150,51 @@
                             </el-tooltip>
                         </el-form-item>
 
+                        <el-form-item label="Color variable">
+                            <el-select
+                                style="float: right"
+                                v-model="settingsForm.colorVariables"
+                                multiple
+                                filterable
+                                remote
+                                default-first-option
+                                reserve-keyword
+                                value-key="remapped"
+                                clearable
+                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :remote-method="
+                                    (userInput) => {
+                                        querySearch(userInput);
+                                    }
+                                "
+                            >
+                                <el-option
+                                    v-for="item in selectedFileDetailsDisplay"
+                                    :key="item.remapped"
+                                    :label="item.original"
+                                    :value="item"
+                                    :disabled="item.valid_numeric === 0 || item.unique_count < 2"
+                                >
+                                    <el-row style="max-width: 250px">
+                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                            {{ item.original }}
+                                        </el-col>
+                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                            {{ item.valid_10p === 1 ? "*" : "" }}
+                                            {{ item.unique_count }}
+                                        </el-col>
+                                    </el-row>
+                                </el-option>
+                            </el-select>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    Please select continuous column to color t-SNE plot. This columns unlike grouping columns will be included in t-SNE analysis. Values from Group
+                                    variables should not be included also here.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
                         <el-form-item label="Clustering alghoritam:">
                             <el-select
                                 style="float: right"
@@ -198,6 +255,14 @@
                             </el-tooltip>
                         </el-form-item>
 
+                        <el-form-item label="Perplexity">
+                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.perplexity" :step="1" :min="1" :max="100" show-input></el-slider>
+                            <el-tooltip placement="top">
+                                <div slot="content">The performance of SNE is fairly robust to changes in the perplexity, and typical values are between 5 and 50.</div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
                         <el-divider></el-divider>
 
                         <el-form-item label="Theme">
@@ -242,6 +307,10 @@
 
                         <el-form-item label="Ratio">
                             <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
+                        </el-form-item>
+
+                        <el-form-item label="Plot size">
+                            <el-input-number style="float: right" size="mini" v-model="settingsForm.plot_size" :step="1" :max="24" :min="12"></el-input-number>
                         </el-form-item>
 
                         <el-row>
@@ -325,23 +394,93 @@
             </el-col>
             <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
                 <el-tabs v-model="activeTab">
-                    <el-tab-pane label="Main Plot" name="tsne_plot" :disabled="isTabDisabled('tsne_plot')">
-                        <el-tabs :value="plot_data.tsne_plot.length > 0 ? 'tab_tsne_grouped_0' : null" :tab-position="'right'">
+                    <el-tab-pane label="t-SNE plot(s)" name="tsne_plot" :disabled="isTabDisabled('tsne_plot')">
+                        <el-tabs :value="plot_data.tsne_plot.length > 0 || Object.keys(plot_data.tsne_plot).length > 0 ? 'tab_tsne_grouped_0' : null" :tab-position="'right'">
                             <el-tab-pane
                                 v-for="(plotData, plotIndex) in plot_data.tsne_plot"
                                 :key="'tab_tsne_grouped_' + plotIndex"
                                 :label="plotData.name"
                                 :name="'tab_tsne_grouped_' + plotIndex"
                             >
-                                <el-row>
+                                <!-- if color variables display both plots side to side -->
+                                <el-row v-if="plotData.colorby.length > 0 || Object.keys(plotData.colorby).length > 0">
+                                    <el-tabs
+                                        :value="
+                                            plotData.colorby.length > 0 || Object.keys(plotData.colorby).length > 0
+                                                ? 'tab_tsne_grouped_' + plotIndex + '_colorby_' + Object.keys(plotData.colorby)[0]
+                                                : null
+                                        "
+                                        :tab-position="'left'"
+                                    >
+                                        <el-tab-pane
+                                            v-for="(plotDataColor, plotIndexColor) in plotData.colorby"
+                                            :key="'tab_tsne_grouped_' + plotIndex + '_colorby_' + plotIndexColor"
+                                            :label="plotDataColor.name"
+                                            :name="'tab_tsne_grouped_' + plotIndex + '_colorby_' + plotIndexColor"
+                                        >
+                                            <el-row>
+                                                <el-col :span="12">
+                                                    <span class="tab_intro_text">Graph of individuals colored by: "{{ plotDataColor.name }}".</span>
+                                                </el-col>
+                                                <el-col :span="12">
+                                                    <span class="tab_intro_text" v-if="plotData.name === 'Main plot'">
+                                                        Barnes-Hut t-Distributed Stochastic Neighbor Embedding. t-SNE is a method for constructing a low dimensional embedding of
+                                                        high-dimensional data, distances or similarities.
+                                                    </span>
+                                                    <span class="tab_intro_text" v-else>Graph of individuals grouped by: "{{ plotData.name }}".</span>
+                                                </el-col>
+                                            </el-row>
+                                            <el-row>
+                                                <el-col :span="12" v-if="plotDataColor.png">
+                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                        <div slot="content">
+                                                            <el-button type="success" round @click="downloadPlotImage('tsne_plot', plotIndex, plotIndexColor)">
+                                                                {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
+                                                            </el-button>
+                                                        </div>
+                                                        <img
+                                                            id="analysis_images_pca"
+                                                            class="animated fadeIn analysis_images"
+                                                            :src="'data:image/png;base64,' + plotDataColor.png"
+                                                            fit="scale-down"
+                                                        />
+                                                    </el-tooltip>
+                                                </el-col>
+                                                <el-col v-else :span="12" class="plot-placeholder">
+                                                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                </el-col>
+                                                <el-col :span="12" v-if="plotDataColor.png">
+                                                    <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                        <div slot="content">
+                                                            <el-button type="success" round @click="downloadPlotImage('tsne_plot', plotIndex)">
+                                                                {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
+                                                            </el-button>
+                                                        </div>
+                                                        <img
+                                                            id="analysis_images_pca"
+                                                            class="animated fadeIn analysis_images"
+                                                            :src="'data:image/png;base64,' + plotData.png"
+                                                            fit="scale-down"
+                                                        />
+                                                    </el-tooltip>
+                                                </el-col>
+                                                <el-col v-else :span="12" class="plot-placeholder">
+                                                    <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                                                </el-col>
+                                            </el-row>
+                                        </el-tab-pane>
+                                    </el-tabs>
+                                </el-row>
+                                <!-- we dont have any color variables -->
+                                <el-row v-else>
                                     <el-col :span="24">
-                                        <span class="tab_intro_text" v-if="plotData.name === 'Main Plot'">
+                                        <span class="tab_intro_text" v-if="plotData.name === 'Main plot'">
                                             Barnes-Hut t-Distributed Stochastic Neighbor Embedding. t-SNE is a method for constructing a low dimensional embedding of
                                             high-dimensional data, distances or similarities.
                                         </span>
-                                        <span class="tab_intro_text" v-else>Graph of individuals colored by group: "{{ plotData.name }}".</span>
+                                        <span class="tab_intro_text" v-else>Graph of individuals grouped by: "{{ plotData.name }}".</span>
                                     </el-col>
-                                    <el-col :span="24" v-if="true === true">
+                                    <el-col :span="24" v-if="plotData.png">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
                                                 <el-button type="success" round @click="downloadPlotImage('tsne_plot', plotIndex)">
@@ -358,7 +497,7 @@
                             </el-tab-pane>
                         </el-tabs>
                     </el-tab-pane>
-                    <el-tab-pane label="Clustered" name="tsne_cluster_plot" :disabled="isTabDisabled('tsne_cluster_plot')">
+                    <el-tab-pane label="Clustered t-SNE analysis" name="tsne_cluster_plot" :disabled="isTabDisabled('tsne_cluster_plot')">
                         <el-row
                             v-bind:class="{
                                 is_tab_active: isTabDisabled('tsne_cluster_plot'),
@@ -367,7 +506,7 @@
                             <el-col v-if="plot_data.tsne_cluster_plot_png !== false">
                                 <el-row>
                                     <el-col :span="24">
-                                        <span>Clustered t-SNE plot using: {{ settingsForm.clusterType }}</span>
+                                        <span>Clustered t-SNE plot, on main data, without grouping and color variables, using: {{ settingsForm.clusterType }}</span>
                                     </el-col>
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
@@ -455,11 +594,13 @@ export default {
                 selectedColumns: [],
                 excludedColumns: [],
                 groupingVariables: [],
+                colorVariables: [],
                 preProcessDataset: true,
                 fontSize: 12,
                 theme: "theme_bw",
                 colorPalette: "Set1",
                 aspect_ratio: 1,
+                plot_size: 12,
                 clusterType: "Louvain",
                 cutOffColumnSize: 1000,
                 removeNA: false,
@@ -598,6 +739,10 @@ export default {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.excludedColumns.includes(x));
             }
 
+            if (settingsForm.colorVariables.length > 0) {
+                settingsForm.colorVariables = settingsForm.colorVariables.map((x) => x.remapped);
+            }
+
             // Remove any grouping variable from selected columns
             if (settingsForm.groupingVariables.length > 0) {
                 settingsForm.groupingVariables = settingsForm.groupingVariables.map((x) => x.remapped);
@@ -605,6 +750,8 @@ export default {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.groupingVariables.includes(x));
                 // Remove Grouping variable from excluded columns
                 settingsForm.excludedColumns = settingsForm.excludedColumns.filter((x) => !settingsForm.groupingVariables.includes(x));
+                // Remove Grouping variable from colorVariables
+                settingsForm.colorVariables = settingsForm.colorVariables.filter((x) => !settingsForm.groupingVariables.includes(x));
             }
 
             fetchTsnePlot({

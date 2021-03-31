@@ -1,6 +1,18 @@
 <template>
     <div class="editing-umap-tab" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
-        <el-row type="flex" align="top">
+        <el-row type="flex" align="top" v-if="tabEnabled === false">
+            <el-col :span="24">
+                <el-alert
+                    :title="$t('views.apps.simon.editing.components.tabs.correlationTab.alert.function_disabled.title')"
+                    description="Tab is currently disabled. Please try to refresh or choose another file from Workspace."
+                    type="warning"
+                    style="margin-top: 20px"
+                    show-icon
+                    :closable="false"
+                ></el-alert>
+            </el-col>
+        </el-row>
+        <el-row v-else type="flex" align="top">
             <el-col :span="4">
                 <el-row>
                     <el-form ref="settingsForm" :model="settingsForm">

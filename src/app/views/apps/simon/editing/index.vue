@@ -1,7 +1,13 @@
 <template>
     <div class="app-container" v-loading="pageLoading" :element-loading-text="$t('globals.page_loading')">
         <el-tabs v-model="activeEditingTabName" type="border-card" class="tab-container">
-            <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key="item.key" :name="item.key" :disabled="isTabDisabled(item)">
+            <el-tab-pane
+                v-for="item in tabMapOptions"
+                :label="item.label"
+                :key="item.key"
+                :name="item.key"
+                :disabled="isTabDisabled(item) || selectedFileDetails.columns.length < 1"
+            >
                 <span slot="label">
                     <i :class="item.icon"></i>
                     {{ item.label }}
@@ -117,6 +123,7 @@ export default {
             }
             this.pageLoading = true;
             this.activeEditingTabName = "overviewTab";
+            this.selectedFileDetails = { id: null, columns: [], summary: [] };
 
             getOverViewAavailableColumns({ selectedFileID: selectedFilesIDs[0] })
                 .then((response) => {
