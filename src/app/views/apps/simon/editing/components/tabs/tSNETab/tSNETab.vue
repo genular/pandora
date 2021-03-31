@@ -302,7 +302,11 @@
                         </el-form-item>
 
                         <el-form-item label="Font size">
-                            <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="24"></el-input-number>
+                            <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="48"></el-input-number>
+                        </el-form-item>
+
+                        <el-form-item label="Point size">
+                            <el-input-number style="float: right" v-model="settingsForm.pointSize" :step="0.5" :min="0.1" :max="25"></el-input-number>
                         </el-form-item>
 
                         <el-form-item label="Ratio">
@@ -621,6 +625,7 @@ export default {
                 colorVariables: [],
                 preProcessDataset: true,
                 fontSize: 12,
+                pointSize: 1.5,
                 theme: "theme_bw",
                 colorPalette: "Set1",
                 aspect_ratio: 1,
