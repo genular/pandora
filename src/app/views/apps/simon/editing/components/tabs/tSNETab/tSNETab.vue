@@ -530,13 +530,37 @@
                             </el-col>
                         </el-row>
                     </el-tab-pane>
-                    <el-tab-pane label="Interactive t-SNE" name="tsne_cluster_heatmap_plot_png" :disabled="isTabDisabled('tsne_cluster_heatmap_plot')">
+                    <el-tab-pane label="Clustered Hierarchical Analysis" name="tsne_cluster_heatmap_plot_png" :disabled="isTabDisabled('tsne_cluster_heatmap_plot')">
                         <el-row
                             v-bind:class="{
                                 is_tab_active: isTabDisabled('tsne_cluster_heatmap_plot'),
                             }"
                         >
-                            <el-col :span="24"></el-col>
+                            <el-col v-if="plot_data.tsne_cluster_heatmap_plot !== false">
+                                <el-row>
+                                    <el-col :span="24">
+                                        <span>Clustered Hierarchical Analysis of performed t-SNE analysis</span>
+                                    </el-col>
+                                    <el-col :span="24">
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <div slot="content">
+                                                <el-button type="success" round @click="downloadPlotImage('tsne_cluster_heatmap_plot')">
+                                                    {{ $t("views.apps.simon.editing.index.button.download_svg_plot.title") }}
+                                                </el-button>
+                                            </div>
+                                            <img
+                                                id="analysis_images_tsne_cluster_heatmap_plot"
+                                                class="animated fadeIn analysis_images"
+                                                :src="'data:image/png;base64,' + plot_data.tsne_cluster_heatmap_plot_png"
+                                                fit="scale-down"
+                                            />
+                                        </el-tooltip>
+                                    </el-col>
+                                </el-row>
+                            </el-col>
+                            <el-col v-else class="plot-placeholder">
+                                <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
+                            </el-col>
                         </el-row>
                     </el-tab-pane>
                 </el-tabs>
