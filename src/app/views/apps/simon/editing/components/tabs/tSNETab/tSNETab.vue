@@ -314,7 +314,7 @@
                         </el-form-item>
 
                         <el-form-item label="Plot size">
-                            <el-input-number style="float: right" size="mini" v-model="settingsForm.plot_size" :step="1" :max="24" :min="12"></el-input-number>
+                            <el-input-number style="float: right" size="mini" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
                         </el-form-item>
 
                         <el-row>
@@ -842,16 +842,23 @@ export default {
             const items_found = this.fuseIndex.search(query);
             this.selectedFileDetailsDisplay = items_found.map((x) => x.item);
         },
-        downloadPlotImage(imageType, itemIndex = null) {
+        downloadPlotImage(imageType, itemIndex = null, itemSubIndex = null) {
             if (typeof this.plot_data[imageType] === "undefined") {
                 return;
             }
             let svgString = "";
             let downloadName = this.$options.name + "_" + imageType;
-            if (itemIndex !== null) {
+            if (itemIndex !== null && itemSubIndex === null) {
                 if (typeof this.plot_data[imageType][itemIndex] !== "undefined") {
                     svgString = this.plot_data[imageType][itemIndex].svg;
                     downloadName = downloadName + "_" + itemIndex;
+                }
+            } else if (itemIndex !== null && itemSubIndex !== null) {
+                if (typeof this.plot_data[imageType][itemIndex] !== "undefined") {
+                    if (typeof this.plot_data[imageType][itemIndex][itemSubIndex] !== "undefined") {
+                        svgString = this.plot_data[imageType][itemIndex][itemSubIndex].svg;
+                        downloadName = downloadName + "_" + itemIndex + "_" + itemSubIndex;
+                    }
                 }
             } else {
                 svgString = this.plot_data[imageType];

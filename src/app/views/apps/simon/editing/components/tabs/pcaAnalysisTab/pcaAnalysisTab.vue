@@ -237,7 +237,7 @@
                     </el-form-item>
 
                     <el-form-item label="Plot size">
-                        <el-input-number style="float: right" size="mini" v-model="settingsForm.plot_size" :step="1" :max="24" :min="12"></el-input-number>
+                        <el-input-number style="float: right" size="mini" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
                     </el-form-item>
 
                     <el-row>

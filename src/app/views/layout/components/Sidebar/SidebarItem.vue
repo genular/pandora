@@ -3,10 +3,12 @@
         <template v-for="item in routes" v-if="!item.hidden && item.children">
             <router-link
                 v-if="item.children.length === 1 && !item.children[0].children"
-                :to="item.path + '/' + item.children[0].path"
+                :to="item.path !== '/' ? item.path + '/' + item.children[0].path : '/' + item.children[0].path"
                 :key="item.children[0].name"
                 :event="''"
-                @click.native.prevent="checkRouteAction($event, { meta: item.children[0].meta, path: item.path + '/' + item.children[0].path })"
+                @click.native.prevent="
+                    checkRouteAction($event, { meta: item.children[0].meta, path: item.path !== '/' ? item.path + '/' + item.children[0].path : '/' + item.children[0].path })
+                "
             >
                 <el-menu-item :index="item.path + '/' + item.children[0].path" :class="{ 'submenu-title-noDropdown': !isNest }">
                     <i v-if="item.children[0].meta && item.children[0].meta.icon" :class="item.children[0].meta.icon" aria-hidden="true"></i>
@@ -51,23 +53,23 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSelectedFiles", value);
-            }
-        }
+            },
+        },
     },
     props: {
         routes: {
-            type: Array
+            type: Array,
         },
         isNest: {
             type: Boolean,
-            default: false
-        }
+            default: false,
+        },
     },
 
     methods: {
         generateRouteTitle,
         // Some menu Items must have disabled class because they can only be used if some specific file is selected
-        generateMenuClass: function(childItem) {
+        generateMenuClass: function (childItem) {
             let cssClass = "ready";
 
             // Check if there is any meta set for given route
@@ -94,13 +96,13 @@ export default {
             // If we are browsing current path but that path is not valid anymore lets redirect user to main page
             if (cssClass === "notready" && this.$router.currentRoute.name === childItem.name) {
                 this.$router.push({
-                    path: "/"
+                    path: "/",
                 });
             }
 
             return cssClass;
         },
-        checkRouteAction: function(event, data) {
+        checkRouteAction: function (event, data) {
             event.preventDefault();
             let pass = false;
 
@@ -109,16 +111,16 @@ export default {
             }
             if (pass === true) {
                 this.$router.push({
-                    path: data.path
+                    path: data.path,
                 });
             } else {
                 this.$message({
-                    message: this.$t('views.layout.components.Sidebar.action_not_allowed'),
-                    type: "warning"
+                    message: this.$t("views.layout.components.Sidebar.action_not_allowed"),
+                    type: "warning",
                 });
             }
-        }
-    }
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -131,12 +133,12 @@ export default {
         pointer-events: none;
     }
     .el-menu-item {
-        color: #FFFFFF;
+        color: #ffffff;
         height: 50px;
         line-height: 50px;
     }
     .is-active {
-        background-color: #2A1B3B !important;
+        background-color: #2a1b3b !important;
         &:before {
             content: "";
             display: block;
