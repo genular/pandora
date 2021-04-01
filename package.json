@@ -2,7 +2,7 @@
     "name": "simon-frontend",
     "productName": "SIMON",
     "description": "SIMON",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "private": true,
     "author": "Ivan Tomic <info@genular.com>",
     "copyright": "Copyright © 2018 Ivan Tomic <info@genular.com> All rights reserved.",

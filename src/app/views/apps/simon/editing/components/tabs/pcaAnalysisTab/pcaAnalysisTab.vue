@@ -232,6 +232,22 @@
                         <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="24"></el-input-number>
                     </el-form-item>
 
+                    <el-form-item label="Point size">
+                        <el-input-number style="float: right" v-model="settingsForm.pointSize" :step="0.5" :min="0.1" :max="25"></el-input-number>
+                    </el-form-item>
+
+                    <el-form-item label="Label size">
+                        <el-input-number style="float: right" v-model="settingsForm.labelSize" :step="1" :min="1" :max="25"></el-input-number>
+                    </el-form-item>
+
+                    <el-form-item label="Ellipse Alpha">
+                        <el-input-number style="float: right" v-model="settingsForm.ellipseAlpha" :step="0.01" :min="0" :max="1"></el-input-number>
+                    </el-form-item>
+
+                    <el-form-item label="Remove Ellipse">
+                        <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.addEllipses"></el-switch>
+                    </el-form-item>
+
                     <el-form-item label="Ratio">
                         <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                     </el-form-item>
@@ -1143,6 +1159,10 @@ export default {
                 groupingVariables: [],
                 displayLoadings: true,
                 fontSize: 12,
+                pointSize: 2,
+                labelSize: 4,
+                ellipseAlpha: 0.05,
+                addEllipses: true,
                 theme: "theme_bw",
                 colorPalette: "Set1",
                 aspect_ratio: 1,

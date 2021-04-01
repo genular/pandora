@@ -543,7 +543,19 @@
                             <el-col v-if="plot_data.tsne_cluster_heatmap_plot !== false">
                                 <el-row>
                                     <el-col :span="24">
-                                        <span>Clustered Hierarchical Analysis of performed t-SNE analysis</span>
+                                        <span style="text-align: center; float: left; width: 100%">
+                                            Clustered Hierarchical Analysis of performed t-SNE analysis. Following settings where used in performing analysis:
+                                        </span>
+                                        <span style="float: left; text-align: left">
+                                            <br />
+                                            Distance: euclidean - Usual distance between the two vectors (2 norm aka L_2), sqrt(sum((x_i - y_i)^2)).
+                                            <br />
+                                            Linkage: Agglomerative Hierarchical Clustering with Ward.
+                                            <a href="http://adn.biol.umontreal.ca/%7Enumericalecology/Reprints/Murtagh_Legendre_J_Class_2014.pdf" target="_blank">Ward.D2</a>
+                                            dissimilarities are squared before clustering
+                                            <br />
+                                            Ordering: tightest cluster first
+                                        </span>
                                     </el-col>
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
@@ -846,18 +858,19 @@ export default {
             if (typeof this.plot_data[imageType] === "undefined") {
                 return;
             }
+
             let svgString = "";
             let downloadName = this.$options.name + "_" + imageType;
             if (itemIndex !== null && itemSubIndex === null) {
                 if (typeof this.plot_data[imageType][itemIndex] !== "undefined") {
                     svgString = this.plot_data[imageType][itemIndex].svg;
-                    downloadName = downloadName + "_" + itemIndex;
+                    downloadName = downloadName + "_" + this.plot_data[imageType][itemIndex].name;
                 }
             } else if (itemIndex !== null && itemSubIndex !== null) {
                 if (typeof this.plot_data[imageType][itemIndex] !== "undefined") {
-                    if (typeof this.plot_data[imageType][itemIndex][itemSubIndex] !== "undefined") {
-                        svgString = this.plot_data[imageType][itemIndex][itemSubIndex].svg;
-                        downloadName = downloadName + "_" + itemIndex + "_" + itemSubIndex;
+                    if (typeof this.plot_data[imageType][itemIndex]["colorby"][itemSubIndex] !== "undefined") {
+                        svgString = this.plot_data[imageType][itemIndex]["colorby"][itemSubIndex].svg;
+                        downloadName = downloadName + "_" + itemIndex + "_" + this.plot_data[imageType][itemIndex]["colorby"][itemSubIndex].name;
                     }
                 }
             } else {
