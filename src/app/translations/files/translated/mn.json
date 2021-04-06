@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "Following errors needs to be corrected",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Confirm",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "Following errors",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 10 samples in test set, Found only:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Uploading data, please wait...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Please select at least 2 Features to analyze",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Invalid number of Packages selected",
