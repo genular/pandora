@@ -36,7 +36,7 @@
 								"errors_resample": {
 									"title": "Following errors",
 									"messages": {
-										"invalid_sample_count_test": "Less than 10 samples in test set, Found only:"
+										"invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:"
 									}
 								}
 							},

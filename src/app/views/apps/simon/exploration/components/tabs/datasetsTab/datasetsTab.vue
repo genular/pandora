@@ -8,7 +8,7 @@
                         <div v-if="selectedFeatureSetId > 0">
                             <div class="models_actions animated fadeIn" v-if="queueClassesDisplay.length > 0">
                                 <el-select
-                                    style="min-width: 350px;"
+                                    style="min-width: 350px"
                                     v-model="selectedClasses"
                                     multiple
                                     filterable
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <!-- Main queue Resamples Table -->
-                    <el-table 
+                    <el-table
                         ref="resamplesTable"
                         v-loading="tableLoading.resamples"
                         :data="displayResamples"
@@ -43,12 +43,12 @@
                         :border="true"
                         style="width: 100%"
                     >
-                        <el-table-column fixed type="expand" style="padding: 0;">
+                        <el-table-column fixed type="expand" style="padding: 0">
                             <template slot-scope="props">
                                 <span>TODO!</span>
                             </template>
                         </el-table-column>
-                        <el-table-column type="selection" reserve-selection width="40" fixed> </el-table-column>
+                        <el-table-column type="selection" reserve-selection width="40" fixed></el-table-column>
 
                         <el-table-column
                             fixed
@@ -114,9 +114,9 @@
                             "
                         >
                             <template slot-scope="scope">
-                                <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">{{
-                                    scope.row.performance[performanceItem]
-                                }}</span>
+                                <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">
+                                    {{ scope.row.performance[performanceItem] }}
+                                </span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
@@ -201,9 +201,7 @@
                                         >
                                             {{ index + " - " + item }}
                                         </div>
-                                        <div v-else>
-                                            Nothing to display!
-                                        </div>
+                                        <div v-else>Nothing to display!</div>
                                     </el-card>
                                     <el-button slot="reference" type="primary" class="animated flipInY">User active filters</el-button>
                                 </el-popover>
@@ -213,7 +211,7 @@
                                     <el-button
                                         size="mini"
                                         :title="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.operations.download.title')"
-                                        style="float: left;"
+                                        style="float: left"
                                         type="success"
                                         icon="el-icon-download"
                                         @click="handleOperations('downloadResample', scope.row)"
@@ -221,7 +219,7 @@
                                     <el-button
                                         size="mini"
                                         :title="$t('views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.title')"
-                                        style="float: right;"
+                                        style="float: right"
                                         type="danger"
                                         icon="el-icon-delete"
                                         @click="handleOperations('deleteResample', scope.row)"
@@ -240,12 +238,11 @@
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="paginateResamplesData.total_items"
                         :disabled="paginateResamplesData.total_items <= 5"
-                    >
-                    </el-pagination>
+                    ></el-pagination>
                 </el-card>
             </el-col>
         </el-row>
-        <el-row align="top" v-if="displayModels.length > 0" style="margin-top: 15px;">
+        <el-row align="top" v-if="displayModels.length > 0" style="margin-top: 15px">
             <el-col :span="24">
                 <el-card class="box-card animated fadeIn">
                     <div slot="header" class="clearfix">
@@ -290,7 +287,7 @@
                         :border="true"
                         style="width: 100%"
                     >
-                        <el-table-column type="selection" reserve-selection @selectable="checkModelsSelectionChange" width="40" fixed> </el-table-column>
+                        <el-table-column type="selection" reserve-selection @selectable="checkModelsSelectionChange" width="40" fixed></el-table-column>
 
                         <el-table-column
                             fixed
@@ -321,10 +318,10 @@
                             "
                         >
                             <template slot-scope="scope">
-                                <div v-if="scope.row.status > 0" style="float: left;">
+                                <div v-if="scope.row.status > 0" style="float: left">
                                     <span class="el-icon-success"></span>
                                 </div>
-                                <div v-else style="float: left;">
+                                <div v-else style="float: left">
                                     <el-tooltip class="item" effect="dark" placement="top-start">
                                         <div slot="content">
                                             {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.messages.failed_model") }}
@@ -332,8 +329,8 @@
                                         <span class="el-icon-warning"></span>
                                     </el-tooltip>
                                 </div>
-                                <span v-if="scope.row.modelName" style="padding-left: 10px;">{{ scope.row.modelName }}</span>
-                                <span v-else style="padding-left: 10px;">N/A</span>
+                                <span v-if="scope.row.modelName" style="padding-left: 10px">{{ scope.row.modelName }}</span>
+                                <span v-else style="padding-left: 10px">N/A</span>
                             </template>
                         </el-table-column>
 
@@ -350,9 +347,9 @@
                             "
                         >
                             <template slot-scope="scope">
-                                <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">{{
-                                    scope.row.performance[performanceItem]
-                                }}</span>
+                                <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">
+                                    {{ scope.row.performance[performanceItem] }}
+                                </span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
@@ -382,13 +379,12 @@
                         layout="total, prev, pager, next, jumper"
                         :total="paginateModelsData.total_items"
                         :disabled="paginateModelsData.total_items <= 5"
-                    >
-                    </el-pagination>
+                    ></el-pagination>
                 </el-card>
             </el-col>
         </el-row>
         <el-row>
-            <el-col :span="24" style="margin-top: 15px;">
+            <el-col :span="24" style="margin-top: 15px">
                 <el-tabs v-model="activeDatasetSubTabName" v-if="selectedFeatureSetId > 0" type="card">
                     <!-- Don't display Tab Pane if we have only one Tab to display and he doesn't satisfy display criteria -->
                     <el-tab-pane
@@ -399,10 +395,17 @@
                         :name="item.key"
                         :disabled="isTabDisabled(item)"
                     >
-                        <span slot="label"><i :class="item.icon"></i> {{ item.label }}</span>
+                        <span slot="label">
+                            <i :class="item.icon"></i>
+                            {{ item.label }}
+                        </span>
                         <keep-alive>
-                            <sub-tab-pane v-if="activeDatasetSubTabName == item.key" :currentView="item.view" :columnName="item.key" :isTabDisabled="isTabDisabled(item)">
-                            </sub-tab-pane>
+                            <sub-tab-pane
+                                v-if="activeDatasetSubTabName == item.key"
+                                :currentView="item.view"
+                                :columnName="item.key"
+                                :isTabDisabled="isTabDisabled(item)"
+                            ></sub-tab-pane>
                             <!-- inactive components will be cached! -->
                         </keep-alive>
                     </el-tab-pane>
@@ -430,10 +433,10 @@ export default {
     props: {
         jobDetailsData: {
             type: Object,
-            default: function() {
+            default: function () {
                 return {};
-            }
-        }
+            },
+        },
     },
     components: { subTabPane },
     data() {
@@ -441,31 +444,31 @@ export default {
             datasetsTabLoading: false,
             tableLoading: {
                 resamples: false,
-                models: false
+                models: false,
             },
 
             tableFilters: {
                 resamplesTable: [],
-                modelDetailsTable: []
+                modelDetailsTable: [],
             },
             tableFiltersOrder: {
                 resamplesTable: [],
-                modelDetailsTable: []
+                modelDetailsTable: [],
             },
             tableFiltersLocked: {
                 resamplesTable: [],
-                modelDetailsTable: []
+                modelDetailsTable: [],
             },
             activeDatasetSubTabName: "varImp",
             paginateResamplesData: {
                 currentPage: 1,
                 page_size: 5,
-                total_items: null
+                total_items: null,
             },
             paginateModelsData: {
                 currentPage: 1,
                 page_size: 5,
-                total_items: null
+                total_items: null,
             },
             // Copy of this.jobDetailsData.resamplesList
             activeResamplesList: [],
@@ -483,7 +486,7 @@ export default {
                     key: "varImp",
                     icon: "fa fa-balance-scale",
                     restriction: "selectedModels",
-                    restriction_details: -1
+                    restriction_details: -1,
                     // If restriction (selectedModels) is array this is more or eq.. >=1 it will pass
                 },
                 {
@@ -492,7 +495,7 @@ export default {
                     key: "summaryTab",
                     icon: "fa fa-balance-scale",
                     restriction: "selectedModels",
-                    restriction_details: 2
+                    restriction_details: 2,
                 },
                 // {
                 //     label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title"),
@@ -509,7 +512,7 @@ export default {
                     view: "samrAnalysisTab",
                     key: "samrAnalysisTab",
                     icon: "fa fa-balance-scale",
-                    restriction: "selectedFeatureSetId"
+                    restriction: "selectedFeatureSetId",
                 },
                 {
                     label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title"),
@@ -519,11 +522,11 @@ export default {
                     // restriction: "selectedFeatureSetId"
                     // Temp disable tab
                     restriction: "selectedModels",
-                    restriction_details: 10000
-                }
+                    restriction_details: 10000,
+                },
             ],
             queueClassesDisplay: [],
-            selectedClasses: []
+            selectedClasses: [],
         };
     },
     computed: {
@@ -533,7 +536,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedFeatureSetId", value);
-            }
+            },
         },
         selectedModelsIDs: {
             get() {
@@ -541,7 +544,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedModelId", value);
-            }
+            },
         },
         datasetsTabMapOptions: {
             get() {
@@ -549,8 +552,8 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationDatasetsTabMapOptions", value);
-            }
-        }
+            },
+        },
     },
     mounted() {
         console.log("mounted: " + this.$options.name);
@@ -562,16 +565,16 @@ export default {
             if (clickAction === "downloadResample") {
                 this.tableLoading.resamples = true;
                 ApiGenarateFileDownloadLink({ downloadType: "resample", recordID: rowInfo.resampleID })
-                    .then(response => {
+                    .then((response) => {
                         if (response.data.success === true && response.data.message.length > 0) {
                             this.$alert(downloadItemsTemplate(response.data.message), "Download links", {
                                 dangerouslyUseHTMLString: true,
-                                callback: action => {}
+                                callback: (action) => {},
                             });
                         }
                         this.tableLoading.resamples = false;
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.log(error);
                         this.tableLoading.resamples = false;
                     });
@@ -580,39 +583,39 @@ export default {
                     this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.dialog.description"),
                     this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.dialog.title"),
                     {
-                        type: "warning"
+                        type: "warning",
                     }
                 )
-                    .then(_ => {
+                    .then((_) => {
                         if (this.$config.isDemoServer) {
                             this.$message({
                                 type: "warning",
-                                message: this.$t("globals.demo_server.function_disabled")
+                                message: this.$t("globals.demo_server.function_disabled"),
                             });
                             return;
                         }
 
                         this.tableLoading.resamples = true;
                         ApiDeleteDatasetResampleTask({ resampleID: rowInfo.resampleID })
-                            .then(response => {
+                            .then((response) => {
                                 if (response.data.success === true) {
                                     this.getDatasetQueueList();
                                     this.$message({
                                         type: "success",
-                                        message: this.$t("globals.messages.success")
+                                        message: this.$t("globals.messages.success"),
                                     });
                                 }
                                 this.tableLoading.resamples = false;
                             })
-                            .catch(error => {
+                            .catch((error) => {
                                 console.log(error);
                                 this.tableLoading.resamples = false;
                             });
                     })
-                    .catch(_ => {
+                    .catch((_) => {
                         this.$message({
                             type: "info",
-                            message: this.$t("globals.messages.canceled")
+                            message: this.$t("globals.messages.canceled"),
                         });
                     });
             } else if (clickAction === "deleteModels") {
@@ -620,65 +623,65 @@ export default {
                     this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.description"),
                     this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.title"),
                     {
-                        type: "warning"
+                        type: "warning",
                     }
                 )
-                    .then(_ => {
+                    .then((_) => {
                         ApiDeleteDatasetResampleTask({ modelIDs: this.selectedModelsIDs })
-                            .then(response => {
+                            .then((response) => {
                                 if (response.data.success === true) {
                                     this.getDatasetQueueList();
                                     this.$message({
                                         type: "success",
-                                        message: this.$t("globals.messages.success")
+                                        message: this.$t("globals.messages.success"),
                                     });
                                 }
                             })
-                            .catch(error => {
+                            .catch((error) => {
                                 console.log(error);
                             });
                     })
-                    .catch(_ => {
+                    .catch((_) => {
                         this.$message({
                             type: "info",
-                            message: this.$t("globals.messages.canceled")
+                            message: this.$t("globals.messages.canceled"),
                         });
                     });
             } else if (clickAction === "downloadModels") {
                 this.tableLoading.models = true;
                 ApiGenarateFileDownloadLink({ downloadType: "models", recordID: this.selectedModelsIDs })
-                    .then(response => {
+                    .then((response) => {
                         if (response.data.success === true && response.data.message.length > 0) {
                             this.$confirm(downloadItemsTemplate(response.data.message), "Download links", {
                                 dangerouslyUseHTMLString: true,
                                 distinguishCancelAndClose: true,
                                 confirmButtonText: "Close",
                                 cancelButtonText: "Export table",
-                                callback: action => {
+                                callback: (action) => {
                                     // Export table is clicked, make the export!
                                     if (action == "cancel") {
                                         this.exportTableToCSV("models");
                                     }
-                                }
+                                },
                             });
                         }
                         this.tableLoading.models = false;
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.log(error);
                         this.tableLoading.models = false;
                     });
             } else if (clickAction === "deployModels") {
                 this.$message({
                     type: "info",
-                    message: this.$t("globals.messages.not_implemented")
+                    message: this.$t("globals.messages.not_implemented"),
                 });
             }
         },
         // Filter and display classes on user typing!
         filterAvaliableClasses(userInput) {
             if (userInput.length >= 2) {
-                this.queueClassesDisplay = this.jobDetailsData.queueDetails.selectedOptions.classes.filter(item => {
+                this.queueClassesDisplay = this.jobDetailsData.queueDetails.selectedOptions.classes.filter((item) => {
                     return item.original.toLowerCase().indexOf(userInput.toLowerCase()) > -1;
                 });
             } else {
@@ -704,20 +707,20 @@ export default {
                 // view: "booleanDistributionTab",
                 // key: "",
                 // icon: "fas fa-chart-area",
-                restriction: "selectedClasses"
+                restriction: "selectedClasses",
             };
             // If there is no classes selected show only Variable Importance Tab
             if (selected.length > 0) {
                 if (selected.length > 5) {
                     this.$message({
                         message: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.messages.max_classes"),
-                        type: "warning"
+                        type: "warning",
                     });
                     return;
                 }
                 // STEP 1
                 // Fetch details for specifically selected classes
-                const selectedClassesDetails = this.jobDetailsData.queueDetails.selectedOptions.classes.filter(item => {
+                const selectedClassesDetails = this.jobDetailsData.queueDetails.selectedOptions.classes.filter((item) => {
                     return selected.indexOf(item.remapped) > -1;
                 });
 
@@ -725,7 +728,7 @@ export default {
                     let selectedClass = selectedClassesDetails[i];
                     console.log("selectedClass: ", selectedClass);
 
-                    let checkIfClassInSelectedTabs = this.datasetsTabMapOptions.filter(function(e) {
+                    let checkIfClassInSelectedTabs = this.datasetsTabMapOptions.filter(function (e) {
                         return e.key === selectedClass.remapped;
                     });
 
@@ -769,7 +772,7 @@ export default {
                         if (tabClass.key === this.activeDatasetSubTabName) {
                             this.activeDatasetSubTabName = this.datasetsTabMapOptions[0].key;
                         }
-                        this.datasetsTabMapOptions = this.datasetsTabMapOptions.filter(function(e) {
+                        this.datasetsTabMapOptions = this.datasetsTabMapOptions.filter(function (e) {
                             return e.key !== tabClass.key;
                         });
                     }
@@ -786,8 +789,8 @@ export default {
             if (this.selectedModelsIDs.length > 0 && this.selectedModels.length === 0) {
                 if (this.selectedFeatureSetId > 0) {
                     if (this.jobDetailsData.resampleModels[this.selectedFeatureSetId].length > 0) {
-                        this.selectedModels = this.activeModelsList.filter(model => this.selectedModelsIDs.includes(model.modelID));
-                        this.selectedModels.forEach(row => {
+                        this.selectedModels = this.activeModelsList.filter((model) => this.selectedModelsIDs.includes(model.modelID));
+                        this.selectedModels.forEach((row) => {
                             this.$refs.modelDetailsTable.toggleRowSelection(row, true);
                         });
                     }
@@ -808,7 +811,7 @@ export default {
                 // Example: restriction: ["jobDetailsData", "resamplesList"]
                 if (Array.isArray(item.restriction)) {
                     let varCount = 0;
-                    item.restriction.forEach(element => {
+                    item.restriction.forEach((element) => {
                         if (varCount === 0) {
                             if (this[item.restriction] !== undefined) {
                                 restrictionVariable = this[item.restriction];
@@ -864,13 +867,13 @@ export default {
             let filteredSelection = selection;
             // Only select models if they are visible
             if (this.displayModels.length > 0) {
-                filteredSelection = selection.filter(model => model.status > 0);
-                this.selectedModelsIDs = filteredSelection.map(model => model.modelID);
+                filteredSelection = selection.filter((model) => model.status > 0);
+                this.selectedModelsIDs = filteredSelection.map((model) => model.modelID);
                 // If they are different in lenght this means we have some models that are Invalid (status 0)
                 if (filteredSelection.length !== selection.length) {
-                    const invalidModels = selection.filter(model => model.status === 0);
+                    const invalidModels = selection.filter((model) => model.status === 0);
                     // Lets de-select those models!
-                    invalidModels.forEach(row => {
+                    invalidModels.forEach((row) => {
                         this.$refs.modelDetailsTable.toggleRowSelection(row, false);
                     });
                 }
@@ -881,7 +884,7 @@ export default {
             // If no models are selected lets activate some other TAB except Variable Importance Tab
             if (this.selectedModels.length === 0) {
                 let check = false;
-                this.datasetsTabMapOptions.forEach(tab => {
+                this.datasetsTabMapOptions.forEach((tab) => {
                     if (check == false && !this.isTabDisabled(tab)) {
                         this.activeDatasetSubTabName = tab.key;
                         check = true;
@@ -934,7 +937,7 @@ export default {
             if (row.modelsTotal === 0) {
                 this.$message({
                     message: this.$t("views.dashboard.admin.components.QueueTable.messages.missing_models"),
-                    type: "warning"
+                    type: "warning",
                 });
                 return;
             }
@@ -955,7 +958,7 @@ export default {
                 this.selectedModelsIDs = [];
 
                 // Select only models with that feature set ID
-                this.activeModelsList = this.jobDetailsData.modelsList.filter(model => model.resampleID === this.selectedFeatureSetId);
+                this.activeModelsList = this.jobDetailsData.modelsList.filter((model) => model.resampleID === this.selectedFeatureSetId);
 
                 this.$refs.resamplesTable.setCurrentRow(row);
                 this.paginateModels(1);
@@ -978,7 +981,7 @@ export default {
                 return cssClass;
             }
 
-            perfValues.forEach(function(pref) {
+            perfValues.forEach(function (pref) {
                 if (typeof row.performance[pref] !== "undefined") {
                     if (row.performance[pref] > 0.6) {
                         cssClass = "success-row";
@@ -1007,7 +1010,7 @@ export default {
             if (tableReference === "resamplesTable") {
                 exportData = JSON.parse(JSON.stringify(this.jobDetailsData.resamplesList));
             } else if (tableReference === "modelDetailsTable") {
-                exportData = JSON.parse(JSON.stringify(this.jobDetailsData.modelsList.filter(model => model.resampleID === this.selectedFeatureSetId)));
+                exportData = JSON.parse(JSON.stringify(this.jobDetailsData.modelsList.filter((model) => model.resampleID === this.selectedFeatureSetId)));
             }
 
             let flattenData = exportData;
@@ -1027,7 +1030,7 @@ export default {
                     if (prefValue[0] === "performance") {
                         prefValueSearch = prefValue[1];
 
-                        flattenData = exportData.map(function(item) {
+                        flattenData = exportData.map(function (item) {
                             let itemFlat = item;
                             if (typeof item.performance !== "undefined") {
                                 itemFlat = Object.assign(itemFlat, item.performance);
@@ -1056,10 +1059,10 @@ export default {
                         h(
                             "el-tooltip",
                             {
-                                props: { content: column.label, placement: "top" }
+                                props: { content: column.label, placement: "top" },
                             },
                             [h("span", { class: "custom-table-header-text-" + column.property }, column.label)]
-                        )
+                        ),
                     ]),
                     h(
                         "el-popover",
@@ -1074,7 +1077,7 @@ export default {
                                         min: minMax[0],
                                         max: minMax[1],
                                         step: minMax[2],
-                                        disabled: rangeDisabled
+                                        disabled: rangeDisabled,
                                     },
                                     style: "width: 90%;margin: 0 auto;",
                                     on: {
@@ -1083,7 +1086,7 @@ export default {
                                          * @param  {[type]} value 0.65,0.81_PredictAUC
                                          * @return {[type]}       [description]
                                          */
-                                        change: value => {
+                                        change: (value) => {
                                             const index = this.tableFiltersOrder[tableReference].indexOf(column.property + "|" + "range");
                                             if (index !== -1) {
                                                 this.tableFiltersOrder[tableReference].splice(index, 1);
@@ -1092,8 +1095,8 @@ export default {
                                             this.tableFiltersOrder[tableReference].push(column.property + "|" + "range");
 
                                             this.tableFilter(tableReference);
-                                        }
-                                    }
+                                        },
+                                    },
                                 }),
                                 h(
                                     "el-select",
@@ -1102,11 +1105,11 @@ export default {
                                             value: this.tableFilters[tableReference][column.property]["sortby"],
                                             placeholder: "Sort by",
                                             size: "mini",
-                                            clearable: true
+                                            clearable: true,
                                         },
                                         style: "width: 100%;",
                                         on: {
-                                            input: value => {
+                                            input: (value) => {
                                                 const index = this.tableFiltersOrder[tableReference].indexOf(column.property + "|" + "sortby");
                                                 if (index !== -1) {
                                                     this.tableFiltersOrder[tableReference].splice(index, 1);
@@ -1119,22 +1122,22 @@ export default {
                                                     this.tableFiltersOrder[tableReference].push(column.property + "|" + "sortby");
                                                 }
                                                 this.tableFilter(tableReference);
-                                            }
-                                        }
+                                            },
+                                        },
                                     },
                                     [
                                         h("el-option", {
                                             props: {
                                                 label: "Descending",
-                                                value: "descending"
-                                            }
+                                                value: "descending",
+                                            },
                                         }),
                                         h("el-option", {
                                             props: {
                                                 label: "Ascending",
-                                                value: "ascending"
-                                            }
-                                        })
+                                                value: "ascending",
+                                            },
+                                        }),
                                     ]
                                 ),
                                 h(
@@ -1143,29 +1146,29 @@ export default {
                                         props: {
                                             value: this.tableFilters[tableReference][column.property]["locked"],
                                             size: "mini",
-                                            border: true
+                                            border: true,
                                         },
                                         style: "float: right; clear: left; margin-top: 10px;",
                                         on: {
-                                            change: value => {
+                                            change: (value) => {
                                                 const index = this.tableFiltersOrder[tableReference].indexOf(column.property + "|" + "locked");
                                                 if (index !== -1) {
                                                     this.tableFiltersOrder[tableReference].splice(index, 1);
                                                 }
                                                 this.$set(this.tableFilters[tableReference][column.property], "locked", value);
                                                 //if (value === true) {
-                                                    this.tableFiltersOrder[tableReference].push(column.property + "|" + "locked");
+                                                this.tableFiltersOrder[tableReference].push(column.property + "|" + "locked");
                                                 //}
                                                 this.tableFilter(tableReference);
-                                            }
-                                        }
+                                            },
+                                        },
                                     },
                                     [h("i", { class: "el-icon-lock" }, "")]
-                                )
+                                ),
                             ]),
-                            h("i", { slot: "reference", class: "el-icon-s-operation", style: "margin-left: 5px;" }, "")
+                            h("i", { slot: "reference", class: "el-icon-s-operation", style: "margin-left: 5px;" }, ""),
                         ]
-                    )
+                    ),
                 ]);
 
                 element.fnScopeId = this.$options._scopeId;
@@ -1186,7 +1189,7 @@ export default {
             if (tableReference === "resamplesTable") {
                 sortData = this.jobDetailsData.resamplesList;
             } else if (tableReference === "modelDetailsTable") {
-                sortData = this.jobDetailsData.modelsList.filter(model => model.resampleID === this.selectedFeatureSetId);
+                sortData = this.jobDetailsData.modelsList.filter((model) => model.resampleID === this.selectedFeatureSetId);
             }
 
             let lockSorting = true;
@@ -1249,9 +1252,9 @@ export default {
                     console.log("removing items from data: " + sortType + " " + action[0] + "-" + action[1]);
                     // remove rows from array
                     if (sortType === "normal") {
-                        sortData = sortData.filter(item => item[columnIdentifier] >= action[0] && item[columnIdentifier] <= action[1]);
+                        sortData = sortData.filter((item) => item[columnIdentifier] >= action[0] && item[columnIdentifier] <= action[1]);
                     } else if (sortType === "subkey") {
-                        sortData = sortData.filter(function(item) {
+                        sortData = sortData.filter(function (item) {
                             if (typeof item[columnIds[0]] === "undefined") {
                                 item[columnIds[0]] = {};
                                 item[columnIds[0]][columnIds[1]] = 0;
@@ -1289,7 +1292,7 @@ export default {
             if (tableReference === "resamplesTable") {
                 sortData = this.jobDetailsData.resamplesList;
             } else if (tableReference === "modelDetailsTable") {
-                sortData = this.jobDetailsData.modelsList.filter(model => model.resampleID === this.selectedFeatureSetId);
+                sortData = this.jobDetailsData.modelsList.filter((model) => model.resampleID === this.selectedFeatureSetId);
             }
 
             this.tableFiltersOrder[tableReference].forEach((value, index) => {
@@ -1325,7 +1328,7 @@ export default {
             let exportData = [];
 
             if (tableType === "models") {
-                exportData = JSON.parse(JSON.stringify(this.jobDetailsData.modelsList.filter(model => model.resampleID === this.selectedFeatureSetId)));
+                exportData = JSON.parse(JSON.stringify(this.jobDetailsData.modelsList.filter((model) => model.resampleID === this.selectedFeatureSetId)));
                 downloadFilename = tableType + "_resampleID_" + this.selectedFeatureSetId;
             } else if (tableType === "resamples") {
                 exportData = JSON.parse(JSON.stringify(this.jobDetailsData.resamplesList));
@@ -1336,13 +1339,12 @@ export default {
                 console.log(exportData);
 
                 // Map performance and packageDetails variables to root column node
-                const flattenData = exportData.map(function(item) {
+                const flattenData = exportData.map(function (item) {
                     let itemFlat = item;
                     if (typeof item.performance !== "undefined") {
                         itemFlat = Object.assign(itemFlat, item.performance);
                         delete itemFlat.performance;
                     }
-
 
                     if (typeof item.packageDetails !== "undefined") {
                         itemFlat = Object.assign(itemFlat, item.packageDetails);
@@ -1361,8 +1363,8 @@ export default {
             this.tableLoading[tableType] = false;
         },
         formatJson(filterVal, jsonData) {
-            return jsonData.map(v =>
-                filterVal.map(j => {
+            return jsonData.map((v) =>
+                filterVal.map((j) => {
                     if (j === "submitted") {
                         return parseTime(v[j]);
                     } else {
@@ -1374,20 +1376,20 @@ export default {
         fetchJobDetails(pqid) {
             this.datasetsTabLoading = true;
             fetchJobDetails(pqid)
-                .then(response => {
+                .then((response) => {
                     this.datasets = response.data.data;
                     this.datasetsTabLoading = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                 });
         },
         copyToClipboard(content, event) {
             clipboard(content, event);
-        }
+        },
     },
     watch: {
-        "jobDetailsData.queueDetails": function(newVal, oldVal) {
+        "jobDetailsData.queueDetails": function (newVal, oldVal) {
             console.log("Updating queueClassesDisplay");
             // And new selected queue classes
             if (typeof newVal.selectedOptions !== "undefined") {
@@ -1406,13 +1408,13 @@ export default {
                 });
             }
         },
-        "jobDetailsData.resamplesList": function(newVal, oldVal) {
+        "jobDetailsData.resamplesList": function (newVal, oldVal) {
             this.activeResamplesList = newVal;
 
             this.paginateResamples(1);
             this.$refs.resamplesTable.doLayout();
-        }
-    }
+        },
+    },
 };
 </script>
 

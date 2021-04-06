@@ -1,12 +1,12 @@
 <template>
     <div class="variableImportanceTab-container" v-loading="listLoading" element-loading-text="Processing...">
         <div v-if="!isTabDisabled">
-            <el-row style="height: 50px;" align="top">
+            <el-row style="height: 50px" align="top">
                 <el-col :span="10">
                     <el-form :inline="true">
                         <el-form-item label="Order by">
                             <el-select @change="handleTableFilter" style="width: 140px" class="filter-item" v-model="paginateVariableImpData.sort_by">
-                                <el-option v-for="item in tableSortOptions" :key="item.key" :label="item.label" :value="item.key"> </el-option>
+                                <el-option v-for="item in tableSortOptions" :key="item.key" :label="item.label" :value="item.key"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item>
@@ -17,10 +17,9 @@
                                 inactive-color="#ff4949"
                                 active-text="ASC"
                                 inactive-text="DESC"
-                            >
-                            </el-switch>
+                            ></el-switch>
                         </el-form-item>
-                        <el-form-item style="float: right;">
+                        <el-form-item style="float: right">
                             <el-button size="mini" class="filter-item" type="success" :loading="downloadLoading" v-waves icon="el-icon-download" @click="downloadTable"></el-button>
                         </el-form-item>
                     </el-form>
@@ -42,7 +41,7 @@
                     </div>
                 </el-col>
             </el-row>
-            <el-row align="top" style="padding-top: 10px;">
+            <el-row align="top" style="padding-top: 10px">
                 <el-col :span="10">
                     <el-table
                         ref="variableImpTable"
@@ -51,11 +50,11 @@
                         row-key="id"
                         @select-all="handleVarImpSelection"
                         @select="handleVarImpSelection"
-                        style="min-height: 600px;"
+                        style="min-height: 600px"
                         size="small"
                         border
                     >
-                        <el-table-column type="selection" reserve-selection width="35" fixed> </el-table-column>
+                        <el-table-column type="selection" reserve-selection width="35" fixed></el-table-column>
 
                         <el-table-column fixed label="Model">
                             <template slot-scope="scope">
@@ -74,12 +73,14 @@
 
                         <el-table-column width="125px" align="center" label="Rank" prop="rank">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.rank">{{ scope.row.rank }}</span> <span v-else>N/A</span>
+                                <span v-if="scope.row.rank">{{ scope.row.rank }}</span>
+                                <span v-else>N/A</span>
                             </template>
                         </el-table-column>
                         <el-table-column width="125px" align="center" label="Score" prop="score_perc">
                             <template slot-scope="scope">
-                                <span v-if="scope.row.score_perc">{{ scope.row.score_perc }}</span> <span v-else>N/A</span>
+                                <span v-if="scope.row.score_perc">{{ scope.row.score_perc }}</span>
+                                <span v-else>N/A</span>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -95,8 +96,7 @@
                             :page-size="paginateVariableImpData.page_size"
                             layout="total, prev, pager, next, jumper"
                             :total="paginateVariableImpData.total_items"
-                        >
-                        </el-pagination>
+                        ></el-pagination>
                     </div>
                 </el-col>
                 <el-col :span="14">
@@ -111,8 +111,7 @@
                                 type="warning"
                                 show-icon
                                 :closable="false"
-                            >
-                            </el-alert>
+                            ></el-alert>
                         </div>
                     </div>
                 </el-col>
@@ -120,8 +119,14 @@
         </div>
         <!-- ELSE if Tab is DISABLED -->
         <div v-else>
-            <el-alert title="Notification" description="Unfortionatly this function is currently disabled" type="warning" style="margin-top: 20px;" show-icon :closable="false">
-            </el-alert>
+            <el-alert
+                title="Notification"
+                description="Unfortionatly this function is currently disabled"
+                type="warning"
+                style="margin-top: 20px"
+                show-icon
+                :closable="false"
+            ></el-alert>
         </div>
     </div>
 </template>
@@ -137,18 +142,18 @@ import varImpChart from "./charts/varImpChart";
 export default {
     name: "variableImportanceTab",
     directives: {
-        waves
+        waves,
     },
     components: { varImpChart },
     props: {
         columnName: {
             type: String,
-            default: ""
+            default: "",
         },
         isTabDisabled: {
             type: Boolean,
-            default: true
-        }
+            default: true,
+        },
     },
     data() {
         return {
@@ -161,37 +166,37 @@ export default {
                 page_size: 20,
                 sort: false,
                 sort_by: "score_perc",
-                total_items: null
+                total_items: null,
             },
             tableSortOptions: [
                 {
                     label: "Feature name",
-                    key: "feature_name"
+                    key: "feature_name",
                 },
                 {
                     label: "Rank",
-                    key: "rank"
+                    key: "rank",
                 },
                 {
                     label: "Score",
-                    key: "score_perc"
+                    key: "score_perc",
                 },
                 {
                     label: "Model",
-                    key: "model_internal_id"
-                }
+                    key: "model_internal_id",
+                },
             ],
-            downloadLoading: false
+            downloadLoading: false,
         };
     },
     computed: {
-        selectedQueueIDs: {
+        selectedQueueID: {
             get() {
-                return this.$store.getters.simonExplorationQueueIDs;
+                return this.$store.getters.simonExplorationSelectedQueueID;
             },
             set(value) {
-                this.$store.dispatch("setSimonExplorationQueueIDs", value);
-            }
+                this.$store.dispatch("setSimonExplorationSelectedQueueID", value);
+            },
         },
         selectedFeatureSetId: {
             get() {
@@ -199,7 +204,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedFeatureSetId", value);
-            }
+            },
         },
         selectedModelsIDs: {
             get() {
@@ -207,8 +212,8 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedModelId", value);
-            }
-        }
+            },
+        },
     },
     mounted() {
         console.log("mounted: variableImportanceTab: " + this.isTabDisabled);
@@ -222,7 +227,7 @@ export default {
             console.log(feature);
 
             // Remove deselected TAG feature from selected features
-            this.selectedVariableImp = this.selectedVariableImp.filter(item => {
+            this.selectedVariableImp = this.selectedVariableImp.filter((item) => {
                 return item.feature_name !== feature.feature_name;
             });
             // Uncheck table check-box
@@ -232,7 +237,7 @@ export default {
             console.log("handleVarImpSelection");
             // select unique objects by key value
             const selectionCheck = new Set();
-            const uniqueSelection = selection.filter(entry => {
+            const uniqueSelection = selection.filter((entry) => {
                 if (selectionCheck.has(entry.feature_name)) {
                     return false;
                 }
@@ -258,12 +263,12 @@ export default {
             this.listLoading = true;
 
             getVariableImportance({
-                pqid: this.selectedQueueIDs,
+                pqid: this.selectedQueueID,
                 resampleID: this.selectedFeatureSetId,
                 modelsID: this.selectedModelsIDs,
-                ...this.paginateVariableImpData
+                ...this.paginateVariableImpData,
             })
-                .then(response => {
+                .then((response) => {
                     if (response.data.success === true) {
                         this.displayVariableImp = response.data.data;
                         this.paginateVariableImpData.total_items = response.data.total;
@@ -272,10 +277,10 @@ export default {
                     }
                     this.listLoading = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     this.$message({
                         message: this.$t("globals.errors.request_general"),
-                        type: "error"
+                        type: "error",
                     });
                     console.log(error);
                     this.listLoading = false;
@@ -294,22 +299,22 @@ export default {
             this.downloadLoading = true;
 
             getVariableImportance({
-                pqid: this.selectedQueueIDs,
+                pqid: this.selectedQueueID,
                 resampleID: this.selectedFeatureSetId,
                 modelsID: this.selectedModelsIDs,
                 page: 1,
                 page_size: 100000,
                 sort: true,
                 sort_by: "score_perc",
-                total_items: 100000
+                total_items: 100000,
             })
-                .then(response => {
+                .then((response) => {
                     if (response.data.success === true) {
-                        import("@/vendor/Export2Excel").then(excel => {
+                        import("@/vendor/Export2Excel").then((excel) => {
                             const filterVal = ["model_id", "model_internal_id", "original", "score_perc", "score_no"];
                             const tHeader = ["model_id", "model_name", "feature", "score_percentage", "score_numeric"];
 
-                            const modelsValues = response.data.data.map(item => item.model_internal_id);
+                            const modelsValues = response.data.data.map((item) => item.model_internal_id);
                             // Get unique models and format for display
                             let models = modelsValues.filter((value, index, self) => {
                                 return self.indexOf(value) === index;
@@ -324,18 +329,18 @@ export default {
                     }
                     this.downloadLoading = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     this.$message({
                         message: this.$t("globals.errors.request_general"),
-                        type: "error"
+                        type: "error",
                     });
                     console.log(error);
                     this.downloadLoading = false;
                 });
         },
         formatJson(filterVal, jsonData) {
-            return jsonData.map(v =>
-                filterVal.map(j => {
+            return jsonData.map((v) =>
+                filterVal.map((j) => {
                     if (j === "submitted") {
                         return parseTime(v[j]);
                     } else {
@@ -343,7 +348,7 @@ export default {
                     }
                 })
             );
-        }
+        },
     },
     watch: {
         /**
@@ -352,7 +357,7 @@ export default {
          * @param  {[type]} oldVal [description]
          * @return {[type]}        [description]
          */
-        selectedModelsIDs: function(newVal, oldVal) {
+        selectedModelsIDs: function (newVal, oldVal) {
             console.log("variableImportanceTab getting new variables based on model change");
             if (this.isTabDisabled === false) {
                 // Remove any previously selected variables
@@ -366,15 +371,15 @@ export default {
          * @param  boolean  oldVal Old item value
          * @return null
          */
-        isTabDisabled: function(newVal, oldVal) {
+        isTabDisabled: function (newVal, oldVal) {
             console.log("variableImportanceTab isTabDisabled: " + newVal);
             if (newVal === false) {
                 // Remove any previously selected variables
                 this.selectedVariableImp = [];
                 this.handleFetchVariableImp();
             }
-        }
-    }
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>

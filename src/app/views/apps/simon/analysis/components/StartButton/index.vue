@@ -4,55 +4,95 @@
             <el-col :offset="13" :span="11">
                 <el-row type="flex" align="middle">
                     <el-col :span="24">
-                        <el-button class="validate-analysis" type="primary" round icon="el-icon-caret-right" :disabled="isValidateDisabled == true" @click="validateJob">Validate data</el-button>
+                        <el-button class="validate-analysis" type="primary" round icon="el-icon-caret-right" :disabled="isValidateDisabled == true" @click="validateJob">
+                            Validate data
+                        </el-button>
                     </el-col>
                 </el-row>
             </el-col>
         </el-row>
         <!-- Confirm submission Alert Dialog -->
-        <el-dialog :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.title')" :visible.sync="submissionVisible" width="40%" :before-close="handleSubmissionCancle">
+        <el-dialog
+            :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.title')"
+            :visible.sync="submissionVisible"
+            width="40%"
+            :before-close="handleSubmissionCancle"
+        >
             <div class="tip">
-                <div style="float: left;">{{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.header") }}:</div>
+                <div style="float: left">{{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.header") }}:</div>
                 <el-tooltip placement="top">
                     <div slot="content">
                         {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.description") }}
                     </div>
-                    <div style="float: right;">
+                    <div style="float: right">
                         {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.sparsity.title") }}
-                        <span style="font-weight: bold;" v-if="!isNaN(datasetQueueSparsity)">{{ datasetQueueSparsity * 100 }}%</span>
-                        <span style="font-weight: bold;" v-else>Not calculated</span>
+                        <span style="font-weight: bold" v-if="!isNaN(datasetQueueSparsity)">{{ Math.round(datasetQueueSparsity * 100) }}%</span>
+                        <span style="font-weight: bold" v-else>Not calculated</span>
                     </div>
                 </el-tooltip>
                 <br />
                 <br />
                 <el-tabs v-if="datasetResamples.length > 0" type="border-card">
-                    <el-tab-pane v-for="(item, index) in datasetResamples" :label="item.outcome.original + ' (' + datasetResamples[index]['data'].length + ')'" :key="index" :name="String(index)" :v-model="0">
-                        <el-table 
-                        :data="datasetResamples[index]['data']" 
-                        :ref="'datasetResamplesTable_' + item.outcome.remapped" 
-                        height="250" 
-                        style="width: 100%"
-                        row-key="id"
-                        @select="selectResampleItem" @selection-change="
-                                selection => {
+                    <el-tab-pane
+                        v-for="(item, index) in datasetResamples"
+                        :label="item.outcome.original + ' (' + datasetResamples[index]['data'].length + ')'"
+                        :key="index"
+                        :name="String(index)"
+                        :v-model="0"
+                    >
+                        <el-table
+                            :data="datasetResamples[index]['data']"
+                            :ref="'datasetResamplesTable_' + item.outcome.remapped"
+                            height="250"
+                            style="width: 100%"
+                            row-key="id"
+                            @select="selectResampleItem"
+                            @selection-change="
+                                (selection) => {
                                     resampleSelectionChange(selection, index, item.outcome.remapped);
                                 }
-                            ">
-                            <el-table-column type="selection"> </el-table-column>
-                            <el-table-column property="totalFeatures" :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.features')" sortable align="center">
-                            </el-table-column>
-                            <el-table-column property="totalSamples" :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.samples')" sortable align="center">
-                            </el-table-column>
-                            <el-table-column property="totalDatapoints" :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.datapoints')" sortable align="center">
-                            </el-table-column>
+                            "
+                        >
+                            <el-table-column type="selection"></el-table-column>
+                            <el-table-column
+                                property="totalFeatures"
+                                :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.features')"
+                                sortable
+                                align="center"
+                            ></el-table-column>
+                            <el-table-column
+                                property="totalSamples"
+                                :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.samples')"
+                                sortable
+                                align="center"
+                            ></el-table-column>
+                            <el-table-column
+                                property="totalDatapoints"
+                                :label="$t('views.apps.simon.analysis.components.StartButton.dialogs.confirm.table.datapoints')"
+                                sortable
+                                align="center"
+                            ></el-table-column>
                             <el-table-column align="center">
                                 <template slot-scope="scope">
-                                    <el-button type="primary" size="mini" @click.native.prevent="downloadResampleDataset(scope.$index, index)" icon="el-icon-download" circle></el-button>
-                                    <el-popover placement="top-start" v-if="!scope.row.isValid" :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title')" width="200" style="margin-left: 5px;" trigger="hover">
+                                    <el-button
+                                        type="primary"
+                                        size="mini"
+                                        @click.native.prevent="downloadResampleDataset(scope.$index, index)"
+                                        icon="el-icon-download"
+                                        circle
+                                    ></el-button>
+                                    <el-popover
+                                        placement="top-start"
+                                        v-if="!scope.row.isValid"
+                                        :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title')"
+                                        width="200"
+                                        style="margin-left: 5px"
+                                        trigger="hover"
+                                    >
                                         <div v-for="(message, messageIndex) in scope.row.message">
                                             {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages." + message.msg_info) }} {{ message.data }}
                                         </div>
-                                        <el-button slot="reference" type="danger" size="mini" icon="el-icon-warning" circle> </el-button>
+                                        <el-button slot="reference" type="danger" size="mini" icon="el-icon-warning" circle></el-button>
                                     </el-popover>
                                 </template>
                             </el-table-column>
@@ -60,20 +100,29 @@
                     </el-tab-pane>
                 </el-tabs>
                 <br />
-                <br />{{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.footer_1") }} <br />
-                <br />{{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.footer_2") }}
+                <br />
+                {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.footer_1") }}
+                <br />
+                <br />
+                {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.footer_2") }}
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="info" round icon="el-icon-caret-right" @click="handleSubmissionCancle">{{
-                    $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.buttons.cancel")
-                    }}</el-button>
-                <el-button class="submit-analysis" type="primary" round icon="el-icon-caret-right" :disabled="!processTaskVisible" @click="processTask">{{
-                    $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.buttons.process")
-                    }}</el-button>
+                <el-button type="info" round icon="el-icon-caret-right" @click="handleSubmissionCancle">
+                    {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.buttons.cancel") }}
+                </el-button>
+                <el-button class="submit-analysis" type="primary" round icon="el-icon-caret-right" :disabled="!processTaskVisible" @click="processTask">
+                    {{ $t("views.apps.simon.analysis.components.StartButton.dialogs.confirm.buttons.process") }}
+                </el-button>
             </span>
         </el-dialog>
         <!-- ERROR Alert Dialog -->
-        <el-dialog :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.errors.title')" :visible.sync="messageWarnings.length > 0" width="35%" :show-close="false" center>
+        <el-dialog
+            :title="$t('views.apps.simon.analysis.components.StartButton.dialogs.errors.title')"
+            :visible.sync="messageWarnings.length > 0"
+            width="35%"
+            :show-close="false"
+            center
+        >
             <div class="tip">
                 <p>
                     <el-alert v-for="(item, index) in messageWarnings" :title="item" :key="index" type="error" :closable="false" show-icon></el-alert>
@@ -93,7 +142,7 @@ import { sortAlphaNum } from "@/utils/helpers";
 import {
     getSimonPreAnalysisDetails as ApiGetSimonPreAnalysisDetails,
     cancelDatasetQueueTask as ApiCancelDatasetQueueTask,
-    genarateFileDownloadLink as ApiGenarateFileDownloadLink
+    genarateFileDownloadLink as ApiGenarateFileDownloadLink,
 } from "@/api/backend";
 
 import clipboard from "@/utils/clipboard";
@@ -106,7 +155,7 @@ export default {
         return {
             progressBar: {
                 percentage: 0,
-                status: ""
+                status: "",
             },
             loadingInstance: null,
             loadingText: this.$t("globals.page_loading_slow"),
@@ -132,8 +181,8 @@ export default {
                 selectedClasses: [],
                 selectedPackages: [],
                 extraction: false,
-                backwardSelection: false
-            }
+                backwardSelection: false,
+            },
         };
     },
     mounted() {},
@@ -145,7 +194,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFeatures", value);
-            }
+            },
         },
         /** Excluded Features */
         excludeFeatures: {
@@ -154,7 +203,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisExcludeFeatures", value);
-            }
+            },
         },
         /** Current Selected Outcome */
         selectedOutcome: {
@@ -163,7 +212,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedOutcome", value);
-            }
+            },
         },
         selectedClasses: {
             get() {
@@ -171,7 +220,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedClasses", value);
-            }
+            },
         },
         selectedFormula: {
             get() {
@@ -179,7 +228,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFormula", value);
-            }
+            },
         },
         /* Regression analysis dependents */
         timeSeriesDate: {
@@ -188,7 +237,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisTimeSeriesDate", value);
-            }
+            },
         },
         selectedPreProcess: {
             get() {
@@ -196,7 +245,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedPreProcess", value);
-            }
+            },
         },
         selectedPartitionSplit: {
             get() {
@@ -204,7 +253,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedPartitionSplit", value);
-            }
+            },
         },
         selectedFiles: {
             get() {
@@ -212,7 +261,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSelectedFiles", value);
-            }
+            },
         },
         selectedFilesHash: {
             get() {
@@ -220,8 +269,8 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFileHash", value);
-            }
-        }
+            },
+        },
     },
     methods: {
         downloadResampleDataset(rowIndex, resampleIndex) {
@@ -229,16 +278,16 @@ export default {
             const item = this.datasetResamples[resampleIndex]["data"][rowIndex];
 
             ApiGenarateFileDownloadLink({ downloadType: "resample", recordID: item.id })
-                .then(response => {
+                .then((response) => {
                     if (response.data.success === true && response.data.message.length > 0) {
                         this.$alert(downloadItemsTemplate(response.data.message), "Download links", {
                             dangerouslyUseHTMLString: true,
-                            callback: action => {}
+                            callback: (action) => {},
                         });
                     }
                     this.stopLoading();
                 })
-                .catch(error => {
+                .catch((error) => {
                     this.stopLoading();
                 });
         },
@@ -249,7 +298,7 @@ export default {
                 setTimeout(() => {
                     this.progressBar = {
                         percentage: 0,
-                        status: ""
+                        status: "",
                     };
                     if (status === "success") {
                         this.submissionVisible = true;
@@ -265,7 +314,7 @@ export default {
                 spinner: "el-icon-loading",
                 fullscreen: true,
                 customClass: "loading-api",
-                background: "rgba(0, 0, 0, 0.7)"
+                background: "rgba(0, 0, 0, 0.7)",
             });
         },
         stopLoading() {
@@ -279,15 +328,15 @@ export default {
             this.startLoading();
             if (quite === false) {
                 this.$confirm(this.$t("views.apps.simon.analysis.components.StartButton.dialogs.cancel.message"))
-                    .then(_ => {
+                    .then((_) => {
                         this.cancelSubmission();
                     })
-                    .catch(_ => {
+                    .catch((_) => {
                         this.stopLoading();
                     });
             } else {
                 this.cancelSubmission();
-            } 
+            }
         },
         cancelSubmission() {
             this.submissionVisible = false;
@@ -295,10 +344,10 @@ export default {
             this.isValidateDisabled = false;
 
             ApiCancelDatasetQueueTask({ queueID: this.datasetQueueID })
-                .then(response => {
+                .then((response) => {
                     this.stopLoading();
                 })
-                .catch(error => {
+                .catch((error) => {
                     this.stopLoading();
                     console.log(error);
                 });
@@ -310,7 +359,7 @@ export default {
 
                 this.$store
                     .dispatch("addSimonJobAnalysis", { queueID: this.datasetQueueID, resamples: this.datasetResamples })
-                    .then(status => {
+                    .then((status) => {
                         if (status === true) {
                             // Reset current JobID
                             this.$store.dispatch("setSimonAnalysisJobId", "");
@@ -318,7 +367,7 @@ export default {
                             this.processTaskVisible = false;
                             this.isValidateDisabled = false;
                             this.$router.push({
-                                path: "/"
+                                path: "/",
                             });
                             resolve(status);
                         } else {
@@ -329,7 +378,7 @@ export default {
 
                         this.stopLoading();
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.log("Cannot submit Task to the server for analysis");
                         console.log(error);
                         this.stopLoading();
@@ -341,7 +390,7 @@ export default {
             if (this.$config.isDemoServer) {
                 this.$message({
                     type: "warning",
-                    message: this.$t("globals.demo_server.function_disabled")
+                    message: this.$t("globals.demo_server.function_disabled"),
                 });
                 return;
             }
@@ -369,13 +418,13 @@ export default {
                 naValues: 0,
                 naValuesColumns: [],
                 totalNaValues: 0,
-                totalSamples: 0
+                totalSamples: 0,
             };
 
             // Try to get number of usable samples from server
             this.submitJobForm = {
                 selectedFiles: this.selectedFiles
-                    .map(function(item) {
+                    .map(function (item) {
                         return item.id;
                     })
                     .sort(sortAlphaNum),
@@ -383,18 +432,40 @@ export default {
                 selectedFeatures: this.selectedFeatures.sort(sortAlphaNum),
                 excludeFeatures: this.excludeFeatures.sort(sortAlphaNum),
                 selectedOutcome: this.selectedOutcome.sort(sortAlphaNum),
-                selectedPreProcess: this.selectedPreProcess.sort(sortAlphaNum),
+
+                selectedPreProcess: this.selectedPreProcess.sort(function (a, b) {
+                    const sortingArr = [
+                        "medianImpute",
+                        "bagImpute",
+                        "knnImpute",
+                        "expoTrans",
+                        "YeoJohnson",
+                        "BoxCox",
+                        "center",
+                        "scale",
+                        "range",
+                        "ica",
+                        "spatialSign",
+                        "corr",
+                        "zv",
+                        "nzv",
+                        "conditionalX",
+                        "pca",
+                    ];
+                    return sortingArr.indexOf(a[1]) - sortingArr.indexOf(b[1]);
+                }),
+
                 selectedPartitionSplit: this.selectedPartitionSplit,
                 selectedFormula: this.selectedFormula.sort(sortAlphaNum),
                 timeSeriesDate: this.timeSeriesDate.sort(sortAlphaNum),
                 selectedClasses: this.selectedClasses.sort(sortAlphaNum),
                 selectedPackages: this.$store.getters.simonSelectedPackages
-                    .map(function(item) {
+                    .map(function (item) {
                         return item.id;
                     })
                     .sort(sortAlphaNum),
                 extraction: this.$store.getters.simonAnalysisFilterExtraction,
-                backwardSelection: this.$store.getters.simonAnalysisBackwardSelection
+                backwardSelection: this.$store.getters.simonAnalysisBackwardSelection,
             };
             this.datasetResamples = [];
             this.datasetQueueID = 0;
@@ -406,7 +477,7 @@ export default {
             console.log("End loading");
 
             ApiGetSimonPreAnalysisDetails(this.submitJobForm)
-                .then(response => {
+                .then((response) => {
                     if (response.data.success === true) {
                         this.datasetResamples = response.data.details.dataset_queues;
                         this.datasetQueueID = response.data.details.queueID;
@@ -440,18 +511,18 @@ export default {
                                 message: messageInfo,
                                 type: "error",
                                 duration: 10000,
-                                showClose: true
+                                showClose: true,
                             });
                         }
                     }
 
                     this.stopLoading();
                 })
-                .catch(error => {
+                .catch((error) => {
                     this.stopLoading();
                     this.$message({
                         message: this.$t("globals.errors.request_general"),
-                        type: "warning"
+                        type: "warning",
                     });
                     console.log(error);
                     this.stopLoading();
@@ -478,7 +549,7 @@ export default {
                     row.message.forEach((message, messageIndex) => {
                         this.$message({
                             message: this.$t("views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages." + message.msg_info),
-                            type: "warning"
+                            type: "warning",
                         });
                     });
                     return true;
@@ -551,10 +622,9 @@ export default {
         },
         copyToClipboard(content, event) {
             clipboard(content, event);
-        }
-    }
+        },
+    },
 };
-
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "~scss_vars";
@@ -584,5 +654,4 @@ export default {
         }
     }
 }
-
 </style>

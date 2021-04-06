@@ -1,6 +1,6 @@
 <template>
     <div class="menu-wrapper">
-        <template v-for="item in routes" v-if="!item.hidden && item.children">
+        <div v-for="item in routes" v-if="!item.hidden && item.children" :key="item.name">
             <router-link
                 v-if="item.children.length === 1 && !item.children[0].children"
                 :to="item.path !== '/' ? item.path + '/' + item.children[0].path : '/' + item.children[0].path"
@@ -17,11 +17,11 @@
             </router-link>
 
             <el-submenu v-else :index="item.name || item.path" :key="item.name">
-                <template slot="title">
+                <div slot="title">
                     <i v-if="item.meta && item.meta.icon" :class="item.meta.icon" aria-hidden="true"></i>
                     <span v-if="item.meta && item.meta.title" :title="generateRouteTitle(item.meta.title)">{{ generateRouteTitle(item.meta.title) }}</span>
-                </template>
-                <template v-for="child in item.children" v-if="!child.hidden">
+                </div>
+                <div v-for="child in item.children" v-if="!child.hidden" :key="child.name">
                     <sidebar-item :is-nest="true" class="nest-menu" v-if="child.children && child.children.length > 0" :routes="[child]" :key="child.path"></sidebar-item>
                     <router-link
                         v-else
@@ -35,9 +35,9 @@
                             <span slot="title" v-if="child.meta && child.meta.title">{{ generateRouteTitle(child.meta.title) }}</span>
                         </el-menu-item>
                     </router-link>
-                </template>
+                </div>
             </el-submenu>
-        </template>
+        </div>
     </div>
 </template>
 <script>
@@ -70,6 +70,7 @@ export default {
         generateRouteTitle,
         // Some menu Items must have disabled class because they can only be used if some specific file is selected
         generateMenuClass: function (childItem) {
+            console.log("Checking menu class: " + childItem.name);
             let cssClass = "ready";
 
             // Check if there is any meta set for given route
@@ -78,8 +79,8 @@ export default {
                 if (childItem.meta.restrictions.hasOwnProperty("file") && childItem.meta.restrictions.file === true) {
                     cssClass = "notready";
 
-                    for (const selectedFile of this.selectedFiles) {
-                        if (childItem.meta.restrictions.extension.includes(selectedFile.extension)) {
+                    if (this.selectedFiles.length > 0) {
+                        if (childItem.meta.restrictions.extension.includes(this.selectedFiles[0].extension)) {
                             cssClass = "ready";
                         }
                     }
@@ -88,8 +89,12 @@ export default {
                 // Check if given meta contains any specific file restrictions
                 if (childItem.meta.restrictions.hasOwnProperty("action") && childItem.meta.restrictions.action === true) {
                     cssClass = "notready";
-                    if (this.$store.getters.hasOwnProperty(childItem.meta.restrictions.actionType) && this.$store.getters[childItem.meta.restrictions.actionType] !== "") {
-                        cssClass = "ready";
+                    if (this.$store.getters.hasOwnProperty(childItem.meta.restrictions.actionType)) {
+                        if (childItem.meta.restrictions.checkType === "string") {
+                            if (this.$store.getters[childItem.meta.restrictions.actionType] !== "") {
+                                cssClass = "ready";
+                            }
+                        }
                     }
                 }
             }

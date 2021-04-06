@@ -52,6 +52,7 @@ const getters = {
     simonAnalysisBackwardSelection: (state) => state.apps.simon.analysis.filter.backwardSelection,
     // exploration
     simonExplorationQueueIDs: (state) => state.apps.simon.exploration.queueIDs,
+    simonExplorationSelectedQueueID: (state) => state.apps.simon.exploration.selectedQueueID,
     simonExplorationSelectedFeatureSetId: (state) => state.apps.simon.exploration.selectedFeatureSetId,
     simonExplorationSelectedModelId: (state) => state.apps.simon.exploration.selectedModelsIDs,
     simonExplorationActiveTabName: (state) => state.apps.simon.exploration.activeTabName,

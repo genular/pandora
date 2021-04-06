@@ -30,8 +30,8 @@
                 </el-row>
             </div>
             <el-row type="flex" align="middle">
-                <el-col :span="1" style="min-width: 45px;">
-                    <el-switch style="padding-top: 24px;" v-model="filterFeatures"></el-switch>
+                <el-col :span="1" style="min-width: 45px">
+                    <el-switch style="padding-top: 24px" v-model="filterFeatures"></el-switch>
                 </el-col>
                 <el-col :span="14" class="analysis-option">
                     <el-tooltip placement="top">
@@ -49,21 +49,21 @@
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder')"
                         value-key="position"
                         :remote-method="
-                            userInput => {
+                            (userInput) => {
                                 filterAvaliableFeaturesDisplay(userInput, 'selectedFeatures');
                             }
                         "
                         :loading="loading['selectedFeatures']"
                         @change="
-                            selection => {
+                            (selection) => {
                                 resampleSelectionChange(selection, 'selectedFeatures');
                             }
                         "
                         @focus="selectAvaliableFeaturesDisplay('selectedFeatures')"
                     >
                         <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedFeatures'" :label="item.original" :value="item">
-                            <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;">
+                            <span style="float: left; padding-left: 5px">{{ item.original }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px">
                                 {{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}
                             </span>
                         </el-option>
@@ -87,29 +87,29 @@
                         value-key="position"
                         :disabled="!filterFeatures"
                         :remote-method="
-                            userInput => {
+                            (userInput) => {
                                 filterAvaliableFeaturesDisplay(userInput, 'excludeFeatures');
                             }
                         "
                         :loading="loading['excludeFeatures']"
                         @change="
-                            selection => {
+                            (selection) => {
                                 resampleSelectionChange(selection, 'excludeFeatures');
                             }
                         "
                         @focus="selectAvaliableFeaturesDisplay('excludeFeatures')"
                     >
                         <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_excludeFeatures'" :label="item.original" :value="item">
-                            <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;"
-                                >{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span
-                            >
+                            <span style="float: left; padding-left: 5px">{{ item.original }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px">
+                                {{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}
+                            </span>
                         </el-option>
                     </el-select>
                 </el-col>
 
-                <el-col :span="4" class="analysis-option" style="min-width: 235px;">
-                    <span class="field-title" style="width: 100%;float: none;">
+                <el-col :span="4" class="analysis-option" style="min-width: 235px">
+                    <span class="field-title" style="width: 100%; float: none">
                         <el-tooltip placement="bottom">
                             <div slot="content">
                                 {{ $t("views.apps.simon.analysis.components.FileDetails.body.partitions.description") }}
@@ -117,13 +117,21 @@
                             <span class="field-title">{{ $t("views.apps.simon.analysis.components.FileDetails.body.partitions.title") }}</span>
                         </el-tooltip>
                     </span>
-                    <el-slider v-model="selectedPartitionSplit" height="200px" :step="5" :min="50" :max="95" show-input :format-tooltip="formatPartitionSplitTooltip" show-stops>
-                    </el-slider>
+                    <el-slider
+                        v-model="selectedPartitionSplit"
+                        height="200px"
+                        :step="5"
+                        :min="50"
+                        :max="95"
+                        show-input
+                        :format-tooltip="formatPartitionSplitTooltip"
+                        show-stops
+                    ></el-slider>
                 </el-col>
             </el-row>
 
             <el-row type="flex" align="middle">
-                <el-col :span="1" style="min-width: 45px;"></el-col>
+                <el-col :span="1" style="min-width: 45px"></el-col>
                 <el-col :span="7" class="analysis-option">
                     <el-tooltip placement="bottom">
                         <div slot="content">
@@ -140,23 +148,23 @@
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.response.placeholder')"
                         value-key="position"
                         :remote-method="
-                            userInput => {
+                            (userInput) => {
                                 filterAvaliableFeaturesDisplay(userInput, 'selectedOutcome');
                             }
                         "
                         :loading="loading['selectedOutcome']"
                         @change="
-                            selection => {
+                            (selection) => {
                                 resampleSelectionChange(selection, 'selectedOutcome');
                             }
                         "
                         @focus="selectAvaliableFeaturesDisplay('selectedOutcome')"
                     >
                         <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedOutcome'" :label="item.original" :value="item">
-                            <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;"
-                                >{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span
-                            >
+                            <span style="float: left; padding-left: 5px">{{ item.original }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px">
+                                {{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}
+                            </span>
                         </el-option>
                     </el-select>
                 </el-col>
@@ -178,23 +186,23 @@
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.regression.placeholder')"
                         value-key="position"
                         :remote-method="
-                            userInput => {
+                            (userInput) => {
                                 filterAvaliableFeaturesDisplay(userInput, 'selectedFormula');
                             }
                         "
                         :loading="loading['selectedFormula']"
                         @change="
-                            selection => {
+                            (selection) => {
                                 resampleSelectionChange(selection, 'selectedFormula');
                             }
                         "
                         @focus="selectAvaliableFeaturesDisplay('selectedFormula')"
                     >
                         <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedFormula'" :label="item.original" :value="item">
-                            <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;"
-                                >{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span
-                            >
+                            <span style="float: left; padding-left: 5px">{{ item.original }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px">
+                                {{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}
+                            </span>
                         </el-option>
                     </el-select>
                 </el-col>
@@ -216,23 +224,23 @@
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.time_series.placeholder')"
                         value-key="position"
                         :remote-method="
-                            userInput => {
+                            (userInput) => {
                                 filterAvaliableFeaturesDisplay(userInput, 'timeSeriesDate');
                             }
                         "
                         :loading="loading['timeSeriesDate']"
                         @change="
-                            selection => {
+                            (selection) => {
                                 resampleSelectionChange(selection, 'timeSeriesDate');
                             }
                         "
                         @focus="selectAvaliableFeaturesDisplay('timeSeriesDate')"
                     >
                         <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_timeSeriesDate'" :label="item.original" :value="item">
-                            <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;"
-                                >{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span
-                            >
+                            <span style="float: left; padding-left: 5px">{{ item.original }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px">
+                                {{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}
+                            </span>
                         </el-option>
                     </el-select>
                 </el-col>
@@ -254,23 +262,23 @@
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.classes.placeholder')"
                         value-key="position"
                         :remote-method="
-                            userInput => {
+                            (userInput) => {
                                 filterAvaliableFeaturesDisplay(userInput, 'selectedClasses');
                             }
                         "
                         :loading="loading['selectedClasses']"
                         @change="
-                            selection => {
+                            (selection) => {
                                 resampleSelectionChange(selection, 'selectedClasses');
                             }
                         "
                         @focus="selectAvaliableFeaturesDisplay('selectedClasses')"
                     >
                         <el-option v-for="item in avaliableFeaturesDisplay" :key="item.position + '_selectedClasses'" :label="item.original" :value="item">
-                            <span style="float: left; padding-left: 5px;">{{ item.original }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px;"
-                                >{{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}</span
-                            >
+                            <span style="float: left; padding-left: 5px">{{ item.original }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px; padding-right: 15px">
+                                {{ $t("views.apps.simon.analysis.components.FileDetails.other.column") }}: {{ item.position }}
+                            </span>
                         </el-option>
                     </el-select>
                 </el-col>
@@ -292,7 +300,7 @@
                     >
                         <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
                             <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-                            <span style="float: right;">{{ $t("views.apps.simon.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}</span>
+                            <span style="float: right">{{ $t("views.apps.simon.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}</span>
                         </el-option>
                     </el-select>
                 </el-col>
@@ -303,10 +311,14 @@
                 <p>
                     {{ $t("views.apps.simon.analysis.components.FileDetails.dialog.head") }}
                     <br />
-                    {{ $t("views.apps.simon.analysis.components.FileDetails.dialog.content_1") }}: <strong>{{ selectedFeatures.join(", ") }}</strong>
+                    {{ $t("views.apps.simon.analysis.components.FileDetails.dialog.content_1") }}:
+                    <strong>{{ selectedFeatures.join(", ") }}</strong>
 
-                    <br /><br />
-                    {{ $t("views.apps.simon.analysis.components.FileDetails.dialog.content_2") }} <br /><br />
+                    <br />
+                    <br />
+                    {{ $t("views.apps.simon.analysis.components.FileDetails.dialog.content_2") }}
+                    <br />
+                    <br />
                     {{ $t("views.apps.simon.analysis.components.FileDetails.dialog.content_3") }}
                 </p>
             </div>
@@ -332,7 +344,7 @@ export default {
                 selectedFormula: false,
                 timeSeriesDate: false,
                 selectedClasses: false,
-                selectedPreProcess: false
+                selectedPreProcess: false,
             },
             /** Insufficient samples (rows) modal dialog */
             notEnoughSamplesDialog: false,
@@ -344,52 +356,52 @@ export default {
                 {
                     value: "BoxCox",
                     incompatible: [],
-                    disabled: false
+                    disabled: true,
                 },
                 {
                     value: "YeoJohnson",
                     incompatible: [],
-                    disabled: false
+                    disabled: true,
                 },
                 {
                     value: "expoTrans",
                     incompatible: [],
-                    disabled: false
+                    disabled: true,
                 },
                 {
                     value: "center",
                     incompatible: [],
-                    disabled: false
+                    disabled: false,
                 },
                 {
                     value: "scale",
                     incompatible: [],
-                    disabled: false
+                    disabled: false,
                 },
                 {
                     value: "range",
                     incompatible: ["scale"],
-                    disabled: false
+                    disabled: true,
                 },
                 {
                     value: "knnImpute",
                     incompatible: ["scale", "center"],
-                    disabled: false
+                    disabled: false,
                 },
                 {
                     value: "bagImpute",
                     incompatible: ["medianImpute"],
-                    disabled: false
+                    disabled: false,
                 },
                 {
                     value: "medianImpute",
                     incompatible: ["bagImpute"],
-                    disabled: false
+                    disabled: false,
                 },
                 {
                     value: "pca",
                     incompatible: ["ica", "scale", "center"],
-                    disabled: false
+                    disabled: true,
                 },
                 // {  // Not supported since we need to pass custom n.comp number
                 //     value: "ica",
@@ -399,29 +411,29 @@ export default {
                 {
                     value: "spatialSign",
                     incompatible: ["scale", "center"],
-                    disabled: false
+                    disabled: true,
                 },
                 {
                     value: "corr",
                     incompatible: [],
-                    disabled: false
+                    disabled: false,
                 },
                 {
                     value: "zv",
                     incompatible: [],
-                    disabled: false
+                    disabled: false,
                 },
                 {
                     value: "nzv",
                     incompatible: [],
-                    disabled: false
+                    disabled: false,
                 },
                 {
                     value: "conditionalX",
                     incompatible: [],
-                    disabled: false
-                }
-            ]
+                    disabled: true,
+                },
+            ],
         };
     },
     computed: {
@@ -432,7 +444,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisAvaliableFeatures", value);
-            }
+            },
         },
         /** Current Selected Features */
         selectedFeatures: {
@@ -441,7 +453,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFeatures", value);
-            }
+            },
         },
         /** Excluded Features */
         excludeFeatures: {
@@ -450,7 +462,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisExcludeFeatures", value);
-            }
+            },
         },
         /** Current Selected Outcome */
         selectedOutcome: {
@@ -459,7 +471,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedOutcome", value);
-            }
+            },
         },
         /** Current Selected Classes */
         selectedClasses: {
@@ -468,7 +480,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedClasses", value);
-            }
+            },
         },
         /* Regression analysis dependents */
         selectedFormula: {
@@ -477,7 +489,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFormula", value);
-            }
+            },
         },
         /* Regression analysis dependents */
         timeSeriesDate: {
@@ -486,7 +498,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisTimeSeriesDate", value);
-            }
+            },
         },
         selectedPreProcess: {
             get() {
@@ -494,7 +506,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedPreProcess", value);
-            }
+            },
         },
         selectedPartitionSplit: {
             get() {
@@ -502,7 +514,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedPartitionSplit", value);
-            }
+            },
         },
         /** Select all Features input switch */
         filterFeatures: {
@@ -511,7 +523,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisFilterFeatures", value);
-            }
+            },
         },
         selectedFiles: {
             get() {
@@ -519,12 +531,19 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSelectedFiles", value);
-            }
-        }
+            },
+        },
     },
     mounted() {
         if (this.avaliableFeaturesDisplay.length === 0) {
-            let allSelectedFeatures = [...this.selectedFeatures, ...this.excludeFeatures, ...this.selectedOutcome, ...this.selectedFormula, ...this.timeSeriesDate, ...this.selectedClasses];
+            let allSelectedFeatures = [
+                ...this.selectedFeatures,
+                ...this.excludeFeatures,
+                ...this.selectedOutcome,
+                ...this.selectedFormula,
+                ...this.timeSeriesDate,
+                ...this.selectedClasses,
+            ];
             let allSelectedFeaturesUnique = [];
 
             if (allSelectedFeatures.length === 0) {
@@ -557,16 +576,16 @@ export default {
             return message;
         },
         /** On user Input search available Features and suggest some results */
-        filterAvaliableFeaturesDisplay: debounce(function(userInput, inputType) {
+        filterAvaliableFeaturesDisplay: debounce(function (userInput, inputType) {
             this.loading[inputType] = true;
             ApiGetSimonHeaderSuggest(this.selectedFiles, userInput)
-                .then(response => {
+                .then((response) => {
                     if (response.data.success === true) {
                         this.avaliableFeaturesDisplay = response.data.message;
                     }
                     this.loading[inputType] = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     this.loading[inputType] = false;
                     console.log(error);
                 });
@@ -589,12 +608,12 @@ export default {
                         {
                             original: this.$t("views.apps.simon.analysis.components.FileDetails.other.all_columns"),
                             position: -1,
-                            remapped: "ALL"
-                        }
+                            remapped: "ALL",
+                        },
                     ];
                     this.$message({
                         message: this.$t("views.apps.simon.analysis.components.FileDetails.other.message_1"),
-                        type: "warning"
+                        type: "warning",
                     });
                 }
             }
@@ -615,7 +634,7 @@ export default {
                     }
                 }
             }
-            
+
             this.checkFormula();
         },
         checkFormula() {
@@ -623,24 +642,24 @@ export default {
             const allExcludeFeaturesUnique = removeDuplicateObjectsByKey(allExcludeFeatures, "position");
             // Construct regression formula if any regression fields are selected
             if (this.selectedFeatures.length > 0 && this.selectedFormula.length > 0) {
-                this.regressionFormula = this.selectedFormula.map(i => i.original).join(" + ") + " ~ " + this.selectedFeatures.map(i => i.original).join(" + ");
+                this.regressionFormula = this.selectedFormula.map((i) => i.original).join(" + ") + " ~ " + this.selectedFeatures.map((i) => i.original).join(" + ");
             } else {
                 this.regressionFormula = "";
             }
 
             if (this.filterFeatures === true && allExcludeFeaturesUnique.length > 0 && this.regressionFormula !== "") {
-                this.regressionFormula += " - (-" + allExcludeFeaturesUnique.map(i => i.original).join(", -") + ")";
+                this.regressionFormula += " - (-" + allExcludeFeaturesUnique.map((i) => i.original).join(", -") + ")";
             }
 
             // Construct classification formula if any regression fields are selected
             if (this.selectedFeatures.length > 0 && this.selectedOutcome.length > 0) {
                 this.classificationFormula = [];
                 let i = 0;
-                this.selectedOutcome.forEach(outcome => {
-                    this.classificationFormula[i] = outcome.original + " ~ " + this.selectedFeatures.map(i => i.original).join(" + ");
+                this.selectedOutcome.forEach((outcome) => {
+                    this.classificationFormula[i] = outcome.original + " ~ " + this.selectedFeatures.map((i) => i.original).join(" + ");
 
                     if (this.filterFeatures === true && allExcludeFeaturesUnique.length > 0) {
-                        this.classificationFormula[i] += " - (-" + allExcludeFeaturesUnique.map(i => i.original).join(", -") + ")";
+                        this.classificationFormula[i] += " - (-" + allExcludeFeaturesUnique.map((i) => i.original).join(", -") + ")";
                     }
                     i++;
                 });
@@ -667,16 +686,16 @@ export default {
 
             this.$message({
                 message: "Cleared",
-                type: "success"
+                type: "success",
             });
         },
         /** Copy some string to clipboard */
         copyToClipboard(content, event) {
             clipboard(content, event);
-        }
+        },
     },
     watch: {
-        filterFeatures: function(newVal, oldVal) {
+        filterFeatures: function (newVal, oldVal) {
             const selectedIndex = findObjectIndexByKey(this.selectedFeatures, "remapped", "ALL");
             const avaliableIndex = findObjectIndexByKey(this.avaliableFeaturesDisplay, "remapped", "ALL");
 
@@ -684,7 +703,7 @@ export default {
                 const allSwitch = {
                     original: this.$t("views.apps.simon.analysis.components.FileDetails.other.all_columns"),
                     position: -1,
-                    remapped: "ALL"
+                    remapped: "ALL",
                 };
                 if (avaliableIndex === -1) {
                     this.avaliableFeaturesDisplay.push(allSwitch);
@@ -701,11 +720,11 @@ export default {
             }
             this.checkFormula();
         },
-        avaliableFeatures: function(newVal, oldVal) {
+        avaliableFeatures: function (newVal, oldVal) {
             console.log("Resetting display features");
             this.avaliableFeaturesDisplay = [];
-        }
-    }
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>

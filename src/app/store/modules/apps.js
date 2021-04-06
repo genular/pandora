@@ -36,7 +36,8 @@ const apps = {
                 },
             },
             exploration: {
-                queueIDs: estore.get("apps-simon-exploration-queueIDs") || "",
+                queueIDs: estore.get("apps-simon-exploration-queueIDs") || [],
+                selectedQueueID: estore.get("apps-simon-exploration-selected-queueID") || "",
                 selectedFeatureSetId: estore.get("apps-simon-exploration-selectedFeatureSetId") || 0,
                 selectedModelsIDs: estore.get("apps-simon-exploration-selectedModelsIDs") || [],
                 activeTabName: estore.get("apps-simon-exploration-activeTabName") || "datasetsTab",
@@ -61,6 +62,10 @@ const apps = {
         SET_SIMON_EXPLORATION_QUEUE_IDS: (state, queueIDs) => {
             state.simon.exploration.queueIDs = queueIDs;
             estore.set("apps-simon-exploration-queueIDs", queueIDs);
+        },
+        SET_SIMON_EXPLORATION_SELECTED_QUEUE_ID: (state, selectedQueueID) => {
+            state.simon.exploration.selectedQueueID = selectedQueueID;
+            estore.set("apps-simon-exploration-selected-queueID", selectedQueueID);
         },
         SET_SIMON_EXPLORATION_SELECTED_FEATURE_SET_ID: (state, selectedFeatureSetId) => {
             state.simon.exploration.selectedFeatureSetId = selectedFeatureSetId;
@@ -309,6 +314,9 @@ const apps = {
         // exploration
         setSimonExplorationQueueIDs({ commit }, queueIDs) {
             commit("SET_SIMON_EXPLORATION_QUEUE_IDS", queueIDs);
+        },
+        setSimonExplorationSelectedQueueID({ commit }, selectedQueueID) {
+            commit("SET_SIMON_EXPLORATION_SELECTED_QUEUE_ID", selectedQueueID);
         },
         setSimonExplorationSelectedFeatureSetId({ commit }, selectedFeatureSetId) {
             commit("SET_SIMON_EXPLORATION_SELECTED_FEATURE_SET_ID", selectedFeatureSetId);

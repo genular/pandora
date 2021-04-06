@@ -10,6 +10,8 @@
                     show-icon
                     :closable="false"
                 ></el-alert>
+
+                <pre>{{ JSON.stringify(selectedFileDetails, null, "\t") }}</pre>
             </el-col>
         </el-row>
         <el-row v-else type="flex" align="top">

@@ -2,30 +2,30 @@
     <div class="app-container" v-loading="explorationLoading" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="middle">
             <el-col :span="24">
-                <el-tooltip style="float: left;" placement="top" v-if="selectedQueueIDs">
+                <el-tooltip style="float: left" placement="top" v-if="selectedQueueID">
                     <div slot="content">{{ $t("globals.buttons.copy") }}</div>
                     <el-button
-                        style="cursor: copy; float: left;border: 0 none;background-color: #e3006e; color: #FFFFFF;"
+                        style="cursor: copy; float: left; border: 0 none; background-color: #e3006e; color: #ffffff"
                         size="small"
-                        @click="copyToClipboard(selectedQueueIDs, $event)"
+                        @click="copyToClipboard(selectedQueueID, $event)"
                     >
-                        {{ $t("views.apps.simon.exploration.header.selected_queue") }}: {{ selectedQueueIDs }}
+                        {{ $t("views.apps.simon.exploration.header.selected_queue") }}: {{ selectedQueueID }}
                     </el-button>
                 </el-tooltip>
-                <el-tooltip style="float: left;" placement="top" v-if="selectedFeatureSetId > 0">
+                <el-tooltip style="float: left" placement="top" v-if="selectedFeatureSetId > 0">
                     <div slot="content">{{ $t("globals.buttons.copy") }}</div>
-                    <el-button style="cursor: copy;" class="animated flipInX" type="success" size="small" @click="copyToClipboard(selectedFeatureSetId, $event)"
-                        >{{ $t("views.apps.simon.exploration.header.selected_dataset") }}: {{ selectedFeatureSetId }}</el-button
-                    >
+                    <el-button style="cursor: copy" class="animated flipInX" type="success" size="small" @click="copyToClipboard(selectedFeatureSetId, $event)">
+                        {{ $t("views.apps.simon.exploration.header.selected_dataset") }}: {{ selectedFeatureSetId }}
+                    </el-button>
                 </el-tooltip>
-                <el-tooltip style="float: right;" placement="top" v-if="selectedModelsIDs.length > 0">
+                <el-tooltip style="float: right" placement="top" v-if="selectedModelsIDs.length > 0">
                     <div slot="content">{{ $t("globals.buttons.copy") }}</div>
-                    <el-button style="cursor: copy;" type="success" class="animated flipInX" size="small" @click="copyToClipboard(JSON.stringify(selectedModelsIDs), $event)">
+                    <el-button style="cursor: copy" type="success" class="animated flipInX" size="small" @click="copyToClipboard(JSON.stringify(selectedModelsIDs), $event)">
                         {{ $t("views.apps.simon.exploration.header.selected_models") }}: {{ selectedModelsIDs.join(", ") }}
                     </el-button>
                 </el-tooltip>
                 <el-select
-                    style="float: left; width: auto;min-width: 535px;margin-left: 10px;"
+                    style="float: left; width: auto; min-width: 535px; margin-left: 10px"
                     v-model="jobDetailsData.performance"
                     multiple
                     filterable
@@ -47,7 +47,10 @@
         <br />
         <el-tabs v-model="activeTabName" type="border-card" class="tab-container">
             <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key="item.key" :name="item.key" :disabled="isTabDisabled(item)">
-                <span slot="label"><i :class="item.icon"></i> {{ item.label }}</span>
+                <span slot="label">
+                    <i :class="item.icon"></i>
+                    {{ item.label }}
+                </span>
                 <keep-alive>
                     <tab-pane v-if="activeTabName == item.key" :currentView="item.key" :jobDetailsData="jobDetailsData"></tab-pane>
                     <!-- inactive components will be cached! -->
@@ -75,20 +78,20 @@ export default {
                     label: "Correlation",
                     key: "correlationTab",
                     icon: "el-icon-date",
-                    restriction: "selectedFeatureSetId"
+                    restriction: "selectedFeatureSetId",
                 },
                 {
                     label: "Clustering",
                     key: "clusteringTab",
                     icon: "el-icon-date",
-                    restriction: "selectedFeatureSetId"
+                    restriction: "selectedFeatureSetId",
                 },
                 {
                     label: "Data distribution",
                     key: "distributionTab",
                     icon: "el-icon-date",
-                    restriction: "selectedFeatureSetId"
-                }
+                    restriction: "selectedFeatureSetId",
+                },
             ],
 
             jobDetailsData: {
@@ -100,8 +103,8 @@ export default {
                 // In the JS
                 resampleModels: [],
                 // Array of selected performaceVariables
-                performance: []
-            }
+                performance: [],
+            },
         };
     },
     computed: {
@@ -111,15 +114,15 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationnActiveTabName", value);
-            }
+            },
         },
-        selectedQueueIDs: {
+        selectedQueueID: {
             get() {
-                return this.$store.getters.simonExplorationQueueIDs;
+                return this.$store.getters.simonExplorationSelectedQueueID;
             },
             set(value) {
-                this.$store.dispatch("setSimonExplorationQueueIDs", value);
-            }
+                this.$store.dispatch("setSimonExplorationSelectedQueueID", value);
+            },
         },
         selectedFeatureSetId: {
             get() {
@@ -127,7 +130,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedFeatureSetId", value);
-            }
+            },
         },
         selectedModelsIDs: {
             get() {
@@ -135,8 +138,8 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedModelId", value);
-            }
-        }
+            },
+        },
     },
     mounted() {
         console.log("mounted: " + this.$options.name);
@@ -151,7 +154,7 @@ export default {
             // Check if new queue is selected if we already have loaded queue details
             if (typeof this.jobDetailsData.queueDetails.id !== "undefined") {
                 // If completely new queue is selected
-                if (this.selectedQueueIDs !== this.jobDetailsData.queueDetails.id) {
+                if (this.selectedQueueID !== this.jobDetailsData.queueDetails.id) {
                     console.log("Reseting exploration variables");
                     this.selectedFeatureSetId = 0;
                     this.jobDetailsData = {
@@ -163,7 +166,7 @@ export default {
                         // In the JS
                         resampleModels: [],
                         // Array of selected performaceVariables
-                        performance: []
+                        performance: [],
                     };
                     // Reset any selected models for the resample
                     this.selectedModelsIDs = [];
@@ -177,16 +180,16 @@ export default {
                 // Reset any selected models for the resample
                 this.selectedModelsIDs = [];
                 this.activeTabName = "datasetsTab";
-                
+
                 this.getDatasetResamples();
             }
         },
         getDatasetResamples() {
-            console.log("getDatasetResamples: " + this.selectedQueueIDs);
+            console.log("getDatasetResamples: " + this.selectedQueueID);
 
             this.explorationLoading = true;
-            ApiFetchQueueExplorationDetails({ queueID: this.selectedQueueIDs, measurements: [] })
-                .then(response => {
+            ApiFetchQueueExplorationDetails({ queueID: this.selectedQueueID, measurements: [] })
+                .then((response) => {
                     if (response.data.success === true) {
                         this.jobDetailsData.resamplesList = response.data.message.resamplesList;
                         this.jobDetailsData.modelsList = response.data.message.modelsList;
@@ -200,23 +203,22 @@ export default {
                             this.jobDetailsData.performance = [];
 
                             prefferedVariables.forEach((item, index) => {
-                                if(this.jobDetailsData.performaceVariables.includes(item)){
-                                    this.jobDetailsData.performance.push(item)
+                                if (this.jobDetailsData.performaceVariables.includes(item)) {
+                                    this.jobDetailsData.performance.push(item);
                                 }
                             });
 
                             // If some performance variables are missing from default ones take the remaining from server return data
-                            const preselectDifference = (5 - this.jobDetailsData.performance.length);
+                            const preselectDifference = 5 - this.jobDetailsData.performance.length;
 
-                            if(preselectDifference > 0 && this.jobDetailsData.performaceVariables.length >= preselectDifference){
+                            if (preselectDifference > 0 && this.jobDetailsData.performaceVariables.length >= preselectDifference) {
                                 let addCount = 0;
-                               this.jobDetailsData.performaceVariables.forEach((item, index) => {
-                                    if(this.jobDetailsData.performance.includes(item) === false && addCount < preselectDifference){
+                                this.jobDetailsData.performaceVariables.forEach((item, index) => {
+                                    if (this.jobDetailsData.performance.includes(item) === false && addCount < preselectDifference) {
                                         this.jobDetailsData.performance.push(item);
                                         addCount++;
                                     }
                                 });
-
                             }
                         }
                     } else {
@@ -225,16 +227,16 @@ export default {
                             message: this.$t("globals.errors.request_general"),
                             type: "error",
                             duration: 10000,
-                            showClose: true
+                            showClose: true,
                         });
 
                         this.$router.push({
-                            path: "/dashboard"
+                            path: "/dashboard",
                         });
                     }
                     this.explorationLoading = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                 });
         },
@@ -245,7 +247,7 @@ export default {
 
                 if (Array.isArray(item.restriction)) {
                     let varCount = 0;
-                    item.restriction.forEach(element => {
+                    item.restriction.forEach((element) => {
                         if (varCount === 0) {
                             if (this[item.restriction] !== undefined) {
                                 restrictionVariable = this[item.restriction];
@@ -288,8 +290,8 @@ export default {
         },
         copyToClipboard(content, event) {
             clipboard(content, event);
-        }
-    }
+        },
+    },
 };
 </script>
 
