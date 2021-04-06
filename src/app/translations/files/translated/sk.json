@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "Nasledujúce chyby je potrebné opraviť",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Potvrdiť",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "Nasledujúce chyby",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Menej ako 10 vzoriek v testovacej súprave, nájdené len:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Odovzdávajú sa údaje, počkajte, prosím...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Vyberte aspoň 2 funkcie na analýzu",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Neplatný počet vybratých balíkov",
