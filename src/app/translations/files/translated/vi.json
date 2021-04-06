@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "Các lỗi sau đây cần được sửa",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Xác nhận",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "Sau lỗi",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Dưới 10 mẫu trong bộ thử nghiệm, Chỉ tìm thấy:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Đang tải dữ liệu lên, vui lòng chờ...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Vui lòng chọn ít nhất 2 Tính năng để phân tích",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Số lượng Gói không hợp lệ được chọn",
