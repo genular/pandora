@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "Vigade parandamiseks tuleb teha järgmist:",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Kinnitus",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "Vead",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Vähem kui 10 proovi proovikomplekti, leitud ainult:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Andmete üleslaadimine, palun oota ...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Palun vali vähemalt 2 omadused",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Valitud pakettide arv",
