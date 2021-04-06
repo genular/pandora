@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "Należy poprawić następujące błędy",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Potwierdź",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "Następujące błędy",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Mniej niż 10 próbek w zestawie testów, znaleziono tylko:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Przesyłanie danych, proszę czekać ...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Proszę wybrać co najmniej 2 Funkcje do analizy",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Wybrano niepoprawną liczbę pakietów",
