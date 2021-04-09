@@ -147,6 +147,10 @@ export default {
                     this.pageLoading = false;
                 })
                 .catch((error) => {
+                    this.$message({
+                        message: this.$t("globals.errors.request_general"),
+                        type: "error",
+                    });
                     console.log(error);
                     this.pageLoading = false;
                 });

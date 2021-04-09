@@ -77,6 +77,9 @@
 										"modelDetailsTab": {
 											"title": "Model Summary"
 										},
+										"modelInterpretationTab": {
+											"title": "Model Interpretation"
+										},
 										"samrAnalysisTab": {
 											"title": "SAM"
 										},

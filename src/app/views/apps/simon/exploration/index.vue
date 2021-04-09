@@ -176,12 +176,11 @@ export default {
             } else {
                 console.log("Fetching queue exploration details for first time (resetExploration)");
                 // in case user is back on page and he didn't changed selection
-                this.selectedFeatureSetId = 0;
+                // this.selectedFeatureSetId = 0;
                 // Reset any selected models for the resample
-                this.selectedModelsIDs = [];
-                this.activeTabName = "datasetsTab";
-
+                //this.selectedModelsIDs = [];
                 this.getDatasetResamples();
+                this.activeTabName = "datasetsTab";
             }
         },
         getDatasetResamples() {

@@ -13,7 +13,7 @@
 									"title": "Selected packages",
 									"extraction": {
 										"title": "Multi-set intersection",
-										"description": "Multi-set intersection will be limited to 200 sets"
+										"description": "Multi-set intersection will be limited to 200 sets. If any preprocessing imputation algorithms are selected above they will not apply."
 									},
 									"feature_selection": {
 										"title": "Feature selection",

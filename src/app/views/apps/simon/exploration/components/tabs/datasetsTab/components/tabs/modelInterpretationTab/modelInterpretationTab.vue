@@ -1,5 +1,5 @@
 <template>
-    <div class="modelDetailsTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
+    <div class="modelInterpretationTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="top" v-if="isTabDisabled === true">
             <el-col :span="24">
                 <el-alert
@@ -144,7 +144,7 @@ import plotColorPalettes from "@/assets/plots/color_palettes.json";
 import plotThemes from "@/assets/plots/themes.json";
 
 export default {
-    name: "modelDetailsTab",
+    name: "modelInterpretationTab",
     props: {
         columnName: {
             type: String,
@@ -216,7 +216,7 @@ export default {
         };
     },
     mounted() {
-        console.log("mounted: modelDetailsTab");
+        console.log("mounted: modelInterpretationTab");
         if (this.isTabDisabled === false) {
             this.handleFetchSummaryPlots();
         }
@@ -349,7 +349,7 @@ export default {
          * @return {[type]}        [description]
          */
         selectedModelsIDs: function (newVal, oldVal) {
-            console.log("modelDetailsTab getting new handleFetchSummaryPlots based on model change");
+            console.log("modelInterpretationTab getting new handleFetchSummaryPlots based on model change");
             if (this.isTabDisabled === false) {
                 // Remove any previously selected variables
                 this.handleFetchSummaryPlots();

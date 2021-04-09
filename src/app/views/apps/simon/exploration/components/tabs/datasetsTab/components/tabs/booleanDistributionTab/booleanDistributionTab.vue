@@ -2,6 +2,9 @@
     <div class="booleanDistributionTab-container" v-loading="isLoading">
         <div v-if="!isTabDisabled">
             <el-row v-if="isLoading === false && statisticalData.types.length === 2">
+                <el-col :span="24" style="text-align: center; padding: 25px; font-size: 24px">
+                    This tab is not functional in this version and it's only a placeholder for future work.
+                </el-col>
                 <el-col :span="12">
                     <pie-chart className="chart1" :statisticalData="statisticalData"></pie-chart>
                 </el-col>
@@ -11,8 +14,14 @@
             </el-row>
         </div>
         <div v-else>
-            <el-alert title="Notification" description="Unfortionatly this function is currently disabled" type="warning" style="margin-top: 20px;" show-icon :closable="false">
-            </el-alert>
+            <el-alert
+                title="Notification"
+                description="Unfortionatly this function is currently disabled"
+                type="warning"
+                style="margin-top: 20px"
+                show-icon
+                :closable="false"
+            ></el-alert>
         </div>
     </div>
 </template>
@@ -27,24 +36,24 @@ export default {
     props: {
         columnName: {
             type: String,
-            default: ""
+            default: "",
         },
         isTabDisabled: {
             type: Boolean,
-            default: true
-        }
+            default: true,
+        },
     },
     components: { pieChart, barChart },
     data() {
         return {
             isLoading: true,
             statisticalData: {
-                types: []
-            }
+                types: [],
+            },
         };
     },
     mounted() {
-        console.log("mounted: booleanDistributionTab");
+        console.log("mounted: " + this.$options.name);
         if (!this.isTabDisabled) {
             this.handleFetchDatasetStatisticsBoolean();
         }
@@ -56,8 +65,8 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedFeatureSetId", value);
-            }
-        }
+            },
+        },
     },
     methods: {
         handleFetchDatasetStatisticsBoolean() {
@@ -65,7 +74,7 @@ export default {
             this.statisticalData.types = [];
 
             fetchDatasetStatisticsBoolean({ resampleID: this.selectedFeatureSetId, column_name: this.columnName })
-                .then(response => {
+                .then((response) => {
                     console.log(response);
                     if (response.data.status === "success") {
                         this.statisticalData = response.data.data;
@@ -74,12 +83,12 @@ export default {
                     }
                     this.isLoading = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                     this.isLoading = false;
                 });
-        }
-    }
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss"></style>

@@ -2,7 +2,7 @@
     <div class="correlationTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row v-if="tabEnabled">
             <el-row type="flex" align="top">
-                <el-col :span="24" style="text-align: right;">
+                <el-col :span="24" style="text-align: right">
                     <el-button
                         :title="$t('views.apps.simon.exploration.components.tabs.correlationTab.buttons.download')"
                         type="success"
@@ -237,8 +237,8 @@
                         </el-form-item>
                     </el-form>
                 </el-col>
-                <el-col :span="15" class="correlation-svg-container" style="text-align: center;">
-                    <object id="correlation-svg" style="margin: 0 auto;" :data="renderedImage" type="image/svg+xml"></object>
+                <el-col :span="15" class="correlation-svg-container" style="text-align: center">
+                    <object id="correlation-svg" style="margin: 0 auto" :data="renderedImage" type="image/svg+xml"></object>
                 </el-col>
             </el-row>
         </el-row>
@@ -249,11 +249,10 @@
                     :title="$t('views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.title')"
                     :description="$t('views.apps.simon.exploration.components.tabs.correlationTab.alert.function_disabled.description')"
                     type="warning"
-                    style="margin-top: 20px;"
+                    style="margin-top: 20px"
                     show-icon
                     :closable="false"
-                >
-                </el-alert>
+                ></el-alert>
             </el-col>
         </el-row>
     </div>
@@ -269,8 +268,8 @@ export default {
     props: {
         jobDetailsData: {
             type: Object,
-            default: {}
-        }
+            default: {},
+        },
     },
     data() {
         return {
@@ -286,7 +285,7 @@ export default {
                 plot_method: [{ id: "mixed" }, { id: "circle" }, { id: "square" }, { id: "ellipse" }, { id: "number" }, { id: "shade" }, { id: "color" }, { id: "pie" }],
                 plot_method_mixed: {
                     lower_method: [{ id: "circle" }, { id: "square" }, { id: "ellipse" }, { id: "number" }, { id: "shade" }, { id: "color" }, { id: "pie" }],
-                    upper_method: [{ id: "circle" }, { id: "square" }, { id: "ellipse" }, { id: "number" }, { id: "shade" }, { id: "color" }, { id: "pie" }]
+                    upper_method: [{ id: "circle" }, { id: "square" }, { id: "ellipse" }, { id: "number" }, { id: "shade" }, { id: "color" }, { id: "pie" }],
                 },
                 plot_type: [{ id: "full" }, { id: "lower" }, { id: "upper" }],
                 reorder_correlation: [{ id: "original" }, { id: "AOE" }, { id: "FPC" }, { id: "hclust" }, { id: "alphabet" }],
@@ -300,31 +299,31 @@ export default {
                         { id: "average" },
                         { id: "mcquitty" },
                         { id: "median" },
-                        { id: "centroid" }
+                        { id: "centroid" },
                     ],
-                    number_of_rectangles: 3
+                    number_of_rectangles: 3,
                 },
                 text_size: {
                     min: 0.2,
                     max: 3,
-                    step: 0.2
+                    step: 0.2,
                 },
                 significance: {
                     level: {
                         min: 0,
                         max: 1,
-                        step: 0.05
+                        step: 0.05,
                     },
-                    insignificant_action: [{ id: "pch" }, { id: "p-value" }, { id: "blank" }, { id: "n" }]
+                    insignificant_action: [{ id: "pch" }, { id: "p-value" }, { id: "blank" }, { id: "n" }],
                 },
                 confidence: {
                     ploting_method: [{ id: "square" }, { id: "circle" }, { id: "rect" }],
                     level: {
                         min: 0,
                         max: 1,
-                        step: 0.05
-                    }
-                }
+                        step: 0.05,
+                    },
+                },
             },
             settingsForm: {
                 correlation_method: "pearson",
@@ -333,20 +332,20 @@ export default {
                 plot_method: "circle",
                 plot_method_mixed: {
                     lower_method: "circle",
-                    upper_method: "circle"
+                    upper_method: "circle",
                 },
                 // Only if plot_method is not mixed
                 plot_type: "full",
                 reorder_correlation: "original",
                 reorder_correlation_hclust: {
                     method: "complete",
-                    number_of_rectangles: 3
+                    number_of_rectangles: 3,
                 },
                 text_size: {
                     value: 0.4,
                     min: 0.2,
                     max: 3,
-                    step: 0.2
+                    step: 0.2,
                 },
                 significance: {
                     enable: false,
@@ -354,9 +353,9 @@ export default {
                         value: 0.05,
                         min: 0,
                         max: 1,
-                        step: 0.05
+                        step: 0.05,
                     },
-                    insignificant_action: "pch"
+                    insignificant_action: "pch",
                 },
                 confidence: {
                     enable: false,
@@ -365,10 +364,10 @@ export default {
                         value: 0.95,
                         min: 0,
                         max: 1,
-                        step: 0.05
-                    }
-                }
-            }
+                        step: 0.05,
+                    },
+                },
+            },
         };
     },
     computed: {
@@ -378,7 +377,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationnActiveTabName", value);
-            }
+            },
         },
         selectedFeatureSetId: {
             get() {
@@ -386,22 +385,23 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedFeatureSetId", value);
-            }
-        }
+            },
+        },
     },
     mounted() {
         console.log("mounted: " + this.$options.name);
         this.isTabEnabled();
         this.redrawImage();
     },
-    activated(){
+    activated() {
         console.log("activated: " + this.$options.name);
         this.isTabEnabled();
         this.redrawImage();
     },
     methods: {
         redrawImage() {
-            if(this.tabEnabled = true){
+            console.log(this.tabEnabled);
+            if (this.tabEnabled === true) {
                 this.handleFetchCorrPlotImage();
             }
         },
@@ -420,7 +420,7 @@ export default {
             this.renderedImageData = "";
 
             fetchCorrPlotImage({ resampleID: this.selectedFeatureSetId, settings: this.settingsForm })
-                .then(response => {
+                .then((response) => {
                     if (response.data.status === true) {
                         // Decode base64 encoded results
                         this.renderedImageData = window.atob(response.data.image);
@@ -432,21 +432,21 @@ export default {
                     }
                     this.loadingPlot = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log("Server error:");
                     this.renderedImage = line_chart_404;
                     this.loadingPlot = false;
                 });
         },
-        isTabEnabled(){
-            const featureSet = this.jobDetailsData.resamplesList.find(obj => {
+        isTabEnabled() {
+            const featureSet = this.jobDetailsData.resamplesList.find((obj) => {
                 return obj.resampleID === this.selectedFeatureSetId;
             });
 
             if (typeof featureSet !== "undefined") {
-                console.log(featureSet);
+                console.log(featureSet.featuresTotal);
 
-                if (featureSet.featuresTotal < 250) {
+                if (featureSet.featuresTotal < 250 && featureSet.featuresTotal > 2) {
                     this.tabEnabled = true;
                     if (this.renderedImage === "") {
                         this.handleFetchCorrPlotImage();
@@ -460,8 +460,8 @@ export default {
                 this.loadingPlot = false;
                 this.activeTabName = "datasetsTab";
             }
-        }
-    }
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">

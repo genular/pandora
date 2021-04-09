@@ -1,32 +1,29 @@
 <template>
     <div>
-
         <component v-bind:is="currentView" :columnName="columnName" :isTabDisabled="isTabDisabled">
             <!-- component changes when vm.currentView changes! -->
         </component>
-
-
     </div>
 </template>
 
 <script>
-import { variableImportanceTab, booleanDistributionTab, otherDistributionTab, samrAnalysisTab, catBoostTab, summaryTab, modelDetailsTab } from "./tabs";
+import { variableImportanceTab, booleanDistributionTab, otherDistributionTab, samrAnalysisTab, catBoostTab, summaryTab, modelDetailsTab, modelInterpretationTab } from "./tabs";
 
 export default {
     name: "subTabPane",
     props: {
         currentView: {
             type: String,
-            default: "variableImportanceTab"
+            default: "variableImportanceTab",
         },
         columnName: {
             type: String,
-            default: ""
+            default: "",
         },
         isTabDisabled: {
             type: Boolean,
-            default: true
-        }
+            default: true,
+        },
     },
     components: {
         variableImportanceTab,
@@ -35,12 +32,13 @@ export default {
         samrAnalysisTab,
         catBoostTab,
         summaryTab,
-        modelDetailsTab
+        modelDetailsTab,
+        modelInterpretationTab,
     },
     data() {
         return {};
     },
     created() {},
-    methods: {}
+    methods: {},
 };
 </script>

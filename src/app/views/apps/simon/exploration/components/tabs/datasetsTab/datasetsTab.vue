@@ -5,6 +5,7 @@
                 <el-card class="box-card animated fadeIn">
                     <div slot="header" class="clearfix">
                         <div class="card_intro">{{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.title") }}</div>
+
                         <div v-if="selectedFeatureSetId > 0">
                             <div class="models_actions animated fadeIn" v-if="queueClassesDisplay.length > 0">
                                 <el-select
@@ -242,7 +243,7 @@
                 </el-card>
             </el-col>
         </el-row>
-        <el-row align="top" v-if="displayModels.length > 0" style="margin-top: 15px">
+        <el-row align="top" style="margin-top: 15px">
             <el-col :span="24">
                 <el-card class="box-card animated fadeIn">
                     <div slot="header" class="clearfix">
@@ -385,7 +386,7 @@
         </el-row>
         <el-row>
             <el-col :span="24" style="margin-top: 15px">
-                <el-tabs v-model="activeDatasetSubTabName" v-if="selectedFeatureSetId > 0" type="card">
+                <el-tabs v-model="activeDatasetSubTabName" v-if="selectedFeatureSetId > 0" :value="activeDatasetSubTabName" type="card">
                     <!-- Don't display Tab Pane if we have only one Tab to display and he doesn't satisfy display criteria -->
                     <el-tab-pane
                         v-for="item in datasetsTabMapOptions"
@@ -497,15 +498,25 @@ export default {
                     restriction: "selectedModels",
                     restriction_details: 2,
                 },
+                {
+                    label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title"),
+                    view: "modelDetailsTab",
+                    key: "modelDetailsTab",
+                    icon: "fa fa-balance-scale",
+                    restriction: "selectedModels",
+                    // restriction_details: 1
+                    // Temp disable tab,
+                    restriction_details: 1,
+                },
                 // {
-                //     label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title"),
-                //     view: "modelDetailsTab",
-                //     key: "modelDetailsTab",
+                //     label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.modelInterpretationTab.title"),
+                //     view: "modelInterpretationTab",
+                //     key: "modelInterpretationTab",
                 //     icon: "fa fa-balance-scale",
                 //     restriction: "selectedModels",
                 //     // restriction_details: 1
                 //     // Temp disable tab,
-                //     restriction_details: 1
+                //     restriction_details: 1,
                 // },
                 {
                     label: this.$t("views.apps.simon.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title"),
@@ -559,6 +570,9 @@ export default {
         console.log("mounted: " + this.$options.name);
         console.log("selectedFeatureSetId (resampleID): " + this.selectedFeatureSetId);
     },
+    activated() {
+        console.log("activated: " + this.$options.name);
+    },
     methods: {
         // Download and delete resample actions
         handleOperations(clickAction, rowInfo) {
@@ -567,7 +581,7 @@ export default {
                 ApiGenarateFileDownloadLink({ downloadType: "resample", recordID: rowInfo.resampleID })
                     .then((response) => {
                         if (response.data.success === true && response.data.message.length > 0) {
-                            this.$alert(downloadItemsTemplate(response.data.message), "Download links", {
+                            this.$alert(downloadItemsTemplate(response.data.message), "Download links (partitions are preprocessed)", {
                                 dangerouslyUseHTMLString: true,
                                 callback: (action) => {},
                             });
@@ -788,11 +802,14 @@ export default {
             console.log("initPreSelectedModels: ", this.selectedModelsIDs);
             if (this.selectedModelsIDs.length > 0 && this.selectedModels.length === 0) {
                 if (this.selectedFeatureSetId > 0) {
-                    if (this.jobDetailsData.resampleModels[this.selectedFeatureSetId].length > 0) {
-                        this.selectedModels = this.activeModelsList.filter((model) => this.selectedModelsIDs.includes(model.modelID));
-                        this.selectedModels.forEach((row) => {
-                            this.$refs.modelDetailsTable.toggleRowSelection(row, true);
-                        });
+                    console.log(this.jobDetailsData.resampleModels);
+                    if (this.jobDetailsData.resampleModels.length > 0 && typeof this.jobDetailsData.resampleModels[this.selectedFeatureSetId] !== "undefined") {
+                        if (this.jobDetailsData.resampleModels[this.selectedFeatureSetId].length > 0) {
+                            this.selectedModels = this.activeModelsList.filter((model) => this.selectedModelsIDs.includes(model.modelID));
+                            this.selectedModels.forEach((row) => {
+                                this.$refs.modelDetailsTable.toggleRowSelection(row, true);
+                            });
+                        }
                     }
                 }
             }
@@ -919,7 +936,9 @@ export default {
 
             this.displayModels = this.activeModelsList.slice(pageNumber * this.paginateModelsData.page_size, (pageNumber + 1) * this.paginateModelsData.page_size);
         },
-        selectResample(selection, row) {
+        selectResample(selection, row, init = false) {
+            console.log(selection);
+            console.log(row);
             // In-case "select all" check-box is pressed, row is than undefined
             if (typeof row === "undefined") {
                 console.log("selectResample: reseting feature set!");
@@ -951,11 +970,13 @@ export default {
                 this.$refs.resamplesTable.toggleRowSelection(row, true);
             }
 
-            if (row.resampleID !== this.selectedFeatureSetId) {
+            if (row.resampleID !== this.selectedFeatureSetId || init === true) {
                 console.log("Filtering models for new resample!");
 
                 this.selectedFeatureSetId = row.resampleID;
-                this.selectedModelsIDs = [];
+                if (init === false) {
+                    this.selectedModelsIDs = [];
+                }
 
                 // Select only models with that feature set ID
                 this.activeModelsList = this.jobDetailsData.modelsList.filter((model) => model.resampleID === this.selectedFeatureSetId);
@@ -1413,6 +1434,23 @@ export default {
 
             this.paginateResamples(1);
             this.$refs.resamplesTable.doLayout();
+            this.$refs.modelDetailsTable.doLayout();
+
+            this.$nextTick(() => {
+                // If no resamples are selected but we have selectedFeatureSetId preselect one
+                if (this.selectedFeatureSetId > 0) {
+                    const selectedRow = this.jobDetailsData.resamplesList.filter((item) => item.resampleID === this.selectedFeatureSetId);
+                    if (selectedRow.length === 1) {
+                        console.log(selectedRow[0]);
+
+                        this.$nextTick(() => {
+                            console.log("Preselecting resample");
+                            this.$refs.resamplesTable.toggleRowSelection(selectedRow[0]);
+                            this.selectResample([], selectedRow[0], true);
+                        });
+                    }
+                }
+            });
         },
     },
 };

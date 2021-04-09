@@ -2,6 +2,9 @@
     <div class="otherDistributionTab-container">
         <div v-if="!isTabDisabled">
             <el-row v-if="statisticalData.length > 0">
+                <el-col :span="24" style="text-align: center; padding: 25px; font-size: 24px">
+                    This tab is not functional in this version and it's only a placeholder for future work.
+                </el-col>
                 <el-col :span="12">
                     <pie-chart className="chart3" :statisticalData="statisticalData"></pie-chart>
                 </el-col>
@@ -12,8 +15,14 @@
         </div>
         <!-- ELSE if Tab is DISABLED -->
         <div v-else>
-            <el-alert title="Notification" description="Unfortionatly this function is currently disabled" type="warning" style="margin-top: 20px;" show-icon :closable="false">
-            </el-alert>
+            <el-alert
+                title="Notification"
+                description="Unfortionatly this function is currently disabled"
+                type="warning"
+                style="margin-top: 20px"
+                show-icon
+                :closable="false"
+            ></el-alert>
         </div>
     </div>
 </template>
@@ -28,21 +37,21 @@ export default {
     props: {
         columnName: {
             type: String,
-            default: ""
+            default: "",
         },
         isTabDisabled: {
             type: Boolean,
-            default: true
-        }
+            default: true,
+        },
     },
     components: { pieChart, barChart },
     data() {
         return {
-            statisticalData: []
+            statisticalData: [],
         };
     },
     mounted() {
-        console.log("mounted: otherDistributionTab");
+        console.log("mounted: " + this.$options.name);
         if (!this.isTabDisabled) {
             if (this.statisticalData.length === 0) {
                 this.handleFetchDatasetStatisticsOther();
@@ -56,13 +65,13 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedFeatureSetId", value);
-            }
-        }
+            },
+        },
     },
     methods: {
         handleFetchDatasetStatisticsOther() {
             fetchDatasetStatisticsOther({ resampleID: this.selectedFeatureSetId, column_name: this.columnName })
-                .then(response => {
+                .then((response) => {
                     console.log(response);
                     this.statisticalData = [1, 2, 3, 4, 5];
                     if (response.data.status === "success") {
@@ -73,13 +82,11 @@ export default {
                     }
                     this.loading = false;
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log(error);
                 });
-        }
-    }
+        },
+    },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
-    
-</style>
+<style rel="stylesheet/scss" lang="scss" scoped></style>

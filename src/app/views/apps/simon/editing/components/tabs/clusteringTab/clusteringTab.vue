@@ -610,7 +610,10 @@ export default {
                     this.loadingPlot = false;
                 })
                 .catch((error) => {
-                    console.log("Server error occurred");
+                    this.$message({
+                        message: this.$t("globals.errors.request_general"),
+                        type: "error",
+                    });
                     console.log(error);
                     this.loadingPlot = false;
                 });

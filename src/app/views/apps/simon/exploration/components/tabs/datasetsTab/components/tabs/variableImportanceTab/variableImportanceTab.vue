@@ -24,7 +24,6 @@
                         </el-form-item>
                     </el-form>
                 </el-col>
-
                 <el-col :span="14">
                     <div class="feature-tag-container" v-if="selectedVariableImp.length > 0">
                         <el-tag
@@ -101,18 +100,25 @@
                 </el-col>
                 <el-col :span="14">
                     <div v-if="displayVariableImp.length > 0">
-                        <div v-if="selectedVariableImp.length > 0 && selectedVariableImp.length <= 15">
-                            <var-imp-chart :selectedVariableImp="selectedVariableImp"></var-imp-chart>
-                        </div>
-                        <div v-else>
-                            <el-alert
-                                title="Notification:"
-                                description="Please select at least one Feature to display Graphs.. You can select maximum of 15 Features."
-                                type="warning"
-                                show-icon
-                                :closable="false"
-                            ></el-alert>
-                        </div>
+                        <el-tabs :value="'features_across_dataset'">
+                            <el-tab-pane label="Selected Features across dataset" name="features_across_dataset">
+                                <div v-if="selectedVariableImp.length > 0 && selectedVariableImp.length <= 25">
+                                    <var-imp-chart :selectedVariableImp="selectedVariableImp"></var-imp-chart>
+                                </div>
+                                <div v-else>
+                                    <el-alert
+                                        title="Notification:"
+                                        description="Please select at least one Feature to display Graphs.. You can select maximum of 25 Features."
+                                        type="warning"
+                                        show-icon
+                                        :closable="false"
+                                    ></el-alert>
+                                </div>
+                            </el-tab-pane>
+                            <el-tab-pane label="Variable Importance Chart" name="variable_importance_chart">
+                                This function is disabled and not available in current version.
+                            </el-tab-pane>
+                        </el-tabs>
                     </div>
                 </el-col>
             </el-row>
