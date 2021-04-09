@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "De volgende fouten moeten worden gecorrigeerd",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Bevestigen",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "Volgende fouten",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Minder dan 10 monsters in testset, alleen gevonden:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Gegevens worden geüpload. Even geduld a.u.b.",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Selecteer minimaal 2 te analyseren functies",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Ongeldig aantal geselecteerde pakketten",

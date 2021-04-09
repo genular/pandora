@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "以下错误，需要加以纠正",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "确认",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "以下错误。",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "少于10个样本中测试的设置、发现，只有:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "上载数据，请等等...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "请选择至少2特征分析",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "无效的包数的选择",

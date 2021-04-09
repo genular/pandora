@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "Aşağıdaki hataların düzeltilmesi gerekir",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Onaylamak",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "Aşağıdaki hatalar",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Test kümesinde 10'dan az örnek bulundu:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Veri yükleniyor, lütfen bekleyin...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Lütfen analiz etmek için en az 2 Özellik seçin",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Geçersiz paket sayısı seçildi",

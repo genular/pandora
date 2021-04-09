@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "Următoarele erori trebuie corectate",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Confirma",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "În urma erorilor",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Mai puțin de 10 probe în setul de testare, Găsit numai:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Se încarcă datele, așteptați...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Selectați cel puțin 2 caracteristici de analizat",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Număr nevalid de pachete selectate",

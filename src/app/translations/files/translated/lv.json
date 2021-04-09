@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "Pēc kļūdām ir jālabo",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Apstiprināt",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "Pēc kļūdām",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Mazāk nekā 10 paraugi testa komplektā, atrasti tikai:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Augšupielādē datus, lūdzu, uzgaidiet ...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Lūdzu, atlasiet vismaz 2 Iezīmes, lai analizētu",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Nederīgs atlasīto pakešu skaits",

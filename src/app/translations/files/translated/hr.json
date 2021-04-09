@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "Sljedeće greške se trebaju ispraviti",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Potvrda",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "Sljedeće greške",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Manje od 10 uzoraka u skupu testiranja, samo nađeno:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Učitavanje podataka, molim čekajte ...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Molim, izaberite barem 2 funkcije za analizu",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Izabran je pogrešan broj paketa",

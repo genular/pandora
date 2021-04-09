@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "Følgende fejl skal rettes",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Bekræft",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "Følge fejl",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Mindre end 10 prøver i prøvesæt, fundet kun:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Uploader data, vent ...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Vælg mindst to funktioner, der skal analyseres",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Ugyldigt antal valgte pakker",

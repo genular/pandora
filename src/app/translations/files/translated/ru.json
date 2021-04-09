@@ -122,7 +122,7 @@
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.title": "После ошибок необходимо исправить",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors.confirm": "Подтвердить",
   "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.title": "После ошибок",
-  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Менее 10 образцов в тестовом наборе, Найдено только:",
+  "views.apps.simon.analysis.components.StartButton.dialogs.errors_resample.messages.invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:",
   "views.apps.simon.analysis.components.StartButton.other.loading_data": "Загрузка данных, пожалуйста, подождите ...",
   "views.apps.simon.analysis.components.StartButton.other.misssing_features": "Пожалуйста, выберите по крайней мере 2 Особенности для анализа",
   "views.apps.simon.analysis.components.StartButton.other.misssing_packages": "Недействительным число выбранных пакетов",
