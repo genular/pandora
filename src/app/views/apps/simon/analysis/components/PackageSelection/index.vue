@@ -41,8 +41,8 @@
                                 :loading="packagesSearch.loading"
                             >
                                 <el-option v-for="item in packagesSearch.results" :key="item.internal_id" :label="item.label" :value="item">
-                                    <div class="name" style="float: left;">{{ item.label }}</div>
-                                    <span class="label" style="float: right;">{{ item.internal_id }}</span>
+                                    <div class="name" style="float: left">{{ item.label }}</div>
+                                    <span class="label" style="float: right">{{ item.internal_id }}</span>
                                 </el-option>
                             </el-select>
                         </div>
@@ -71,7 +71,7 @@
                                     <div class="draggable-item-content-wrap">
                                         <ul class="general_info">
                                             <li>
-                                                <span class="title"> {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.title") }}: </span>
+                                                <span class="title">{{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.title") }}:</span>
                                                 <span class="desc">
                                                     <span v-if="item.classification == 1">
                                                         {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.classification") }}
@@ -83,27 +83,28 @@
                                                 <el-tooltip placement="top">
                                                     <div slot="content">
                                                         <span v-for="(key, value) in item.citations" :key="key" class="item">
-                                                            <span>{{ value }} - {{ key }}</span
-                                                            ><br /><br />
+                                                            <span>{{ value }} - {{ key }}</span>
+                                                            <br />
+                                                            <br />
                                                         </span>
                                                     </div>
-                                                    <el-button style="float: right;padding: 0;" type="info" icon="el-icon-info" circle></el-button>
+                                                    <el-button style="float: right; padding: 0" type="info" icon="el-icon-info" circle></el-button>
                                                 </el-tooltip>
                                             </li>
                                             <li v-if="item.tuning_parameters.length > 0">
-                                                <span class="title"> {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title") }}: </span>
+                                                <span class="title">{{ $t("views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title") }}:</span>
                                             </li>
                                         </ul>
                                         <ul class="tuning_parameters" v-if="item.tuning_parameters.length > 0">
                                             <li v-for="(tun_parm, index) in item.tuning_parameters" :key="index">
                                                 <span class="title">{{ tun_parm.label }}</span>
                                                 <span class="desc">
-                                                    <el-input placeholder="N/A" size="mini" disabled> </el-input>
+                                                    <el-input placeholder="N/A" size="mini" disabled></el-input>
                                                 </span>
                                             </li>
                                         </ul>
                                         <div class="tag-container">
-                                            <el-tag :key="index" v-for="(tag, index) in item.tags" :disable-transitions="false" type="info"> {{ tag }} </el-tag>
+                                            <el-tag :key="index" v-for="(tag, index) in item.tags" :disable-transitions="false" type="info">{{ tag }}</el-tag>
                                         </div>
                                     </div>
                                 </el-collapse-item>
@@ -115,19 +116,20 @@
             <el-col :span="11" :push="2">
                 <el-card class="box-card">
                     <div slot="header">
-                        {{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.title") }} <span class="track-count">{{ selectedPackages.length }}</span>
+                        {{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.title") }}
+                        <span class="track-count">{{ selectedPackages.length }}</span>
                     </div>
                     <div class="box-item">
-                        <div style="float: left; height: 36px; line-height: 36px;">
+                        <div style="float: left; height: 36px; line-height: 36px">
                             <el-tooltip placement="top">
                                 <div slot="content">
                                     {{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.extraction.description") }}
                                 </div>
-                                <span class="field-label">{{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.extraction.title") }} </span>
+                                <span class="field-label">{{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.extraction.title") }}</span>
                             </el-tooltip>
                             <el-switch v-model="filterExtraction"></el-switch>
                         </div>
-                        <div style="float: right; height: 36px; line-height: 36px;">
+                        <div style="float: right; height: 36px; line-height: 36px">
                             <el-tooltip placement="top">
                                 <div slot="content">
                                     {{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.feature_selection.description") }}
@@ -161,7 +163,7 @@
                                     <div class="draggable-item-content-wrap">
                                         <ul class="general_info">
                                             <li>
-                                                <span class="title"> {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.title") }}: </span>
+                                                <span class="title">{{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.title") }}:</span>
                                                 <span class="desc">
                                                     <span v-if="item.classification == 1">
                                                         {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.method_type.classification") }}
@@ -173,27 +175,28 @@
                                                 <el-tooltip placement="top">
                                                     <div slot="content">
                                                         <span v-for="(key, value) in item.citations" :key="key" class="item">
-                                                            <span>{{ value }} - {{ key }}</span
-                                                            ><br /><br />
+                                                            <span>{{ value }} - {{ key }}</span>
+                                                            <br />
+                                                            <br />
                                                         </span>
                                                     </div>
-                                                    <el-button style="float: right;padding: 0;" type="info" icon="el-icon-info" circle></el-button>
+                                                    <el-button style="float: right; padding: 0" type="info" icon="el-icon-info" circle></el-button>
                                                 </el-tooltip>
                                             </li>
                                             <li v-if="item.tuning_parameters.length > 0">
-                                                <span class="title"> {{ $t("views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title") }}: </span>
+                                                <span class="title">{{ $t("views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title") }}:</span>
                                             </li>
                                         </ul>
                                         <ul class="tuning_parameters" v-if="item.tuning_parameters.length > 0">
                                             <li v-for="(tun_parm, index) in item.tuning_parameters" :key="index">
                                                 <span class="title">{{ tun_parm.label }}</span>
                                                 <span class="desc">
-                                                    <el-input placeholder="N/A" size="mini" disabled> </el-input>
+                                                    <el-input placeholder="N/A" size="mini" disabled></el-input>
                                                 </span>
                                             </li>
                                         </ul>
                                         <div class="tag-container">
-                                            <el-tag :key="index" v-for="(tag, index) in item.tags" :disable-transitions="false" type="info"> {{ tag }} </el-tag>
+                                            <el-tag :key="index" v-for="(tag, index) in item.tags" :disable-transitions="false" type="info">{{ tag }}</el-tag>
                                         </div>
                                     </div>
                                 </el-collapse-item>
@@ -212,10 +215,10 @@ import { findObjectIndexByKey, removeDuplicateObjectsByKey, orderBy, debounce } 
 export default {
     name: "PackageSelection",
     components: {
-        draggable
+        draggable,
     },
     props: {
-        preselectPackages: Array
+        preselectPackages: Array,
     },
     data() {
         return {
@@ -231,32 +234,32 @@ export default {
                     {
                         label: "Classification",
                         key: "classification",
-                        disabled: true
+                        disabled: true,
                     },
                     {
                         label: "Regression",
                         key: "regression",
-                        disabled: true
+                        disabled: true,
                     },
                     {
                         label: "Time-series",
                         key: "timeseries",
-                        disabled: true
+                        disabled: true,
                     },
                     {
                         label: "Multiple outcomes",
                         key: "multipleoutcomes",
-                        disabled: true
-                    }
+                        disabled: true,
+                    },
                 ],
-                checkBoxSelected: ["classification", "regression", "timeseries", "multipleoutcomes"]
+                checkBoxSelected: ["classification", "regression", "timeseries", "multipleoutcomes"],
             },
             /** Search for available packages */
             packagesSearch: {
                 input: "",
                 loading: false,
-                results: []
-            }
+                results: [],
+            },
         };
     },
 
@@ -267,7 +270,7 @@ export default {
                 animation: 150,
                 group: "description",
                 disabled: !this.editable,
-                ghostClass: "ghost"
+                ghostClass: "ghost",
             };
         },
         /** Array of all available analysis packages */
@@ -277,7 +280,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAvaliablePackages", value);
-            }
+            },
         },
         /** Selected array of analysis packages */
         selectedPackages: {
@@ -286,7 +289,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonSelectedPackages", value);
-            }
+            },
         },
         /** Extraction HTML model */
         filterExtraction: {
@@ -295,7 +298,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisFilterExtraction", value);
-            }
+            },
         },
         /** Feature extraction from builded models */
         backwardSelection: {
@@ -304,31 +307,31 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisBackwardSelection", value);
-            }
+            },
         },
-        enabledPackagesAvaliable: function() {
+        enabledPackagesAvaliable: function () {
             const count = this.avaliablePackages.filter((obj) => obj.disabled === false).length;
-            return(count);
+            return count;
         },
-        enabledPackagesSelected: function() {
+        enabledPackagesSelected: function () {
             const count = this.selectedPackages.filter((obj) => obj.disabled === false).length;
-            return(count);
+            return count;
         },
-        enabledPackagesTotal: function() {
+        enabledPackagesTotal: function () {
             const count = this.enabledPackagesAvaliable + this.enabledPackagesSelected;
-            return(count);
+            return count;
         },
-        allPackagesTotal: function() {
-            const count =  this.avaliablePackages.length + this.selectedPackages.length;
-            return(count);
-        }
+        allPackagesTotal: function () {
+            const count = this.avaliablePackages.length + this.selectedPackages.length;
+            return count;
+        },
     },
     methods: {
         getComponentData(changeType) {
             return {
                 on: {
-                    change: this[changeType]
-                }
+                    change: this[changeType],
+                },
             };
         },
         handleAvaliableChange(activeTabs) {
@@ -344,7 +347,7 @@ export default {
                 console.log(this.selectedPackages[activeTabs[0]].label);
             }
         },
-        querySearchAvaliable: debounce(function(queryString) {
+        querySearchAvaliable: debounce(function (queryString) {
             this.packagesSearch.loading = true;
             let results = [];
 
@@ -353,11 +356,11 @@ export default {
             } else {
                 if (this.avaliablePackages.length > 0) {
                     queryString = queryString.toLowerCase().split(" ");
-                    results = this.avaliablePackages.filter(function(item) {
+                    results = this.avaliablePackages.filter(function (item) {
                         if (item.disabled === true) {
                             return false;
                         } else {
-                            return queryString.every(function(el) {
+                            return queryString.every(function (el) {
                                 const searchText = item.internal_id + item.label + JSON.stringify(item.tags) + JSON.stringify(item.citations);
                                 return searchText.toLowerCase().indexOf(el) > -1;
                             });
@@ -393,7 +396,7 @@ export default {
 
                 this.$message({
                     message: item.label + " selected!",
-                    type: "success"
+                    type: "success",
                 });
             }
         },
@@ -416,7 +419,7 @@ export default {
 
                 this.$message({
                     message: item.label + " de-selected!",
-                    type: "warning"
+                    type: "warning",
                 });
             }
         },
@@ -435,21 +438,21 @@ export default {
              */
 
             return (!relatedElement || !relatedElement.disabled) && !draggedElement.disabled;
-        }
+        },
     },
     watch: {
-        "filter.allPackages": function(newVal, oldVal) {
+        "filter.allPackages": function (newVal, oldVal) {
             console.log("==> filter.allPackages");
-            
+
             const allPackages = [...this.avaliablePackages, ...this.selectedPackages];
 
             const allPackagesUnique = removeDuplicateObjectsByKey(allPackages, "internal_id");
 
             if (newVal === true) {
-                this.selectedPackages = orderBy(allPackagesUnique, "internal_id").filter(function(item) {
+                this.selectedPackages = orderBy(allPackagesUnique, "internal_id").filter(function (item) {
                     return !item.disabled;
                 });
-                this.avaliablePackages = allPackagesUnique.filter(function(item) {
+                this.avaliablePackages = allPackagesUnique.filter(function (item) {
                     return item.disabled;
                 });
             } else {
@@ -467,17 +470,17 @@ export default {
             });
         },
         preselectPackages(preselectedPackages) {
-            if(preselectedPackages.length > 0) {
+            if (preselectedPackages.length > 0) {
                 for (let i = 0; i < preselectedPackages.length; i++) {
                     this.selectPackage(preselectedPackages[i]);
                 }
-            }else{
-              for (let i = 0; i < this.selectedPackages.length; i++) {
+            } else {
+                for (let i = 0; i < this.selectedPackages.length; i++) {
                     this.deSelectPackage(this.selectedPackages[i]);
                 }
             }
-        }
-    }
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -512,7 +515,7 @@ export default {
     .draggable-containers {
         overflow-y: auto;
         overflow-x: hidden;
-        max-height: 265px;
+        max-height: 490px;
         margin-top: 15px;
         float: left;
         width: 100%;

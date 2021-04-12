@@ -206,11 +206,20 @@ div:focus {
     margin: 20px 0;
 }
 
-.alert_download_item {
+// Download links BOX
+.download_link {
     width: 100%;
     float: left;
+    text-align: center;
+}
+
+.alert_download_item {
     color: $ui-background;
     text-align: center;
+}
+
+.alert_download_item_local {
+    padding-left: 10px;
 }
 
 .unsupported_device {
