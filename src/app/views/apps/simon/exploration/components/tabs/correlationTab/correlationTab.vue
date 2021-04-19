@@ -197,6 +197,13 @@
                             </el-select>
                         </el-form-item>
 
+                        <el-form-item
+                            v-if="settingsForm.significance.enable === true"
+                            :label="$t('views.apps.simon.editing.components.tabs.correlationTab.form.confidence.adjust_p_value')"
+                        >
+                            <el-checkbox v-model="settingsForm.significance.adjust_p_value"></el-checkbox>
+                        </el-form-item>
+
                         <el-form-item :label="$t('views.apps.simon.exploration.components.tabs.correlationTab.form.confidence.enable')">
                             <el-checkbox v-model="settingsForm.confidence.enable"></el-checkbox>
                         </el-form-item>
@@ -349,6 +356,7 @@ export default {
                 },
                 significance: {
                     enable: false,
+                    adjust_p_value: false,
                     level: {
                         value: 0.05,
                         min: 0,
