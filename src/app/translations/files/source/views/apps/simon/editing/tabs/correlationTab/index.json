@@ -130,6 +130,7 @@
 									},
 									"confidence": {
 										"enable": "Confidence Interval",
+										"adjust_p_value": "p-value comparisons (BH)",
 										"ploting_method": {
 											"label": "Plotting Method",
 											"placeholder": "Select",
