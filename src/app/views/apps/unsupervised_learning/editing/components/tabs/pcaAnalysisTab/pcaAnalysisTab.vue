@@ -1192,9 +1192,9 @@ export default {
                 selectedColumns: [],
                 cutOffColumnSize: 100,
 
-                cutOffUnique: false,
+                cutOffUnique: true,
                 cutOffUniqueSize: 5,
-                remove_less_10p: true,
+                remove_less_10p: false,
 
                 excludedColumns: [],
                 pcaComponentsDisplayX: [],
