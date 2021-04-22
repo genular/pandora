@@ -3,7 +3,7 @@
         <el-row type="flex" align="top" v-if="tabEnabled === false">
             <el-col :span="24">
                 <el-alert
-                    :title="$t('views.apps.simon.unsupervised_learning.components.tabs.correlationTab.alert.function_disabled.title')"
+                    :title="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.alert.function_disabled.title')"
                     description="Tab is currently disabled. Please try to refresh or choose another file from Workspace."
                     type="warning"
                     style="margin-top: 20px"
@@ -18,7 +18,7 @@
             <el-col :span="4">
                 <el-row>
                     <el-form ref="settingsForm" :model="settingsForm">
-                        <el-form-item :label="$t('views.apps.simon.unsupervised_learning.components.tabs.overviewTab.form.columns.title')">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.title')">
                             <el-select
                                 style="float: right"
                                 v-model="settingsForm.selectedColumns"
@@ -29,7 +29,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.simon.unsupervised_learning.components.tabs.overviewTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -50,32 +50,32 @@
                             </el-select>
                             <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                             <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">{{ $t("views.apps.simon.unsupervised_learning.components.tabs.overviewTab.form.columns.description") }}</div>
+                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.simon.unsupervised_learning.components.tabs.overviewTab.form.first_n_columns.title')">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.first_n_columns.title')">
                             <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="10000"></el-input-number>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
-                                    {{ $t("views.apps.simon.unsupervised_learning.components.tabs.overviewTab.form.first_n_columns.description") }}
+                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.first_n_columns.description") }}
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.simon.unsupervised_learning.components.tabs.overviewTab.form.preprocess.title')">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.preprocess.title')">
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.preProcessedData"></el-switch>
                             <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.simon.unsupervised_learning.components.tabs.overviewTab.form.preprocess.description") }}</div>
+                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.preprocess.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
 
                         <el-divider></el-divider>
 
-                        <el-form-item :label="$t('views.apps.simon.unsupervised_learning.components.tabs.overviewTab.form.theme.title')">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.theme.title')">
                             <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
                                 <el-option v-for="item in settingsOptions.theme" :key="item.id" :label="item.name" :value="item.id">
                                     <span style="float: left">{{ item.name }}</span>
@@ -93,7 +93,7 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.simon.unsupervised_learning.components.tabs.overviewTab.form.color.title')">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.color.title')">
                             <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
                                 <el-option v-for="item in settingsOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
                                     <span style="float: left">{{ item.value }}</span>
@@ -111,20 +111,20 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.simon.unsupervised_learning.components.tabs.overviewTab.form.font_size.title')">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.font_size.title')">
                             <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="24"></el-input-number>
                         </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.simon.unsupervised_learning.components.tabs.overviewTab.form.ratio.title')">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.ratio.title')">
                             <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                         </el-form-item>
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
                                     <el-tooltip placement="top">
-                                        <div slot="content" v-html="$t('views.apps.simon.unsupervised_learning.index.button.download_r_data.description')"></div>
+                                        <div slot="content" v-html="$t('views.apps.unsupervised_learning.editing.index.button.download_r_data.description')"></div>
                                         <el-button style="float: left" type="danger" round @click="downloadRawData">
-                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_r_data.title") }}
+                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.title") }}
                                             <i class="el-icon-download el-icon-right"></i>
                                         </el-button>
                                     </el-tooltip>
@@ -148,42 +148,42 @@
                         </div>
                         <div class="box-column-item-text">
                             <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.simon.unsupervised_learning.index.validation.unique_count.description") }}</div>
+                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.index.validation.unique_count.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            {{ $t("views.apps.simon.unsupervised_learning.index.validation.unique_count.title") }}
+                            {{ $t("views.apps.unsupervised_learning.editing.index.validation.unique_count.title") }}
                             <div class="box-column-item-details">{{ item.unique_count }}</div>
                         </div>
                         <div class="box-column-item-text">
                             <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.simon.unsupervised_learning.index.validation.valid_numeric.description") }}</div>
+                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_numeric.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            {{ $t("views.apps.simon.unsupervised_learning.index.validation.valid_numeric.title") }}
+                            {{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_numeric.title") }}
                             <div class="box-column-item-details">{{ item.valid_numeric === 1 ? "Yes" : "No" }}</div>
                         </div>
                         <div class="box-column-item-text">
                             <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.simon.unsupervised_learning.index.validation.valid_zv.description") }}</div>
+                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_zv.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            {{ $t("views.apps.simon.unsupervised_learning.index.validation.valid_zv.title") }}
+                            {{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_zv.title") }}
                             <div class="box-column-item-details">{{ item.valid_zv === 1 ? "Yes" : "No" }}</div>
                         </div>
                         <div class="box-column-item-text">
                             <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.simon.unsupervised_learning.index.validation.valid_10p.description") }}</div>
+                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_10p.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            {{ $t("views.apps.simon.unsupervised_learning.index.validation.valid_10p.title") }}
+                            {{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_10p.title") }}
                             <div class="box-column-item-details">{{ item.valid_10p === 1 ? "Yes" : "No" }}</div>
                         </div>
                         <div class="box-column-item-text">
                             <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.simon.unsupervised_learning.index.validation.na_percentage.description") }}</div>
+                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.index.validation.na_percentage.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            {{ $t("views.apps.simon.unsupervised_learning.index.validation.na_percentage.title") }}
+                            {{ $t("views.apps.unsupervised_learning.editing.index.validation.na_percentage.title") }}
                             <div class="box-column-item-details">{{ item.na_percentage }}</div>
                         </div>
                     </el-card>
@@ -192,7 +192,7 @@
             <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
                 <el-tabs v-model="activeTab">
                     <el-tab-pane
-                        :label="$t('views.apps.simon.unsupervised_learning.components.tabs.overviewTab.tabs.TablePlotTab.title')"
+                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.tabs.TablePlotTab.title')"
                         name="table_plot"
                         :disabled="isTabDisabled('table_plot')"
                     >
@@ -205,14 +205,14 @@
                                 <el-row>
                                     <el-col :span="24">
                                         <span>
-                                            {{ $t("views.apps.simon.unsupervised_learning.components.tabs.overviewTab.tabs.TablePlotTab.description") }}
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.tabs.TablePlotTab.description") }}
                                         </span>
                                     </el-col>
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
                                                 <el-button type="success" round @click="downloadPlotImage('table_plot')">
-                                                    {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                    {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                 </el-button>
                                             </div>
 
@@ -232,7 +232,7 @@
                         </el-row>
                     </el-tab-pane>
                     <el-tab-pane
-                        :label="$t('views.apps.simon.unsupervised_learning.components.tabs.overviewTab.tabs.DistributionPlotTab.title')"
+                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.tabs.DistributionPlotTab.title')"
                         name="distribution_plot"
                         :disabled="isTabDisabled('distribution_plot')"
                     >
@@ -245,14 +245,14 @@
                                 <el-row>
                                     <el-col :span="24">
                                         <span>
-                                            {{ $t("views.apps.simon.unsupervised_learning.components.tabs.overviewTab.tabs.TablePlotTab.description") }}
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.tabs.TablePlotTab.description") }}
                                         </span>
                                     </el-col>
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
                                                 <el-button type="success" round @click="downloadPlotImage('distribution_plot')">
-                                                    {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                    {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                 </el-button>
                                             </div>
                                             <img
@@ -371,11 +371,11 @@ export default {
                 const tHeader = [
                     "Feature",
                     "Remapped",
-                    this.$t("views.apps.simon.unsupervised_learning.index.validation.unique_count.title"),
-                    this.$t("views.apps.simon.unsupervised_learning.index.validation.valid_numeric.title"),
-                    this.$t("views.apps.simon.unsupervised_learning.index.validation.valid_zv.title"),
-                    this.$t("views.apps.simon.unsupervised_learning.index.validation.valid_10p.title"),
-                    this.$t("views.apps.simon.unsupervised_learning.index.validation.na_percentage.title"),
+                    this.$t("views.apps.unsupervised_learning.editing.index.validation.unique_count.title"),
+                    this.$t("views.apps.unsupervised_learning.editing.index.validation.valid_numeric.title"),
+                    this.$t("views.apps.unsupervised_learning.editing.index.validation.valid_zv.title"),
+                    this.$t("views.apps.unsupervised_learning.editing.index.validation.valid_10p.title"),
+                    this.$t("views.apps.unsupervised_learning.editing.index.validation.na_percentage.title"),
                 ];
 
                 const filterVal = ["original", "remapped", "unique_count", "valid_numeric", "valid_zv", "valid_10p", "na_percentage"];
@@ -453,7 +453,7 @@ export default {
                             if (respItem.length < 15 || typeof respItem == "undefined") {
                                 this.plot_data[respIndex] = false;
                                 this.$message({
-                                    message: this.$t("views.apps.simon.unsupervised_learning.index.errors.plot_response.title"),
+                                    message: this.$t("views.apps.unsupervised_learning.editing.index.errors.plot_response.title"),
                                     type: "error",
                                 });
                             } else {

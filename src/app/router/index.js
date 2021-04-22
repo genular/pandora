@@ -146,6 +146,17 @@ export const constantRouterMap = [
                 },
                 hidden: false,
             },
+            {
+                path: "start-exploration",
+                component: _import("apps/unsupervised_learning/editing/index"),
+                name: "unsupervised_learning-exploration",
+                meta: {
+                    title: "unsupervised_learning_exploration",
+                    icon: "fa fa-icon fa-play",
+                    restrictions: { file: true, extension: ["csv"] },
+                },
+                hidden: true,
+            },
         ],
     },
 ];

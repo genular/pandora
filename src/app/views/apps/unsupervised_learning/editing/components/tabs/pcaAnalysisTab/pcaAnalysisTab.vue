@@ -3,7 +3,7 @@
         <el-row type="flex" align="top" v-if="tabEnabled === false">
             <el-col :span="24">
                 <el-alert
-                    :title="$t('views.apps.simon.unsupervised_learning.components.tabs.correlationTab.alert.function_disabled.title')"
+                    :title="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.alert.function_disabled.title')"
                     description="Tab is currently disabled. Please try to refresh or choose another file from Workspace."
                     type="warning"
                     style="margin-top: 20px"
@@ -279,10 +279,10 @@
                             <el-form-item>
                                 <el-tooltip placement="top">
                                     <div slot="content">
-                                        {{ $t("views.apps.simon.unsupervised_learning.index.button.download_r_data.description") }}
+                                        {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.description") }}
                                     </div>
                                     <el-button style="float: left" type="danger" round @click="downloadRawData">
-                                        {{ $t("views.apps.simon.unsupervised_learning.index.button.download_r_data.title") }}
+                                        {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.title") }}
                                         <i class="el-icon-download el-icon-right"></i>
                                     </el-button>
                                 </el-tooltip>
@@ -420,7 +420,7 @@
                                                     <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                         <div slot="content">
                                                             <el-button type="success" round @click="downloadPlotImage('plot_scree')">
-                                                                {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                             </el-button>
                                                         </div>
                                                         <img
@@ -494,7 +494,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_var_cos2_correlation')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -525,7 +525,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_var_cos2_correlation')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -559,7 +559,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_var_cos2_corrplot')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -594,7 +594,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_var_bar_plot')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -634,7 +634,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_var_contrib_corrplot')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -664,7 +664,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_var_contrib_bar_plot')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -691,7 +691,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_var_contrib_correlation')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -767,7 +767,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_ind_cos2_correlation')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -814,7 +814,7 @@
                                                                                 round
                                                                                 @click="downloadPlotImage('plot_ind_cos2_correlation_grouped', plotIndex)"
                                                                             >
-                                                                                {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                                {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                             </el-button>
                                                                         </div>
                                                                         <img
@@ -865,7 +865,7 @@
                                                                                 round
                                                                                 @click="downloadPlotImage('plot_ind_cos2_correlation_grouped_biplot', plotIndex)"
                                                                             >
-                                                                                {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                                {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                             </el-button>
                                                                         </div>
                                                                         <img
@@ -900,7 +900,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_ind_cos2_corrplot')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -935,7 +935,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_ind_bar_plot')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -975,7 +975,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_ind_contrib_corrplot')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -1005,7 +1005,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_ind_contrib_bar_plot')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
@@ -1032,7 +1032,7 @@
                                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                                     <div slot="content">
                                                                         <el-button type="success" round @click="downloadPlotImage('plot_ind_contrib_correlation')">
-                                                                            {{ $t("views.apps.simon.unsupervised_learning.index.button.download_svg_plot.title") }}
+                                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                                         </el-button>
                                                                     </div>
                                                                     <img
