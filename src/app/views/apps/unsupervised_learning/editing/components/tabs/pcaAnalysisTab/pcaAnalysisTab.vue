@@ -100,6 +100,26 @@
                         </el-tooltip>
                     </el-form-item>
 
+                    <el-form-item label="Remove by unique">
+                        <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.cutOffUnique"></el-switch>
+                        <el-tooltip placement="top">
+                            <div slot="content">Remove any columns that have less than defined unique values.</div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                    </el-form-item>
+
+                    <el-form-item v-if="settingsForm.cutOffUnique === true" label="Remove by unique treshold">
+                        <el-input-number style="float: right" size="mini" v-model="settingsForm.cutOffUniqueSize" :step="1" :max="10000" :min="1"></el-input-number>
+                    </el-form-item>
+
+                    <el-form-item label="Remove < 10%">
+                        <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.remove_less_10p"></el-switch>
+                        <el-tooltip placement="top">
+                            <div slot="content">Remove any columns that have number of unique values less than 10% of total number of observations.</div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                    </el-form-item>
+
                     <el-form-item label="Grouping variable:">
                         <el-select
                             style="float: right"
@@ -1171,6 +1191,11 @@ export default {
             settingsForm: {
                 selectedColumns: [],
                 cutOffColumnSize: 100,
+
+                cutOffUnique: false,
+                cutOffUniqueSize: 5,
+                remove_less_10p: true,
+
                 excludedColumns: [],
                 pcaComponentsDisplayX: [],
                 pcaComponentsDisplayY: [],
@@ -1328,13 +1353,28 @@ export default {
         handleFetchCorrPlotImage() {
             this.loadingPlot = true;
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
+
             // If no columns are selected
             if (settingsForm.selectedColumns.length < 1) {
-                settingsForm.selectedColumns = this.selectedFileDetails.columns
-                    .filter((x) => x.valid_numeric)
-                    .map((x) => x.remapped)
-                    .slice(0, settingsForm.cutOffColumnSize);
+                settingsForm.selectedColumns = this.selectedFileDetails.columns.filter((x) => x.valid_numeric);
+
+                if (settingsForm.cutOffUnique === true) {
+                    settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => x.unique_count >= settingsForm.cutOffUniqueSize);
+                    console.log(settingsForm.selectedColumns);
+                }
+                if (settingsForm.remove_less_10p === true) {
+                    settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !x.valid_10p);
+                }
+
+                settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped).slice(0, settingsForm.cutOffColumnSize);
             } else {
+                settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => x.valid_numeric);
+                if (settingsForm.cutOffUnique === true) {
+                    settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => x.unique_count > settingsForm.cutOffUniqueSize);
+                }
+                if (settingsForm.remove_less_10p === true) {
+                    settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !x.valid_10p);
+                }
                 settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped);
             }
 
