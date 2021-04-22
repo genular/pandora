@@ -3,10 +3,11 @@
 		"dashboard": "Dashboard",
 		"settings": "Settings",
 		"workspace": "Workspace",
-		"editing": "Dataset Exploration",
 		"simon": "SIMON",
-		"analysis": "Start Analysis",
-		"exploratory-analysis": "Analysis Exploration"
+		"simon-analysis": "Start Analysis",
+		"simon-exploratory-analysis": "Analysis Exploration",
+		"unsupervised_learning": "Unsupervised learning",
+		"unsupervised_learning_exploration": "Start Exploration"
 	},
 	"globals": {
 		"page_loading": "Processing",

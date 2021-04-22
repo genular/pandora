@@ -1,0 +1,54 @@
+{
+	"views": {
+		"apps": {
+			"unsupervised_learning": {
+				"editing": {
+					"components": {
+						"tabs": {
+							"overviewTab": {
+								"title": "Data overview",
+								"form": {
+									"columns": {
+										"title": "Columns",
+										"placeholder": "Type to search",
+										"description": "Please select columns you wish to plot. If nothing is selected we will take all valid numerical columns."
+									},
+									"first_n_columns": {
+										"title": "First (n) columns",
+										"description": "If you have not selected any Columns we will take first n columns from your dataset, based on this value, that have number of unique values less than 10%."
+									},
+									"preprocess": {
+										"title": "Preprocess",
+										"description": "Should we apply preprocessing ('medianImpute', 'center', 'scale') to dataset before drawing any plots?"
+									},
+									"theme": {
+										"title": "Theme"
+									},
+									"color": {
+										"title": "Color"
+									},
+									"font_size": {
+										"title": "Font size"
+									},
+									"ratio": {
+										"title": "Plot ratio"
+									}
+								},
+								"tabs": {
+									"TablePlotTab": {
+										"title": "Table Plot",
+										"description": "The tableplot is a visualization method that is used to explore and analyze large datasets, is able to display the aggregated distribution patterns of a dozen of variables in one single figure."
+									},
+									"DistributionPlotTab": {
+										"title": "Distribution Plot",
+										"description": "Scatterplots of each pair of numeric variable are drawn on the left part of the figure. Pearson correlation is displayed on the right. Variable distribution is available on the diagonal. We will take maximum 10 columns into consideration."
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

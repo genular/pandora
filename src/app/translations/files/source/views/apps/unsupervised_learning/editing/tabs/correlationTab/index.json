@@ -1,0 +1,167 @@
+{
+	"views": {
+		"apps": {
+			"unsupervised_learning": {
+				"editing": {
+					"components": {
+						"tabs": {
+							"correlationTab": {
+								"title": "Correlation",
+								"form": {
+									"columns": {
+										"title": "Columns",
+										"placeholder": "Type to search",
+										"description": "Please select columns you wish to plot. If nothing is selected we will take all valid numerical columns."
+									},
+									"first_n_columns": {
+										"title": "First (n) columns",
+										"description": "If you have not selected any Columns we will take first n columns from your dataset, based on this value, that have number of unique values less than 10%."
+									},
+									"correlation_method": {
+										"label": "Correlation Method",
+										"placeholder": "Select",
+										"options": {
+											"pearson": "Pearson",
+											"kendall": "Kendall",
+											"spearman": "Spearman"
+										}
+									},
+									"na_action": {
+										"label": "NA Action",
+										"placeholder": "Select",
+										"options": {
+											"everything": "everything",
+											"all.obs": "all.obs",
+											"complete.obs": "complete.obs",
+											"na.or.complete": "na.or.complete",
+											"pairwise.complete.obs": "pairwise.complete.obs"
+										}
+									},
+									"plot_method": {
+										"label": "Plot method",
+										"placeholder": "Select",
+										"options": {
+											"mixed": "Mixed",
+											"circle": "Circle",
+											"square": "Square",
+											"ellipse": "Ellipse",
+											"number": "Number",
+											"shade": "Shade",
+											"color": "Color",
+											"pie": "Pie"
+										}
+									},
+									"plot_method_mixed": {
+										"lower_method": {
+											"label": "Lower Method",
+											"placeholder": "Select",
+											"options": {
+												"circle": "Circle",
+												"square": "Square",
+												"ellipse": "Ellipse",
+												"number": "Number",
+												"shade": "Shade",
+												"color": "Color",
+												"pie": "Pie"
+											}
+										},
+										"upper_method": {
+											"label": "Upper Method",
+											"placeholder": "Select",
+											"options": {
+												"circle": "Circle",
+												"square": "Square",
+												"ellipse": "Ellipse",
+												"number": "Number",
+												"shade": "Shade",
+												"color": "Color",
+												"pie": "Pie"
+											}
+										}
+									},
+									"plot_type": {
+										"label": "Plot type",
+										"placeholder": "Select",
+										"options": {
+											"full": "Full",
+											"lower": "Lower",
+											"upper": "Upper"
+										}
+									},
+									"reorder_correlation": {
+										"label": "Reorder Correlation",
+										"placeholder": "Select",
+										"options": {
+											"original": "Original",
+											"AOE": "Angular order of the eigenvectors",
+											"FPC": "First principal component",
+											"hclust": "Hierarchical clustering",
+											"alphabet": "Alphabetical"
+										}
+									},
+									"reorder_correlation_hclust": {
+										"method": {
+											"label": "Method",
+											"placeholder": "Select",
+											"options": {
+												"complete": "Complete",
+												"ward": "Ward",
+												"ward.D": "Euclidean distances are are squared? - ward.D",
+												"ward.D2": "Ward algorithm - ward.D2",
+												"single": "single",
+												"average": "average",
+												"mcquitty": "McQuitty",
+												"median": "Median",
+												"centroid": "Centroid"
+											}
+										},
+										"number_of_rectangles": "Number of Rectangles"
+									},
+									"text_size": "Text size:",
+									"significance": {
+										"enable": "Significance Test",
+										"level": "Significance Level",
+										"insignificant_action": {
+											"label": "Insignificant Action",
+											"placeholder": "Select",
+											"options": {
+												"pch": "pch",
+												"p-value": "p-value",
+												"blank": "blank",
+												"n": "n"
+											}
+										}
+									},
+									"confidence": {
+										"enable": "Confidence Interval",
+										"adjust_p_value": "p-value comparisons (BH)",
+										"ploting_method": {
+											"label": "Plotting Method",
+											"placeholder": "Select",
+											"options": {
+												"square": "Square",
+												"circle": "Circle",
+												"rect": "Rectangle"
+											}
+										},
+										"level": "Confidence Level"
+									}
+								},
+								"buttons": {
+									"plot_image": "Plot image",
+									"download": "Download plot"
+								},
+								"alert": {
+									"function_disabled": {
+										"title": "Notification",
+										"description": "This function is disabled for selected feature set since its still not supported to calculate correlation for sets that have more than 250 features"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

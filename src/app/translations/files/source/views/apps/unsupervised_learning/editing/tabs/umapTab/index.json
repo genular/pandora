@@ -1,0 +1,15 @@
+{
+	"views": {
+		"apps": {
+			"unsupervised_learning": {
+				"editing": {
+					"components": {
+						"tabs": {
+							"umapTab": { "title": "UMAP analysis" }
+						}
+					}
+				}
+			}
+		}
+	}
+}

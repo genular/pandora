@@ -104,22 +104,11 @@ export const constantRouterMap = [
         },
         children: [
             {
-                path: "start-editing",
-                component: _import("apps/simon/editing/index"),
-                name: "editing",
-                meta: {
-                    title: "editing",
-                    icon: "fa fa-icon fa-play",
-                    restrictions: { file: true, extension: ["csv"] },
-                },
-                hidden: false,
-            },
-            {
                 path: "start-analysis",
                 component: _import("apps/simon/analysis/index"),
                 name: "analysis",
                 meta: {
-                    title: "analysis",
+                    title: "simon-analysis",
                     icon: "fa fa-icon fa-play",
                     restrictions: { file: true, extension: ["csv"] },
                 },
@@ -129,10 +118,33 @@ export const constantRouterMap = [
                 component: _import("apps/simon/exploration/index"),
                 name: "exploration",
                 meta: {
-                    title: "exploratory-analysis",
+                    title: "simon-exploratory-analysis",
                     icon: "fa fa-icon fa-area-chart",
                     restrictions: { action: true, actionType: "simonExplorationSelectedQueueID", checkType: "string" },
                 },
+            },
+        ],
+    },
+    {
+        path: "/apps/unsupervised-learning",
+        component: Layout,
+        redirect: "noredirect",
+        name: "unsupervised_learning",
+        meta: {
+            title: "unsupervised_learning",
+            icon: "fa fa-icon fa-plus",
+        },
+        children: [
+            {
+                path: "start-exploration",
+                component: _import("apps/unsupervised_learning/editing/index"),
+                name: "unsupervised_learning-exploration",
+                meta: {
+                    title: "unsupervised_learning_exploration",
+                    icon: "fa fa-icon fa-play",
+                    restrictions: { file: true, extension: ["csv"] },
+                },
+                hidden: false,
             },
         ],
     },
