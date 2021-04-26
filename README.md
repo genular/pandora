@@ -65,9 +65,16 @@ The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon
 
 #### Requirements
 
+##### Software:
+
 -   [Docker](https://docs.docker.com/engine/installation/) (`version 17.05` or later is required)
 -   [Docker Windows installation tutorial](https://docs.docker.com/docker-for-windows/install/)
 -   [Docker Windows direct download](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
+
+##### Minimum hardware recommendation:
+
+-   64GB RAM
+-   8 CPU Cores / 16 threads with 3.60 GHz base frequency
 
 #### Running SIMON Docker Container
 
@@ -83,7 +90,7 @@ In order to run a test instance of `SIMON` we first need to prepare the local en
 > _If you wish to get correct time inside SIMON, replace TZ=<timzone> variable with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)_
 
 ```bash
-docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:latest
+docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --oom-kill-disable --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:latest
 
 ```
 
@@ -107,7 +114,7 @@ Please be sure to delete `SIMON` data volume and container before reinstalling o
 _To run latest Released version (0.2.1), please use following Docker image `genular/simon:0.2.1`_
 
 ```bash
-docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:0.2.1
+docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --oom-kill-disable --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:0.2.1
 ```
 
 `SIMON` will now run until you _shutdown/restart_ your machine or _stop docker container manually_.
@@ -205,7 +212,7 @@ If you discover a security vulnerability within `SIMON`, please [e-mail us](mail
 
 ## License
 
-`SIMON` is open-source software for more informations please check `LICENCE` file.
+`SIMON` is open-source software for more information please check `LICENCE` file.
 
 ## Citation
 
