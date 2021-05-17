@@ -266,6 +266,7 @@ export function submitDatasetQueueTask(submitData) {
     const data = {
         submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData))),
     };
+
     console.log("submitDatasetQueueTask request start:");
     return request({
         url: baseUrlPath + "/system/simon/dataset-queue",
