@@ -309,6 +309,14 @@
                             </el-select>
                         </el-form-item>
 
+                        <el-form-item label="Legend position">
+                            <el-select style="float: right" v-model="settingsForm.legendPosition" placeholder="Select">
+                                <el-option v-for="item in settingsOptions.legendPosition" :key="item.id" :label="item.id" :value="item.id">
+                                    <span>{{ item.id }}</span>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
                         <el-form-item label="Font size">
                             <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="48"></el-input-number>
                         </el-form-item>
@@ -636,6 +644,7 @@ export default {
                     { id: "ward.D2" },
                     { id: "ward.D" },
                 ],
+                legendPosition: [{ id: "left" }, { id: "right" }, { id: "none" }],
             },
 
             settingsForm: {
@@ -658,6 +667,7 @@ export default {
                 clustLinkage: "ward.D2",
                 clustGroups: 9,
                 reachabilityDistance: 2,
+                legendPosition: "right",
             },
             plot_data: {
                 tsne_plot: [],

@@ -480,6 +480,16 @@ export default {
                 }
             }
         },
+        filterExtraction(newValue) {
+            if (newValue === true) {
+                //this.backwardSelection = false;
+            }
+        },
+        backwardSelection(newValue) {
+            if (newValue === true) {
+                //this.filterExtraction = false;
+            }
+        },
     },
 };
 </script>
