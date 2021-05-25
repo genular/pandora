@@ -42,10 +42,12 @@
                     </el-tooltip>
                     <el-select
                         class="flud-selects"
+                        popper-class="multipleDropdownSelect"
                         v-model="selectedFeatures"
                         multiple
                         filterable
                         remote
+                        clearable
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.predictor.placeholder')"
                         value-key="position"
                         :remote-method="
@@ -79,10 +81,12 @@
                     </el-tooltip>
                     <el-select
                         class="flud-selects"
+                        popper-class="multipleDropdownSelect"
                         v-model="excludeFeatures"
                         multiple
                         filterable
                         remote
+                        clearable
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.predictor_exclude.placeholder')"
                         value-key="position"
                         :disabled="!filterFeatures"
@@ -145,6 +149,7 @@
                         multiple
                         filterable
                         remote
+                        clearable
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.response.placeholder')"
                         value-key="position"
                         :remote-method="
@@ -183,6 +188,7 @@
                         multiple
                         filterable
                         remote
+                        clearable
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.regression.placeholder')"
                         value-key="position"
                         :remote-method="
@@ -221,6 +227,7 @@
                         multiple
                         filterable
                         remote
+                        clearable
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.time_series.placeholder')"
                         value-key="position"
                         :remote-method="
@@ -259,6 +266,7 @@
                         multiple
                         filterable
                         remote
+                        clearable
                         :placeholder="$t('views.apps.simon.analysis.components.FileDetails.body.classes.placeholder')"
                         value-key="position"
                         :remote-method="
@@ -727,8 +735,9 @@ export default {
     },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
 @import "~scss_vars";
+
 .stat-badges {
     padding-top: 10px;
     .el-badge:not(:first-child) {
@@ -796,6 +805,13 @@ export default {
         width: 100%;
         margin-right: 10px;
         overflow: hidden;
+    }
+}
+
+/* Dropdown el-select max height */
+.multipleDropdownSelect {
+    .el-select-dropdown__wrap {
+        max-height: 471px;
     }
 }
 </style>
