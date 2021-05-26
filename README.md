@@ -90,7 +90,7 @@ In order to run a test instance of `SIMON` we first need to prepare the local en
 > _If you wish to get correct time inside SIMON, replace TZ=<timzone> variable with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)_
 
 ```bash
-docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --oom-kill-disable --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:latest
+docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --oom-kill-disable --volume genular_data_latest:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/simon:latest
 
 ```
 
@@ -104,10 +104,10 @@ In order to re-install `SIMON` you need to delete previously installed `SIMON` D
 
 ```bash
 docker stop genular
-docker system prune -a
+docker system prune -a --volumes
 ```
 
-Please be sure to delete `SIMON` data volume and container before reinstalling otherwise you will maybe still use old `SIMON` instance when you run it!
+Please be sure to delete `SIMON` data volume and image before reinstalling otherwise you will maybe still use old `SIMON` instance when you run it!
 
 ##### Other information
 
@@ -130,6 +130,9 @@ To delete all data and reset `SIMON` to factory defaults you need to clear data 
 If you used default run configuration please execute following command:
 
 ```bash
+# For latest unstable branch
+docker volume rm genular_data_latest
+# For latest release
 docker volume rm genular_data
 ```
 
