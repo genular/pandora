@@ -273,6 +273,60 @@
 
                         <el-divider></el-divider>
 
+                        <el-form-item label="Dataset analysis type">
+                            <el-select style="float: right" v-model="settingsForm.datasetAnalysisType" size="mini" placeholder="Select">
+                                <el-option v-for="item in settingsOptions.datasetAnalysisType" :key="item.id" :label="item.label" :value="item.id">
+                                    <span>{{ item.label }}</span>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="Sort column" v-if="settingsForm.datasetAnalysisType === 'heatmap'">
+                            <el-select style="float: right" v-model="settingsForm.datasetAnalysisSortColumn" size="mini" placeholder="Select">
+                                <el-option v-for="item in settingsOptions.datasetAnalysisSortColumn" :key="item.id" :label="item.id" :value="item.id">
+                                    <span>{{ item.id }}</span>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="Cluster linkage" v-if="settingsForm.datasetAnalysisType === 'cluster'">
+                            <el-select
+                                style="float: right"
+                                size="mini"
+                                v-model="settingsForm.datasetAnalysisClustLinkage"
+                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.placeholder')"
+                            >
+                                <el-option
+                                    v-for="item in settingsOptions.clustLinkage"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
+                                    <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="Cluster ordering" v-if="settingsForm.datasetAnalysisType === 'cluster'">
+                            <el-select
+                                style="float: right"
+                                size="mini"
+                                v-model="settingsForm.datasetAnalysisClustOrdering"
+                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.placeholder')"
+                            >
+                                <el-option
+                                    v-for="item in settingsOptions.clustOrdering"
+                                    :key="item.id"
+                                    :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.options.', item.id].join(''))"
+                                    :value="item.id"
+                                >
+                                    <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.options." + item.id) }}</span>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-divider></el-divider>
+
                         <el-form-item label="Theme">
                             <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
                                 <el-option v-for="item in settingsOptions.theme" :key="item.id" :label="item.name" :value="item.id">
@@ -310,7 +364,7 @@
                         </el-form-item>
 
                         <el-form-item label="Legend position">
-                            <el-select style="float: right" v-model="settingsForm.legendPosition" placeholder="Select">
+                            <el-select style="float: right" v-model="settingsForm.legendPosition" size="mini" placeholder="Select">
                                 <el-option v-for="item in settingsOptions.legendPosition" :key="item.id" :label="item.id" :value="item.id">
                                     <span>{{ item.id }}</span>
                                 </el-option>
@@ -550,7 +604,7 @@
                             </el-col>
                         </el-row>
                     </el-tab-pane>
-                    <el-tab-pane label="Clustered Hierarchical Analysis" name="tsne_cluster_heatmap_plot_png" :disabled="isTabDisabled('tsne_cluster_heatmap_plot')">
+                    <el-tab-pane label="Dataset Analysis" name="tsne_cluster_heatmap_plot_png" :disabled="isTabDisabled('tsne_cluster_heatmap_plot')">
                         <el-row
                             v-bind:class="{
                                 is_tab_active: isTabDisabled('tsne_cluster_heatmap_plot'),
@@ -558,21 +612,6 @@
                         >
                             <el-col v-if="plot_data.tsne_cluster_heatmap_plot !== false">
                                 <el-row>
-                                    <el-col :span="24">
-                                        <span style="text-align: center; float: left; width: 100%">
-                                            Clustered Hierarchical Analysis of performed t-SNE analysis. Following settings where used in performing analysis:
-                                        </span>
-                                        <span style="float: left; text-align: left">
-                                            <br />
-                                            Distance: euclidean - Usual distance between the two vectors (2 norm aka L_2), sqrt(sum((x_i - y_i)^2)).
-                                            <br />
-                                            Linkage: Agglomerative Hierarchical Clustering with Ward.
-                                            <a href="http://adn.biol.umontreal.ca/%7Enumericalecology/Reprints/Murtagh_Legendre_J_Class_2014.pdf" target="_blank">Ward.D2</a>
-                                            dissimilarities are squared before clustering
-                                            <br />
-                                            Ordering: tightest cluster first
-                                        </span>
-                                    </el-col>
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
@@ -644,6 +683,14 @@ export default {
                     { id: "ward.D2" },
                     { id: "ward.D" },
                 ],
+                clustOrdering: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }],
+
+                datasetAnalysisType: [
+                    { id: "heatmap", label: "Heatmap" },
+                    { id: "cluster", label: "Clustered Hierarchical Analysis" },
+                ],
+                datasetAnalysisSortColumn: [],
+
                 legendPosition: [{ id: "left" }, { id: "right" }, { id: "none" }],
             },
 
@@ -653,21 +700,29 @@ export default {
                 groupingVariables: [],
                 colorVariables: [],
                 preProcessDataset: true,
+
                 fontSize: 12,
                 pointSize: 1.5,
                 theme: "theme_bw",
                 colorPalette: "Set1",
                 aspect_ratio: 1,
                 plot_size: 12,
+
                 clusterType: "Louvain",
                 cutOffColumnSize: 1000,
                 removeNA: false,
                 perplexity: 5,
                 knn_clusters: 25,
                 clustLinkage: "ward.D2",
+
                 clustGroups: 9,
                 reachabilityDistance: 2,
                 legendPosition: "right",
+
+                datasetAnalysisClustLinkage: "ward.D2",
+                datasetAnalysisType: "heatmap",
+                datasetAnalysisSortColumn: "cluster",
+                datasetAnalysisClustOrdering: 1,
             },
             plot_data: {
                 tsne_plot: [],
