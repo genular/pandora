@@ -118,6 +118,14 @@
                     <div slot="header">
                         {{ $t("views.apps.simon.analysis.components.PackageSelection.head.selected.title") }}
                         <span class="track-count">{{ selectedPackages.length }}</span>
+                        <span style="float: right">
+                            Timeout:
+                            <el-input-number size="mini" v-model="modelProcessingTimeLimit" :step="1" :min="1" :max="1000" :precision="0"></el-input-number>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">Model processing timeout in minutes. If model is not finished in this time period it will be terminated.</div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </span>
                     </div>
                     <div class="box-item">
                         <div style="float: left; height: 36px; line-height: 36px">
@@ -307,6 +315,15 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisBackwardSelection", value);
+            },
+        },
+        /** Time limit in seconds before we terminate model building */
+        modelProcessingTimeLimit: {
+            get() {
+                return this.$store.getters.simonAnalysisModelProcessingTimeLimit;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonAnalysisModelProcessingTimeLimit", value);
             },
         },
         enabledPackagesAvaliable: function () {

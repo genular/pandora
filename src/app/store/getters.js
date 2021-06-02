@@ -50,6 +50,7 @@ const getters = {
     simonAnalysisFilterOutcome: (state) => state.apps.simon.analysis.filter.outcome,
     simonAnalysisFilterExtraction: (state) => state.apps.simon.analysis.filter.extraction,
     simonAnalysisBackwardSelection: (state) => state.apps.simon.analysis.filter.backwardSelection,
+    simonAnalysisModelProcessingTimeLimit: (state) => state.apps.simon.analysis.modelProcessingTimeLimit,
     // exploration
     simonExplorationQueueIDs: (state) => state.apps.simon.exploration.queueIDs,
     simonExplorationSelectedQueueID: (state) => state.apps.simon.exploration.selectedQueueID,

@@ -524,6 +524,15 @@ export default {
                 this.$store.dispatch("setSimonAnalysisSelectedPartitionSplit", value);
             },
         },
+        /** Time limit in seconds before we terminate model building */
+        modelProcessingTimeLimit: {
+            get() {
+                return this.$store.getters.simonAnalysisModelProcessingTimeLimit;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonAnalysisModelProcessingTimeLimit", value);
+            },
+        },
         /** Select all Features input switch */
         filterFeatures: {
             get() {
@@ -681,6 +690,7 @@ export default {
             this.selectedFeatures = [];
             this.excludeFeatures = [];
             this.selectedPartitionSplit = 75;
+            this.modelProcessingTimeLimit = 5;
             this.selectedOutcome = [];
             this.selectedClasses = [];
             this.selectedFormula = [];

@@ -25,9 +25,12 @@ const apps = {
                 selectedPreProcess: estore.get("apps-simon-analysis-selectedPreProcess") || ["center", "scale"],
                 selectedPartitionSplit: estore.get("apps-simon-analysis-selectedPartitionSplit") || 75,
 
+                modelProcessingTimeLimit: estore.get("apps-simon-analysis-modelProcessingTimeLimit") || 5,
+
                 total_samples: estore.get("apps-simon-analysis-total_samples") || 0,
                 invalid_samples: estore.get("apps-simon-analysis-invalid_samples") || [],
                 total_na_values: estore.get("apps-simon-analysis-total_na_values") || 0,
+
                 filter: {
                     features: estore.get("apps-simon-analysis-filter-features") || false,
                     outcome: estore.get("apps-simon-analysis-filter-outcome") || false,
@@ -133,6 +136,10 @@ const apps = {
             state.simon.analysis.selectedPartitionSplit = selectedPartitionSplit;
             estore.set("apps-simon-analysis-selectedPartitionSplit", selectedPartitionSplit);
         },
+        SET_SIMON_ANALYSIS_MODEL_PROCESSING_TIME_LIMIT: (state, modelProcessingTimeLimit) => {
+            state.simon.analysis.modelProcessingTimeLimit = modelProcessingTimeLimit;
+            estore.set("apps-simon-analysis-modelProcessingTimeLimit", modelProcessingTimeLimit);
+        },
         SET_SIMON_ANALYSIS_TOTAL_SAMPLES: (state, total_samples) => {
             state.simon.analysis.total_samples = total_samples;
             estore.set("apps-simon-analysis-total_samples", total_samples);
@@ -234,6 +241,7 @@ const apps = {
 
                             commit("SET_SIMON_ANALYSIS_SELECTED_PREPROCESS", ["center", "scale"]);
                             commit("SET_SIMON_ANALYSIS_SELECTED_PARITTIONSPLIT", 75);
+                            commit("SET_SIMON_ANALYSIS_MODEL_PROCESSING_TIME_LIMIT", 5);
                             commit("SET_SIMON_ANALYSIS_FILTER_EXTRACTION", false);
                             commit("SET_SIMON_ANALYSIS_BACKWARD_SELECTION", false);
                             commit("SET_SIMON_ANALYSIS_FILTER_FEATURES", false);
@@ -289,6 +297,9 @@ const apps = {
         },
         setSimonAnalysisSelectedPartitionSplit({ commit }, selectedPartitionSplit) {
             commit("SET_SIMON_ANALYSIS_SELECTED_PARITTIONSPLIT", selectedPartitionSplit);
+        },
+        setSimonAnalysisModelProcessingTimeLimit({ commit }, modelProcessingTimeLimit) {
+            commit("SET_SIMON_ANALYSIS_MODEL_PROCESSING_TIME_LIMIT", modelProcessingTimeLimit);
         },
         setSimonAnalysisTotalSamples({ commit }, total_samples) {
             commit("SET_SIMON_ANALYSIS_TOTAL_SAMPLES", total_samples);

@@ -176,6 +176,7 @@ export default {
                 selectedOutcome: [],
                 selectedPreProcess: [],
                 selectedPartitionSplit: 75,
+                modelProcessingTimeLimit: 5,
                 selectedFormula: [],
                 timeSeriesDate: [],
                 selectedClasses: [],
@@ -253,6 +254,15 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedPartitionSplit", value);
+            },
+        },
+        /** Time limit in seconds before we terminate model building */
+        modelProcessingTimeLimit: {
+            get() {
+                return this.$store.getters.simonAnalysisModelProcessingTimeLimit;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonAnalysisModelProcessingTimeLimit", value);
             },
         },
         selectedFiles: {
@@ -456,6 +466,7 @@ export default {
                 }),
 
                 selectedPartitionSplit: this.selectedPartitionSplit,
+                modelProcessingTimeLimit: this.modelProcessingTimeLimit,
                 selectedFormula: this.selectedFormula.sort(sortAlphaNum),
                 timeSeriesDate: this.timeSeriesDate.sort(sortAlphaNum),
                 selectedClasses: this.selectedClasses.sort(sortAlphaNum),

@@ -1026,11 +1026,7 @@ export default {
             return row.status === value;
         },
         canSelectQueue(row, index) {
-            if (row.modelsSuccess < 1) {
-                return false;
-            } else {
-                return true;
-            }
+            return true;
         },
         selectWorkingQueueID(row) {
             if (row !== null) {
