@@ -25,27 +25,36 @@
                         <el-switch v-model="filter.allPackages"></el-switch>
                     </div>
                     <div class="box-item">
-                        <div class="search-packages">
-                            <el-select
-                                class="flud-selects"
-                                v-model="packagesSearch.input"
-                                value-key="internal_id"
-                                :clearable="true"
-                                placeholder="type to search"
-                                filterable
-                                remote
-                                :remote-method="querySearchAvaliable"
-                                :default-first-option="true"
-                                popper-class="packages-autocomplete"
-                                @change="selectPackage"
-                                :loading="packagesSearch.loading"
-                            >
-                                <el-option v-for="item in packagesSearch.results" :key="item.internal_id" :label="item.label" :value="item">
-                                    <div class="name" style="float: left">{{ item.label }}</div>
-                                    <span class="label" style="float: right">{{ item.internal_id }}</span>
-                                </el-option>
-                            </el-select>
-                        </div>
+                        <el-row>
+                            <el-col :span="16">
+                                <div class="search-packages">
+                                    <el-select
+                                        class="flud-selects"
+                                        v-model="packagesSearch.input"
+                                        value-key="internal_id"
+                                        :clearable="true"
+                                        placeholder="type to search"
+                                        filterable
+                                        remote
+                                        :remote-method="querySearchAvaliable"
+                                        :default-first-option="true"
+                                        popper-class="packages-autocomplete"
+                                        @change="selectPackage"
+                                        :loading="packagesSearch.loading"
+                                    >
+                                        <el-option v-for="item in packagesSearch.results" :key="item.internal_id" :label="item.label" :value="item">
+                                            <div class="name" style="float: left">{{ item.label }}</div>
+                                            <span class="label" style="float: right">{{ item.internal_id }}</span>
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-select v-model="filter.packagesFeatures" clearable multiple placeholder="Filter by features" style="float: right">
+                                    <el-option v-for="item in packagesFeatures" :key="item" :label="item" :value="item"></el-option>
+                                </el-select>
+                            </el-col>
+                        </el-row>
                         <div class="draggable-containers">
                             <draggable
                                 class="draggable-items"
@@ -191,11 +200,11 @@
                                                     <el-button style="float: right; padding: 0" type="info" icon="el-icon-info" circle></el-button>
                                                 </el-tooltip>
                                             </li>
-                                            <li v-if="item.tuning_parameters.length > 0">
+                                            <li v-if="typeof item.tuning_parameters !== 'undefined' && item.tuning_parameters.length > 0">
                                                 <span class="title">{{ $t("views.apps.simon.analysis.components.PackageSelection.containers.tuning_parameters.title") }}:</span>
                                             </li>
                                         </ul>
-                                        <ul class="tuning_parameters" v-if="item.tuning_parameters.length > 0">
+                                        <ul class="tuning_parameters" v-if="typeof item.tuning_parameters !== 'undefined' && item.tuning_parameters.length > 0">
                                             <li v-for="(tun_parm, index) in item.tuning_parameters" :key="index">
                                                 <span class="title">{{ tun_parm.label }}</span>
                                                 <span class="desc">
@@ -238,6 +247,7 @@ export default {
             /** Models for HTML filters */
             filter: {
                 allPackages: false,
+                packagesFeatures: [],
                 checkBoxAvaliable: [
                     {
                         label: "Classification",
@@ -342,6 +352,25 @@ export default {
             const count = this.avaliablePackages.length + this.selectedPackages.length;
             return count;
         },
+        packagesFeatures: function () {
+            const result = [];
+            const map = new Map();
+            for (const item of this.avaliablePackages) {
+                if (item.tags === null || item.disabled === true) {
+                    continue;
+                }
+                for (const tag of item.tags) {
+                    if (tag === "") {
+                        continue;
+                    }
+                    if (!map.has(tag)) {
+                        map.set(tag, true); // set any value to Map
+                        result.push(tag);
+                    }
+                }
+            }
+            return result.sort();
+        },
     },
     methods: {
         getComponentData(changeType) {
@@ -392,9 +421,7 @@ export default {
             // Loop this.avaliablePackages and set disabled flag!
         },
         // Select a package on user click
-        selectPackage(item) {
-            console.log("==> selectPackage");
-
+        selectPackage(item, selectedNotify = true) {
             if (typeof item === "object") {
                 this.packagesSearch.input = "";
 
@@ -410,15 +437,16 @@ export default {
                 }
 
                 this.selectedPackages.unshift(item);
-
-                this.$message({
-                    message: item.label + " selected!",
-                    type: "success",
-                });
+                if (selectedNotify === true) {
+                    this.$message({
+                        message: item.label + " selected!",
+                        type: "success",
+                    });
+                }
             }
         },
         // deSelect a package on user click
-        deSelectPackage(item) {
+        deSelectPackage(item, selectedNotify = true) {
             console.log("==> deSelectPackage");
 
             if (typeof item === "object") {
@@ -431,13 +459,14 @@ export default {
                 }
 
                 this.packagesSearch.results.unshift(item);
-
                 this.avaliablePackages.unshift(item);
 
-                this.$message({
-                    message: item.label + " de-selected!",
-                    type: "warning",
-                });
+                if (selectedNotify === true) {
+                    this.$message({
+                        message: item.label + " de-selected!",
+                        type: "warning",
+                    });
+                }
             }
         },
         onMove({ relatedContext, draggedContext }) {
@@ -475,6 +504,50 @@ export default {
             } else {
                 this.avaliablePackages = orderBy(allPackagesUnique, "internal_id");
                 this.selectedPackages = [];
+            }
+        },
+        "filter.packagesFeatures": function (newVal, oldVal) {
+            console.log("==> filter.packagesFeatures");
+            let deselectedTags = oldVal.filter((x) => !newVal.includes(x));
+
+            // 1st select all packages based on tags given
+            let selectedPackages = [];
+            newVal.forEach((packageFilter) => {
+                let filteredPackages = this.avaliablePackages.filter(function (item) {
+                    return item.tags === null || item.disabled === true ? false : item.tags.includes(packageFilter);
+                });
+
+                selectedPackages = [selectedPackages, ...filteredPackages];
+            });
+
+            for (let i = 0; i < selectedPackages.length; i++) {
+                if (typeof selectedPackages[i].internal_id !== "undefined") {
+                    this.selectPackage(selectedPackages[i], false);
+                }
+            }
+
+            if (selectedPackages.length > 0) {
+                this.$message({
+                    message: newVal.join(", ") + " selected!",
+                    type: "success",
+                });
+            }
+            if (deselectedTags.length > 0) {
+                // 2nd deselect all selected packages based on tags given
+                let deselectedPackages = [];
+                deselectedTags.forEach((packageFilter) => {
+                    let filteredPackages = this.selectedPackages.filter(function (item) {
+                        return item.tags === null || item.disabled === true ? false : item.tags.includes(packageFilter);
+                    });
+
+                    deselectedPackages = [selectedPackages, ...filteredPackages];
+                });
+
+                for (let i = 0; i < deselectedPackages.length; i++) {
+                    if (typeof deselectedPackages[i].internal_id !== "undefined") {
+                        this.deSelectPackage(deselectedPackages[i], false);
+                    }
+                }
             }
         },
         isDragging(newValue) {

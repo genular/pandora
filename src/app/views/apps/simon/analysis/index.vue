@@ -5,19 +5,25 @@
             <package-selection :preselectPackages="preselectPackages"></package-selection>
             <start-button></start-button>
         </div>
-        <el-dialog :title="$t('views.apps.simon.analysis.index.dialog.title')" :visible.sync="errorDialogVisible" width="30%" center :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
+        <el-dialog
+            :title="$t('views.apps.simon.analysis.index.dialog.title')"
+            :visible.sync="errorDialogVisible"
+            width="30%"
+            center
+            :close-on-click-modal="false"
+            :close-on-press-escape="false"
+            :show-close="false"
+        >
             <span v-html="errorDialogMessage"></span>
             <span slot="footer" class="dialog-footer">
-                    <div v-if="errorDialogType === 'server_error'">
-                    <el-button @click="cancelInitFeatures">{{ $t('views.apps.simon.analysis.index.dialog.buttons.cancel') }}</el-button>
-                    <el-button type="primary" @click="reinitializeInitFeatures">{{ $t('views.apps.simon.analysis.index.dialog.buttons.try_again') }}</el-button>
+                <div v-if="errorDialogType === 'server_error'">
+                    <el-button @click="cancelInitFeatures">{{ $t("views.apps.simon.analysis.index.dialog.buttons.cancel") }}</el-button>
+                    <el-button type="primary" @click="reinitializeInitFeatures">{{ $t("views.apps.simon.analysis.index.dialog.buttons.try_again") }}</el-button>
                 </div>
                 <div v-else-if="errorDialogType === 'general_error'">
-                    <el-button @click="errorDialogVisible = false">{{ $t('views.apps.simon.analysis.index.dialog.buttons.select_another') }}</el-button>
+                    <el-button @click="errorDialogVisible = false">{{ $t("views.apps.simon.analysis.index.dialog.buttons.select_another") }}</el-button>
                 </div>
-                <div v-else>
-                    undefined error
-                </div>
+                <div v-else>undefined error</div>
             </span>
         </el-dialog>
     </div>
@@ -32,7 +38,7 @@ export default {
     components: {
         FileDetails,
         PackageSelection,
-        StartButton
+        StartButton,
     },
     data() {
         return {
@@ -40,7 +46,7 @@ export default {
             errorDialogVisible: false,
             errorDialogMessage: "",
             errorDialogType: "server_error",
-            preselectPackages: []
+            preselectPackages: [],
         };
     },
     computed: {
@@ -50,7 +56,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAvaliablePackages", value);
-            }
+            },
         },
         selectedPackages: {
             get() {
@@ -58,7 +64,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonSelectedPackages", value);
-            }
+            },
         },
         selectedFiles: {
             get() {
@@ -66,7 +72,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSelectedFiles", value);
-            }
+            },
         },
         selectedFilesHash: {
             get() {
@@ -74,7 +80,7 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFileHash", value);
-            }
+            },
         },
         /** Current Selected Outcome */
         selectedOutcome: {
@@ -83,13 +89,12 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedOutcome", value);
-            }
-        }
+            },
+        },
     },
     mounted() {
         console.log("mounted: analysis");
         this.initFeatures();
-
     },
     methods: {
         loadingStart() {
@@ -99,7 +104,7 @@ export default {
                 spinner: "el-icon-loading",
                 fullscreen: true,
                 customClass: "loading-api",
-                background: "rgba(0, 0, 0, 0.7)"
+                background: "rgba(0, 0, 0, 0.7)",
             });
         },
         loadingEnd() {
@@ -111,7 +116,7 @@ export default {
             this.errorDialogVisible = false;
             this.errorDialogMessage = "";
             this.$router.push({
-                path: "/workspace/index"
+                path: "/workspace/index",
             });
         },
         reinitializeInitFeatures() {
@@ -124,23 +129,23 @@ export default {
             // if (this.avaliablePackages.length === 0 && this.selectedPackages.length === 0) {
             this.loadingStart();
             this.$store.dispatch("setSimonAvailablePackages", this.selectedFiles).then(
-                response => {
+                (response) => {
                     this.loadingEnd();
 
                     // Check if we have any packages loaded / returned from R backend
-                    if(this.avaliablePackages.length < 1){
+                    if (this.avaliablePackages.length < 1) {
                         this.errorDialogVisible = true;
-                        this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_server');
+                        this.errorDialogMessage = this.$t("views.apps.simon.analysis.index.dialog.messages.error_server");
                         this.errorDialogType = "server_error";
-                    }else{
+                    } else {
                         this.checkIsValidOutcome(this.selectedOutcome);
                     }
                 },
-                error => {
+                (error) => {
                     console.log("Error Response: ", error);
                     this.loadingEnd();
                     this.errorDialogVisible = true;
-                    this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_server');
+                    this.errorDialogMessage = this.$t("views.apps.simon.analysis.index.dialog.messages.error_server");
                     this.errorDialogType = "server_error";
                 }
             );
@@ -158,7 +163,7 @@ export default {
                 this.$store.dispatch("setSimonAnalysisSelectedFileHash", selectedFilesHash);
                 /** Get Features for selected file from back-end */
                 this.$store.dispatch("setSimonAnalysisFeatures", this.selectedFiles).then(
-                    response => {
+                    (response) => {
                         this.loadingEnd();
                         if (Array.isArray(response)) {
                             let sliceEnd = 5;
@@ -169,48 +174,45 @@ export default {
                             const featuresExample = htmlentities(response.slice(0, sliceEnd).join(", "));
 
                             this.errorDialogVisible = true;
-                            this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_format') + featuresExample;
+                            this.errorDialogMessage = this.$t("views.apps.simon.analysis.index.dialog.messages.error_format") + featuresExample;
                             this.errorDialogType = "server_error";
                         }
                     },
-                    error => {
+                    (error) => {
                         console.log("Error Response: ", error);
                         this.loadingEnd();
                         this.selectedFilesHash = "";
                         this.errorDialogVisible = true;
-                        this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_read');
+                        this.errorDialogMessage = this.$t("views.apps.simon.analysis.index.dialog.messages.error_read");
                         this.errorDialogType = "server_error";
                     }
                 );
             }
         },
-        checkIsValidOutcome(selectedOutcomes){
+        checkIsValidOutcome(selectedOutcomes) {
             console.log("checkIsValidOutcome:");
             console.log(selectedOutcomes);
 
             let unique_count = 0;
-            if(selectedOutcomes.length > 0) {
-
+            if (selectedOutcomes.length > 0) {
                 for (let i in selectedOutcomes) {
-
-                    if("unique_count" in selectedOutcomes[i] && typeof selectedOutcomes[i].unique_count !== "undefined") {
-                        if(selectedOutcomes[i].unique_count !== false){
-                            unique_count = selectedOutcomes[i].unique_count;        
-                        }else{
+                    if ("unique_count" in selectedOutcomes[i] && typeof selectedOutcomes[i].unique_count !== "undefined") {
+                        if (selectedOutcomes[i].unique_count !== false) {
+                            unique_count = selectedOutcomes[i].unique_count;
+                        } else {
                             // Fall-back for old versions where this is not calculated
-                            unique_count = 2;  
+                            unique_count = 2;
                         }
-                    }else{
+                    } else {
                         // Fall-back for old versions where this is not calculated
-                        unique_count = 2;  
+                        unique_count = 2;
                     }
-                    
 
                     console.log("Total unique outcome variables: " + unique_count);
 
-                    if(unique_count < 2){
+                    if (unique_count < 2) {
                         this.errorDialogVisible = true;
-                        this.errorDialogMessage = this.$t('views.apps.simon.analysis.index.dialog.messages.error_classification');
+                        this.errorDialogMessage = this.$t("views.apps.simon.analysis.index.dialog.messages.error_classification");
                         this.errorDialogType = "general_error";
                         this.selectedOutcome = [];
                         break;
@@ -220,26 +222,26 @@ export default {
 
             this.filterPackages(unique_count);
         },
-        filterPackages(unique_count){
+        filterPackages(unique_count) {
             console.log("Enabling packages based on selection: " + unique_count);
 
             // Enable custom packages based on unique outcome values
             for (let i in this.avaliablePackages) {
-                if(unique_count < 2){
+                if (unique_count < 2) {
                     this.avaliablePackages[i].disabled = true;
                 }
 
-                if(unique_count === 2){
+                if (unique_count === 2) {
                     if (this.avaliablePackages[i].classification === true) {
                         this.avaliablePackages[i].disabled = false;
                     }
                 }
                 // Disable Two class models
-                if(unique_count > 2 && unique_count <= 702){
+                if (unique_count > 2 && unique_count <= 702) {
                     if (this.avaliablePackages[i].classification === true) {
-                        if (Array.isArray(this.avaliablePackages[i].tags) && this.avaliablePackages[i].tags.includes('Two Class Only') === true) {
+                        if (Array.isArray(this.avaliablePackages[i].tags) && this.avaliablePackages[i].tags.includes("Two Class Only") === true) {
                             this.avaliablePackages[i].disabled = true;
-                        }else{
+                        } else {
                             this.avaliablePackages[i].disabled = false;
                         }
                     }
@@ -263,13 +265,13 @@ export default {
             //         });;
             // }else if(unique_count < 1 && this.selectedPackages.length > 0){
             //     this.preselectPackages = [];
-            // }                
-        }
+            // }
+        },
     },
     watch: {
-        "selectedOutcome": function(selectedOutcomes) {
+        selectedOutcome: function (selectedOutcomes) {
             this.checkIsValidOutcome(selectedOutcomes);
-        }
-    }
+        },
+    },
 };
 </script>

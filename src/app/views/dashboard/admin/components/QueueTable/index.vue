@@ -513,12 +513,12 @@
                             </el-table-column>
                             <el-table-column
                                 align="center"
-                                prop="processing_time"
+                                prop="training_time"
                                 sortable
                                 :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.processing_time')"
                             >
                                 <template slot-scope="scope">
-                                    <span v-if="scope.row.processing_time">{{ scope.row.processing_time | millisecondsToStr }}</span>
+                                    <span v-if="scope.row.training_time">{{ scope.row.training_time | millisecondsToStr }}</span>
                                     <span v-else>N/A</span>
                                 </template>
                             </el-table-column>
