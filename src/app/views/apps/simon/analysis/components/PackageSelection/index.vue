@@ -555,6 +555,13 @@ export default {
                         this.deSelectPackage(deselectedPackages[i], false);
                     }
                 }
+
+                if (deselectedPackages.length > 0) {
+                    this.$message({
+                        message: deselectedTags.join(", ") + " de-selected!",
+                        type: "warning",
+                    });
+                }
             }
         },
         isDragging(newValue) {
