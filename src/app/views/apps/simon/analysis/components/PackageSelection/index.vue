@@ -50,7 +50,14 @@
                                 </div>
                             </el-col>
                             <el-col :span="8">
-                                <el-select v-model="filter.packagesFeatures" clearable multiple placeholder="Filter by features" style="float: right">
+                                <el-select
+                                    class="flud-selects"
+                                    v-model="filter.packagesFeatures"
+                                    clearable
+                                    multiple
+                                    placeholder="Filter by features"
+                                    style="float: right; padding-left: 20px"
+                                >
                                     <el-option v-for="item in packagesFeatures" :key="item" :label="item" :value="item"></el-option>
                                 </el-select>
                             </el-col>
