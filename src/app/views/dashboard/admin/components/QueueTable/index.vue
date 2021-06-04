@@ -124,7 +124,7 @@
                 <template slot-scope="scope">
                     <el-tag :type="statusFilter(scope.row.status, 'class')">
                         {{ statusFilter(scope.row.status, "value") }}
-                        <small>({{ Math.round((scope.row.modelsTotal / (JSON.parse(scope.row.packages).length * scope.row.resamplesTotal)) * 100) }}%)</small>
+                        <small>({{ Math.round((scope.row.modelsTotal / (scope.row.packages.length * scope.row.resamplesTotal)) * 100) }}%)</small>
                     </el-tag>
                 </template>
             </el-table-column>
@@ -197,7 +197,7 @@
                 "
             >
                 <template slot-scope="scope">
-                    <span>{{ scope.row.modelsTotal }} / {{ JSON.parse(scope.row.packages).length * scope.row.resamplesTotal }}</span>
+                    <span>{{ scope.row.modelsTotal }} / {{ scope.row.packages.length * scope.row.resamplesTotal }}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -351,12 +351,20 @@
                             </el-table-column>
                             <el-table-column fixed align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.title')" width="75">
                                 <template slot-scope="scope">
-                                    <div v-if="(scope.row.dataSource = 1)">
+                                    <div v-if="scope.row.dataSource === 1">
                                         <el-tooltip class="item" effect="dark" placement="top-start">
                                             <div slot="content">{{ $t("views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.initial") }}</div>
                                             <span class="el-icon-more"></span>
                                         </el-tooltip>
                                     </div>
+
+                                    <div v-else-if="scope.row.dataSource === 2">
+                                        <el-tooltip class="item" effect="dark" placement="top-start">
+                                            <div slot="content">Original RFE</div>
+                                            <span class="el-icon-more"></span>
+                                        </el-tooltip>
+                                    </div>
+
                                     <div v-else>
                                         <el-tooltip class="item" effect="dark" placement="top-start">
                                             <div slot="content">{{ $t("views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.predicted") }}</div>
