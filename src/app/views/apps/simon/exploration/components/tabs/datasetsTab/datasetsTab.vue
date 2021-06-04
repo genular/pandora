@@ -62,6 +62,7 @@
                                     <span v-if="scope.row.dataSource == 1">
                                         {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.initial") }}
                                     </span>
+                                    <span v-else-if="scope.row.dataSource == 2">Original RFE</span>
                                     <span v-else>
                                         {{ $t("views.apps.simon.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.predicted") }}
                                     </span>
@@ -960,6 +961,15 @@ export default {
                 });
                 return;
             }
+
+            if (row.dataSource === 2) {
+                this.$message({
+                    message: "No models processed in this resample since it was used for Recursive Feature Elimination",
+                    type: "warning",
+                });
+                return;
+            }
+
             // If someone select multiple rows keep only last one
             if (selection.length > 1) {
                 this.$refs.resamplesTable.clearSelection();

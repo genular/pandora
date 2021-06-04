@@ -55,7 +55,7 @@
                                     v-model="filter.packagesFeatures"
                                     clearable
                                     multiple
-                                    placeholder="Filter by features"
+                                    placeholder="Filter by model features"
                                     style="float: right; padding-left: 20px"
                                 >
                                     <el-option v-for="item in packagesFeatures" :key="item" :label="item" :value="item"></el-option>
