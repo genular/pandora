@@ -733,5 +733,8 @@ export default {
             margin-right: 15px;
         }
     }
+    .el-select-dropdown__wrap {
+        max-height: 471px;
+    }
 }
 </style>

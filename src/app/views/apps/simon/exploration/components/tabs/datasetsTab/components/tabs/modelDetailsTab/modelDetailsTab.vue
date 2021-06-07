@@ -76,10 +76,10 @@
                             <el-form-item>
                                 <el-tooltip placement="top">
                                     <div slot="content">
-                                        {{ $t("views.apps.simon.editing.index.button.download_r_data.description") }}
+                                        {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.description") }}
                                     </div>
                                     <el-button style="float: left" type="danger" round @click="downloadRawData">
-                                        {{ $t("views.apps.simon.editing.index.button.download_r_data.title") }}
+                                        {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.title") }}
                                         <i class="el-icon-download el-icon-right"></i>
                                     </el-button>
                                 </el-tooltip>
