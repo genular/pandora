@@ -90,7 +90,7 @@
         "vue-template-compiler": "^2.6.12",
         "vuedraggable": "^2.17.0",
         "vuex": "^3.1.0",
-        "xlsx": "^0.13.1"
+        "xlsx": "^0.17.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
