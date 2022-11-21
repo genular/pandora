@@ -35,7 +35,8 @@
                                     >
                                         <i slot="suffix" :class="validation['userForm'].email"></i>
                                     </el-input>
-                                    <p class="note">We'll occasionally send updates about your account to this inbox. We'll never share your email address with anyone.</p>
+                                    <p class="note">Please use university / company email address.</p>
+                                    <!-- <p class="note">We'll occasionally send updates about your account to this inbox. We'll never share your email address with anyone.</p> -->
                                 </el-form-item>
                             </div>
                             <el-form-item label="Password*">
@@ -84,12 +85,25 @@
                                         type="text"
                                         placeholder="+44750000000"
                                         @input.native="checkFieldAvailability('users_details', 'phoneNumber', $event, 'userForm')"
-                                    >
-                                        <i slot="suffix" :class="validation['userForm'].phoneNumber"></i>
-                                    </el-input>
+                                    ></el-input>
                                 </el-form-item>
                                 <el-form-item label="Account invite code" style="width: 49%; float: left; margin-left: 2%">
                                     <el-input name="org_invite_code" v-model="userForm.org_invite_code" type="text"></el-input>
+                                </el-form-item>
+                            </div>
+                            <div style="width: 100%; float: left; text-align: right">
+                                <el-form-item>
+                                    <el-checkbox style="opacity: 0.25" name="install_statistics" v-model="userForm.install_statistics">
+                                        Install statistics
+                                        <el-tooltip
+                                            class="item"
+                                            effect="dark"
+                                            content="Contribute to SIMON! Help us improve future versions of SIMON by allowing us to collect installation statistics."
+                                            placement="bottom"
+                                        >
+                                            <i class="el-icon-question"></i>
+                                        </el-tooltip>
+                                    </el-checkbox>
                                 </el-form-item>
                             </div>
                         </el-form>
@@ -113,7 +127,7 @@
                 <el-row style="margin-top: 25px">
                     <el-button-group style="float: right">
                         <el-button type="primary" v-if="$config.name === 'development'" @click="fillDemoData(1)">DEMO</el-button>
-                        <el-button type="primary" :loading="loading.account" @click="registerAccount" :disabled="userForm.validated < 6">
+                        <el-button type="primary" :loading="loading.account" @click="registerAccount" :disabled="userForm.validated !== 5">
                             Create account
                             <i class="el-icon-arrow-right el-icon-right"></i>
                         </el-button>
@@ -150,6 +164,9 @@
 import { validateUsername, validateEmail, validatePassword } from "@/utils/validate";
 import { userRegister, checkDatabaseAvailability, searchAddressSuggest } from "@/api/backend";
 import { debounce } from "@/utils/helpers";
+import { mapGetters } from "vuex";
+
+import freeEmailDomains from "free-email-domains";
 
 export default {
     name: "Private",
@@ -159,9 +176,13 @@ export default {
             type: Number,
         },
     },
+    computed: {
+        ...mapGetters(["packageVersion", "packageEnviroment"]),
+    },
     data() {
         return {
             currentStep: 0,
+            freeEmailDomains: freeEmailDomains,
             validation: {
                 userForm: {
                     username: "el-input__icon el-icon-error",
@@ -185,8 +206,15 @@ export default {
                 firstName: "",
                 lastName: "",
                 phoneNumber: "",
+                install_statistics: true,
                 org_invite_code: Math.random().toString(36).substring(7),
                 validated: 0,
+                packageVersion: this.packageVersion,
+                packageEnviroment: this.packageEnviroment,
+                client_info: {
+                    timeOpened: new Date(),
+                    timezone: new Date().getTimezoneOffset() / 60,
+                },
             },
             passwordType: "password",
         };
@@ -208,8 +236,8 @@ export default {
             this.userForm.lastName = "Doe";
             this.userForm.phoneNumber = "+358502818692";
             this.userForm.password = "demouser";
-            // Should be 6 to pass, but we don't want to validate email automatically
-            this.userForm.validated = 5;
+            // Should be 5 to pass, but we don't want to validate email automatically
+            this.userForm.validated = 4;
             this.userForm.org_invite_code = Math.random().toString(36).substring(7);
             for (const name in this.validation["userForm"]) {
                 if (name !== "email" && this.validation["userForm"].hasOwnProperty(name)) {
@@ -220,7 +248,7 @@ export default {
         navigateToStep(step) {
             console.log("navigateToStep :" + step);
             if (step > 0) {
-                if (this.userForm.validated === 6) {
+                if (this.userForm.validated === 5) {
                     this.currentStep = step;
                     this.$router.push({
                         path: "/authenticate/?action=register&usertype=private&step=" + step,
@@ -307,7 +335,9 @@ export default {
                     return;
                 }
             } else if (validationField === "email") {
-                if (validateEmail(validationValue) === false) {
+                let emailDomain = validationValue.substring(validationValue.indexOf("@") + 1);
+
+                if (validateEmail(validationValue) === false || this.freeEmailDomains.includes(emailDomain) === true) {
                     console.log("Cannot validate email: " + validationValue);
                     if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
                         this.validation[formName][validationField] = "el-input__icon el-icon-error";
@@ -353,7 +383,7 @@ export default {
                 .catch((error) => {
                     console.log(error);
                 });
-        }, 500),
+        }, 1000),
     },
 };
 </script>

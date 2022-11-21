@@ -2,6 +2,7 @@ const getters = {
     /** main.js **/
     sidebar: (state) => state.main.sidebar,
     is_online: (state) => state.main.is_online,
+    backendServerLoad: (state) => state.main.backendServerLoad,
     language: (state) => state.main.language,
     is_configured: (state) => state.main.is_configured,
     selectedFiles: (state) => state.main.selectedFiles,

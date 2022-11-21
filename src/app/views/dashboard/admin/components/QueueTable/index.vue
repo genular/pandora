@@ -693,7 +693,7 @@ export default {
          * @return {[type]}                [description]
          */
         renderHeader(h, { column, store }, tableReference) {
-            console.log("====> renderHeader for: " + tableReference);
+            // console.log("====> renderHeader for: " + tableReference);
             let element = column.label;
 
             if (typeof column.property !== "undefined") {

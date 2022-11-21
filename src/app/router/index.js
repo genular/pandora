@@ -149,7 +149,7 @@ export const constantRouterMap = [
             {
                 path: "start-exploration",
                 component: _import("apps/unsupervised_learning/editing/index"),
-                name: "unsupervised_learning-exploration",
+                name: "unsupervised_learning-exploration_hidden",
                 meta: {
                     title: "unsupervised_learning_exploration",
                     icon: "fa fa-icon fa-play",

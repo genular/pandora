@@ -65,10 +65,13 @@ export default {
             default: false,
         },
     },
-
+    mounted() {
+        console.log("mounted: " + this.$options.name);
+    },
     methods: {
         generateRouteTitle,
         // Some menu Items must have disabled class because they can only be used if some specific file is selected
+        
         generateMenuClass: function (childItem) {
             console.log("Checking menu class: " + childItem.name);
             let cssClass = "ready";

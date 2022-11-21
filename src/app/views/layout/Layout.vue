@@ -17,6 +17,7 @@
 import { mapGetters } from "vuex";
 import { Navbar, Sidebar, AppMain, TagsView } from "./components";
 
+
 export default {
     name: "layout",
     components: {
@@ -29,6 +30,9 @@ export default {
         ...mapGetters(["sidebar"]),
     },
     mounted() {
+        
+        console.log("mounted: " + this.$options.name);
+
         this.$nextTick(function () {
             window.addEventListener("online", this.changeOnlineStatus);
             window.addEventListener("offline", this.changeOnlineStatus);

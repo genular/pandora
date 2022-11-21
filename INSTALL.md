@@ -1,10 +1,12 @@
 ### Basic system requirements
-* **Linux**  - Installation script tested with: `ubuntu-18.04.1`, but any other should work just fine with manual installation
-* **15GB**   - of free disk space
-* **nodejs v11.6.0** or above
-* **PHP 7.3.0** or above
 
-### Frontend and Backend installation
+-   **Linux** - Installation script tested with: `ubuntu-18.04.1`, but any other should work just fine with manual installation
+-   **15GB** - of free disk space
+-   **nodejs v11.6.0** or above
+-   **PHP 7.3.0** or above
+
+### Front-end and Back-end installation
+
 ```bash
     ## Download and install Linux if you don't have one already.
     ## In this example we are using ubuntu-18.04.1 server-amd64
@@ -41,7 +43,7 @@
     cd /tmp
     wget https://github.com/genular/simon-backend/blob/master/documentation/installation/install_dependencies.sh
     chmod 777 install_dependencies.sh
-    
+
     # Start it and follow instructions
     ./install_dependencies.sh
 
@@ -93,13 +95,16 @@
 ```
 
 ## Configuration overview
-Backend is made as multiple separate modules. You can run this modules on one machine or each on separate one.
+
+Back-end is made as multiple separate modules. You can run this modules on one machine or each on separate one.
 Analysis is made on multiple cloud servers in parallel to speed-up things, but can also be configured to run on same machine where backend is hosted.
 
-### Analysis backend
+### Analysis back-end
+
 is compatible with any Cloud Provider that supports [openstack compute api](https://developer.openstack.org/api-ref/compute/).
 In following example we will use [Hetzner Cloud](https://www.hetzner.com/cloud) as a service provider.
 
 ### Data storage
-storage backend is compatible with any S3 object storage like provider.
+
+storage back-end is compatible with any S3 object storage like provider.
 In following example we will use [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/)

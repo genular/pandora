@@ -66,12 +66,11 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .international:hover {
-    > i {
-        color: #35224a;
+    i {
+        color: #000000;
     }
 }
 .language-dropdown {
-    top: 40px !important;
     max-height: 300px;
     overflow: scroll;
     overflow-x: scroll;

@@ -9,13 +9,14 @@ import * as dataReceiver from "crypto-js";
 // Create new axios instance
 const service = axios.create({
     crossDomain: true,
-    // 20 min request timeout
-    timeout: 1200000,
+    // 7 days request timeout
+    timeout: 604800000,
 });
 
 // Request interceptor
 service.interceptors.request.use(
     function (config) {
+        // TODO: add loading in Browser TAB
         if (store.getters.auth_token) {
             config.headers["X-Token"] = store.getters.auth_token;
         }
@@ -51,6 +52,8 @@ service.interceptors.request.use(
 // Request response interceptor
 service.interceptors.response.use(
     function (response) {
+        // TODO: remove loading from Browser TAB
+
         /** Decrypt server return data */
         if (typeof response.data !== "undefined" && IsJsonString(response.data) === true) {
             const data = dataReceiver.AES.decrypt(response.data, "1337", {

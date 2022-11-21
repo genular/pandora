@@ -38,12 +38,13 @@
                             >
                                 <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
                                     <el-row style="max-width: 250px">
-                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
+                                            {{ item.na_percentage > 0 ? "NA" : "" }}
                                         </el-col>
                                     </el-row>
                                 </el-option>
@@ -56,7 +57,7 @@
                         </el-form-item>
 
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.first_n_columns.title')">
-                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="10000"></el-input-number>
+                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="500000"></el-input-number>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
                                     {{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.first_n_columns.description") }}
@@ -307,7 +308,7 @@ export default {
 
             settingsForm: {
                 selectedColumns: [],
-                cutOffColumnSize: 10,
+                cutOffColumnSize: 50,
                 groupingVariable: [],
                 preProcessedData: true,
                 fontSize: 12,
@@ -413,25 +414,20 @@ export default {
         },
         redrawImage() {
             if (this.tabEnabled === true) {
-                this.handleFetchOverViewImage();
+                this.fetchRemoteAnalysis();
             }
         },
         downloadRawData() {
             const downloadLink = this.$store.getters.user_settings_server_address_plots + "/plots/general/download-saved-object?objectHash=" + this.plot_data.saveObjectHash;
             window.open(downloadLink, "_blank");
         },
-        handleFetchOverViewImage() {
+        fetchRemoteAnalysis() {
             this.loadingPlot = true;
             // Clone objects as an simple object
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
-            // If no columns are selected select all columns
-            if (settingsForm.selectedColumns.length < 1) {
-                // settingsForm.selectedColumns = this.selectedFileDetails.columns.map((x) => x.remapped);
-                settingsForm.selectedColumns = this.selectedFileDetails.columns
-                    .filter((x) => x.valid_numeric)
-                    .map((x) => x.remapped)
-                    .slice(0, settingsForm.cutOffColumnSize);
-            } else {
+
+            // If any columns are selected make remapping
+            if (settingsForm.selectedColumns.length > 1) {
                 settingsForm.selectedColumns = this.settingsForm.selectedColumns.map((x) => x.remapped);
             }
 
@@ -439,6 +435,7 @@ export default {
             if (settingsForm.groupingVariable.length > 0) {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.groupingVariable.includes(x));
             }
+
             fetchOverViewPlot({
                 selectedFileID: this.selectedFiles[0].id,
                 settings: settingsForm,
@@ -470,6 +467,11 @@ export default {
                     });
                     console.log(error);
                     this.loadingPlot = false;
+
+                    // Loop this.plot_data and set all keys to false
+                    for (let plotIndex in this.plot_data) {
+                        this.plot_data[plotIndex] = false;
+                    }
                 });
         },
 

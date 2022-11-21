@@ -44,12 +44,13 @@
                                     }"
                                 >
                                     <el-row style="max-width: 250px">
-                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
+                                            {{ item.na_percentage > 0 ? "NA" : "" }}
                                         </el-col>
                                     </el-row>
                                 </el-option>
@@ -62,7 +63,7 @@
                         </el-form-item>
 
                         <el-form-item label="First (n) columns">
-                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="10000"></el-input-number>
+                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="50000"></el-input-number>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">If you have not selected any columns we will take first n columns from your dataset, based on this value.</div>
                                 <i class="el-icon-question"></i>
@@ -89,12 +90,13 @@
                             >
                                 <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
                                     <el-row style="max-width: 250px">
-                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
+                                            {{ item.na_percentage > 0 ? "NA" : "" }}
                                         </el-col>
                                     </el-row>
                                 </el-option>
@@ -131,12 +133,13 @@
                                     :disabled="item.valid_10p !== 1 || item.unique_count < 2"
                                 >
                                     <el-row style="max-width: 250px">
-                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
+                                            {{ item.na_percentage > 0 ? "NA" : "" }}
                                         </el-col>
                                     </el-row>
                                 </el-option>
@@ -176,12 +179,13 @@
                                     :disabled="item.valid_numeric === 0 || item.unique_count < 2"
                                 >
                                     <el-row style="max-width: 250px">
-                                        <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
+                                            {{ item.na_percentage > 0 ? "NA" : "" }}
                                         </el-col>
                                     </el-row>
                                 </el-option>
@@ -235,8 +239,17 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="KNN clusters" v-if="['Louvain'].includes(settingsForm.clusterType)">
+
+
+                        <el-form-item label="K" v-if="['Louvain'].includes(settingsForm.clusterType)">
                             <el-input-number style="float: right" v-model="settingsForm.knn_clusters" :step="1" :min="2" :max="2048"></el-input-number>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    Maximum number of nearest neighbors to search.
+                                    The optimal K value usually found is the square root of N, where N is the total number of samples.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
                         </el-form-item>
 
                         <el-form-item label="Cluster groups" v-if="['Hierarchical', 'Mclust'].includes(settingsForm.clusterType)">
@@ -709,7 +722,7 @@ export default {
                 plot_size: 12,
 
                 clusterType: "Louvain",
-                cutOffColumnSize: 1000,
+                cutOffColumnSize: 50000,
                 removeNA: false,
                 perplexity: 5,
                 knn_clusters: 25,
@@ -723,6 +736,8 @@ export default {
                 datasetAnalysisType: "heatmap",
                 datasetAnalysisSortColumn: "cluster",
                 datasetAnalysisClustOrdering: 1,
+                anyNAValues: false,
+                categoricalVariables: false
             },
             plot_data: {
                 tsne_plot: [],
@@ -826,24 +841,19 @@ export default {
         },
         redrawImage() {
             if (this.tabEnabled === true) {
-                this.handleFetchOverViewImage();
+                this.fetchRemoteAnalysis();
             }
         },
         downloadRawData() {
             const downloadLink = this.$store.getters.user_settings_server_address_plots + "/plots/general/download-saved-object?objectHash=" + this.plot_data.saveObjectHash;
             window.open(downloadLink, "_blank");
         },
-        handleFetchOverViewImage() {
+        fetchRemoteAnalysis() {
             this.loadingPlot = true;
             // Clone objects as an simple object
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
-            // If no columns are selected select all columns
-            if (settingsForm.selectedColumns.length < 1) {
-                settingsForm.selectedColumns = this.selectedFileDetails.columns
-                    // .filter((x) => x.valid_numeric)
-                    .map((x) => x.remapped)
-                    .slice(0, settingsForm.cutOffColumnSize);
-            } else {
+            // If any columns are selected get their names
+            if (settingsForm.selectedColumns.length > 0) {
                 settingsForm.selectedColumns = this.settingsForm.selectedColumns.map((x) => x.remapped);
             }
 
@@ -867,6 +877,51 @@ export default {
                 // Remove Grouping variable from colorVariables
                 settingsForm.colorVariables = settingsForm.colorVariables.filter((x) => !settingsForm.groupingVariables.includes(x));
             }
+
+            this.settingsForm.anyNAValues = false;
+            this.settingsForm.categoricalVariables = false;
+            // Loop selectedColumns and groupingVariables to check if any are NA
+            settingsForm.groupingVariables.forEach((x) => {
+                let item = this.settingsForm.groupingVariables.find(o => o.remapped === x);
+
+                if (item && item.na_percentage > 0) {
+                    this.settingsForm.anyNAValues = true;
+                }
+            });
+
+            // If the are any NA Values in grouping variables we need to have removeNA option enabled
+            if(this.settingsForm.anyNAValues === true){
+                if(this.settingsForm.removeNA === false){
+                    this.$message({
+                        message: "NA Values detected in 'grouping variables'. Please enable 'Remove NA' option.",
+                        type: "error",
+                    });
+                    this.loadingPlot = false;
+                    return;
+                }
+            }
+            // If the are any NA Values in selectedColumns we need to have removeNA or preProcessDataset option enabled
+            settingsForm.selectedColumns.forEach((x) => {
+                let item = this.settingsForm.selectedColumns.find(o => o.remapped === x);
+                if (item && item.na_percentage > 0) {
+                    this.settingsForm.anyNAValues = true;
+                }
+                if (item.unique_count <= 2) {
+                    this.settingsForm.categoricalVariables = true;
+                }
+            });
+
+            if(this.settingsForm.anyNAValues === true){
+                if(this.settingsForm.removeNA === false && this.settingsForm.preProcessDataset === false){
+                    this.$message({
+                        message: "NA Values detected in 'selected columns'. Please enable 'Remove NA' or 'Pre-process dataset' option.",
+                        type: "error",
+                    });
+                    this.loadingPlot = false;
+                    return;
+                }
+            }
+
 
             fetchTsnePlot({
                 selectedFileID: this.selectedFiles[0].id,
@@ -900,6 +955,11 @@ export default {
                     });
                     console.log(error);
                     this.loadingPlot = false;
+
+                    // Loop this.plot_data and set all keys to false
+                    for (let plotIndex in this.plot_data) {
+                        this.plot_data[plotIndex] = false;
+                    }
                 });
         },
         initFuse(searchItems) {

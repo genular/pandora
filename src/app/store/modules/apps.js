@@ -25,7 +25,7 @@ const apps = {
                 selectedPreProcess: estore.get("apps-simon-analysis-selectedPreProcess") || ["center", "scale"],
                 selectedPartitionSplit: estore.get("apps-simon-analysis-selectedPartitionSplit") || 75,
 
-                modelProcessingTimeLimit: estore.get("apps-simon-analysis-modelProcessingTimeLimit") || 5,
+                modelProcessingTimeLimit: estore.get("apps-simon-analysis-modelProcessingTimeLimit") || 10,
 
                 total_samples: estore.get("apps-simon-analysis-total_samples") || 0,
                 invalid_samples: estore.get("apps-simon-analysis-invalid_samples") || [],

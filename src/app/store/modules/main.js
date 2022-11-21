@@ -1,12 +1,17 @@
 import estore from "@/utils/storage/settings";
 import axios from "axios";
 
+import {
+    fetchServerLoad as APIFetchServerLoad
+} from "@/api/backend";
+
 const main = {
     state: {
         sidebar: {
             opened: !+estore.get("main-sidebar-opened"),
         },
         is_online: false,
+        backendServerLoad: {},
         language: estore.get("main-language") || "en",
         is_configured: estore.get("main-is_configured") || false,
         selectedFiles: estore.get("main-selectedFiles") || [],
@@ -25,6 +30,9 @@ const main = {
         },
         SET_IS_ONLINE: (state, is_online) => {
             state.is_online = is_online;
+        },
+        SET_BACKEND_SERVER_LOAD: (state, backendServerLoad) => {
+            state.backendServerLoad = backendServerLoad;
         },
         SET_LANGUAGE: (state, language) => {
             state.language = language;
@@ -64,6 +72,23 @@ const main = {
         setSelectedFileDetails({ commit }, selectedFileDetails) {
             commit("SET_SELECTED_FILE_DETAILS", selectedFileDetails);
         },
+        setBackendServerLoad({ commit, state }) {
+            return new Promise((resolve, reject) => {
+                APIFetchServerLoad()
+                    .then(response => {
+                        if (response.data.success === true) {
+                            commit("SET_BACKEND_SERVER_LOAD", response.data.message);
+                            resolve(true);
+                        } else {
+                            resolve(false);
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        reject(error);
+                    });
+            });
+        }
     },
 };
 

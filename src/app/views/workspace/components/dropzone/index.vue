@@ -153,6 +153,9 @@ export default {
         });
     },
     methods: {
+        filesAvaliable() {
+            return this.dropzone.files.length;
+        },
         removeAllFiles(bool) {
             console.log("Removing all files from workspace");
             this.dropzone.removeAllFiles(bool);

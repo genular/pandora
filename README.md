@@ -55,7 +55,7 @@ Goal of this project is to make user interface that will empower scientists, mak
 
 ---
 
-## Installation Quickstart
+## Installation Quick-start
 
 ### Easy
 
@@ -68,8 +68,6 @@ The `SIMON` source code includes a [Dockerfile](https://github.com/genular/simon
 ##### Software:
 
 -   [Docker](https://docs.docker.com/engine/installation/) (`version 17.05` or later is required)
--   [Docker Windows installation tutorial](https://docs.docker.com/docker-for-windows/install/)
--   [Docker Windows direct download](https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe)
 
 ##### Minimum hardware recommendation:
 
@@ -82,9 +80,8 @@ In order to run a test instance of `SIMON` we first need to prepare the local en
 
 1. Download and install [Docker](https://docker.com). When you finished installing [Docker](https://docs.docker.com/engine/installation/) please _continue_ to steps below.
 
-2. Lets download and run the [genular/simon](https://cloud.docker.com/u/genular/repository/docker/genular/simon) image from DockerHub.
+2. Lets download and run the `genular/simon` image from DockerHub:
 
--   Then we will run `SIMON` with appropriately mounted volumes and port mapping. By default `SIMON` will run with a Docker Volume file-system inside of it.
 -   Please **open** your favorite **Terminal** and **run** the **command below**. If on Windows - open `Windows Power Shell` => _Click Start, type PowerShell, and then click Windows PowerShel_
 
 > _If you wish to get correct time inside SIMON, replace TZ=<timzone> variable with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)_
@@ -136,7 +133,7 @@ docker volume rm genular_data_latest
 docker volume rm genular_data
 ```
 
-### Advanced
+### Advanced setup
 
 To install and configure `SIMON` from source you will need knowledge of [Linux](https://en.wikipedia.org/wiki/Linux), how to set up databases ([MySQL](https://mariadb.org/)) and web server ([Apache](https://www.apache.org/), [nginx](https://nginx.org/en/)) together with [R](https://www.r-project.org/) and [PHP](https://www.php.net/) setup and configuration.
 

@@ -35,12 +35,13 @@
                         >
                             <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_zv !== 1">
                                 <el-row style="max-width: 250px">
-                                    <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden;  white-space: nowrap" :title="item.original">
                                         {{ item.original }}
                                     </el-col>
-                                    <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
                                         {{ item.valid_10p === 1 ? "*" : "" }}
                                         {{ item.unique_count }}
+                                        {{ item.na_percentage > 0 ? "NA" : "" }}
                                     </el-col>
                                 </el-row>
                             </el-option>
@@ -598,7 +599,7 @@ export default {
         },
         redrawImage() {
             if (this.tabEnabled === true) {
-                this.handleFetchCorrPlotImage();
+                this.fetchRemoteAnalysis();
             }
         },
         downloadRawData() {
@@ -632,18 +633,12 @@ export default {
             downloadLink.click();
             document.body.removeChild(downloadLink);
         },
-        handleFetchCorrPlotImage() {
+        fetchRemoteAnalysis() {
             this.loadingPlot = true;
             // Clone objects as an simple object
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
-            // If no columns are selected
-            if (settingsForm.selectedColumns.length < 1) {
-                // settingsForm.selectedColumns = this.selectedFileDetails.columns.map((x) => x.remapped);
-                settingsForm.selectedColumns = this.selectedFileDetails.columns
-                    .filter((x) => x.valid_numeric)
-                    .map((x) => x.remapped)
-                    .slice(0, settingsForm.cutOffColumnSize);
-            } else {
+            // If any columns are selected make remapping
+            if (settingsForm.selectedColumns.length > 0) {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped);
             }
 
@@ -675,6 +670,11 @@ export default {
                     });
                     console.log(error);
                     this.loadingPlot = false;
+
+                    // Loop this.plot_data and set all keys to false
+                    for (let plotIndex in this.plot_data) {
+                        this.plot_data[plotIndex] = false;
+                    }
                 });
         },
         resetVariables() {

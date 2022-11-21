@@ -4,12 +4,7 @@
  * @Last Modified by:   LogIN-
  * @Last Modified time: 2019-04-18 15:45:08
  */
-/*
- * @Author: LogIN-
- * @Date:   2019-01-18 08:41:04
- * @Last Modified by:   LogIN-
- * @Last Modified time: 2019-01-22 11:52:45
- */
+
 "use strict";
 const path = require("path");
 
@@ -40,7 +35,7 @@ const packageInfo = require(path.resolve(__dirname, `../package.json`));
 
 const prepareMessagesPlugin = require(path.resolve(__dirname, `../src/app/translations/plugins/prepareMessagesPlugin.js`));
 
-module.exports = environment => {
+module.exports = (environment) => {
     // Try to copy env template and add ENV variables to it
     const envTemplateFinal = _.configureEnviroment(environment, argv);
 
@@ -50,45 +45,45 @@ module.exports = environment => {
             alias: {
                 env_vars$: path.resolve(envTemplateFinal),
                 scss_vars: SRC_DIR + "/app/styles/variables.scss",
-                "@": SRC_DIR + "/app"
+                "@": SRC_DIR + "/app",
             },
             modules: [
                 // places where to search for required modules
                 _.cwd("node_modules"),
-                _.cwd("src")
-            ]
+                _.cwd("src"),
+            ],
         },
         module: {
             rules: [
                 {
                     test: /\.css$/,
-                    loaders: ["style-loader", "css-loader", "resolve-url-loader"]
+                    loaders: ["style-loader", "css-loader", "resolve-url-loader"],
                 },
                 {
                     test: /\.scss$/,
                     use: [
                         {
-                            loader: "style-loader"
+                            loader: "style-loader",
                         },
                         {
                             loader: "css-loader",
                             options: {
-                                sourceMap: false
-                            }
+                                sourceMap: false,
+                            },
                         },
                         {
                             loader: "resolve-url-loader",
                             options: {
-                                debug: false
-                            }
+                                debug: false,
+                            },
                         },
                         {
                             loader: "sass-loader",
                             options: {
-                                sourceMap: true
-                            }
-                        }
-                    ]
+                                sourceMap: true,
+                            },
+                        },
+                    ],
                 },
                 {
                     test: /\.vue$/,
@@ -99,21 +94,21 @@ module.exports = environment => {
                         cssSourceMap: true,
                         loaders: {
                             scss: ["vue-style-loader", "css-loader", "resolve-url-loader", "sass-loader"],
-                            sass: ["vue-style-loader", "css-loader", "resolve-url-loader", "sass-loader?indentedSyntax"]
+                            sass: ["vue-style-loader", "css-loader", "resolve-url-loader", "sass-loader?indentedSyntax"],
                         },
                         transformToRequire: {
                             video: ["src", "poster"],
                             source: "src",
                             img: "src",
-                            image: "xlink:href"
+                            image: "xlink:href",
                         },
-                        compilerOptions: { preserveWhitespace: false, whitespace: "condense" }
-                    }
+                        compilerOptions: { preserveWhitespace: false, whitespace: "condense" },
+                    },
                 },
                 {
                     test: /\.(js|jsx)$/,
                     loader: "babel-loader",
-                    include: [SRC_DIR, path.join(__dirname, "..", "node_modules/webpack-dev-server/client")]
+                    include: [SRC_DIR, path.join(__dirname, "..", "node_modules/webpack-dev-server/client")],
                     //exclude: /node_modules/,
                 },
                 {
@@ -121,26 +116,26 @@ module.exports = environment => {
                     loader: "url-loader",
                     options: {
                         limit: 10000,
-                        name: "images/[name].[hash:7].[ext]"
-                    }
+                        name: "images/[name].[hash:7].[ext]",
+                    },
                 },
                 {
                     test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
                     loader: "url-loader",
                     options: {
                         limit: 10000,
-                        name: "media/[name].[hash:7].[ext]"
-                    }
+                        name: "media/[name].[hash:7].[ext]",
+                    },
                 },
                 {
                     test: /\.(woff2?|woff|eot|ttf|otf|svg)(\?.*)?$/,
                     loader: "url-loader",
                     options: {
                         limit: 10000,
-                        name: "fonts/[name].[hash:7].[ext]"
-                    }
-                }
-            ]
+                        name: "fonts/[name].[hash:7].[ext]",
+                    },
+                },
+            ],
         },
         plugins: [
             new VueLoaderPlugin(),
@@ -150,25 +145,25 @@ module.exports = environment => {
                     version: JSON.stringify(packageInfo.version),
                     repository: JSON.stringify(packageInfo.repository),
                     homepage: JSON.stringify(packageInfo.homepage),
-                    copyright: JSON.stringify(packageInfo.copyright)
-                }
+                    copyright: JSON.stringify(packageInfo.copyright),
+                },
             }),
             new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
             new CleanWebpackPlugin([output], {
                 root: SRC_DIR + "/../",
                 verbose: true,
-                dry: false
+                dry: false,
             }),
             new webpack.optimize.OccurrenceOrderPlugin(),
             new webpack.NoEmitOnErrorsPlugin(),
             new FriendlyErrorsWebpackPlugin({
-                clearConsole: environment === "development"
+                clearConsole: environment === "development",
             }),
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
                 filename: environment == "development" ? "[name].css" : "[name].[hash].css",
-                chunkFilename: environment == "development" ? "[id].css" : "[id].[hash].css"
+                chunkFilename: environment == "development" ? "[id].css" : "[id].[hash].css",
             }),
             // Prepare translations files
             new prepareMessagesPlugin(),
@@ -180,14 +175,14 @@ module.exports = environment => {
                     collapseWhitespace: true,
                     removeAttributeQuotes: false,
                     removeComments: true,
-                    caseSensitive: true
+                    caseSensitive: true,
                 },
                 filename: "index.html",
                 inject: "body",
                 cache: "false",
                 chunks: ["main", "vendor"],
                 excludeChunks: ["background"],
-                chunksSortMode: "none"
+                chunksSortMode: "none",
             }),
             // https://stackoverflow.com/questions/34827956/webpack-gzip-compressed-bundle-not-being-served-the-uncompressed-bundle-is
             new CompressionWebpackPlugin({
@@ -195,25 +190,25 @@ module.exports = environment => {
                 algorithm: "gzip",
                 test: new RegExp("\\.(js|css)$"),
                 threshold: 10240,
-                minRatio: 0.8
+                minRatio: 0.8,
             }),
             new CopyWebpackPlugin(
                 [
                     {
                         from: SRC_DIR + "/../static",
-                        to: SRC_DIR + "/../" + output + "/static"
+                        to: SRC_DIR + "/../" + output + "/static",
                     },
                     {
                         from: SRC_DIR + "/humans.txt",
-                        to: SRC_DIR + "/../" + output + "/humans.txt"
+                        to: SRC_DIR + "/../" + output + "/humans.txt",
                     },
                     {
                         from: SRC_DIR + "/robots.txt",
-                        to: SRC_DIR + "/../" + output + "/robots.txt"
-                    }
+                        to: SRC_DIR + "/../" + output + "/robots.txt",
+                    },
                 ],
                 { ignore: [".*"] }
-            )
+            ),
         ],
         stats: {
             colors: true,
@@ -221,15 +216,15 @@ module.exports = environment => {
             chunks: false,
             modules: false,
             reasons: true,
-            errorDetails: true
-        }
+            errorDetails: true,
+        },
     };
     if (isWeb === false) {
         config.target = "electron-renderer";
         config.node = {
             setImmediate: false,
             __dirname: false,
-            __filename: false
+            __filename: false,
         };
         config.externals = [
             nodeExternals({
@@ -267,15 +262,15 @@ module.exports = environment => {
                     // "xlsx",
                     "webpack/hot/poll?1000",
                     "webpack/hot/dev-server",
-                    "webpack/hot/signal.js"
-                ]
-            })
+                    "webpack/hot/signal.js",
+                ],
+            }),
         ];
     } else {
         config.target = "web";
         config.optimization = {
             runtimeChunk: {
-                name: "vendor"
+                name: "vendor",
             },
             splitChunks: {
                 cacheGroups: {
@@ -284,10 +279,10 @@ module.exports = environment => {
                         test: /node_modules/,
                         name: "vendor",
                         chunks: "initial",
-                        minSize: 1
-                    }
-                }
-            }
+                        minSize: 1,
+                    },
+                },
+            },
         };
 
         config.node = {
@@ -300,7 +295,7 @@ module.exports = environment => {
             fs: "empty",
             net: "empty",
             tls: "empty",
-            child_process: "empty"
+            child_process: "empty",
         };
     }
 
@@ -318,13 +313,13 @@ module.exports = environment => {
             quiet: true,
             disableHostCheck: true,
             watchOptions: {
-                poll: false
+                poll: false,
             },
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-                "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-            }
+                "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
+            },
         };
         if (isWeb === true) {
             // config.plugins.push(new BundleAnalyzerPlugin());
@@ -342,10 +337,10 @@ module.exports = environment => {
                     warnings: false,
                     ecma: 6,
                     output: {
-                        comments: false
-                    }
-                }
-            })
+                        comments: false,
+                    },
+                },
+            }),
         ];
     }
     return config;

@@ -35,12 +35,13 @@
                         >
                             <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
                                 <el-row style="max-width: 250px">
-                                    <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                         {{ item.original }}
                                     </el-col>
-                                    <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
                                         {{ item.valid_10p === 1 ? "*" : "" }}
                                         {{ item.unique_count }}
+                                        {{ item.na_percentage > 0 ? "NA" : "" }}
                                     </el-col>
                                 </el-row>
                             </el-option>
@@ -49,15 +50,15 @@
                             <div slot="content">
                                 Please select columns you wish to analyze and plot. Leaving this empty will take all valid numerical columns except excluded ones.
                                 <br />
-                                Rows that contain one or more NAs will be excluded from the PCA. Variables with zero variance have been automatically removed because they're not
-                                useful in a PCA.
+                                To remove rows with NA values please make sure that "Remove NA" option is enabled.
+                                Variables with zero variance are automatically excluded when "Preprocess" option is enabled and NA values are median imputed.
                             </div>
                             <i class="el-icon-question"></i>
                         </el-tooltip>
                     </el-form-item>
 
                     <el-form-item label="First (n) columns">
-                        <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="10000"></el-input-number>
+                        <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="100" :min="2" :max="50000"></el-input-number>
                         <el-tooltip placement="top" style="padding-left: 5px">
                             <div slot="content">If you have not selected any columns we will take first n columns from your dataset, based on this value.</div>
                             <i class="el-icon-question"></i>
@@ -84,12 +85,13 @@
                         >
                             <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
                                 <el-row style="max-width: 250px">
-                                    <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                         {{ item.original }}
                                     </el-col>
-                                    <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
                                         {{ item.valid_10p === 1 ? "*" : "" }}
                                         {{ item.unique_count }}
+                                        {{ item.na_percentage > 0 ? "NA" : "" }}
                                     </el-col>
                                 </el-row>
                             </el-option>
@@ -146,12 +148,13 @@
                                 :disabled="item.valid_10p !== 1 || item.unique_count < 2"
                             >
                                 <el-row style="max-width: 250px">
-                                    <el-col :span="13" style="float: left; text-overflow: ellipsis; overflow: hidden; width: 90%; white-space: nowrap" :title="item.original">
+                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                         {{ item.original }}
                                     </el-col>
-                                    <el-col :span="1" style="float: right; color: #8492a6; font-size: 13px">
+                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
                                         {{ item.valid_10p === 1 ? "*" : "" }}
                                         {{ item.unique_count }}
+                                        {{ item.na_percentage > 0 ? "NA" : "" }}
                                     </el-col>
                                 </el-row>
                             </el-option>
@@ -222,6 +225,32 @@
                             <div slot="content">Should we drop rows with NA values in dataset before any calculation?</div>
                             <i class="el-icon-question"></i>
                         </el-tooltip>
+                    </el-form-item>
+
+                    <el-form-item label="KMO/Berlett column limit">
+                         <el-input-number style="float: right" size="mini" v-model="settingsForm.kmo_bartlett_limit" :step="100" :max="100000" :min="1"></el-input-number>
+                        <el-tooltip placement="top">
+                            <div slot="content">If we have more columns than in this limit we will skip calculation of Bartlett (1951) and his contrast Kaiser, Meyer, Olkin test.</div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                    </el-form-item>
+
+
+
+                    <el-form-item label="Analysis methid">
+                        <el-select v-model="settingsForm.analysis_method" size="mini" placeholder="Select" style="float: right">
+                            <el-option v-for="item in selectedOptions.analysis_method" :key="item.id" :label="item.name" :value="item.id">
+                                <span style="float: left">{{ item.name }}</span>
+                                <span style="float: right; color: #8492a6; font-size: 13px">
+                                    <el-tooltip placement="top">
+                                        <div slot="content" style="text-align: center">
+                                            {{ item.description }}
+                                        </div>
+                                        <span class="el-icon-info"></span>
+                                    </el-tooltip>
+                                </span>
+                            </el-option>
+                        </el-select>
                     </el-form-item>
 
                     <el-divider></el-divider>
@@ -1183,14 +1212,16 @@ export default {
             selectedFileDetailsDisplay: [],
 
             selectedOptions: {
+                analysis_method: [{id: "PCA", name: "PCA", description: "Principal Component Analysis (When variables are numericals)"}, {id: "MCA", name: "MCA", description: "Multiple Correspondence Analysis (When individuals are described by a set of categorical variables)"}],
                 pca_components_x: [],
                 pca_components_y: [],
                 theme: plotThemes,
                 colorPalette: plotColorPalettes,
             },
             settingsForm: {
+                analysis_method: "PCA",
                 selectedColumns: [],
-                cutOffColumnSize: 100,
+                cutOffColumnSize: 50000,
 
                 cutOffUnique: true,
                 cutOffUniqueSize: 5,
@@ -1202,6 +1233,7 @@ export default {
 
                 preProcessDataset: true,
                 removeNA: true,
+                kmo_bartlett_limit: 1000,
 
                 groupingVariables: [],
                 displayLoadings: true,
@@ -1214,6 +1246,8 @@ export default {
                 colorPalette: "Set1",
                 aspect_ratio: 1,
                 plot_size: 12,
+                anyNAValues: false,
+                categoricalVariables: false
             },
         };
     },
@@ -1283,7 +1317,7 @@ export default {
         },
         redrawImage() {
             if (this.tabEnabled === true) {
-                this.handleFetchCorrPlotImage();
+                this.fetchRemoteAnalysis();
             }
         },
         downloadRawData() {
@@ -1317,7 +1351,8 @@ export default {
             return isDisabled;
         },
         downloadPlotImage(imageType, itemIndex = null) {
-            if (typeof this.plot_data[imageType] === "undefined") {
+
+            if (typeof this.plot_data[imageType] === "undefined" || this.plot_data[imageType].length < 25) {
                 return;
             }
             let svgString = "";
@@ -1350,32 +1385,14 @@ export default {
             downloadLink.click();
             document.body.removeChild(downloadLink);
         },
-        handleFetchCorrPlotImage() {
+        fetchRemoteAnalysis() {
             this.loadingPlot = true;
+
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
 
-            // If no columns are selected
-            if (settingsForm.selectedColumns.length < 1) {
-                settingsForm.selectedColumns = this.selectedFileDetails.columns.filter((x) => x.valid_numeric);
-
-                if (settingsForm.cutOffUnique === true) {
-                    settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => x.unique_count >= settingsForm.cutOffUniqueSize);
-                    console.log(settingsForm.selectedColumns);
-                }
-                if (settingsForm.remove_less_10p === true) {
-                    settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !x.valid_10p);
-                }
-
-                settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped).slice(0, settingsForm.cutOffColumnSize);
-            } else {
-                settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => x.valid_numeric);
-                if (settingsForm.cutOffUnique === true) {
-                    settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => x.unique_count > settingsForm.cutOffUniqueSize);
-                }
-                if (settingsForm.remove_less_10p === true) {
-                    settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !x.valid_10p);
-                }
-                settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped);
+            // If any columns are selected get their names
+            if (settingsForm.selectedColumns.length > 0) {
+                settingsForm.selectedColumns = this.settingsForm.selectedColumns.map((x) => x.remapped);
             }
 
             // Remove any excluded columns from selected columns
@@ -1391,6 +1408,69 @@ export default {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.groupingVariables.includes(x));
                 // Remove Grouping variable from excluded columns
                 settingsForm.excludedColumns = settingsForm.excludedColumns.filter((x) => !settingsForm.groupingVariables.includes(x));
+            }
+
+            
+            this.settingsForm.anyNAValues = false;
+            this.settingsForm.categoricalVariables = false;
+            // Loop selectedColumns and groupingVariables to check if any are NA
+            settingsForm.groupingVariables.forEach((x) => {
+                let item = this.settingsForm.groupingVariables.find(o => o.remapped === x);
+
+                if (item && item.na_percentage > 0) {
+                    this.settingsForm.anyNAValues = true;
+                }
+            });
+
+            // If the are any NA Values in grouping variables we need to have removeNA option enabled
+            if(this.settingsForm.anyNAValues === true){
+                if(this.settingsForm.removeNA === false){
+                    this.$message({
+                        message: "NA Values detected in 'grouping variables'. Please enable 'Remove NA' option.",
+                        type: "error",
+                    });
+                    this.loadingPlot = false;
+                    return;
+                }
+            }
+            // If the are any NA Values in selectedColumns we need to have removeNA or preProcessDataset option enabled
+            settingsForm.selectedColumns.forEach((x) => {
+                let item = this.settingsForm.selectedColumns.find(o => o.remapped === x);
+                if (item && item.na_percentage > 0) {
+                    this.settingsForm.anyNAValues = true;
+                }
+                if (item.unique_count <= 2) {
+                    this.settingsForm.categoricalVariables = true;
+                }
+            });
+
+            if(this.settingsForm.anyNAValues === true){
+                if(this.settingsForm.removeNA === false && this.settingsForm.preProcessDataset === false){
+                    this.$message({
+                        message: "NA Values detected in 'selected columns'. Please enable 'Remove NA' or 'Pre-process dataset' option.",
+                        type: "error",
+                    });
+                    this.loadingPlot = false;
+                    return;
+                }
+            }
+
+            if(this.settingsForm.analysis_method === "PCA" && this.settingsForm.categoricalVariables === true){
+                this.$message({
+                    message: "Seems like all selected variables are categorical. Please use different analysis method.",
+                    type: "error",
+                });
+                this.loadingPlot = false;
+                return;
+            }
+
+            if(this.settingsForm.categoricalVariables === true && (this.settingsForm.cutOffUnique === true || this.settingsForm.remove_less_10p === true)){
+                this.$message({
+                    message: "Categorical variables detected please disable Remove by unique and Remove < 10% configuration options.",
+                    type: "error",
+                });
+                this.loadingPlot = false;
+                return;
             }
 
             fetchEditingPcaAnalysisPlot({
@@ -1441,6 +1521,11 @@ export default {
                     });
                     console.log(error);
                     this.loadingPlot = false;
+
+                    // Loop this.plot_data and set all keys to false
+                    for (let plotIndex in this.plot_data) {
+                        this.plot_data[plotIndex] = false;
+                    }
                 });
         },
         resetVariables() {

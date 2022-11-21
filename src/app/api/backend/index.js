@@ -51,6 +51,14 @@ export function userDetials() {
         method: "GET",
     });
 }
+
+export function fetchServerLoad() {
+    return request({
+        url: baseUrlPath + "/system/serverload",
+        method: "GET",
+    });
+}
+
 /**
  * Checks if value is available in specific Database Table, like user-name, email address
  * Returns true or false. TRUE if record is available

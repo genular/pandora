@@ -705,6 +705,10 @@ export default {
                 }
                 .item-title {
                     margin-left: 5px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    width: 240px;
+                    white-space: nowrap;
                 }
                 .item-library {
                     color: $ui-background;

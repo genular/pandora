@@ -9,7 +9,7 @@
     }
 
     .sidebar-container {
-        float: left;        
+        float: left;
         // Main background color #409EFF
         background-color: $ui-background;
         a {
@@ -18,7 +18,7 @@
         }
         .fa-icon {
             margin-right: 15px;
-            color: #FFFFFF;
+            color: #ffffff;
         }
         .el-menu {
             border: none;
@@ -26,7 +26,7 @@
             transition: width 0.25s;
         }
         .el-submenu__title {
-            color: #FFFFFF;
+            color: #ffffff;
         }
     }
 
@@ -72,6 +72,10 @@
                 & > span {
                     display: none;
                 }
+
+                & div > span {
+                    display: none;
+                }
                 .el-submenu__icon-arrow {
                     display: none;
                 }
@@ -100,10 +104,10 @@
         margin-left: 1px;
         .fa-icon {
             margin-right: 15px;
-            color: #FFFFFF;
+            color: #ffffff;
         }
         span {
-            color: #FFFFFF;
+            color: #ffffff;
         }
     }
 }

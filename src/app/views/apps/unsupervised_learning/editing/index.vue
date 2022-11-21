@@ -130,11 +130,11 @@ export default {
                     if (response.data.success === true && typeof response.data.message.columns !== "undefined") {
                         this.selectedFileDetails = {
                             id: selectedFilesIDs[0],
-                            columns: response.data.message.columns,
-                            summary: response.data.message.summary,
+                            // Limit initial columns to 500, TODO: search for columns when typing
+                            columns: response.data.message.columns.slice(0, 500),
+                            summary: [], // TODO: response.data.message.summary,
                             saveObjectHash: response.data.message.saveObjectHash,
                         };
-                        console.log(this.selectedFileDetails);
                     } else {
                         // Something went wrong, cannot fetch details from Server
                         this.$message({
@@ -161,7 +161,7 @@ export default {
                 let restrictionVariable = false;
 
                 if (Array.isArray(item.restriction)) {
-                    console.log("== restriction - step 1");
+                    //console.log("== restriction - step 1");
                     let varCount = 0;
                     item.restriction.forEach((element) => {
                         if (varCount === 0) {
@@ -176,36 +176,36 @@ export default {
                         varCount++;
                     });
                 } else if (this[item.restriction] !== undefined) {
-                    console.log("== restriction - step 2");
+                    //console.log("== restriction - step 2");
                     restrictionVariable = this[item.restriction];
                 }
 
                 if (restrictionVariable !== false) {
-                    console.log("== restriction - step 3");
+                    //console.log("== restriction - step 3");
                     if (Number.isInteger(restrictionVariable)) {
-                        console.log("== restriction - step 4");
+                        //console.log("== restriction - step 4");
                         if (restrictionVariable < 1) {
                             check = true;
                         }
                     } else if (Array.isArray(restrictionVariable)) {
-                        console.log("== restriction - step 5");
+                        //console.log("== restriction - step 5");
                         let more_or_eq = 0;
                         // If there is nothing in array TAB is always disabled
                         if (restrictionVariable.length < 1) {
-                            console.log("== restriction - step 6");
+                            //console.log("== restriction - step 6");
                             check = true;
                             return check;
                         }
                         if (item.restriction_details !== undefined) {
-                            console.log("== restriction - step 7");
+                            //console.log("== restriction - step 7");
                             if (restrictionVariable.length < item.restriction_details) {
-                                console.log("== restriction - step 8");
+                                //console.log("== restriction - step 8");
                                 check = true;
                                 return check;
                             }
                         }
                     } else {
-                        console.log("== restriction - step 9");
+                        //console.log("== restriction - step 9");
                         check = restrictionVariable === 0;
                     }
                 }
