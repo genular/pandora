@@ -237,7 +237,7 @@
 
 
 
-                    <el-form-item label="Analysis methid">
+                    <el-form-item label="Analysis method">
                         <el-select v-model="settingsForm.analysis_method" size="mini" placeholder="Select" style="float: right">
                             <el-option v-for="item in selectedOptions.analysis_method" :key="item.id" :label="item.name" :value="item.id">
                                 <span style="float: left">{{ item.name }}</span>
