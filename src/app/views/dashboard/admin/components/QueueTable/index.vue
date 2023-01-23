@@ -617,7 +617,7 @@ export default {
     computed: {
         selectedQueueIDs: {
             get() {
-                return this.$store.getters.simonExplorationQueueIDs;
+                return this.$store.getters.pandoraExplorationQueueIDs;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationQueueIDs", value);
@@ -625,7 +625,7 @@ export default {
         },
         selectedQueueID: {
             get() {
-                return this.$store.getters.simonExplorationSelectedQueueID;
+                return this.$store.getters.pandoraExplorationSelectedQueueID;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedQueueID", value);

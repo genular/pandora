@@ -41,7 +41,7 @@
     # In case you want to use different OS (e.g. Fedora, CentOS and RHEL)
     # please follow this install script and adjust it to your OS
     cd /tmp
-    wget https://github.com/genular/simon-backend/blob/master/documentation/installation/install_dependencies.sh
+    wget https://github.com/genular/pandora-backend/blob/master/documentation/installation/install_dependencies.sh
     chmod 777 install_dependencies.sh
 
     # Start it and follow instructions
@@ -49,7 +49,7 @@
 
     # Configure nginx virtual hosts and generate HTTPS certificates
     ## cd /etc/nginx/sites-available
-    wget https://github.com/genular/simon-backend/blob/master/documentation/installation/nginx/vhosts.conf
+    wget https://github.com/genular/pandora-backend/blob/master/documentation/installation/nginx/vhosts.conf
     ## Restart nginx and make sure domains are working
 
     # Generate certs using letsencrypt: https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04
@@ -66,7 +66,7 @@
     # dashboard.genular.org
 
     ## After this ones are ready you need to start R API servers
-    cd /var/www/genular/simon-backend
+    cd /var/www/genular/pandora-backend
     ## You can start them manually separately:
     ## Rscript ./server/analysis/index.R analysis
     ## Rscript ./server/plots/index.R plots
@@ -77,7 +77,7 @@
     ## Generating a startup script
     # Detect available init system, generate configuration and enable startup system
     pm2 startup
-    ## DEBUG="pm2:*" pm2 start ecosystem.config.js --only simon-backend --no-daemon
+    ## DEBUG="pm2:*" pm2 start ecosystem.config.js --only pandora-backend --no-daemon
 
 
     ## Now when we have all API servers and frontend configured lets configure main CRON task for analysis
@@ -85,11 +85,11 @@
     # Rscript ./cron/main.R cron
 
     ## We suggest creating crontab task like this
-    ## Chmod 777 /var/www/genular/simon-backend/cron/main.R
-    ## */2 * * * * /usr/bin/flock -n /tmp/simon_backend.pid /var/www/genular/simon-backend/cron/main.R > /var/log/simon-cron.log 2>&1
+    ## Chmod 777 /var/www/genular/pandora-backend/cron/main.R
+    ## */2 * * * * /usr/bin/flock -n /tmp/pandora_backend.pid /var/www/genular/pandora-backend/cron/main.R > /var/log/pandora-cron.log 2>&1
 
     ## Cloud - Cron Job
-    ## cd /mnt/data/projects/genular/simon-backend/server/backend;
+    ## cd /mnt/data/projects/genular/pandora-backend/server/backend;
     ## php public/index.php backend/system/cron
     ## php public/index.php backend/system/cron/bb5dc8842ca31d4603d6aa11448d1654
 ```

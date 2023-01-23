@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Journal Des Erreurs De Présentation",
-  "components.ErrorLog.dialog.help-us": "Veuillez nous aider à améliorer SIMON et rapport d'erreurs de notre github tracker.",
+  "components.ErrorLog.dialog.help-us": "Veuillez nous aider à améliorer PANDORA et rapport d'erreurs de notre github tracker.",
   "components.ErrorLog.dialog.more-info": "Plus d'informations ici",
   "components.ErrorLog.table.title": "Informations générales",
   "components.ErrorLog.table.message": "Message",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Nous ne pouvons pas résoudre nos problèmes avec le même niveau de pensée qui les a créés",
   "components.GenularBottom.dialog.ending": "À œuvrer pour un avenir meilleur, nous avons tous besoin de comprendre pourquoi et comment des mécanismes complexes qui sont en train de changer et quoi impact que le changement",
-  "components.GenularBottom.dialog.footer": "SIMON est réalisé et maintenu par @genular, une communauté à travailler ensemble pour maintenir la science un bien public accessible à tous. Nous souhaitons la bienvenue à la participation d'organisations et d'individus engagés à faire progresser des outils libres pour la science. Visitez notre <a href='https://genular.org' target='_blank'>site</a> pour obtenir des instructions sur la façon dont vous et/ou votre projet/organisation peut se joindre à nous.",
+  "components.GenularBottom.dialog.footer": "PANDORA est réalisé et maintenu par @genular, une communauté à travailler ensemble pour maintenir la science un bien public accessible à tous. Nous souhaitons la bienvenue à la participation d'organisations et d'individus engagés à faire progresser des outils libres pour la science. Visitez notre <a href='https://genular.org' target='_blank'>site</a> pour obtenir des instructions sur la façon dont vous et/ou votre projet/organisation peut se joindre à nous.",
   "components.GenularBottom.dialog.links.title": "D'autres ressources",
   "components.GenularBottom.dialog.links.tooltip.forums": "Discuter avec notre communauté de bugs et demandes de fonctionnalités, ou tout simplement écrire un tutoriel d'utilisation",
   "components.GenularBottom.dialog.links.tooltip.github": "Prendre part à des progrès en matière de développement ou de rapport de bugs que vous avez découvert",

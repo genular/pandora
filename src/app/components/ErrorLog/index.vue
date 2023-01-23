@@ -8,7 +8,7 @@
             <el-row type="flex" align="top">
                 <el-col class="help-us" :span="12">
                     {{ $t('components.ErrorLog.dialog.help-us') }}
-                    <a href="https://github.com/genular/simon-frontend#submitting-bugs-and-enhancements" target="_blank">{{ $t('components.ErrorLog.dialog.more-info') }}</a>
+                    <a href="https://github.com/genular/pandora#submitting-bugs-and-enhancements" target="_blank">{{ $t('components.ErrorLog.dialog.more-info') }}</a>
                 </el-col>
                 <el-col class="actions" :span="12">
                     <el-button size="mini" round type="primary" icon="el-icon-delete" @click="clearErrorLog()"></el-button>

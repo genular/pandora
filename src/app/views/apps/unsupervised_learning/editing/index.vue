@@ -81,7 +81,7 @@ export default {
     computed: {
         activeEditingTabName: {
             get() {
-                return this.$store.getters.simonEditingActiveTabName;
+                return this.$store.getters.pandoraEditingActiveTabName;
             },
             set(value) {
                 this.$store.dispatch("setSimonEditingActiveTabName", value);

@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Oversigt over fejllog",
-  "components.ErrorLog.dialog.help-us": "Hjælp os med at forbedre SIMON-rapporten og rapportere følgende fejl til vores github tracker.",
+  "components.ErrorLog.dialog.help-us": "Hjælp os med at forbedre PANDORA-rapporten og rapportere følgende fejl til vores github tracker.",
   "components.ErrorLog.dialog.more-info": "Flere oplysninger her",
   "components.ErrorLog.table.title": "Generelle oplysninger",
   "components.ErrorLog.table.message": "Meddelelse",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Vi kan ikke løse vores problemer med de samme tænksom, som skabte dem.",
   "components.GenularBottom.dialog.ending": "For at arbejde hen imod en bedre fremtid, er vi alle nødt til at forstå, hvordan og hvorfor komplekse mekanismer ændrer sig, og hvad der påvirker den forandring.",
-  "components.GenularBottom.dialog.footer": "SIMON er lavet og vedligeholdt af @genular, et fællesskab, der arbejder sammen for at holde videnskaben et offentligt tilgængeligt, tilgængeligt for alle. Vi glæder os over deltagelsen af organisationer og enkeltpersoner, der har forpligtet sig til at fremme åbne værktøjer for videnskaben. Besøg vores <a href='https://genular.org' target='_blank'>webside</a> for instruktioner om, hvordan du og / eller din projekt / organisation kan slutte sig til os.",
+  "components.GenularBottom.dialog.footer": "PANDORA er lavet og vedligeholdt af @genular, et fællesskab, der arbejder sammen for at holde videnskaben et offentligt tilgængeligt, tilgængeligt for alle. Vi glæder os over deltagelsen af organisationer og enkeltpersoner, der har forpligtet sig til at fremme åbne værktøjer for videnskaben. Besøg vores <a href='https://genular.org' target='_blank'>webside</a> for instruktioner om, hvordan du og / eller din projekt / organisation kan slutte sig til os.",
   "components.GenularBottom.dialog.links.title": "Andre ressourcer",
   "components.GenularBottom.dialog.links.tooltip.forums": "Diskuter med vores fællesskabsmulige insekter og funktionsanmodninger, eller bare skriv et brugerprogram",
   "components.GenularBottom.dialog.links.tooltip.github": "Tag del i udviklingsfremskridt eller rapportfejl, du har opdaget",

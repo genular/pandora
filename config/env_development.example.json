@@ -4,9 +4,9 @@
     "productionTip": false,
     "developer":
     {
-        "productName": "SIMON",
+        "productName": "PANDORA",
         "companyName": "genular",
-        "submitURL": "https://genular.com/simon-crash-report",
+        "submitURL": "https://genular.com/pandora-crash-report",
         "uploadToServer": false
     },
     "server":

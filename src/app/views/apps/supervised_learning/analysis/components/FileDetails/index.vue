@@ -448,7 +448,7 @@ export default {
         /** All available Features */
         avaliableFeatures: {
             get() {
-                return this.$store.getters.simonAnalysisAvaliableFeatures;
+                return this.$store.getters.pandoraAnalysisAvaliableFeatures;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisAvaliableFeatures", value);
@@ -457,7 +457,7 @@ export default {
         /** Current Selected Features */
         selectedFeatures: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedFeatures;
+                return this.$store.getters.pandoraAnalysisSelectedFeatures;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFeatures", value);
@@ -466,7 +466,7 @@ export default {
         /** Excluded Features */
         excludeFeatures: {
             get() {
-                return this.$store.getters.simonAnalysisExcludeFeatures;
+                return this.$store.getters.pandoraAnalysisExcludeFeatures;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisExcludeFeatures", value);
@@ -475,7 +475,7 @@ export default {
         /** Current Selected Outcome */
         selectedOutcome: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedOutcome;
+                return this.$store.getters.pandoraAnalysisSelectedOutcome;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedOutcome", value);
@@ -484,7 +484,7 @@ export default {
         /** Current Selected Classes */
         selectedClasses: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedClasses;
+                return this.$store.getters.pandoraAnalysisSelectedClasses;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedClasses", value);
@@ -493,7 +493,7 @@ export default {
         /* Regression analysis dependents */
         selectedFormula: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedFormula;
+                return this.$store.getters.pandoraAnalysisSelectedFormula;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFormula", value);
@@ -502,7 +502,7 @@ export default {
         /* Regression analysis dependents */
         timeSeriesDate: {
             get() {
-                return this.$store.getters.simonAnalysisTimeSeriesDate;
+                return this.$store.getters.pandoraAnalysisTimeSeriesDate;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisTimeSeriesDate", value);
@@ -510,7 +510,7 @@ export default {
         },
         selectedPreProcess: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedPreProcess;
+                return this.$store.getters.pandoraAnalysisSelectedPreProcess;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedPreProcess", value);
@@ -518,7 +518,7 @@ export default {
         },
         selectedPartitionSplit: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedPartitionSplit;
+                return this.$store.getters.pandoraAnalysisSelectedPartitionSplit;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedPartitionSplit", value);
@@ -527,7 +527,7 @@ export default {
         /** Time limit in seconds before we terminate model building */
         modelProcessingTimeLimit: {
             get() {
-                return this.$store.getters.simonAnalysisModelProcessingTimeLimit;
+                return this.$store.getters.pandoraAnalysisModelProcessingTimeLimit;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisModelProcessingTimeLimit", value);
@@ -536,7 +536,7 @@ export default {
         /** Select all Features input switch */
         filterFeatures: {
             get() {
-                return this.$store.getters.simonAnalysisFilterFeatures;
+                return this.$store.getters.pandoraAnalysisFilterFeatures;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisFilterFeatures", value);

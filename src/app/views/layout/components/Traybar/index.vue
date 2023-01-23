@@ -1,5 +1,5 @@
 <template>
-    <el-header class="simon-header" height="30">
+    <el-header class="pandora-header" height="30">
         <div class="traybar-dropdownmenu">
             <el-dropdown :hide-on-click="true" size="mini" :show-timeout="0" :hide-timeout="0" trigger="click" @command="handleCommand">
                 <el-button type="primary" size="mini"> File<i class="el-icon-arrow-down el-icon--right"></i> </el-button>
@@ -60,7 +60,7 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">
-.simon-header {
+.pandora-header {
     height: 30px;
     float: left;
     width: 100%;

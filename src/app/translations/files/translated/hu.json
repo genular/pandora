@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Hibanapló – áttekintés",
-  "components.ErrorLog.dialog.help-us": "Kérjük, segítsen nekünk javítani SIMON és jelentést követően hibákat a mi github tracker.",
+  "components.ErrorLog.dialog.help-us": "Kérjük, segítsen nekünk javítani PANDORA és jelentést követően hibákat a mi github tracker.",
   "components.ErrorLog.dialog.more-info": "További információk itt",
   "components.ErrorLog.table.title": "Általános információk",
   "components.ErrorLog.table.message": "Üzenetet",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Nem tudjuk megoldani a problémáinkat ugyanolyan szintű gondolkodással, mint ami létrehozta őket.",
   "components.GenularBottom.dialog.ending": "Ahhoz, hogy egy jobb jövő felé haladjon, mindannyiunknak meg kell értenünk, hogyan és miért változnak az összetett mechanizmusok, és mi befolyásolja ezt a változást",
-  "components.GenularBottom.dialog.footer": "SIMON által készített és karbantartott @genular, a közösség együttműködik, hogy a tudomány a köz érdekében mindenki számára hozzáférhető. Üdvözöljük a tudomány nyitott eszközeinek előmozdítása iránt elkötelezett szervezetek és egyének részvételét. Látogasson el <a href='https://genular.org' target='_blank'>weboldalunkra</a> , és olvassa el, hogyan csatlakozhat hozzánk Ön és/vagy projektje/szervezete.",
+  "components.GenularBottom.dialog.footer": "PANDORA által készített és karbantartott @genular, a közösség együttműködik, hogy a tudomány a köz érdekében mindenki számára hozzáférhető. Üdvözöljük a tudomány nyitott eszközeinek előmozdítása iránt elkötelezett szervezetek és egyének részvételét. Látogasson el <a href='https://genular.org' target='_blank'>weboldalunkra</a> , és olvassa el, hogyan csatlakozhat hozzánk Ön és/vagy projektje/szervezete.",
   "components.GenularBottom.dialog.links.title": "Egyéb források",
   "components.GenularBottom.dialog.links.tooltip.forums": "Beszélje meg a közösségünkkel a lehetséges hibákat & funkciókéréseket, vagy csak írjon egy használati oktatóanyagot",
   "components.GenularBottom.dialog.links.tooltip.github": "Vegyen részt a fejlesztés előrehaladásában, vagy jelentse a felfedezett hibákat",

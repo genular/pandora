@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Алдааны бүртгэлийн тойм",
-  "components.ErrorLog.dialog.help-us": "SIMON-ийг сайжруулж, дараахь алдааг github tracker дээр мэдээлэх талаар бидэнд тусална уу.",
+  "components.ErrorLog.dialog.help-us": "PANDORA-ийг сайжруулж, дараахь алдааг github tracker дээр мэдээлэх талаар бидэнд тусална уу.",
   "components.ErrorLog.dialog.more-info": "Дэлгэрэнгүй мэдээллийг эндээс авна уу",
   "components.ErrorLog.table.title": "Ерөнхий мэдээлэл",
   "components.ErrorLog.table.message": "Захиа",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Альберт Эйнштейн",
   "components.GenularBottom.dialog.citation.text": "Бид тэдгээрийг бий болгосон ижил түвшний сэтгэлгээгээр асуудлаа шийдэж чадахгүй",
   "components.GenularBottom.dialog.ending": "Илүү сайхан ирээдүйн төлөө ажиллахын тулд бид бүгд яагаад нарийн төвөгтэй механизмууд хэрхэн өөрчлөгдөж байгааг, мөн энэ өөрчлөлтөд юу нөлөөлж байгааг ойлгох хэрэгтэй",
-  "components.GenularBottom.dialog.footer": "SIMON нь шинжлэх ухааныг хүн бүрт хүртээмжтэй байлгахын төлөө хамтран ажилладаг @genular нийгэмлэгээр хийгддэг. Шинжлэх ухааны нээлттэй хэрэгслийг хөгжүүлэх чиглэлээр үйл ажиллагаа явуулдаг байгууллага, хувь хүмүүсийн оролцоог бид хүлээн авч байна. Та болон / эсвэл таны төсөл / байгууллага хэрхэн бидэнтэй нэгдэж болох талаар зааварчилгааг манай <a href='https://genular.org' target='_blank'>вэбсайт</a>",
+  "components.GenularBottom.dialog.footer": "PANDORA нь шинжлэх ухааныг хүн бүрт хүртээмжтэй байлгахын төлөө хамтран ажилладаг @genular нийгэмлэгээр хийгддэг. Шинжлэх ухааны нээлттэй хэрэгслийг хөгжүүлэх чиглэлээр үйл ажиллагаа явуулдаг байгууллага, хувь хүмүүсийн оролцоог бид хүлээн авч байна. Та болон / эсвэл таны төсөл / байгууллага хэрхэн бидэнтэй нэгдэж болох талаар зааварчилгааг манай <a href='https://genular.org' target='_blank'>вэбсайт</a>",
   "components.GenularBottom.dialog.links.title": "Бусад нөөц",
   "components.GenularBottom.dialog.links.tooltip.forums": "Болзошгүй алдаанууд, онцлог шинж чанаруудын талаархи хүсэлтийг манай нийгэмлэгтэй ярилцах, эсвэл ашиглах заавар бичихэд хангалттай",
   "components.GenularBottom.dialog.links.tooltip.github": "Хөгжлийн ахиц дэвшилд хамрагдах эсвэл олж илрүүлсэн алдаануудаа мэдээлэх",

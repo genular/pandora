@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Tổng quan về Nhật ký Lỗi",
-  "components.ErrorLog.dialog.help-us": "Vui lòng giúp chúng tôi cải thiện SIMON và báo cáo các lỗi sau cho trình theo dõi github của chúng tôi.",
+  "components.ErrorLog.dialog.help-us": "Vui lòng giúp chúng tôi cải thiện PANDORA và báo cáo các lỗi sau cho trình theo dõi github của chúng tôi.",
   "components.ErrorLog.dialog.more-info": "Xem thêm thông tin tại đây",
   "components.ErrorLog.table.title": "Thông tin chung",
   "components.ErrorLog.table.message": "Thư",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Chúng ta không thể giải quyết vấn đề của mình với cùng một mức độ suy nghĩ đã tạo ra chúng",
   "components.GenularBottom.dialog.ending": "Để hướng tới một tương lai tốt đẹp hơn, tất cả chúng ta cần hiểu làm thế nào và tại sao các cơ chế phức tạp đang thay đổi và những gì ảnh hưởng đến sự thay đổi đó",
-  "components.GenularBottom.dialog.footer": "SIMON được thực hiện và duy trì bởi @genular, một cộng đồng làm việc cùng nhau để giữ cho khoa học trở nên tốt đẹp cho mọi người. Chúng tôi hoan nghênh sự tham gia của các tổ chức và cá nhân cam kết thúc đẩy các công cụ mở cho khoa học. Truy cập trang web <a href='https://genular.org' target='_blank'>của chúng</a> để được hướng dẫn về cách bạn và / hoặc dự án / tổ chức của bạn có thể tham gia với chúng tôi.",
+  "components.GenularBottom.dialog.footer": "PANDORA được thực hiện và duy trì bởi @genular, một cộng đồng làm việc cùng nhau để giữ cho khoa học trở nên tốt đẹp cho mọi người. Chúng tôi hoan nghênh sự tham gia của các tổ chức và cá nhân cam kết thúc đẩy các công cụ mở cho khoa học. Truy cập trang web <a href='https://genular.org' target='_blank'>của chúng</a> để được hướng dẫn về cách bạn và / hoặc dự án / tổ chức của bạn có thể tham gia với chúng tôi.",
   "components.GenularBottom.dialog.links.title": "Các tài nguyên khác",
   "components.GenularBottom.dialog.links.tooltip.forums": "Thảo luận với cộng đồng của chúng tôi có thể lỗi &amp; yêu cầu tính năng, hoặc chỉ cần viết một hướng dẫn sử dụng",
   "components.GenularBottom.dialog.links.tooltip.github": "Tham gia vào tiến trình phát triển hoặc báo cáo lỗi bạn đã phát hiện ra",

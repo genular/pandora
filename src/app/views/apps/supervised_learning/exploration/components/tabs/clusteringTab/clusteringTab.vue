@@ -348,7 +348,7 @@ export default {
     computed: {
         selectedFeatureSetId: {
             get() {
-                return this.$store.getters.simonExplorationSelectedFeatureSetId;
+                return this.$store.getters.pandoraExplorationSelectedFeatureSetId;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedFeatureSetId", value);

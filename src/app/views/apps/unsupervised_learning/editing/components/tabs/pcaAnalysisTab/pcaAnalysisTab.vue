@@ -36,7 +36,7 @@
                             reserve-keyword
                             value-key="remapped"
                             clearable
-                            :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                            :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                             :remote-method="
                                 (userInput) => {
                                     querySearch(userInput, 'columns_all');
@@ -83,7 +83,7 @@
                             reserve-keyword
                             value-key="remapped"
                             clearable
-                            :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                            :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                             :remote-method="
                                 (userInput) => {
                                     querySearch(userInput);
@@ -148,7 +148,7 @@
                             reserve-keyword
                             value-key="remapped"
                             clearable
-                            :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                            :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                             :remote-method="
                                 (userInput) => {
                                     querySearch(userInput, 'columns_grouping');
@@ -182,7 +182,7 @@
                             v-model="settingsForm.selectedComponentsX"
                             filterable
                             default-first-option
-                            :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                            :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                             :remote-method="
                                 (userInput) => {
                                     querySearch(userInput, 'pca_components');
@@ -201,7 +201,7 @@
                             v-model="settingsForm.selectedComponentsY"
                             filterable
                             default-first-option
-                            :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                            :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                             :remote-method="
                                 (userInput) => {
                                     querySearch(userInput, 'pca_components');
@@ -346,7 +346,7 @@
                         <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                             <el-form-item>
                                 <el-button type="primary" round @click="redrawImage" style="float: right">
-                                    {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
+                                    {{ $t("views.apps.pandora.exploration.components.tabs.correlationTab.buttons.plot_image") }}
                                 </el-button>
                             </el-form-item>
                         </el-col>
@@ -1259,7 +1259,7 @@ export default {
     computed: {
         activeTabName: {
             get() {
-                return this.$store.getters.simonExplorationActiveTabName;
+                return this.$store.getters.pandoraExplorationActiveTabName;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationnActiveTabName", value);
@@ -1377,7 +1377,7 @@ export default {
             downloadName = downloadName + ".svg";
 
             const svgImage = "data:image/svg+xml;base64," + svgString;
-            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
+            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by PANDORA: https://genular.org -->"], {
                 type: "image/svg+xml;charset=utf-8",
             });
 

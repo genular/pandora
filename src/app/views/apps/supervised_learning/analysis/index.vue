@@ -52,7 +52,7 @@ export default {
     computed: {
         avaliablePackages: {
             get() {
-                return this.$store.getters.simonAvaliablePackages;
+                return this.$store.getters.pandoraAvaliablePackages;
             },
             set(value) {
                 this.$store.dispatch("setSimonAvaliablePackages", value);
@@ -60,7 +60,7 @@ export default {
         },
         selectedPackages: {
             get() {
-                return this.$store.getters.simonSelectedPackages;
+                return this.$store.getters.pandoraSelectedPackages;
             },
             set(value) {
                 this.$store.dispatch("setSimonSelectedPackages", value);
@@ -76,7 +76,7 @@ export default {
         },
         selectedFilesHash: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedFileHash;
+                return this.$store.getters.pandoraAnalysisSelectedFileHash;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFileHash", value);
@@ -85,7 +85,7 @@ export default {
         /** Current Selected Outcome */
         selectedOutcome: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedOutcome;
+                return this.$store.getters.pandoraAnalysisSelectedOutcome;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedOutcome", value);

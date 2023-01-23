@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Vealogi ülevaade",
-  "components.ErrorLog.dialog.help-us": "Palun aidake meil parandada SIMON-i ja raportisse meie githubi jälitaja vigade kohta.",
+  "components.ErrorLog.dialog.help-us": "Palun aidake meil parandada PANDORA-i ja raportisse meie githubi jälitaja vigade kohta.",
   "components.ErrorLog.dialog.more-info": "Rohkem infot siit",
   "components.ErrorLog.table.title": "Üldine teave",
   "components.ErrorLog.table.message": "Sõnum",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Me ei saa lahendada oma probleeme samal tasemel mõtlemist, mis lõi neid",
   "components.GenularBottom.dialog.ending": "Et töötada parema tuleviku nimel, peame kõik mõistma, kuidas ja miks keerukad mehhanismid muutuvad ja kuidas mõjutavad seda muutust.",
-  "components.GenularBottom.dialog.footer": "SIMON on teinud ja hooldatud @genular, kogukonna koostööd, et hoida teaduse üldsusele hea juurdepääs kõigile. Me tervitame osalemist organisatsioonides ja eraisikutel, kes on pühendunud avatud teadusvahendite edendamisele. Külasta meie <a href='https://genular.org' target='_blank'>kodulehel</a> juhised, kuidas ja/või teie projekti/organisatsioon võib meiega liituda.",
+  "components.GenularBottom.dialog.footer": "PANDORA on teinud ja hooldatud @genular, kogukonna koostööd, et hoida teaduse üldsusele hea juurdepääs kõigile. Me tervitame osalemist organisatsioonides ja eraisikutel, kes on pühendunud avatud teadusvahendite edendamisele. Külasta meie <a href='https://genular.org' target='_blank'>kodulehel</a> juhised, kuidas ja/või teie projekti/organisatsioon võib meiega liituda.",
   "components.GenularBottom.dialog.links.title": "Muud vahendid",
   "components.GenularBottom.dialog.links.tooltip.forums": "Arutage meie ühenduse võimalike bugs & funktsioon taotlusi, või lihtsalt kirjutada kasutamine juhendaja",
   "components.GenularBottom.dialog.links.tooltip.github": "Osale arengu progress või aruande vead avastasid",

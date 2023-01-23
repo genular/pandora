@@ -222,21 +222,21 @@ export function fetchSimonAvailablePackages(selectedFiles) {
         selectedFiles: encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))),
     };
     return request({
-        url: baseUrlPath + "/system/simon/available-packages",
+        url: baseUrlPath + "/system/pandora/available-packages",
         method: "POST",
         data,
     });
 }
 
-export function simonHeaderVerify(selectedFiles) {
+export function pandoraHeaderVerify(selectedFiles) {
     return request({
-        url: baseUrlPath + "/system/simon/header/" + encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))) + "/verify",
+        url: baseUrlPath + "/system/pandora/header/" + encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))) + "/verify",
         method: "GET",
     });
 }
 export function getSimonHeaderSuggest(selectedFiles, input) {
     return request({
-        url: baseUrlPath + "/system/simon/header/" + encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))) + "/suggest/" + encodeURIComponent(window.btoa(input)),
+        url: baseUrlPath + "/system/pandora/header/" + encodeURIComponent(window.btoa(JSON.stringify(selectedFiles))) + "/suggest/" + encodeURIComponent(window.btoa(input)),
         method: "GET",
     });
 }
@@ -261,7 +261,7 @@ export function getSimonPreAnalysisDetails(submitData) {
     };
 
     return request({
-        url: baseUrlPath + "/system/simon/pre-analysis",
+        url: baseUrlPath + "/system/pandora/pre-analysis",
         method: "POST",
         data,
     });
@@ -277,7 +277,7 @@ export function submitDatasetQueueTask(submitData) {
 
     console.log("submitDatasetQueueTask request start:");
     return request({
-        url: baseUrlPath + "/system/simon/dataset-queue",
+        url: baseUrlPath + "/system/pandora/dataset-queue",
         method: "POST",
         data,
     });
@@ -288,7 +288,7 @@ export function cancelDatasetQueueTask(submitData) {
         submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData))),
     };
     return request({
-        url: baseUrlPath + "/system/simon/dataset-queue/cancel",
+        url: baseUrlPath + "/system/pandora/dataset-queue/cancel",
         method: "POST",
         data,
     });
@@ -304,7 +304,7 @@ export function deleteDatasetQueueTask(submitData) {
         submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData))),
     };
     return request({
-        url: baseUrlPath + "/system/simon/dataset-queue/delete",
+        url: baseUrlPath + "/system/pandora/dataset-queue/delete",
         method: "POST",
         data,
     });
@@ -317,7 +317,7 @@ export function deleteDatasetQueueTask(submitData) {
  */
 export function deleteDatasetResampleTask(submitData) {
     return request({
-        url: baseUrlPath + "/system/simon/dataset-resample/delete/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
+        url: baseUrlPath + "/system/pandora/dataset-resample/delete/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
         method: "GET",
     });
 }
@@ -367,7 +367,7 @@ export function importPublicDatasets(submitData) {
  */
 export function generateSystemLogFileDownloadLink(submitData) {
     return request({
-        url: baseUrlPath + "/system/simon/generate-log-file/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
+        url: baseUrlPath + "/system/pandora/generate-log-file/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
         method: "GET",
     });
 }

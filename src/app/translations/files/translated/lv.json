@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Kļūda žurnāla pārskats",
-  "components.ErrorLog.dialog.help-us": "Lūdzu, palīdziet mums uzlabot SIMON un ziņot par kļūdām mūsu github tracker.",
+  "components.ErrorLog.dialog.help-us": "Lūdzu, palīdziet mums uzlabot PANDORA un ziņot par kļūdām mūsu github tracker.",
   "components.ErrorLog.dialog.more-info": "Vairāk informācijas šeit",
   "components.ErrorLog.table.title": "Vispārīga informācija",
   "components.ErrorLog.table.message": "Ziņojums",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Mēs nevaram atrisināt mūsu problēmas ar tādu pašu domāšanas līmeni, kas tos radīja",
   "components.GenularBottom.dialog.ending": "Lai strādātu uz labāku nākotni, mums visiem ir jāsaprot, kā un kāpēc sarežģīti mehānismi mainās un kas ietekmē šīs pārmaiņas.",
-  "components.GenularBottom.dialog.footer": "SIMON ir un uztur @genular, kopiena, kas strādā kopā, lai saglabātu zinātne sabiedrībai laba pieejama ikvienam. Mēs atzinīgi vērtējam organizāciju un privātpersonu līdzdalību, lai veicinātu atvērtus instrumentus zinātnei. Apmeklējiet mūsu <a href='https://genular.org' target='_blank'>mājas lapā</a> norādījumus par to, kā jūs un/vai jūsu projektu/organizācija var pievienoties mums.",
+  "components.GenularBottom.dialog.footer": "PANDORA ir un uztur @genular, kopiena, kas strādā kopā, lai saglabātu zinātne sabiedrībai laba pieejama ikvienam. Mēs atzinīgi vērtējam organizāciju un privātpersonu līdzdalību, lai veicinātu atvērtus instrumentus zinātnei. Apmeklējiet mūsu <a href='https://genular.org' target='_blank'>mājas lapā</a> norādījumus par to, kā jūs un/vai jūsu projektu/organizācija var pievienoties mums.",
   "components.GenularBottom.dialog.links.title": "Citi resursi",
   "components.GenularBottom.dialog.links.tooltip.forums": "Apspriediet ar mūsu kopienas iespējamiem bugs & funkciju pieprasījumiem, vai vienkārši rakstīt lietošanas pamācību",
   "components.GenularBottom.dialog.links.tooltip.github": "Piedalīties attīstības progresu vai ziņot bugs jums atklāja",

@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Pregled Dnevnika Grešaka",
-  "components.ErrorLog.dialog.help-us": "Molimo vas da nam pomognete da poboljšamo SIMON-a i prijavite moguce greške na našem github tracker.",
+  "components.ErrorLog.dialog.help-us": "Molimo vas da nam pomognete da poboljšamo PANDORA-a i prijavite moguce greške na našem github tracker.",
   "components.ErrorLog.dialog.more-info": "Ovdje ima više informacija",
   "components.ErrorLog.table.title": "Općenite informacije",
   "components.ErrorLog.table.message": "Poruka",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Ne možemo riješiti probleme s istom razinom razmišljanja koja ih je stvorila",
   "components.GenularBottom.dialog.ending": "Kako bi radili na boljoj budućnosti, svi moramo razumjeti kako i zašto se kompleksni mehanizmi mijenjaju i što utječe na promjenu.",
-  "components.GenularBottom.dialog.footer": "SIMON je napravio i održavan od strane @genular, zajednica koja radi zajedno kako bi znanost javno dobro dohvatljiva svima. Pozdravljamo sudjelovanje iz organizacija i pojedinaca koji su predani unaprjeđenju otvorenih alata za znanost. Posjetite naš <a href='https://genular.org' target='_blank'>web site</a> za upute o tome kako vi i / ili vaš projekt / organizacija možete nam se pridružiti.",
+  "components.GenularBottom.dialog.footer": "PANDORA je napravio i održavan od strane @genular, zajednica koja radi zajedno kako bi znanost javno dobro dohvatljiva svima. Pozdravljamo sudjelovanje iz organizacija i pojedinaca koji su predani unaprjeđenju otvorenih alata za znanost. Posjetite naš <a href='https://genular.org' target='_blank'>web site</a> za upute o tome kako vi i / ili vaš projekt / organizacija možete nam se pridružiti.",
   "components.GenularBottom.dialog.links.title": "Ostali resursi",
   "components.GenularBottom.dialog.links.tooltip.forums": "Raspravili s našim mogućim zahtjevima za greške u zajednici ili samo napišite priručnik za upotrebu",
   "components.GenularBottom.dialog.links.tooltip.github": "Sudjelovati u napredovanju razvoja ili izvještaja o bubama koje ste otkrili",

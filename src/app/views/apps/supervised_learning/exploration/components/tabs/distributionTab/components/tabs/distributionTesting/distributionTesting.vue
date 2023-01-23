@@ -101,7 +101,7 @@ export default {
     computed: {
         selectedFeatureSetId: {
             get() {
-                return this.$store.getters.simonExplorationSelectedFeatureSetId;
+                return this.$store.getters.pandoraExplorationSelectedFeatureSetId;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedFeatureSetId", value);
@@ -116,7 +116,7 @@ export default {
 
             const svgImage = "data:image/svg+xml;base64," + this.plot_data[imageType];
 
-            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
+            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by PANDORA: https://genular.org -->"], {
                 type: "image/svg+xml;charset=utf-8"
             });
 

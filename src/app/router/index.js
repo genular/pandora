@@ -120,7 +120,7 @@ export const constantRouterMap = [
                 meta: {
                     title: "supervised_learning_analysis_exploratory",
                     icon: "fa fa-icon fa-area-chart",
-                    restrictions: { action: true, actionType: "simonExplorationSelectedQueueID", checkType: "string" },
+                    restrictions: { action: true, actionType: "pandoraExplorationSelectedQueueID", checkType: "string" },
                 },
             },
         ],

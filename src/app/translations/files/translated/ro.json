@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Prezentare generală jurnal erori",
-  "components.ErrorLog.dialog.help-us": "Vă rugăm să ne ajute să îmbunătățească SIMON și să raporteze următoarele erori la tracker nostru github.",
+  "components.ErrorLog.dialog.help-us": "Vă rugăm să ne ajute să îmbunătățească PANDORA și să raporteze următoarele erori la tracker nostru github.",
   "components.ErrorLog.dialog.more-info": "Mai multe informații aici",
   "components.ErrorLog.table.title": "Informații generale",
   "components.ErrorLog.table.message": "Mesaj",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Nu putem rezolva problemele noastre cu același nivel de gândire care le-a creat",
   "components.GenularBottom.dialog.ending": "Pentru a contribui la un viitor mai bun, trebuie să înțelegem cu toții și de ce se schimbă mecanismele complexe și ce impact are această schimbare",
-  "components.GenularBottom.dialog.footer": "SIMON este făcută și întreținută de @genular, o comunitate care lucrează împreună pentru a menține știința un bun public accesibil pentru toată lumea. Salutăm participarea organizațiilor și a persoanelor angajate în promovarea instrumentelor deschise pentru știință. Vizitați site-ul nostru <a href='https://genular.org' target='_blank'></a> pentru instrucțiuni despre modul în care dumneavoastră și/sau proiectul/organizația dumneavoastră vă puteți alătura nouă.",
+  "components.GenularBottom.dialog.footer": "PANDORA este făcută și întreținută de @genular, o comunitate care lucrează împreună pentru a menține știința un bun public accesibil pentru toată lumea. Salutăm participarea organizațiilor și a persoanelor angajate în promovarea instrumentelor deschise pentru știință. Vizitați site-ul nostru <a href='https://genular.org' target='_blank'></a> pentru instrucțiuni despre modul în care dumneavoastră și/sau proiectul/organizația dumneavoastră vă puteți alătura nouă.",
   "components.GenularBottom.dialog.links.title": "Alte resurse",
   "components.GenularBottom.dialog.links.tooltip.forums": "Discutați cu comunitatea noastră posibile bugs & feature requests sau scrieți doar un tutorial de utilizare",
   "components.GenularBottom.dialog.links.tooltip.github": "Participați la progresul dezvoltării sau raportați erorile pe care le-ați descoperit",

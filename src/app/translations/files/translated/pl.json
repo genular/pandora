@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Przegląd protokołu błędów",
-  "components.ErrorLog.dialog.help-us": "Pomóż nam poprawić SIMON i zgłosić następujące błędy do naszego github tracker.",
+  "components.ErrorLog.dialog.help-us": "Pomóż nam poprawić PANDORA i zgłosić następujące błędy do naszego github tracker.",
   "components.ErrorLog.dialog.more-info": "Więcej informacji tutaj",
   "components.ErrorLog.table.title": "Informacje ogólne",
   "components.ErrorLog.table.message": "Wiadomość",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Nie możemy rozwiązać naszych problemów z takim samym poziomem myślenia, który je stworzył",
   "components.GenularBottom.dialog.ending": "Aby pracować na rzecz lepszej przyszłości, wszyscy musimy zrozumieć, jak i dlaczego skomplikowane mechanizmy zmieniają się i co wpływa na to, że zmiany",
-  "components.GenularBottom.dialog.footer": "System SIMON jest obsługiwany i utrzymywany przez produkt @genular, a społeczność wspólnie pracuje nad tym, aby nauka była publicznie dostępna dla wszystkich osób. Z zadowoleniem przyjmujemy udział organizacji i osób zaangażowanych w rozwój narzędzi otwartych dla nauki. Odwiedź naszą stronę <a href='https://genular.org' target='_blank'></a> , aby uzyskać instrukcje na temat tego, jak Ty i/lub Twój projekt/organizacja może do nas dołączyć.",
+  "components.GenularBottom.dialog.footer": "System PANDORA jest obsługiwany i utrzymywany przez produkt @genular, a społeczność wspólnie pracuje nad tym, aby nauka była publicznie dostępna dla wszystkich osób. Z zadowoleniem przyjmujemy udział organizacji i osób zaangażowanych w rozwój narzędzi otwartych dla nauki. Odwiedź naszą stronę <a href='https://genular.org' target='_blank'></a> , aby uzyskać instrukcje na temat tego, jak Ty i/lub Twój projekt/organizacja może do nas dołączyć.",
   "components.GenularBottom.dialog.links.title": "Inne zasoby",
   "components.GenularBottom.dialog.links.tooltip.forums": "Przedyskutuj z naszą społecznością możliwe błędy & funkcji, lub po prostu napisz kurs użycia",
   "components.GenularBottom.dialog.links.tooltip.github": "Weź udział w postępie rozwoju lub zgłaszaj błędy, które odkryłeś",

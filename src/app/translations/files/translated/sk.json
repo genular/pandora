@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Prehľad denníka chýb",
-  "components.ErrorLog.dialog.help-us": "Prosím, pomôžte nám zlepšiť SIMON a nahlásiť nasledujúce chyby nášmu github trackeru.",
+  "components.ErrorLog.dialog.help-us": "Prosím, pomôžte nám zlepšiť PANDORA a nahlásiť nasledujúce chyby nášmu github trackeru.",
   "components.ErrorLog.dialog.more-info": "Viac informácií nájdete tu",
   "components.ErrorLog.table.title": "Všeobecné informácie",
   "components.ErrorLog.table.message": "Správu",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Nemôžeme vyriešiť naše problémy s rovnakou úrovňou myslenia, ktorá ich vytvorila",
   "components.GenularBottom.dialog.ending": "Ak chceme pracovať na lepšej budúcnosti, všetci musíme pochopiť, ako a prečo sa menia zložité mechanizmy a čo má vplyv na túto zmenu",
-  "components.GenularBottom.dialog.footer": "SIMON je vyrobený a udržiavaný @genular, komunitou, ktorá spolupracuje na tom, aby bola veda verejne prístupná pre všetkých. Vítame účasť organizácií a jednotlivcov odhodlaných presadzovať otvorené nástroje pre vedu. Navštívte našu webovú <a href='https://genular.org' target='_blank'>a</a> pokyny, ako sa k nám vy a/alebo váš projekt/organizácia môžete pripojiť.",
+  "components.GenularBottom.dialog.footer": "PANDORA je vyrobený a udržiavaný @genular, komunitou, ktorá spolupracuje na tom, aby bola veda verejne prístupná pre všetkých. Vítame účasť organizácií a jednotlivcov odhodlaných presadzovať otvorené nástroje pre vedu. Navštívte našu webovú <a href='https://genular.org' target='_blank'>a</a> pokyny, ako sa k nám vy a/alebo váš projekt/organizácia môžete pripojiť.",
   "components.GenularBottom.dialog.links.title": "Iné zdroje",
   "components.GenularBottom.dialog.links.tooltip.forums": "Diskutujte s našou komunitou o možných chybách a požiadavkách na funkcie, alebo stačí napísať návod na použitie",
   "components.GenularBottom.dialog.links.tooltip.github": "Zúčastnite sa vývoja alebo nahláste chyby, ktoré ste objavili",

@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Агляд часопіса памылак",
-  "components.ErrorLog.dialog.help-us": "Дапамажыце нам палепшыць SIMON і паведаміць наступныя памылкі ў наш github-трэкер.",
+  "components.ErrorLog.dialog.help-us": "Дапамажыце нам палепшыць PANDORA і паведаміць наступныя памылкі ў наш github-трэкер.",
   "components.ErrorLog.dialog.more-info": "Больш інфармацыі тут",
   "components.ErrorLog.table.title": "Агульная інфармацыя",
   "components.ErrorLog.table.message": "Паведамленне",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Альберт Эйнштэйн",
   "components.GenularBottom.dialog.citation.text": "Мы не можам вырашаць свае праблемы з тым самым узроўнем мыслення, які стварыў іх",
   "components.GenularBottom.dialog.ending": "Каб працаваць у напрамку лепшай будучыні, нам усім трэба разумець, як і чаму мяняюцца складаныя механізмы і што ўплывае на гэтыя змены",
-  "components.GenularBottom.dialog.footer": "SIMON ствараецца і падтрымліваецца @genular, супольнасцю, якая працуе разам, каб навука была грамадскім дабром, даступным для ўсіх. Мы вітаем удзел арганізацый і асоб, якія імкнуцца развіваць адкрытыя інструменты для навукі. Наведайце наш <a href='https://genular.org' target='_blank'>сайт</a> для атрымання інструкцый пра тое , як вы і / або ваш праект / арганізацыя можа далучыцца да нас.",
+  "components.GenularBottom.dialog.footer": "PANDORA ствараецца і падтрымліваецца @genular, супольнасцю, якая працуе разам, каб навука была грамадскім дабром, даступным для ўсіх. Мы вітаем удзел арганізацый і асоб, якія імкнуцца развіваць адкрытыя інструменты для навукі. Наведайце наш <a href='https://genular.org' target='_blank'>сайт</a> для атрымання інструкцый пра тое , як вы і / або ваш праект / арганізацыя можа далучыцца да нас.",
   "components.GenularBottom.dialog.links.title": "Іншыя рэсурсы",
   "components.GenularBottom.dialog.links.tooltip.forums": "Абмяркуйце з нашай супольнасцю магчымыя памылкі і запыты функцый альбо проста напішыце падручнік па выкарыстанні",
   "components.GenularBottom.dialog.links.tooltip.github": "Прыміце ўдзел у прагрэсе распрацоўкі альбо паведамляйце пра выяўленыя вамі памылкі",

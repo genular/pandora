@@ -3,7 +3,7 @@
         "ErrorLog": {
             "dialog": {
                 "title": "Error Log Overview",
-                "help-us": "Please help us improve SIMON and report following errors to our github tracker.",
+                "help-us": "Please help us improve PANDORA and report following errors to our github tracker.",
                 "more-info": "More information here"
             },
             "table": {

@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Hata Günlüğüne Genel Bakış",
-  "components.ErrorLog.dialog.help-us": "Lütfen SIMON'u geliştirmemize ve aşağıdaki hataları github izleyicimize bildirmemize yardımcı olun.",
+  "components.ErrorLog.dialog.help-us": "Lütfen PANDORA'u geliştirmemize ve aşağıdaki hataları github izleyicimize bildirmemize yardımcı olun.",
   "components.ErrorLog.dialog.more-info": "Daha fazla bilgi için buraya tıklayın",
   "components.ErrorLog.table.title": "Genel bilgiler",
   "components.ErrorLog.table.message": "İleti",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Sorunlarımızı onları yaratan düşünce düzeyiyle çözemeyiz.",
   "components.GenularBottom.dialog.ending": "Daha iyi bir gelecek için çalışmak için, hepimizin karmaşık mekanizmaların nasıl ve neden değiştiğini ve bu değişimi neyin etkilediğini anlamamız gerekir.",
-  "components.GenularBottom.dialog.footer": "SIMON, bilimi herkes için kamu yararı olarak erişilebilir tutmak için birlikte çalışan bir topluluk olan @genular tarafından yapılır ve sürdürülmektedir. Bilim için açık araçları ilerletmeye kendini adamış kuruluşların ve bireylerin katılımını memnuniyetle karşılıyoruz. Sizin ve/veya projenizin/kuruluşunuzun bize nasıl katılabileceğine ilişkin talimatlar için <a href='https://genular.org' target='_blank'>web sitemizi</a> ziyaret edin.",
+  "components.GenularBottom.dialog.footer": "PANDORA, bilimi herkes için kamu yararı olarak erişilebilir tutmak için birlikte çalışan bir topluluk olan @genular tarafından yapılır ve sürdürülmektedir. Bilim için açık araçları ilerletmeye kendini adamış kuruluşların ve bireylerin katılımını memnuniyetle karşılıyoruz. Sizin ve/veya projenizin/kuruluşunuzun bize nasıl katılabileceğine ilişkin talimatlar için <a href='https://genular.org' target='_blank'>web sitemizi</a> ziyaret edin.",
   "components.GenularBottom.dialog.links.title": "Diğer kaynaklar",
   "components.GenularBottom.dialog.links.tooltip.forums": "Topluluğumuzla olası hataları ve özellik isteklerini tartışın veya sadece bir kullanım öğreticisi yazın",
   "components.GenularBottom.dialog.links.tooltip.github": "Geliştirme ilerleme aşamasında yer alın veya bulduğunuz hataları bildirin",

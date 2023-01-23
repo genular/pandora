@@ -110,7 +110,7 @@ export default {
     computed: {
         selectedFeatureSetId: {
             get() {
-                return this.$store.getters.simonExplorationSelectedFeatureSetId;
+                return this.$store.getters.pandoraExplorationSelectedFeatureSetId;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedFeatureSetId", value);
@@ -118,7 +118,7 @@ export default {
         },
         selectedModelsIDs: {
             get() {
-                return this.$store.getters.simonExplorationSelectedModelId;
+                return this.$store.getters.pandoraExplorationSelectedModelId;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedModelId", value);
@@ -137,7 +137,7 @@ export default {
             this.handleFetchGraphVariableImportance();
         },
         downloadPlotImage() {
-            const svgBlob = new Blob([window.atob(decodeURIComponent(this.renderedImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
+            const svgBlob = new Blob([window.atob(decodeURIComponent(this.renderedImage.substring(26))) + "<!-- created by PANDORA: https://genular.org -->"], {
                 type: "image/svg+xml;charset=utf-8"
             });
             const svgUrl = URL.createObjectURL(svgBlob);

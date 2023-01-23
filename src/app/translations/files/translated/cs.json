@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Přehled protokolu chyb",
-  "components.ErrorLog.dialog.help-us": "Prosím, pomozte nám vylepšit SIMON a ohlaste následující chyby na našem Github trackeru.",
+  "components.ErrorLog.dialog.help-us": "Prosím, pomozte nám vylepšit PANDORA a ohlaste následující chyby na našem Github trackeru.",
   "components.ErrorLog.dialog.more-info": "Další informace",
   "components.ErrorLog.table.title": "Všeobecné informace",
   "components.ErrorLog.table.message": "Zpráva",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Nemůžeme řešit naše problémy se stejnou úrovní myšlení, které je vytvořily",
   "components.GenularBottom.dialog.ending": "Chceme-li pracovat na lepší budoucnosti, všichni musíme pochopit, jak a proč se komplexní mechanismy mění a které mají dopad na tuto změnu",
-  "components.GenularBottom.dialog.footer": "SIMON vyrábí a udržuje @genular, komunita spolupracující na udržení vědy jako veřejného statku přístupného pro všechny. Vítáme účast organizací a jednotlivců odhodlaných rozvíjet otevřené nástroje pro vědu. Navštivte náš <a href='https://genular.org' target='_blank'>webové stránky</a> Pokyny, jak vy a / nebo váš projekt / organizace k nám mohou připojit.",
+  "components.GenularBottom.dialog.footer": "PANDORA vyrábí a udržuje @genular, komunita spolupracující na udržení vědy jako veřejného statku přístupného pro všechny. Vítáme účast organizací a jednotlivců odhodlaných rozvíjet otevřené nástroje pro vědu. Navštivte náš <a href='https://genular.org' target='_blank'>webové stránky</a> Pokyny, jak vy a / nebo váš projekt / organizace k nám mohou připojit.",
   "components.GenularBottom.dialog.links.title": "Další prostředky",
   "components.GenularBottom.dialog.links.tooltip.forums": "Diskutujte s naší komunitou možné chyby a požadavky na funkce, nebo jen napsat výukový program použití",
   "components.GenularBottom.dialog.links.tooltip.github": "Zúčastněte se pokroku ve vývoji nebo hlášení chyb, které jste objevili",

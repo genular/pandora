@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Panoramica del log degli errori",
-  "components.ErrorLog.dialog.help-us": "Vi preghiamo di aiutarci a migliorare SIMON e di segnalare gli errori al nostro tracker github.",
+  "components.ErrorLog.dialog.help-us": "Vi preghiamo di aiutarci a migliorare PANDORA e di segnalare gli errori al nostro tracker github.",
   "components.ErrorLog.dialog.more-info": "Più informazioni qui",
   "components.ErrorLog.table.title": "Informazioni generali",
   "components.ErrorLog.table.message": "Messaggio",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Non possiamo risolvere i nostri problemi con lo stesso livello di pensiero che li ha creati",
   "components.GenularBottom.dialog.ending": "Per lavorare verso un futuro migliore, tutti dobbiamo capire come e perché i meccanismi complessi stanno cambiando e i bianchi impattano che cambiano",
-  "components.GenularBottom.dialog.footer": "SIMON è fatto e mantenuto da @genular, una comunità che lavora insieme per mantenere la scienza un bene pubblico accessibile a tutti. Stiamo accogliendo la partecipazione di organizzazioni e individui impegnati ad avanzare strumenti aperti per la scienza. Visita il nostro sito <a href='https://genular.org' target='_blank'></a> per le istruzioni su come tu e / o il tuo progetto / organizzazione può unirsi a noi.",
+  "components.GenularBottom.dialog.footer": "PANDORA è fatto e mantenuto da @genular, una comunità che lavora insieme per mantenere la scienza un bene pubblico accessibile a tutti. Stiamo accogliendo la partecipazione di organizzazioni e individui impegnati ad avanzare strumenti aperti per la scienza. Visita il nostro sito <a href='https://genular.org' target='_blank'></a> per le istruzioni su come tu e / o il tuo progetto / organizzazione può unirsi a noi.",
   "components.GenularBottom.dialog.links.title": "Altre risorse",
   "components.GenularBottom.dialog.links.tooltip.forums": "Discutere con la nostra community possibili bug & richieste di funzione o semplicemente scrivere un tutorial di utilizzo",
   "components.GenularBottom.dialog.links.tooltip.github": "Prenovia parte in corso di sviluppo o report bug che hai scoperto",

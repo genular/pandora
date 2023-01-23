@@ -3,7 +3,7 @@
         <el-button-group>
             <el-button
                 :title="$t('components.GenularBottom.buttons.star')"
-                @click.prevent.stop="navigateTo('https://github.com/genular/simon-frontend')"
+                @click.prevent.stop="navigateTo('https://github.com/genular/pandora')"
                 type="primary"
                 icon="fa fa-github"
             ></el-button>

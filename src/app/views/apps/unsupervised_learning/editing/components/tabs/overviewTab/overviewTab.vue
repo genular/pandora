@@ -138,7 +138,7 @@
                             <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                                 <el-form-item>
                                     <el-button type="primary" round @click="redrawImage" style="float: right">
-                                        {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
+                                        {{ $t("views.apps.pandora.exploration.components.tabs.correlationTab.buttons.plot_image") }}
                                     </el-button>
                                 </el-form-item>
                             </el-col>
@@ -333,7 +333,7 @@ export default {
     computed: {
         activeTabName: {
             get() {
-                return this.$store.getters.simonExplorationActiveTabName;
+                return this.$store.getters.pandoraExplorationActiveTabName;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationnActiveTabName", value);
@@ -513,7 +513,7 @@ export default {
 
             const svgImage = "data:image/svg+xml;base64," + this.plot_data[imageType];
 
-            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
+            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by PANDORA: https://genular.org -->"], {
                 type: "image/svg+xml;charset=utf-8",
             });
 

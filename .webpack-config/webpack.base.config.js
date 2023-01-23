@@ -169,7 +169,7 @@ module.exports = (environment) => {
             new prepareMessagesPlugin(),
             new webpack.WatchIgnorePlugin([/\langs\.json$/]),
             new HtmlWebpackPlugin({
-                title: "SIMON",
+                title: "PANDORA",
                 template: SRC_DIR + "/index.html",
                 minify: {
                     collapseWhitespace: true,

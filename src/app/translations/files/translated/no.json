@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Oversikt over feillogg",
-  "components.ErrorLog.dialog.help-us": "Vennligst hjelp oss med å forbedre SIMON og rapportere følgende feil til vår github tracker.",
+  "components.ErrorLog.dialog.help-us": "Vennligst hjelp oss med å forbedre PANDORA og rapportere følgende feil til vår github tracker.",
   "components.ErrorLog.dialog.more-info": "Mer informasjon her",
   "components.ErrorLog.table.title": "Generell informasjon",
   "components.ErrorLog.table.message": "Melding",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "Vi kan ikke løse våre problemer med samme tankenivå som skapte dem",
   "components.GenularBottom.dialog.ending": "For å jobbe mot en bedre fremtid må vi alle forstå hvordan og hvorfor komplekse mekanismer endrer seg og hva som påvirker denne endringen",
-  "components.GenularBottom.dialog.footer": "SIMON er laget og vedlikeholdt av @genular, et samfunn som arbeider sammen for å holde vitenskapen en offentlig god tilgjengelig for alle. Vi ønsker velkommen deltakelse fra organisasjoner og enkeltpersoner forpliktet til å fremme åpne verktøy for vitenskap. Besøk vår <a href='https://genular.org' target='_blank'>nettside</a> for instruksjoner om hvordan du og/ eller ditt prosjekt / organisasjon kan bli med oss.",
+  "components.GenularBottom.dialog.footer": "PANDORA er laget og vedlikeholdt av @genular, et samfunn som arbeider sammen for å holde vitenskapen en offentlig god tilgjengelig for alle. Vi ønsker velkommen deltakelse fra organisasjoner og enkeltpersoner forpliktet til å fremme åpne verktøy for vitenskap. Besøk vår <a href='https://genular.org' target='_blank'>nettside</a> for instruksjoner om hvordan du og/ eller ditt prosjekt / organisasjon kan bli med oss.",
   "components.GenularBottom.dialog.links.title": "Andre ressurser",
   "components.GenularBottom.dialog.links.tooltip.forums": "Diskuter med samfunnet vårt mulige feil og funksjonsforespørsler, eller bare skriv en bruksopplæring",
   "components.GenularBottom.dialog.links.tooltip.github": "Ta del i utviklingen fremgang eller rapportere feil du oppdaget",

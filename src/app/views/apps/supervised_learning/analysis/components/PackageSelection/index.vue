@@ -1,9 +1,9 @@
 <template>
-    <div class="simon-package-selection">
+    <div class="pandora-package-selection">
         <!--
         <el-row v-if="is_demo === true">
             <el-col :span="24">
-                <el-alert title="Notification:" description="Please note since you are using demo server for SMON backend your selection will be limited to 5 statistical packages at a time. To get over this limitation please configure your private SIMON backend server." type="warning" style="margin-top: 20px;" show-icon> </el-alert>
+                <el-alert title="Notification:" description="Please note since you are using demo server for SMON backend your selection will be limited to 5 statistical packages at a time. To get over this limitation please configure your private PANDORA backend server." type="warning" style="margin-top: 20px;" show-icon> </el-alert>
             </el-col>
         </el-row>
         -->
@@ -301,7 +301,7 @@ export default {
         /** Array of all available analysis packages */
         avaliablePackages: {
             get() {
-                return this.$store.getters.simonAvaliablePackages;
+                return this.$store.getters.pandoraAvaliablePackages;
             },
             set(value) {
                 this.$store.dispatch("setSimonAvaliablePackages", value);
@@ -310,7 +310,7 @@ export default {
         /** Selected array of analysis packages */
         selectedPackages: {
             get() {
-                return this.$store.getters.simonSelectedPackages;
+                return this.$store.getters.pandoraSelectedPackages;
             },
             set(value) {
                 this.$store.dispatch("setSimonSelectedPackages", value);
@@ -319,7 +319,7 @@ export default {
         /** Extraction HTML model */
         filterExtraction: {
             get() {
-                return this.$store.getters.simonAnalysisFilterExtraction;
+                return this.$store.getters.pandoraAnalysisFilterExtraction;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisFilterExtraction", value);
@@ -328,7 +328,7 @@ export default {
         /** Feature extraction from builded models */
         backwardSelection: {
             get() {
-                return this.$store.getters.simonAnalysisBackwardSelection;
+                return this.$store.getters.pandoraAnalysisBackwardSelection;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisBackwardSelection", value);
@@ -337,7 +337,7 @@ export default {
         /** Time limit in seconds before we terminate model building */
         modelProcessingTimeLimit: {
             get() {
-                return this.$store.getters.simonAnalysisModelProcessingTimeLimit;
+                return this.$store.getters.pandoraAnalysisModelProcessingTimeLimit;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisModelProcessingTimeLimit", value);
@@ -600,7 +600,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "~scss_vars";
 
-.simon-package-selection {
+.pandora-package-selection {
     .checkbox-filters {
         height: 50px;
         line-height: 50px;

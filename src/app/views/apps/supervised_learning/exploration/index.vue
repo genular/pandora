@@ -110,7 +110,7 @@ export default {
     computed: {
         activeTabName: {
             get() {
-                return this.$store.getters.simonExplorationActiveTabName;
+                return this.$store.getters.pandoraExplorationActiveTabName;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationnActiveTabName", value);
@@ -118,7 +118,7 @@ export default {
         },
         selectedQueueID: {
             get() {
-                return this.$store.getters.simonExplorationSelectedQueueID;
+                return this.$store.getters.pandoraExplorationSelectedQueueID;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedQueueID", value);
@@ -126,7 +126,7 @@ export default {
         },
         selectedFeatureSetId: {
             get() {
-                return this.$store.getters.simonExplorationSelectedFeatureSetId;
+                return this.$store.getters.pandoraExplorationSelectedFeatureSetId;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedFeatureSetId", value);
@@ -134,7 +134,7 @@ export default {
         },
         selectedModelsIDs: {
             get() {
-                return this.$store.getters.simonExplorationSelectedModelId;
+                return this.$store.getters.pandoraExplorationSelectedModelId;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedModelId", value);

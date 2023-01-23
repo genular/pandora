@@ -1,5 +1,5 @@
 <template>
-    <div class="simon-start-button">
+    <div class="pandora-start-button">
         <el-row type="flex" align="middle">
             <el-col :offset="13" :span="11">
                 <el-row type="flex" align="middle">
@@ -187,7 +187,7 @@ export default {
         /** Current Selected Features */
         selectedFeatures: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedFeatures;
+                return this.$store.getters.pandoraAnalysisSelectedFeatures;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFeatures", value);
@@ -196,7 +196,7 @@ export default {
         /** Excluded Features */
         excludeFeatures: {
             get() {
-                return this.$store.getters.simonAnalysisExcludeFeatures;
+                return this.$store.getters.pandoraAnalysisExcludeFeatures;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisExcludeFeatures", value);
@@ -205,7 +205,7 @@ export default {
         /** Current Selected Outcome */
         selectedOutcome: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedOutcome;
+                return this.$store.getters.pandoraAnalysisSelectedOutcome;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedOutcome", value);
@@ -213,7 +213,7 @@ export default {
         },
         selectedClasses: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedClasses;
+                return this.$store.getters.pandoraAnalysisSelectedClasses;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedClasses", value);
@@ -221,7 +221,7 @@ export default {
         },
         selectedFormula: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedFormula;
+                return this.$store.getters.pandoraAnalysisSelectedFormula;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFormula", value);
@@ -230,7 +230,7 @@ export default {
         /* Regression analysis dependents */
         timeSeriesDate: {
             get() {
-                return this.$store.getters.simonAnalysisTimeSeriesDate;
+                return this.$store.getters.pandoraAnalysisTimeSeriesDate;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisTimeSeriesDate", value);
@@ -238,7 +238,7 @@ export default {
         },
         selectedPreProcess: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedPreProcess;
+                return this.$store.getters.pandoraAnalysisSelectedPreProcess;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedPreProcess", value);
@@ -246,7 +246,7 @@ export default {
         },
         selectedPartitionSplit: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedPartitionSplit;
+                return this.$store.getters.pandoraAnalysisSelectedPartitionSplit;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedPartitionSplit", value);
@@ -255,7 +255,7 @@ export default {
         /** Time limit in seconds before we terminate model building */
         modelProcessingTimeLimit: {
             get() {
-                return this.$store.getters.simonAnalysisModelProcessingTimeLimit;
+                return this.$store.getters.pandoraAnalysisModelProcessingTimeLimit;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisModelProcessingTimeLimit", value);
@@ -271,7 +271,7 @@ export default {
         },
         selectedFilesHash: {
             get() {
-                return this.$store.getters.simonAnalysisSelectedFileHash;
+                return this.$store.getters.pandoraAnalysisSelectedFileHash;
             },
             set(value) {
                 this.$store.dispatch("setSimonAnalysisSelectedFileHash", value);
@@ -407,7 +407,7 @@ export default {
             }
             // Check if Packages are selected
             //      if this is a demo server and more than five packages are selected warn the user!
-            if (this.$store.getters.simonSelectedPackages.length === 0) {
+            if (this.$store.getters.pandoraSelectedPackages.length === 0) {
                 message_warnings.push(this.$t("views.apps.supervised_learning.analysis.components.StartButton.other.misssing_packages"));
             }
 
@@ -466,13 +466,13 @@ export default {
                 selectedFormula: this.selectedFormula.sort(sortAlphaNum),
                 timeSeriesDate: this.timeSeriesDate.sort(sortAlphaNum),
                 selectedClasses: this.selectedClasses.sort(sortAlphaNum),
-                selectedPackages: this.$store.getters.simonSelectedPackages
+                selectedPackages: this.$store.getters.pandoraSelectedPackages
                     .map(function (item) {
                         return item.id;
                     })
                     .sort(sortAlphaNum),
-                extraction: this.$store.getters.simonAnalysisFilterExtraction,
-                backwardSelection: this.$store.getters.simonAnalysisBackwardSelection,
+                extraction: this.$store.getters.pandoraAnalysisFilterExtraction,
+                backwardSelection: this.$store.getters.pandoraAnalysisBackwardSelection,
             };
             this.datasetResamples = [];
             this.datasetQueueID = 0;
@@ -636,7 +636,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "~scss_vars";
 
-.simon-start-button {
+.pandora-start-button {
     margin-top: 20px;
 
     .validate-analysis {

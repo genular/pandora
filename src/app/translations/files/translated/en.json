@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Error Log Overview",
-  "components.ErrorLog.dialog.help-us": "Please help us improve SIMON and report following errors to our github tracker.",
+  "components.ErrorLog.dialog.help-us": "Please help us improve PANDORA and report following errors to our github tracker.",
   "components.ErrorLog.dialog.more-info": "More information here",
   "components.ErrorLog.table.title": "General information",
   "components.ErrorLog.table.message": "Message",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "We can not solve our problems with the same level of thinking that created them",
   "components.GenularBottom.dialog.ending": "To work towards a better future, we all need to understand how and why complex mechanisms are changing and whats impacting that change",
-  "components.GenularBottom.dialog.footer": "SIMON is made and maintained by @genular, a community working together to keep science a public good accessible to everyone. We are welcoming participation from organizations and individuals committed to advancing open tools for science. Visit our <a href='https://genular.org' target='_blank'>website</a> for instructions on how you and/or your project/organization can join us.",
+  "components.GenularBottom.dialog.footer": "PANDORA is made and maintained by @genular, a community working together to keep science a public good accessible to everyone. We are welcoming participation from organizations and individuals committed to advancing open tools for science. Visit our <a href='https://genular.org' target='_blank'>website</a> for instructions on how you and/or your project/organization can join us.",
   "components.GenularBottom.dialog.links.title": "Other resources",
   "components.GenularBottom.dialog.links.tooltip.forums": "Discuss with our community possible bugs & feature requests, or just write a usage tutorial",
   "components.GenularBottom.dialog.links.tooltip.github": "Take part in development progress or report bugs you discovered",

@@ -2,7 +2,7 @@
 
 This document contains a set of guidelines which any contributions to *any* genular repository must follow.
 
-[If you disagree with something here, you should open up an issue to discuss making a change!](https://github.com/genular/simon-frontend/issues/new)
+[If you disagree with something here, you should open up an issue to discuss making a change!](https://github.com/genular/pandora/issues/new)
 
 ## Table of Contents
 

@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Обзор журнала ошибок",
-  "components.ErrorLog.dialog.help-us": "Пожалуйста, помогите нам улучшить SIMON и сообщить о следующих ошибках нашему трекеру github.",
+  "components.ErrorLog.dialog.help-us": "Пожалуйста, помогите нам улучшить PANDORA и сообщить о следующих ошибках нашему трекеру github.",
   "components.ErrorLog.dialog.more-info": "Более подробная информация здесь",
   "components.ErrorLog.table.title": "Общая информация",
   "components.ErrorLog.table.message": "Сообщение",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Альберт Эйнштейн",
   "components.GenularBottom.dialog.citation.text": "Мы не можем решить наши проблемы с тем же уровнем мышления, который создал их",
   "components.GenularBottom.dialog.ending": "Чтобы работать в направлении лучшего будущего, мы все должны понять, как и почему меняются сложные механизмы и что влияет на это изменение",
-  "components.GenularBottom.dialog.footer": "SIMON сделан и поддерживается @genular, сообщество, работающее вместе, чтобы сохранить науку общественное благо доступным для всех. Мы приветствуем участие организаций и отдельных лиц, приверженных продвижению открытых инструментов для науки. Посетите наш веб <a href='https://genular.org' target='_blank'>сайт</a> для получения инструкций о том, как вы и / или ваш проект / организация может присоединиться к нам.",
+  "components.GenularBottom.dialog.footer": "PANDORA сделан и поддерживается @genular, сообщество, работающее вместе, чтобы сохранить науку общественное благо доступным для всех. Мы приветствуем участие организаций и отдельных лиц, приверженных продвижению открытых инструментов для науки. Посетите наш веб <a href='https://genular.org' target='_blank'>сайт</a> для получения инструкций о том, как вы и / или ваш проект / организация может присоединиться к нам.",
   "components.GenularBottom.dialog.links.title": "Прочие ресурсы",
   "components.GenularBottom.dialog.links.tooltip.forums": "Обсудите с нашим сообществом возможные ошибки и запросы на функции или просто напишите учебник по использованию",
   "components.GenularBottom.dialog.links.tooltip.github": "Примите участие в процессе разработки или сообщите об обнаруженных ошибках",

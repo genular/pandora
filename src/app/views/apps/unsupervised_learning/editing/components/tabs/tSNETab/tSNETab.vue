@@ -33,7 +33,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -88,7 +88,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -129,7 +129,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -176,7 +176,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -212,7 +212,7 @@
                                 filterable
                                 default-first-option
                                 reserve-keyword
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
                             >
                                 <el-option v-for="item in settingsOptions.clusterType" :key="item.value" :label="item.name" :value="item.value">
                                     <span style="float: left">
@@ -232,15 +232,15 @@
                             <el-select
                                 style="float: right"
                                 v-model="settingsForm.clustLinkage"
-                                :placeholder="$t('views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.placeholder')"
+                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.clust_method.placeholder')"
                             >
                                 <el-option
                                     v-for="item in settingsOptions.clustLinkage"
                                     :key="item.id"
-                                    :label="$t(['views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
+                                    :label="$t(['views.apps.pandora.exploration.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
                                     :value="item.id"
                                 >
-                                    <span>{{ $t("views.apps.simon.exploration.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
+                                    <span>{{ $t("views.apps.pandora.exploration.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -437,7 +437,7 @@
                             <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                                 <el-form-item>
                                     <el-button type="primary" round @click="redrawImage" style="float: right">
-                                        {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
+                                        {{ $t("views.apps.pandora.exploration.components.tabs.correlationTab.buttons.plot_image") }}
                                     </el-button>
                                 </el-form-item>
                             </el-col>
@@ -774,7 +774,7 @@ export default {
     computed: {
         activeTabName: {
             get() {
-                return this.$store.getters.simonExplorationActiveTabName;
+                return this.$store.getters.pandoraExplorationActiveTabName;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationnActiveTabName", value);
@@ -1038,7 +1038,7 @@ export default {
             downloadName = downloadName + ".svg";
 
             const svgImage = "data:image/svg+xml;base64," + svgString;
-            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by SIMON: https://genular.org -->"], {
+            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by PANDORA: https://genular.org -->"], {
                 type: "image/svg+xml;charset=utf-8",
             });
 

@@ -33,7 +33,7 @@ export default {
         },
         selectedQueueID: {
             get() {
-                return this.$store.getters.simonExplorationSelectedQueueID;
+                return this.$store.getters.pandoraExplorationSelectedQueueID;
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedQueueID", value);

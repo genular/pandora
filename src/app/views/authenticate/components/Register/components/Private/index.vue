@@ -98,7 +98,7 @@
                                         <el-tooltip
                                             class="item"
                                             effect="dark"
-                                            content="Contribute to SIMON! Help us improve future versions of SIMON by allowing us to collect installation statistics."
+                                            content="Contribute to PANDORA! Help us improve future versions of PANDORA by allowing us to collect installation statistics."
                                             placement="bottom"
                                         >
                                             <i class="el-icon-question"></i>
@@ -111,8 +111,8 @@
                     <el-col :span="10">
                         <el-card class="box-card" style="width: 90%; float: right; margin-top: 10px">
                             <div slot="header" class="clearfix">
-                                <span style="float: left">SIMON features</span>
-                                <span style="float: right"><a href="https://github.com/genular/simon-frontend" target="_blank">star us on github</a></span>
+                                <span style="float: left">PANDORA features</span>
+                                <span style="float: right"><a href="https://github.com/genular/pandora" target="_blank">star us on github</a></span>
                             </div>
                             <div class="box-card-item">200+ machine learning algorithms to run at once</div>
                             <div class="box-card-item">
@@ -143,7 +143,7 @@
                             <span>Your account is successfully created!</span>
                             <br />
                             <br />
-                            If you did not already and if you are using cloud version of SIMON please confirm your email address via email we sent to you.
+                            If you did not already and if you are using cloud version of PANDORA please confirm your email address via email we sent to you.
                         </p>
                         <p class="welcome_text">You can now login to your user interface where you can start exploring.</p>
                     </el-col>

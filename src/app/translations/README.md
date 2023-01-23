@@ -1,11 +1,11 @@
 # Localization
-Here you can find how localization workflow works in SIMON
+Here you can find how localization workflow works in PANDORA
 
 ## Helping out
 [Join our Translation Community](https://crowdin.com/project/genular) and help us correct existing translations, or add new ones.
 
 ### New language request!?
-Pleas open new GitHub issue [Here](https://github.com/genular/simon-frontend/issues)
+Pleas open new GitHub issue [Here](https://github.com/genular/pandora/issues)
 
 ## Working with translation files in source code
 ### Add new strings in the templates

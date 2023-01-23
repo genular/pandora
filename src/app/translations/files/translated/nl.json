@@ -1,6 +1,6 @@
 {
   "components.ErrorLog.dialog.title": "Overzicht foutenlogboek",
-  "components.ErrorLog.dialog.help-us": "Help ons om te verbeteren SIMON en melden na fouten aan onze github tracker.",
+  "components.ErrorLog.dialog.help-us": "Help ons om te verbeteren PANDORA en melden na fouten aan onze github tracker.",
   "components.ErrorLog.dialog.more-info": "Meer informatie hier",
   "components.ErrorLog.table.title": "Algemene informatie",
   "components.ErrorLog.table.message": "Bericht",
@@ -12,7 +12,7 @@
   "components.GenularBottom.dialog.citation.author": "Albert Einstein",
   "components.GenularBottom.dialog.citation.text": "We kunnen onze problemen niet oplossen met hetzelfde niveau van denken dat hen creëerde.",
   "components.GenularBottom.dialog.ending": "Om naar een betere toekomst te werken, moeten we allemaal begrijpen hoe en waarom complexe mechanismen veranderen en whats invloed hebben op die verandering",
-  "components.GenularBottom.dialog.footer": "SIMON wordt gemaakt en onderhouden door @genular, een community die samenwerken om de wetenschap een publiek goed toegankelijk te maken voor iedereen. Wij verwelkomen de deelname van organisaties en individuen die zich inzetten voor het bevorderen van open instrumenten voor de wetenschap. Bezoek onze <a href='https://genular.org' target='_blank'>website</a> voor instructies over hoe u en/of uw project/organisatie kan deelnemen.",
+  "components.GenularBottom.dialog.footer": "PANDORA wordt gemaakt en onderhouden door @genular, een community die samenwerken om de wetenschap een publiek goed toegankelijk te maken voor iedereen. Wij verwelkomen de deelname van organisaties en individuen die zich inzetten voor het bevorderen van open instrumenten voor de wetenschap. Bezoek onze <a href='https://genular.org' target='_blank'>website</a> voor instructies over hoe u en/of uw project/organisatie kan deelnemen.",
   "components.GenularBottom.dialog.links.title": "Overige middelen",
   "components.GenularBottom.dialog.links.tooltip.forums": "Besprek met onze community mogelijke bugs & functie aanvragen, of schrijf gewoon een gebruik tutorial",
   "components.GenularBottom.dialog.links.tooltip.github": "Deelnemen aan ontwikkelingvoortgang of melden van bugs die u hebt ontdekt",

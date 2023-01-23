@@ -80,7 +80,7 @@
                     <div slot="header" class="clearfix"><span>System debugging</span></div>
                     <el-row type="flex" class="row-bg" justify="space-between">
                         <el-col :span="6" style="text-align: left">
-                            <el-button type="primary" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">Update minor SIMON version</el-button>
+                            <el-button type="primary" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">Update minor PANDORA version</el-button>
                         </el-col>
                         <el-col :span="18" style="text-align: right">
                             <el-button type="primary" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">Generate system log file</el-button>
@@ -99,7 +99,7 @@
                     genular {{ packageVersion }} ({{ packageEnviroment }})
                     <br />
                     Developed by the
-                    <a href="https://github.com/genular/simon-frontend" target="_blank">genular community</a>
+                    <a href="https://github.com/genular/pandora" target="_blank">genular community</a>
                     .
                 </div>
             </el-col>
@@ -245,7 +245,7 @@ export default {
 
             return;
 
-            this.$confirm("This can permanently destroy all your SIMON data and settings. Continue?", "Update minor SIMON version", {
+            this.$confirm("This can permanently destroy all your PANDORA data and settings. Continue?", "Update minor PANDORA version", {
                 confirmButtonText: "OK",
                 cancelButtonText: "Cancel",
                 type: "warning",
