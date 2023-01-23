@@ -6,8 +6,7 @@
             <span class="close-container" @click="closeSelectedFile(file.id)">x</span>
         </div>
         <div v-if="selectedQueueID != ''" class="files-view-item selectedQueueID animated flipInY" closable>
-            Queue ID:
-            <span style="font-weight: bold">{{ selectedQueueID }}</span>
+            Queue ID: {{ selectedQueueID }}
             <span class="close-container" @click.prevent.stop="handleCloseExplorationJobId()">x</span>
         </div>
     </div>
@@ -64,18 +63,16 @@ export default {
         font-weight: 400;
     }
     .files-view-item {
-        display: inline-block;
+        /* display: inline-block; */
         float: left;
         line-height: 40px;
-        border: 0;
-
-        background-color: $green;
-        color: #fff;
-
+        /* border: 0; */
+        background-color: $yellow;
+        /* color: #fff; */
         padding: 0 10px;
         height: 40px;
-        font-size: 12px;
-        cursor: default;
+        font-size: 16px;
+        cursor: pointer;
 
         &:not(:last-child) {
             margin-right: 10px;
@@ -86,10 +83,9 @@ export default {
             border-radius: 50%;
             text-align: center;
             font-weight: bold;
-            cursor: pointer;
             font-size: 15px;
             float: right;
-            line-height: 17px;
+            line-height: 20px;
             margin-top: 10px;
             margin-left: 5px;
             &:hover {
@@ -100,7 +96,7 @@ export default {
     }
     .selectedQueueID {
         background-color: $pink;
-        color: #fff;
+        color: $white;
     }
 }
 </style>

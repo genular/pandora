@@ -71,7 +71,7 @@
                         <span>{{ $t("views.settings.danger_area.title") }}</span>
                     </div>
                     <div style="text-align: right">
-                        <el-button type="danger" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="deleteAccount">
+                        <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="deleteAccount">
                             {{ $t("views.settings.danger_area.delete_button") }}
                         </el-button>
                     </div>
@@ -80,11 +80,11 @@
                     <div slot="header" class="clearfix"><span>System debugging</span></div>
                     <el-row type="flex" class="row-bg" justify="space-between">
                         <el-col :span="6" style="text-align: left">
-                            <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">Update minor SIMON version</el-button>
+                            <el-button type="primary" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">Update minor SIMON version</el-button>
                         </el-col>
                         <el-col :span="18" style="text-align: right">
-                            <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">Generate system log file</el-button>
-                            <el-button type="success" :disabled="this.$config.isDemoServer == true" @click="generateBrowserLogFile">Generate browser log file</el-button>
+                            <el-button type="primary" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">Generate system log file</el-button>
+                            <el-button type="primary" :disabled="this.$config.isDemoServer == true" @click="generateBrowserLogFile">Generate browser log file</el-button>
                         </el-col>
                     </el-row>
                 </el-card>

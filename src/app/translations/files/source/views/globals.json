@@ -3,9 +3,11 @@
 		"dashboard": "Dashboard",
 		"settings": "Settings",
 		"workspace": "Workspace",
-		"simon": "SIMON",
-		"simon-analysis": "Start Analysis",
-		"simon-exploratory-analysis": "Analysis Exploration",
+
+		"supervised_learning": "Supervised learning",
+		"supervised_learning_analysis": "Start Analysis",
+		"supervised_learning_analysis_exploratory": "Analysis Exploration",
+
 		"unsupervised_learning": "Unsupervised learning",
 		"unsupervised_learning_exploration": "Start Exploration"
 	},

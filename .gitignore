@@ -24,3 +24,5 @@ env_production.json
 *.ignore
 *.bak
 *.gitignore
+
+favicon_old

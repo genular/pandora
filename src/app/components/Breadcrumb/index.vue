@@ -47,13 +47,20 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .app-breadcrumb.el-breadcrumb {
+
     display: inline-block;
     font-size: 14px;
     line-height: 50px;
     margin-left: 10px;
+
     .no-redirect {
-        color: #97a8be;
+        color: #C0C4CC;
         cursor: text;
     }
+
+    .el-breadcrumb__inner.is-link, .el-breadcrumb__inner a {
+        color: #FFFFFF;
+    }
 }
+
 </style>

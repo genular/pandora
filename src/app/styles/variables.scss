@@ -1,36 +1,32 @@
 @import './mixins.scss';
 
-$--color-primary: #35224a;
-// Main background color #409EFF
-$ui-background: #35224a;
+$ui-background: #000000;
+$main-container-background: #333333;
 
-$ui-background-secondary: #EFF0F9;
 
-// #3D2D53
-// #4C3B63
-// #CFBEE3
-$ui-icon-inactive: #EFF0F9;
-$ui-text-inactive: #EFF0F9;
-// #E3006E
+$ui-background-secondary: #121212;
+$--color-primary: #121212;
+
+$ui-icon-inactive: #000000;
+$ui-text-inactive: #000000;
+
+$blue:#3700b3;
+$green: #03dac5;
+
 
 $sidebar-size: 260px;
-
-$grey: #dbe2e8;
-$white: #fff;
 $header-height: 60px;
 
-$blue:#324157;
+$grey: #dbe2e8;
+$white: #FFFFFF;
+
+
 $light-blue:#3A71A8;
 $red:#C03639;
-
-$green: #30B08F;
-$pink: #e3006e;
-
 $tiffany: #4AB7BD;
-$yellow:#FEC171;
+$yellow:  #E4D04D;
+$pink:  #e3006e;
 
-//sidebar
-// Main background color #409EFF
-$subMenuBg: $ui-background;
-$menuHover:#FFFFFF;
+$subMenuBg: $ui-background-secondary;
+$menuHover: $white;
 

@@ -94,31 +94,31 @@ export const constantRouterMap = [
     },
 
     {
-        path: "/apps/simon",
+        path: "/apps/supervised-learning",
         component: Layout,
         redirect: "noredirect",
-        name: "simon",
+        name: "supervised_learning",
         meta: {
-            title: "simon",
+            title: "supervised_learning",
             icon: "fa fa-icon fa-plus",
         },
         children: [
             {
                 path: "start-analysis",
-                component: _import("apps/simon/analysis/index"),
+                component: _import("apps/supervised_learning/analysis/index"),
                 name: "analysis",
                 meta: {
-                    title: "simon-analysis",
+                    title: "supervised_learning_analysis",
                     icon: "fa fa-icon fa-play",
                     restrictions: { file: true, extension: ["csv"] },
                 },
             },
             {
                 path: "start-exploration",
-                component: _import("apps/simon/exploration/index"),
+                component: _import("apps/supervised_learning/exploration/index"),
                 name: "exploration",
                 meta: {
-                    title: "simon-exploratory-analysis",
+                    title: "supervised_learning_analysis_exploratory",
                     icon: "fa fa-icon fa-area-chart",
                     restrictions: { action: true, actionType: "simonExplorationSelectedQueueID", checkType: "string" },
                 },
@@ -138,7 +138,7 @@ export const constantRouterMap = [
             {
                 path: "start-exploration",
                 component: _import("apps/unsupervised_learning/editing/index"),
-                name: "unsupervised_learning-exploration",
+                name: "unsupervised_learning_exploration",
                 meta: {
                     title: "unsupervised_learning_exploration",
                     icon: "fa fa-icon fa-play",
@@ -149,7 +149,7 @@ export const constantRouterMap = [
             {
                 path: "start-exploration",
                 component: _import("apps/unsupervised_learning/editing/index"),
-                name: "unsupervised_learning-exploration_hidden",
+                name: "unsupervised_learning_exploration_hidden",
                 meta: {
                     title: "unsupervised_learning_exploration",
                     icon: "fa fa-icon fa-play",

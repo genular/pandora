@@ -16,8 +16,18 @@
             <el-col :span="4">
                 <el-form ref="settingsForm" :model="settingsForm">
                     <el-form-item label="Columns:">
+                        <el-tooltip placement="top">
+                            <div slot="content">
+                                Please select columns you wish to analyze and plot. Leaving this empty will take all valid numerical columns except excluded ones.
+                                <br />
+                                To remove rows with NA values please make sure that "Remove NA" option is enabled.
+                                Variables with zero variance are automatically excluded when "Preprocess" option is enabled and NA values are median imputed.
+                            </div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        <br />
                         <el-select
-                            style="float: right"
+                            style="float: left;width: 100%;"
                             v-model="settingsForm.selectedColumns"
                             multiple
                             filterable
@@ -34,11 +44,11 @@
                             "
                         >
                             <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
-                                <el-row style="max-width: 250px">
+                                <el-row>
                                     <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                         {{ item.original }}
                                     </el-col>
-                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
+                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
                                         {{ item.valid_10p === 1 ? "*" : "" }}
                                         {{ item.unique_count }}
                                         {{ item.na_percentage > 0 ? "NA" : "" }}
@@ -46,28 +56,25 @@
                                 </el-row>
                             </el-option>
                         </el-select>
-                        <el-tooltip placement="top">
-                            <div slot="content">
-                                Please select columns you wish to analyze and plot. Leaving this empty will take all valid numerical columns except excluded ones.
-                                <br />
-                                To remove rows with NA values please make sure that "Remove NA" option is enabled.
-                                Variables with zero variance are automatically excluded when "Preprocess" option is enabled and NA values are median imputed.
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
                     </el-form-item>
 
                     <el-form-item label="First (n) columns">
-                        <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="100" :min="2" :max="50000"></el-input-number>
                         <el-tooltip placement="top" style="padding-left: 5px">
                             <div slot="content">If you have not selected any columns we will take first n columns from your dataset, based on this value.</div>
                             <i class="el-icon-question"></i>
                         </el-tooltip>
+                        <br />
+                        <el-input-number style="float: left;width: 100%;" v-model="settingsForm.cutOffColumnSize" :step="100" :min="2" :max="50000"></el-input-number>
                     </el-form-item>
 
                     <el-form-item label="Exclude Columns">
+                        <el-tooltip placement="top" style="padding-left: 5px">
+                            <div slot="content">Please select any columns you wish to exclude from analysis.</div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        <br />
                         <el-select
-                            style="float: right"
+                            style="float: left;width: 100%;"
                             v-model="settingsForm.excludedColumns"
                             multiple
                             filterable
@@ -84,11 +91,11 @@
                             "
                         >
                             <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
-                                <el-row style="max-width: 250px">
+                                <el-row>
                                     <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                         {{ item.original }}
                                     </el-col>
-                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
+                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
                                         {{ item.valid_10p === 1 ? "*" : "" }}
                                         {{ item.unique_count }}
                                         {{ item.na_percentage > 0 ? "NA" : "" }}
@@ -96,10 +103,6 @@
                                 </el-row>
                             </el-option>
                         </el-select>
-                        <el-tooltip placement="top" style="padding-left: 5px">
-                            <div slot="content">Please select any columns you wish to exclude from analysis.</div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
                     </el-form-item>
 
                     <el-form-item label="Remove by unique">
@@ -111,7 +114,8 @@
                     </el-form-item>
 
                     <el-form-item v-if="settingsForm.cutOffUnique === true" label="Remove by unique treshold">
-                        <el-input-number style="float: right" size="mini" v-model="settingsForm.cutOffUniqueSize" :step="1" :max="10000" :min="1"></el-input-number>
+                        <br />
+                        <el-input-number style="float: left;width: 100%;" size="mini" v-model="settingsForm.cutOffUniqueSize" :step="1" :max="10000" :min="1"></el-input-number>
                     </el-form-item>
 
                     <el-form-item label="Remove < 10%">
@@ -123,8 +127,19 @@
                     </el-form-item>
 
                     <el-form-item label="Grouping variable:">
+                        <el-tooltip placement="top">
+                            <div slot="content">
+                                Grouping variables are not taken in consideration when calculation PCA. Preprocessing is also not applied to them.
+                                <br />
+                                They are used only for plotting and displaying PCA results.
+                                <br />
+                                Only variables where the number of unique values is less than 10% of the total number of observations are shown here.
+                            </div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        <br />
                         <el-select
-                            style="float: right"
+                            style="float: left;width: 100%;"
                             v-model="settingsForm.groupingVariables"
                             multiple
                             filterable
@@ -147,11 +162,11 @@
                                 :value="item"
                                 :disabled="item.valid_10p !== 1 || item.unique_count < 2"
                             >
-                                <el-row style="max-width: 250px">
+                                <el-row>
                                     <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                         {{ item.original }}
                                     </el-col>
-                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
+                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
                                         {{ item.valid_10p === 1 ? "*" : "" }}
                                         {{ item.unique_count }}
                                         {{ item.na_percentage > 0 ? "NA" : "" }}
@@ -159,16 +174,6 @@
                                 </el-row>
                             </el-option>
                         </el-select>
-                        <el-tooltip placement="top">
-                            <div slot="content">
-                                Grouping variables are not taken in consideration when calculation PCA. Preprocessing is also not applied to them.
-                                <br />
-                                They are used only for plotting and displaying PCA results.
-                                <br />
-                                Only variables where the number of unique values is less than 10% of the total number of observations are shown here.
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
                     </el-form-item>
 
                     <el-form-item label="X axis:">
@@ -228,17 +233,17 @@
                     </el-form-item>
 
                     <el-form-item label="KMO/Berlett column limit">
-                         <el-input-number style="float: right" size="mini" v-model="settingsForm.kmo_bartlett_limit" :step="100" :max="100000" :min="1"></el-input-number>
                         <el-tooltip placement="top">
                             <div slot="content">If we have more columns than in this limit we will skip calculation of Bartlett (1951) and his contrast Kaiser, Meyer, Olkin test.</div>
                             <i class="el-icon-question"></i>
                         </el-tooltip>
+                        <br />
+                         <el-input-number style="float: left;width: 100%;" size="mini" v-model="settingsForm.kmo_bartlett_limit" :step="100" :max="100000" :min="1"></el-input-number>
                     </el-form-item>
 
-
-
                     <el-form-item label="Analysis method">
-                        <el-select v-model="settingsForm.analysis_method" size="mini" placeholder="Select" style="float: right">
+                        <br />
+                        <el-select v-model="settingsForm.analysis_method" size="mini" placeholder="Select" style="float: left;width: 100%;">
                             <el-option v-for="item in selectedOptions.analysis_method" :key="item.id" :label="item.name" :value="item.id">
                                 <span style="float: left">{{ item.name }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">
@@ -340,7 +345,7 @@
 
                         <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                             <el-form-item>
-                                <el-button type="danger" round @click="redrawImage" style="float: right">
+                                <el-button type="primary" round @click="redrawImage" style="float: right">
                                     {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
                                 </el-button>
                             </el-form-item>

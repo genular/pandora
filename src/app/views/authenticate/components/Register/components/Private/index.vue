@@ -448,7 +448,7 @@ export default {
 
     .el-form-item__label {
         padding: 0;
-        color: #333333;
+        /* color: #333333; */
         line-height: 24px;
     }
     .note {

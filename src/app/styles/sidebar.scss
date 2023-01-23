@@ -3,30 +3,51 @@
         flex: 1;
         float: right;
         position: relative;
-        background-color: #f2f2f3;
-        transition: all 0.28s;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAABQAgMAAADjM5anAAAACVBMVEUAAAAPDw8PDxA5dZcEAAAAA3RSTlMACCueE7eWAAAAO0lEQVR4AWOAA0Y4C6vYiFI4qnBU4ajCUYWjCpmwiZGjMBQGspbCmdjEqGX1iIrCUYWjCkcVjiocVQgAPC8OuQNGhAYAAAAASUVORK5CYII=) center 2px;
+        background-color: $white;
         overflow: hidden;
     }
 
+
+
+
     .sidebar-container {
         float: left;
-        // Main background color #409EFF
         background-color: $ui-background;
+
         a {
             display: inline-block;
             width: 100%;
         }
         .fa-icon {
             margin-right: 15px;
-            color: #ffffff;
+            color: $white;
         }
         .el-menu {
             border: none;
             width: 100%;
-            transition: width 0.25s;
+            background-color: $ui-background;
+            z-index: 1;
         }
+
+        .el-menu-item {
+            &:hover {
+                background-color: $ui-background-secondary;
+            }
+            &:focus {
+                background-color: $ui-background-secondary;
+            }
+        }
+
         .el-submenu__title {
-            color: #ffffff;
+            color: $white;
+            height: 50px;
+            &:hover {
+                background-color: $ui-background-secondary;
+            }
+            &:focus {
+                background-color: $ui-background-secondary;
+            }
         }
     }
 
@@ -34,7 +55,7 @@
         .sidebar-container,
         .sidebar-container .el-menu {
             width: 50px !important;
-            transition: width 0.25s;
+            transition: width 0.25s; 
         }
         .submenu-title-noDropdown {
             padding-left: 10px !important;
@@ -53,7 +74,7 @@
                     border-radius: 3px;
                     z-index: 1002;
                     width: 140px;
-                    height: 56px;
+                    height: 50px;
                     visibility: visible;
                     position: absolute;
                     right: -145px;
@@ -101,7 +122,6 @@
 
 .el-menu--vertical {
     .el-menu--popup-right-start {
-        margin-left: 1px;
         .fa-icon {
             margin-right: 15px;
             color: #ffffff;
@@ -111,3 +131,22 @@
         }
     }
 }
+
+.el-menu--vertical {
+    .el-menu--popup{
+        border-radius: 0;
+        border: none;
+        background-color: #000000;
+        padding: 0;
+        margin: 0;
+        height: 50px;
+        .el-menu-item{
+            height: 50px;
+            line-height: 50px;
+            &:hover {
+                background-color: #333333;
+            }
+        }
+    }
+}
+

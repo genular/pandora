@@ -1,0 +1,55 @@
+{
+	"views": {
+		"apps": {
+			"supervised_learning": {
+				"analysis": {
+					"components": {
+						"StartButton": {
+							"title": "",
+							"dialogs": {
+								"confirm": {
+									"title": "Looks good! Please confirm task submission",
+									"header": "Based on your current selection what we got following dataset(s)",
+									"sparsity": {
+										"title": "Data sparsity",
+										"description": "Percentage of missing data"
+									},
+									"table": {
+										"features": "Features",
+										"samples": "Samples",
+										"datapoints": "Datapoints"
+									},
+									"footer_1": "Now this data will be submitted for processing. You can track the progress of this task in your Dashboard panel.",
+									"footer_2": "Do you wish to proceed?",
+									"buttons": {
+										"cancel": "Cancel",
+										"process": "Process"
+									}
+								},
+								"cancel": {
+									"message": "Are you sure you want to close and cancel this submission?"
+								},
+								"errors": {
+									"title": "Following errors needs to be corrected",
+									"confirm": "Confirm"
+								},
+								"errors_resample": {
+									"title": "Following errors",
+									"messages": {
+										"invalid_sample_count_test": "Less than 5 samples in test set detected. Found only:"
+									}
+								}
+							},
+							"other": {
+								"loading_data": "Uploading data, please wait...",
+								"misssing_features": "Please select at least 2 Features to analyze",
+								"misssing_packages": "Invalid number of Packages selected",
+								"misssing_outcome": "Please select outcome field"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

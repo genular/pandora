@@ -1,0 +1,23 @@
+{
+	"views": {
+		"apps": {
+			"supervised_learning": {
+				"exploration": {
+					"components": {
+						"tabs": {
+							"datasetsTab": {
+								"components": {
+									"tabs": {
+										"variableImportanceTab": {
+											"charts": {}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

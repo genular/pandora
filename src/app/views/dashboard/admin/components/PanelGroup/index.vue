@@ -114,6 +114,8 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+@import "~scss_vars";
+    
 .dashboard-inner-panel-group {
     margin-bottom: 20px;
     .card-panel {
@@ -122,39 +124,7 @@ export default {
         font-size: 12px;
         position: relative;
         overflow: hidden;
-        color: #666;
-        background: #fff;
-        box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
-        border-color: rgba(0, 0, 0, 0.05);
-        &:hover {
-            .card-panel-icon-wrapper {
-                color: #fff;
-            }
-            .icon-1 {
-                background: #40c9c6;
-            }
-            .icon-2 {
-                background: #36a3f7;
-            }
-            .icon-3 {
-                background: #f4516c;
-            }
-            .icon-4 {
-                background: #34bfa3;
-            }
-        }
-        .icon-1 {
-            color: #40c9c6;
-        }
-        .icon-2 {
-            color: #36a3f7;
-        }
-        .icon-3 {
-            color: #f4516c;
-        }
-        .icon-4 {
-            color: #34bfa3;
-        }
+
         .card-panel-icon-wrapper {
             float: left;
             margin: 14px 0 0 14px;
@@ -171,18 +141,20 @@ export default {
             font-weight: bold;
             margin: 26px;
             margin-left: 0px;
+
             .card-panel-text {
                 line-height: 18px;
-                color: rgba(0, 0, 0, 0.45);
                 font-size: 16px;
                 margin-bottom: 12px;
                 text-align: right;
             }
+
             .card-panel-num {
                 font-size: 20px;
                 text-align: right;
                 width: 100%;
                 display: block;
+                color: $ui-background-secondary;
             }
         }
     }

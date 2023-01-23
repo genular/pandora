@@ -1,0 +1,15 @@
+{
+	"views": {
+		"apps": {
+			"supervised_learning": {
+				"exploration": {
+					"header": {
+						"selected_queue": "Queue",
+						"selected_dataset": "Dataset ID",
+						"selected_models": "Selected Model(s)"
+					}
+				}
+			}
+		}
+	}
+}

@@ -146,16 +146,50 @@ export default {
         line-height: 50px;
     }
     .is-active {
-        background-color: #2a1b3b !important;
+        background-color: $ui-background-secondary !important;
+
         &:before {
             content: "";
             display: block;
             position: absolute;
             width: 5px;
-            background-color: #e3006e;
+            background-color: $pink;
             height: 50px;
-            left: 0;
+            left: 0; 
         }
     }
 }
+
+
+.showSidebar {
+    .menu-wrapper {
+        .is-active {
+            &:before {
+                content: "";
+                display: block;
+                position: absolute;
+                width: 5px;
+                background-color: $pink;
+                height: 50px;
+                left: 0; 
+            }
+        }
+    }
+}
+.hideSidebar {
+    .menu-wrapper {
+        .is-active {
+            &:before {
+                content: "";
+                display: block;
+                position: absolute;
+                width: 5px;
+                background-color: $pink;
+                height: 50px;
+                left: 0; 
+            }
+        }
+    }
+}
+
 </style>

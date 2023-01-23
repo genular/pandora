@@ -1,0 +1,41 @@
+{
+	"views": {
+		"apps": {
+			"supervised_learning": {
+				"analysis": {
+					"components": {
+						"PackageSelection": {
+							"head": {
+								"available": {
+									"title": "Available packages"
+								},
+								"selected": {
+									"title": "Selected packages",
+									"extraction": {
+										"title": "Multi-set intersection",
+										"description": "Multi-set intersection will be limited to 200 sets. If any preprocessing imputation algorithms are selected above they will not apply."
+									},
+									"feature_selection": {
+										"title": "Feature selection",
+										"description": "Backward predictor selection. Least significant variable is dropped, so long as it is not significant at our chosen critical level. Applying the same rule until all remaining variables are statistically significant"
+									}
+								}
+							},
+							"containers": {
+								"method_type": {
+									"title": "Method type",
+									"classification": "Classification",
+									"regression": "Regression"
+								},
+								"tuning_parameters": {
+									"title": "Tuning parameters"
+								},
+								"tags": {}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

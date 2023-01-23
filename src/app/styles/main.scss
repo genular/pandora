@@ -32,7 +32,7 @@ body {
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Raleway,Reislust,Arial, Helvetica, sans-serif;
 }
 
 label {
@@ -316,4 +316,63 @@ div:focus {
     max-width: 100%;
     height: auto;
     width: auto\9; /* ie8 */
+}
+
+.el-tabs--border-card { 
+    border: none;
+    box-shadow: none;
+    background: transparent;
+
+    .el-tabs__content {
+        background: $white;
+    }
+
+    .el-tabs__header {
+        background-color: transparent;
+        border-bottom: none;
+        .el-tabs__item {
+            color: $ui-background-secondary;
+            
+            &:is(.is-disabled) {
+                color: $ui-background-secondary;
+            }
+            &:not(.is-disabled) {
+            
+                border: none;
+                &:hover {
+                    color: $pink;
+                }
+            }
+            &:is(.is-active) {
+                color: $pink;
+                font-weight: bold;
+                border: none;
+            }
+        }
+    }
+}
+
+/* Element redesign code */
+
+.el-tabs__nav-wrap::after {
+    background-color: $pink;
+}
+
+.el-switch__label {
+    color: #FFFFFF;
+}
+
+.el-message--warning{
+    background-color: #000;
+    border: none;
+
+    .el-message__content {
+        color: $white;
+        font-size: 14px;
+    }
+}
+
+.el-message .el-icon-warning {
+    color: $yellow;
+    font-size: 32px;
 }

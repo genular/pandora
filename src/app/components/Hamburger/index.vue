@@ -31,9 +31,15 @@ export default {
     transform: rotate(90deg);
     transition: .38s;
     transform-origin: 50% 50%;
+    path {
+        fill: white;
+    }
 }
 
 .hamburger.is-active {
     transform: rotate(0deg);
+    path {
+        fill: white;
+    }
 }
 </style>

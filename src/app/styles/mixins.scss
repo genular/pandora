@@ -1,9 +1,11 @@
 // MIXIN FOR RESPONSIVE CSS GRID;
+
 // Extra small screen / phone
 $xs: 0; // Small screen / phone
 $sm: 480px; // Medium screen / tablet
 $md: 768px; // Large screen / desktop
 $lg: 1024px; // // Extra large screen / wide desktop
+
 // $xl: 1200px;
 @mixin respond-to($media...) {
     @for $i from 1 through length($media) {

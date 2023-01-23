@@ -1,6 +1,6 @@
 <template>
     <scroll-bar>
-        <el-menu class="sidebar-container" mode="vertical" :default-active="$route.path" :collapse="isCollapse" background-color="#35224a">
+        <el-menu class="sidebar-container" mode="vertical" :default-active="$route.path" :collapse="isCollapse">
             <sidebar-item :routes="permission_routers"></sidebar-item>
         </el-menu>
         <server-load :currentServerLoad="currentServerLoad"></server-load>

@@ -82,27 +82,34 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+@import "~scss_vars";
+    
 .navbar {
     height: 50px;
     line-height: 50px;
     width: 100%;
     float: left;
-    border-bottom: 0 none;
+    border: 0 none;
+    background: $ui-background;
+
     .hamburger-container {
         line-height: 58px;
         height: 50px;
         float: left;
         padding: 0 10px;
     }
+
     .breadcrumb-container {
         float: left;
     }
+
     .right-menu {
         float: right;
         height: 100%;
         &:focus {
             outline: none;
         }
+
         .right-menu-item {
             display: inline-block;
             &:not(:last-child) {
@@ -130,6 +137,7 @@ export default {
             margin-left: 0;
             float: right;
             cursor: pointer;
+            color: $white;
 
             .avatar-wrapper {
                 margin-top: 5px;

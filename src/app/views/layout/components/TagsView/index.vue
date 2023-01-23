@@ -134,14 +134,12 @@ export default {
     float: left;
     height: 50px;
     line-height: 50px;
-    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.05);
     position: relative;
     z-index: 100;
+    margin-left: 5px;
 
     .tags-view-wrapper {
-        background: #ffffff;
         height: 50px;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
         .tags-view-item {
             display: inline-block;
             position: relative;

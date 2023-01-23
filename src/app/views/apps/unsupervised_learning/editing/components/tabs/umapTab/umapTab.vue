@@ -17,8 +17,15 @@
                 <el-row>
                     <el-form ref="settingsForm" :model="settingsForm">
                         <el-form-item label="Columns">
+
+                            <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">Please select columns you wish to analyze and plot. Leaving this empty will take all columns except excluded ones.</div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                            <br />
                             <el-select
-                                style="float: right"
+                                style="float: left;width: 100%;"
                                 v-model="settingsForm.selectedColumns"
                                 multiple
                                 filterable
@@ -43,11 +50,11 @@
                                         item_danger: item.valid_numeric !== 1,
                                     }"
                                 >
-                                    <el-row style="max-width: 250px">
+                                    <el-row>
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
                                             {{ item.na_percentage > 0 ? "NA" : "" }}
@@ -55,24 +62,25 @@
                                     </el-row>
                                 </el-option>
                             </el-select>
-                            <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">Please select columns you wish to analyze and plot. Leaving this empty will take all columns except excluded ones.</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
                         </el-form-item>
 
                         <el-form-item label="First (n) columns">
-                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="50000"></el-input-number>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">If you have not selected any columns we will take first n columns from your dataset, based on this value.</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
+                            <br />
+                            <el-input-number style="float: left; width: 100%;" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="50000"></el-input-number>
                         </el-form-item>
 
                         <el-form-item label="Exclude Columns">
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">Please select any columns you wish to exclude from analysis.</div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                            <br />
                             <el-select
-                                style="float: right"
+                                style="float: left;width: 100%;"
                                 v-model="settingsForm.excludedColumns"
                                 multiple
                                 filterable
@@ -89,11 +97,11 @@
                                 "
                             >
                                 <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
-                                    <el-row style="max-width: 250px">
+                                    <el-row>
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
                                             {{ item.na_percentage > 0 ? "NA" : "" }}
@@ -101,15 +109,16 @@
                                     </el-row>
                                 </el-option>
                             </el-select>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">Please select any columns you wish to exclude from analysis.</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
                         </el-form-item>
 
                         <el-form-item label="Grouping variable">
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">Please select categorical column to "group by" UMAP plot. Grouping variable(s) will be excluded from UMAP analysis.</div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                            <br />
                             <el-select
-                                style="float: right"
+                                style="float: left;width: 100%;"
                                 v-model="settingsForm.groupingVariables"
                                 multiple
                                 filterable
@@ -132,11 +141,11 @@
                                     :value="item"
                                     :disabled="item.valid_10p !== 1 || item.unique_count < 2"
                                 >
-                                    <el-row style="max-width: 250px">
+                                    <el-row>
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
                                             {{ item.na_percentage > 0 ? "NA" : "" }}
@@ -144,10 +153,6 @@
                                     </el-row>
                                 </el-option>
                             </el-select>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">Please select categorical column to "group by" UMAP plot. Grouping variable(s) will be excluded from UMAP analysis.</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
                         </el-form-item>
                         <!--
                         <el-form-item label="Keep groups?">
@@ -260,7 +265,7 @@
 
                             <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                                 <el-form-item>
-                                    <el-button type="danger" round @click="redrawImage" style="float: right">
+                                    <el-button type="primary" round @click="redrawImage" style="float: right">
                                         {{ $t("views.apps.simon.exploration.components.tabs.correlationTab.buttons.plot_image") }}
                                     </el-button>
                                 </el-form-item>

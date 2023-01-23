@@ -1,0 +1,92 @@
+{
+	"views": {
+		"apps": {
+			"supervised_learning": {
+				"analysis": {
+					"components": {
+						"FileDetails": {
+							"head": {
+								"title": "Please select desired analysis properties",
+								"description": "only first 50 variables are shown, type to filter others or select ALL switch",
+								"clear": "Reset features & selection"
+							},
+							"body": {
+								"predictor": {
+									"title": "Predictor variables",
+									"description": "A predictor variable is a variable used in ML to predict another variable",
+									"placeholder": "Please select predictor variables, type to search..."
+								},
+								"predictor_exclude": {
+									"title": "Exclude predictors",
+									"description": "If you selected to use ALL Predictors in Select ALL switch, you can exclude some of them by selecting them here. To use this function select ALL switch must be turned on!",
+									"placeholder": "Exclude predictor variables"
+								},
+								"partitions": {
+									"title": "Training/Testing dataset partition (%)",
+									"description": "Separate a data set into a training set and testing set, most of the data is used for training, and a smaller portion of the data is used for testing."
+								},
+								"response": {
+									"title": "Response",
+									"description": "The response variable is the focus of a question in a study or experiment",
+									"placeholder": "Select response variable, type to search..."
+								},
+								"regression": {
+									"title": "Regression",
+									"description": "Response variable ∼ Predictor. As you select fields you will see formula example being constructed in upper left corner. This field is unavailable if you are not processing any Regression algorithm.",
+									"placeholder": "Regression dependents"
+								},
+								"time_series": {
+									"title": "Time Series",
+									"description": "Please select date column that will be used in time series analysis.",
+									"placeholder": "Date Column"
+								},
+								"classes": {
+									"title": "Additional Exploration Classes",
+									"description": "Please select all fields that are not being used as Response nor Predictor variables. This fields will be available to you in latter on Exploratory analysis, where you will be able to plot them against your results.",
+									"placeholder": "Select other exploration class properties"
+								},
+								"preprocessing": {
+									"title": "Preprocessing",
+									"description": "Selected preprocessing functions will be applied to your data before process building a models. For example if you have a lot of predictor variables maybe you could do PCA on them as-well.",
+									"placeholder": "data preprocessing?",
+									"dropdown": {
+										"BoxCox": "Box–Cox transformation (values must be non-zero and positive)",
+										"YeoJohnson": "Yeo–Johnson transform (values can be negative)",
+										"expoTrans": "Apply a power transform",
+										"center": "Subtract mean from values",
+										"scale": "Divide by standard deviation",
+										"range": "Normalize values",
+										"knnImpute": "K-Nearest neighbors Imputation",
+										"bagImpute": "Bagging of regression trees",
+										"medianImpute": "Median Impute",
+										"pca": "Principal component analysis",
+										"ica": "Independent components",
+										"spatialSign": "Project data onto a unit circle",
+										"corr": "Correlation filtering",
+										"zv": "Remove Zero-Variance",
+										"nzv": "Remove near Zero-Variance",
+										"conditionalX": "Exclude predictors that have only 1 unique value"
+									}
+								}
+							},
+							"dialog": {
+								"title": "Warning",
+								"head": "It seems that we cannot detect right amount of samples with your current file or your current selection selection that you could use!",
+								"content_1": "Selected columns",
+								"content_2": "Values in your file needs to have numeric value. String values are not currently supported.",
+								"content_3": "Please inspect the file you selected if its in correct CSV format and that it doesn't have missing (NA) values or select another file in order to proceed."
+							},
+							"other": {
+								"column": "column",
+								"all_columns": "All columns",
+								"training": "Training",
+								"testing": "Testing",
+								"message_1": "Can't select desired variable, ALL switch is on!"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
