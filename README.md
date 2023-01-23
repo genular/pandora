@@ -221,14 +221,14 @@ the aforementioned papers in any resulting publication.
 
 ```bash
     Adriana Tomic, Ivan Tomic, Yael Rosenberg-Hasson, Cornelia L. Dekker, Holden T. Maecker, Mark M. Davis.
-    PANDORA, an Automated Machine Learning System, Reveals Immune Signatures of Influenza Vaccine Responses
+    SIMON, an Automated Machine Learning System, Reveals Immune Signatures of Influenza Vaccine Responses
     http://www.jimmunol.org/content/early/2019/06/13/jimmunol.1900033.abstract
     doi: 10.4049/jimmunol.1900033
 ```
 
 ```bash
     Adriana Tomic, Ivan Tomic, Levi Waldron, Ludwig Geistlinger, Max Kuhn, Rachel L. Spreng, Lindsay C. Dahora, Kelly E. Seaton, Georgia Tomaras, Jennifer Hill, Niharika A. Duggal, Ross D. Pollock, Norman R. Lazarus, Stephen D.R. Harridge, Janet M. Lord, Purvesh Khatri, Andrew J. Pollard, Mark M. Davis.
-    PANDORA: Open-Source Knowledge Discovery Platform
+    SIMON: Open-Source Knowledge Discovery Platform
     https://www.cell.com/patterns/fulltext/S2666-3899(20)30242-7
     doi:10.1016/j.patter.2020.100178
 ```
