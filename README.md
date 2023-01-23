@@ -7,25 +7,19 @@
     <p align="center">
         <a href="https://crowdin.com/project/genular" alt="Help us translate">
             <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
-        <a href="https://app.fossa.io/projects/git%2Bgithub.com%2Fgenular%2Fpandora?ref=badge_small" alt="Licence">
-            <img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Fgenular%2Fpandora.svg?type=small" /></a>
         <a href="#reposize">
             <img src="https://img.shields.io/github/repo-size/genular/pandora.svg" /></a>
         <a href="https://twitter.com/intent/follow?screen_name=genular" alt="Follow us on twitter">
             <img src="https://img.shields.io/twitter/follow/genular.svg?label=Follow&style=social&logo=twitter" alt="Follow us on twitter"></a>
         <a href="http://webchat.freenode.net/?randomnick=1&channels=genular&uio=d4" alt="chat on freenode">
             <img src="https://img.shields.io/badge/chat-on%20freenode-brightgreen.svg" alt="chat on freenode"></a>
-        <a href="https://app.netlify.com/sites/genular/deploys" alt="netlify status">
-            <img src="https://api.netlify.com/api/v1/badges/c8574166-e345-4296-8875-820f219f7a3c/deploy-status" alt="netlify status"></a>
     </p>
 </div>
 
 ## Intro
 
-`PANDORA` is a powerful, flexible, open-source and easy to use Data Science Knowledge Discovery software. Check out <a href="https://dashboard.genular.org" target="_blank">live demo</a> or <a href="https://genular.org/pandora-screenshots/" target="_blank">maybe better, view screenshots</a>.
+`PANDORA` is a powerful, flexible, open-source and easy to use Data Science Knowledge Discovery software.
 Currently `PANDORA` implements Machine Learning and many other statistical data discovery features ([Hierarchical clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering), [Correlation](https://en.wikipedia.org/wiki/Correlation_and_dependence), [PCA Analysis](https://en.wikipedia.org/wiki/Principal_component_analysis), [UMAP](https://en.wikipedia.org/wiki/Nonlinear_dimensionality_reduction), [t-SNE](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) and others) that will help you to illustrate dynamic relationships and provide you with a structural sense of your data.
-
-Goal of this project is to make user interface that will empower scientists, makers and other domain experts to extract meaningful information from their data and enable them to rapidly use and quickly prototype with different machine learning algorithms `genular` is an entirely open source community behind `PANDORA`, if you wish to learn more visit us [here](https://genular.org)
 
 ## Why is this so cool?
 
@@ -106,55 +100,6 @@ docker system prune -a --volumes
 
 Please be sure to delete `PANDORA` data volume and image before reinstalling otherwise you will maybe still use old `PANDORA` instance when you run it!
 
-##### Other information
-
-_To run latest Released version (0.2.1), please use following Docker image `genular/pandora:0.2.1`_
-
-```bash
-docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --oom-kill-disable --volume genular_data:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/pandora:0.2.1
-```
-
-`PANDORA` will now run until you _shutdown/restart_ your machine or _stop docker container manually_.
-To manually stop `PANDORA` container please type following command:
-
-```bash
-docker stop genular
-```
-
-When you wish to start and use `PANDORA` again please type-in Docker run command from above, again!
-
-To delete all data and reset `PANDORA` to factory defaults you need to clear data inside volume you configured.
-If you used default run configuration please execute following command:
-
-```bash
-# For latest unstable branch
-docker volume rm genular_data_latest
-# For latest release
-docker volume rm genular_data
-```
-
-### Advanced setup
-
-To install and configure `PANDORA` from source you will need knowledge of [Linux](https://en.wikipedia.org/wiki/Linux), how to set up databases ([MySQL](https://mariadb.org/)) and web server ([Apache](https://www.apache.org/), [nginx](https://nginx.org/en/)) together with [R](https://www.r-project.org/) and [PHP](https://www.php.net/) setup and configuration.
-
-> Installation instructions are located in [this file](https://github.com/genular/pandora/blob/master/INSTALL.md).
-> You can find semi-automated bash installation script [here](https://github.com/genular/pandora-backend/blob/master/documentation/installation/install_dependencies.sh), that can also help you to get started and guide you through installation process.
-
-If you believe you don't have necessarily skills to install `PANDORA`, you could always ask a friend to help you or check out our [demo](https://dashboard.genular.org)
-
-## Community
-
-### Getting Help
-
-Please **do not post** usage questions to GitHub Issues pages.
-For these types of questions use our [forum](https://community.genular.org)
-
-### Submitting Bugs and Enhancements
-
-[GitHub Issues](https://github.com/genular/pandora/issues) is for suggesting enhancements and reporting bugs.
-We appreciate all enhancements ideas and bug reports. Additionally if you think you can help us with suggesting new useful features we will gladly accept it.
-Here you can find [bug report template](.github/ISSUE_TEMPLATE/bug_report.md) and [feature request template](.github/ISSUE_TEMPLATE/feature_request.md).
-
 #### Contributing, writing code
 
 Contributions are very much welcome!
@@ -185,9 +130,6 @@ In addition to contributing, optimizing and reviewing code, writing bug and feat
 | Organizing    | Ask clarifying questions on recently opened GitHub issues to move the discussion forward                                           | [Here](https://github.com/genular/pandora/issues)              |
 | Write article | Help others understand what is Machine Learning & how can they apply it, by publishing blog post                                   | [e-mail us](mailto:info@genular.com)                                  |
 
-## Browser Support
-
-Tested on `Firefox Version 86`. As much as we like other browsers we are focusing here to primary provide support for open source ones.
 
 ### Reaching Out
 
