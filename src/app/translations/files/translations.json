@@ -565,7 +565,7 @@
   "views.dashboard.admin.components.QueueTable.dialog.models_table.header.analasys_method": "Method",
   "views.dashboard.admin.components.QueueTable.dialog.models_table.header.processing_time": "Processing time",
   "views.dashboard.admin.index.guide_button": "Guide",
-  "views.dashboard.admin.tutorial.step_1.title": "Welcome to genular! Lets do some explanation..",
+  "views.dashboard.admin.tutorial.step_1.title": "Welcome to PANDORA! Lets do some explanation..",
   "views.dashboard.admin.tutorial.step_1.description": "Here on the right you will find main navigation menu. Witch you will use to navigate the interface",
   "views.dashboard.admin.tutorial.step_2.title": "Current page",
   "views.dashboard.admin.tutorial.step_2.description": "Current page will always be marked with read vertical line, so you always know what is your current location",
