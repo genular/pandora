@@ -5,7 +5,6 @@
                 v-if="item.children.length === 1 && !item.children[0].children"
                 :to="item.path !== '/' ? item.path + '/' + item.children[0].path : '/' + item.children[0].path"
                 :key="item.children[0].name"
-                :event="''"
                 @click.native.prevent="
                     checkRouteAction($event, { meta: item.children[0].meta, path: item.path !== '/' ? item.path + '/' + item.children[0].path : '/' + item.children[0].path })
                 "
@@ -27,12 +26,15 @@
                         v-else
                         :to="item.path + '/' + child.path"
                         :key="child.name"
-                        :event="''"
                         @click.native.prevent="checkRouteAction($event, { meta: child.meta, path: item.path + '/' + child.path })"
                     >
-                        <el-menu-item :index="item.path + '/' + child.path" :class="generateMenuClass(child)">
+                        <el-menu-item 
+                        :index="item.path + '/' + child.path"
+                        :class="generateMenuClass(child)">
                             <i v-if="child.meta && child.meta.icon" :class="child.meta.icon" aria-hidden="true"></i>
-                            <span slot="title" v-if="child.meta && child.meta.title">{{ generateRouteTitle(child.meta.title) }}</span>
+                            <span slot="title" 
+                                v-if="child.meta && child.meta.title">{{ generateRouteTitle(child.meta.title) }}
+                            </span>
                         </el-menu-item>
                     </router-link>
                 </div>
@@ -55,6 +57,9 @@ export default {
                 this.$store.dispatch("setSelectedFiles", value);
             },
         },
+        currentRouteName() {
+            return this.$route.path;
+        }
     },
     props: {
         routes: {
@@ -73,7 +78,6 @@ export default {
         // Some menu Items must have disabled class because they can only be used if some specific file is selected
         
         generateMenuClass: function (childItem) {
-            console.log("Checking menu class: " + childItem.name);
             let cssClass = "ready";
 
             // Check if there is any meta set for given route
@@ -112,11 +116,18 @@ export default {
         },
         checkRouteAction: function (event, data) {
             event.preventDefault();
+
+            // If we are already on that page lets do nothing
+            if(data.path === this.currentRouteName){
+                return;
+            }
+
             let pass = false;
 
             if (this.generateMenuClass(data) === "ready") {
                 pass = true;
             }
+
             if (pass === true) {
                 this.$router.push({
                     path: data.path,
