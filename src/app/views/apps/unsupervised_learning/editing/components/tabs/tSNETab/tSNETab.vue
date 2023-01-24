@@ -437,7 +437,7 @@
                             <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                                 <el-form-item>
                                     <el-button type="primary" round @click="redrawImage" style="float: right">
-                                        {{ $t("views.apps.pandora.exploration.components.tabs.correlationTab.buttons.plot_image") }}
+                                        {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.buttons.plot_image") }}
                                     </el-button>
                                 </el-form-item>
                             </el-col>
