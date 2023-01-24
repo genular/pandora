@@ -20,11 +20,7 @@
 
 `PANDORA` is a modular open-source software that facilitates data analysis and knowledge discovery in biology and medicine. It is designed to empower non-technical and technical researchers to identify crucial patterns in biomedical data by providing an easy-to-use graphical user interface and standardized pipelines. It offers more than 200 machine-learning algorithms to choose from, including hierarchical clustering, correlation, PCA analysis, UMAP, t-SNE, and others. The software also features a drag-and-drop user interface, support for high-sparsity data, local and cloud data storage, built-in data preprocessing, and a variety of visualization algorithms for exploratory data analysis.
 
-<img alt="PANDORA UI screenshot" src=".github/static/pandora_analysis.png" align="right" width="500px"/>
-
 ## Installation Quick-start
-
-### Easy
 
 `PANDORA` can be easily installed using Docker, a pre-built version of the software can be pulled from [DockerHub](https://hub.docker.com/). In order to run a test instance of PANDORA, users will first need to prepare their local environment by downloading, installing and configuring [Docker](https://www.docker.com/).
 
@@ -40,9 +36,9 @@
 -   64GB RAM
 -   8 CPU Cores / 16 threads with 3.60 GHz base frequency
 
-#### Running PANDORA
+#### Installing PANDORA
 
--   Please **open** your favorite **Terminal** and **run** the **command below**. If on Windows - open `Windows Power Shell` => _Click Start, type PowerShell, and then click Windows PowerShel_
+-   Once [Docker](https://www.docker.com/) is installed and configured please **open** your favorite **Terminal** and **run** the **command below**. On Windows - open `Windows Power Shell` => _Click Start, type PowerShell, and then click Windows PowerShel_
 
 ```bash
 docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --oom-kill-disable --volume genular_data_latest:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/pandora:latest
@@ -64,7 +60,7 @@ docker system prune -a --volumes
 
 Please be sure to delete `PANDORA` data volume and image before reinstalling otherwise you will maybe still use old `PANDORA` instance when you run it!
 
-#### Contributing, writing code
+### Contributing, writing code
 
 Contributions are very much welcome!
 
