@@ -3,7 +3,7 @@
         <a href="https://genular.org" target="_blank">
             <img width="200" src="https://github.com/genular/pandora/raw/master/.github/static/favicon.png"></a>
     </p>
-    <h1>PANDORA<br/><sub>machine learning feature discovery platform</sub></h1>
+    <h1>PANDORA<br/><sub>uncover hidden insights and patterns from complex data</sub></h1>
     <p align="center">
         <a href="https://crowdin.com/project/genular" alt="Help us translate">
             <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
@@ -18,80 +18,44 @@
 
 ## Intro
 
-`PANDORA` is a powerful, flexible, open-source and easy to use Data Science Knowledge Discovery software.
-Currently `PANDORA` implements Machine Learning and many other statistical data discovery features ([Hierarchical clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering), [Correlation](https://en.wikipedia.org/wiki/Correlation_and_dependence), [PCA Analysis](https://en.wikipedia.org/wiki/Principal_component_analysis), [UMAP](https://en.wikipedia.org/wiki/Nonlinear_dimensionality_reduction), [t-SNE](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) and others) that will help you to illustrate dynamic relationships and provide you with a structural sense of your data.
-
-## Why is this so cool?
-
--   :file_folder: **feature discovery** you can discover relevant trends and patterns inside your data with ease, that would usually take years of manual handcrafting
--   :chart: **machine learning** Build Machine Learning models with ease, and quickly compare them via our innovative interface
--   :package: **exploratory data analysis** visual analysis of multiple different machine learning results will give you instant insights with help of many different visualization algorithms
--   :arrows_counterclockwise: **sharing is caring** you can share your results with others, deploy your models instantly\* \*(in progress)\_ or download your data for external use
--   :closed_lock_with_key: **privacy and security** hosting `PANDORA` on your own dedicated servers or laptop you don't have to worry about someone else is looking after your data and your models
-
-## Current version features
+`PANDORA` is a modular open-source software that facilitates data analysis and knowledge discovery in biology and medicine. It is designed to empower non-technical and technical researchers to identify crucial patterns in biomedical data by providing an easy-to-use graphical user interface and standardized pipelines. It offers more than 200 machine-learning algorithms to choose from, including hierarchical clustering, correlation, PCA analysis, UMAP, t-SNE, and others. The software also features a drag-and-drop user interface, support for high-sparsity data, local and cloud data storage, built-in data preprocessing, and a variety of visualization algorithms for exploratory data analysis.
 
 <img alt="PANDORA UI screenshot" src=".github/static/pandora_analysis.png" align="right" width="500px"/>
-
--   **200+** machine learning algorithms to <a href="https://topepo.github.io/caret/available-models.html" target="_blank">choose from</a>
--   nicely designed **drag&drop** user interface to easily apply _data modeling techniques_
--   supports **high sparsity** data via data imputation or <a href="https://cran.r-project.org/web/packages/mulset/index.html" target="_blank" title="Multiset Intersection Generator">mulset</a>
--   supports **local** and **cloud** backend data storage
--   compare all **model performance measures** in one place
--   visual **data analysis** that supports _clustering_ and _correlation graphs_
--   visual **feature analysis** with dot-plots that supports **280 visual styles**
--   visual **model performance comparison** and **model insights**
--   in-build **data preprocessing** (correlation filtering, normalization, imputation...)
--   public dataset repository import to **easily import** and **analyze** already published data\* _(in progress)_
--   integrated **SAM (Significance Analysis of Microarrays)** technique for finding significant genes in a set of microarray experiments
--   **multi-language** localization support
--   **model & data export** take your ML models and other performed analysis, reproducibility code and associated data with you on the go\* _(in progress)_
-
----
 
 ## Installation Quick-start
 
 ### Easy
 
-This section describes the process of pulling a pre-built version of `PANDORA` from [DockerHub](https://hub.docker.com/).
-If you are beginner or you wish to quickly check it out this is recommended way to start `PANDORA`. This can also be very handy for developers for development without polluting the host machine.
-The `PANDORA` source code includes a [Dockerfile](https://github.com/genular/pandora-backend/blob/master/documentation/docker_images/Dockerfile).
+`PANDORA` can be easily installed using Docker, a pre-built version of the software can be pulled from [DockerHub](https://hub.docker.com/). In order to run a test instance of PANDORA, users will first need to prepare their local environment by downloading, installing and configuring [Docker](https://www.docker.com/).
 
 #### Requirements
 
 ##### Software:
 
+-   Windows, Linux or MacOS
 -   [Docker](https://docs.docker.com/engine/installation/) (`version 17.05` or later is required)
 
-##### Minimum hardware recommendation:
+##### Minimum suggested hardware recommendation:
 
 -   64GB RAM
 -   8 CPU Cores / 16 threads with 3.60 GHz base frequency
 
-#### Running PANDORA Docker Container
-
-In order to run a test instance of `PANDORA` we first need to prepare the local environment.
-
-1. Download and install [Docker](https://docker.com). When you finished installing [Docker](https://docs.docker.com/engine/installation/) please _continue_ to steps below.
-
-2. Lets download and run the `genular/pandora` image from DockerHub:
+#### Running PANDORA
 
 -   Please **open** your favorite **Terminal** and **run** the **command below**. If on Windows - open `Windows Power Shell` => _Click Start, type PowerShell, and then click Windows PowerShel_
-
-> _If you wish to get correct time inside PANDORA, replace TZ=<timzone> variable with your timezone. You can find list of supported timezones [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)_
 
 ```bash
 docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --oom-kill-disable --volume genular_data_latest:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/pandora:latest
 
 ```
 
-3. Once command is executed and the `PANDORA` is downloaded and started you can access it on `http://localhost:3010` via your web favorite browser _(we recommend [Firefox](https://www.mozilla.org/en-GB/firefox/new/))_ and create your administrator account.
+`PANDORA` will be downloaded and started, and it can be accessed via a web browser at [http://localhost:3010](http://localhost:3010)
 
 -   If you get asked, please _allow connections_ through your _Windows Firewall_.
 
 #### Reinstalling PANDORA
 
-In order to re-install `PANDORA` you need to delete previously installed `PANDORA` Docker container and associate data/volumes. More info about that on ,<a href ="https://docs.docker.com/config/pruning/"  target="_blank">official Docker documentation.</a> Be sure to stop currently running container (if any). To delete all Docker Images, Containers, Volumes, and Networks execute following:
+To reinstall PANDORA, users will need to delete the previously installed PANDORA Docker container and associated data/volumes by stopping the currently running container:
 
 ```bash
 docker stop genular
@@ -117,19 +81,6 @@ If you need any help, please use [community forums](https://community.genular.or
 [1]: https://github.com/genular/pandora/issues/new/choose
 [3]: https://help.github.com/articles/fork-a-repo/
 [4]: https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches
-
-### Places to Help
-
-We're looking for contributors!
-In addition to contributing, optimizing and reviewing code, writing bug and feature requests you can help with following:
-
-| Project       | How To Help                                                                                                                        | Next Step                                                             |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| Localization  | Help us translate `PANDORA` into your language. If some translation is missing or incorrect you can easily help us by correcting it. | [Join our Translation Community](https://crowdin.com/project/genular) |
-| Tutorials     | Help others use and understand `PANDORA`                                                                                             | Write a tutorial or record it, with usage examples                    |
-| Organizing    | Ask clarifying questions on recently opened GitHub issues to move the discussion forward                                           | [Here](https://github.com/genular/pandora/issues)              |
-| Write article | Help others understand what is Machine Learning & how can they apply it, by publishing blog post                                   | [e-mail us](mailto:info@genular.com)                                  |
-
 
 ### Reaching Out
 
