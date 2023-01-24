@@ -17,10 +17,9 @@
             :clickEffect="false"
         >
         </vue-particles>
-        <!-- <img class="logo" :src="genularLogo" @click="redirectToHomepage()" /> -->
         <lang-select class="set-language"></lang-select>
         <div class="tabs-container">
-            <span class="logo-text">genular</span>
+            <span class="logo-text">PANDORA</span>
             <div class="action-views">
                 <div title="Go back to login form" v-if="action != 'login'" class="go-back" @click="navigateTo('login')">x</div>
                 <login :action="action" v-if="action === 'login'"></login>
@@ -43,7 +42,6 @@
 import LangSelect from "@/components/LangSelect";
 
 import { Login, Register, Reset } from "./components";
-import genularLogo from "@/assets/logo/svg/white_logo_transparent_notext.svg";
 
 export default {
     name: "authenticate",
@@ -70,8 +68,7 @@ export default {
     data() {
         return {
             loadingWizard: false,
-            backendServersError: false,
-            genularLogo: genularLogo
+            backendServersError: false
         };
     },
     computed: {

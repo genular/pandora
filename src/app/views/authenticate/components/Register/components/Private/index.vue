@@ -8,7 +8,7 @@
             <div v-if="currentStep == 0" class="form-step step-0">
                 <h2 class="steps-container-title">Please create your account</h2>
                 <el-row>
-                    <el-col :span="14">
+                    <el-col :span="24">
                         <el-form class="form" autoComplete="on" ref="userForm" label-position="top">
                             <div style="width: 100%; float: left">
                                 <el-form-item label="Username*" style="width: 49%; float: left">
@@ -24,7 +24,7 @@
                                     </el-input>
                                     <p class="note">This will be your username.</p>
                                 </el-form-item>
-                                <el-form-item label="Business email address*" style="width: 49%; float: left; margin-left: 2%">
+                                <el-form-item label="Institutional email*" style="width: 49%; float: left; margin-left: 2%">
                                     <el-input
                                         name="email"
                                         type="text"
@@ -87,7 +87,7 @@
                                         @input.native="checkFieldAvailability('users_details', 'phoneNumber', $event, 'userForm')"
                                     ></el-input>
                                 </el-form-item>
-                                <el-form-item label="Account invite code" style="width: 49%; float: left; margin-left: 2%">
+                                <el-form-item label="Registration code" style="width: 49%; float: left; margin-left: 2%">
                                     <el-input name="org_invite_code" v-model="userForm.org_invite_code" type="text"></el-input>
                                 </el-form-item>
                             </div>
@@ -107,20 +107,6 @@
                                 </el-form-item>
                             </div>
                         </el-form>
-                    </el-col>
-                    <el-col :span="10">
-                        <el-card class="box-card" style="width: 90%; float: right; margin-top: 10px">
-                            <div slot="header" class="clearfix">
-                                <span style="float: left">PANDORA features</span>
-                                <span style="float: right"><a href="https://github.com/genular/pandora" target="_blank">star us on github</a></span>
-                            </div>
-                            <div class="box-card-item">200+ machine learning algorithms to run at once</div>
-                            <div class="box-card-item">
-                                Visual data and exploratory analysis that supports clustering, correlation graphs and other dimensionality reduction algorithms
-                            </div>
-                            <div class="box-card-item">in-build data pre-processing (correlation filtering, normalization, imputation...)</div>
-                            <div class="box-card-item">model performance comparison and model insights</div>
-                        </el-card>
                     </el-col>
                 </el-row>
 
@@ -143,9 +129,8 @@
                             <span>Your account is successfully created!</span>
                             <br />
                             <br />
-                            If you did not already and if you are using cloud version of PANDORA please confirm your email address via email we sent to you.
+                            You can now login to your account and start exploring.
                         </p>
-                        <p class="welcome_text">You can now login to your user interface where you can start exploring.</p>
                     </el-col>
                 </el-row>
                 <el-row style="margin-top: 25px">
@@ -207,7 +192,7 @@ export default {
                 lastName: "",
                 phoneNumber: "",
                 install_statistics: true,
-                org_invite_code: Math.random().toString(36).substring(7),
+                org_invite_code: Math.random().toString(36).substring(7).toUpperCase(),
                 validated: 0,
                 packageVersion: this.packageVersion,
                 packageEnviroment: this.packageEnviroment,
