@@ -1,16 +1,16 @@
 <div align="center">
+    <!-- 
     <p align="center">
         <a href="https://genular.org" target="_blank">
             <img width="200" src="https://github.com/genular/pandora/raw/master/.github/static/favicon.png"></a>
     </p>
+    -->
     <h1>PANDORA<br/><sub>uncover hidden insights and patterns from complex data</sub></h1>
     <p align="center">
         <a href="https://crowdin.com/project/genular" alt="Help us translate">
             <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
         <a href="#reposize">
             <img src="https://img.shields.io/github/repo-size/genular/pandora.svg" /></a>
-        <a href="https://twitter.com/intent/follow?screen_name=genular" alt="Follow us on twitter">
-            <img src="https://img.shields.io/twitter/follow/genular.svg?label=Follow&style=social&logo=twitter" alt="Follow us on twitter"></a>
         <a href="http://webchat.freenode.net/?randomnick=1&channels=genular&uio=d4" alt="chat on freenode">
             <img src="https://img.shields.io/badge/chat-on%20freenode-brightgreen.svg" alt="chat on freenode"></a>
     </p>
@@ -18,7 +18,12 @@
 
 ## Intro
 
-`PANDORA` is a modular open-source software that facilitates data analysis and knowledge discovery in biology and medicine. It is designed to empower non-technical and technical researchers to identify crucial patterns in biomedical data by providing an easy-to-use graphical user interface and standardized pipelines. It offers more than 200 machine-learning algorithms to choose from, including hierarchical clustering, correlation, PCA analysis, UMAP, t-SNE, and others. The software also features a drag-and-drop user interface, support for high-sparsity data, local and cloud data storage, built-in data preprocessing, and a variety of visualization algorithms for exploratory data analysis.
+`PANDORA` is a machine learning (ML) tool that can be used to integrate various data types, including clinical, transcriptome and microbiome data and find connections in large datasets.
+
+It can be used for a variety of use cases, for example:
+- Identify markers in a patient's blood associated with a severe infection
+- Find certain bacteria in the gut related to type of cancer
+- Predict the outcome of a disease
 
 ## Installation Quick-start
 
