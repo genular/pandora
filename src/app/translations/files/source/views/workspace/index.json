@@ -10,7 +10,8 @@
 					"stats": "stats"
 				},
 				"buttons": {
-					"delete_all": "Delete all"
+					"delete_all": "Delete all",
+					"create_directory": "New Directory"
 				},
 				"operations": {
 					"delete_all": {

@@ -9,7 +9,10 @@
 		"supervised_learning_analysis_exploratory": "Analysis Exploration",
 
 		"unsupervised_learning": "Unsupervised learning",
-		"unsupervised_learning_exploration": "Start Exploration"
+		"unsupervised_learning_exploration": "Start Exploration",
+
+		"additional_modules": "Modules",
+		"additional_modules_rnaseq": "RNA-seq"
 	},
 	"globals": {
 		"page_loading": "Processing",
@@ -34,7 +37,7 @@
 			"deleted": "deleted",
 			"upload_sucessfull": "uploaded successfully",
 			"upload_unsucessfull": "file upload error",
-			"not_implemented": "Function is still not available in this version"
+			"not_implemented": "Function is not available in this software version"
 		},
 		"demo_server": {
 			"function_disabled": "This function is disabled on demo server"

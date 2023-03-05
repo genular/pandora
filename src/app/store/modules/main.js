@@ -14,12 +14,24 @@ const main = {
         backendServerLoad: {},
         language: estore.get("main-language") || "en",
         is_configured: estore.get("main-is_configured") || false,
+
         selectedFiles: estore.get("main-selectedFiles") || [],
         selectedFileDetails: estore.get("main-selectedFileDetails") || { id: null, columns: [], summary: [] },
+
         packageVersion: packageInfo.version || "N/A",
         packageEnviroment: packageInfo.environment || "development",
+
+        workspace: {
+            currentDirectory: estore.get("main-workspace-currentDirectory") || "uploads",
+        }
     },
     mutations: {
+
+        SET_WORKSPACE_CURRENT_DIRECTORY: (state, currentDirectory) => {
+            state.workspace.currentDirectory = currentDirectory;
+            estore.set("main-workspace-currentDirectory", currentDirectory);
+        },
+
         TOGGLE_SIDEBAR: (state) => {
             if (state.sidebar.opened) {
                 estore.set("main-sidebar-opened", 1);
@@ -52,6 +64,13 @@ const main = {
         },
     },
     actions: {
+        setWorkspaceDirectory({ commit }, currentDirectory) {
+            commit("SET_WORKSPACE_CURRENT_DIRECTORY", currentDirectory);
+        },
+        resetPandoraSelectedFiles({ commit, state }) {
+            commit("SET_SELECTED_FILES", []);
+            commit("SET_SELECTED_FILE_DETAILS", { id: null, columns: [], summary: [] });
+        },
         toggleSideBar({ commit }) {
             commit("TOGGLE_SIDEBAR");
         },
@@ -60,7 +79,6 @@ const main = {
         },
         setLanguage({ commit }, language) {
             console.log("setting language: " + language);
-
             commit("SET_LANGUAGE", language);
         },
         setIsConfigured({ commit }, status) {

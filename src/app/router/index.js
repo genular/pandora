@@ -158,7 +158,30 @@ export const constantRouterMap = [
                 hidden: true,
             },
         ],
-    },
+    }
+    // {
+    //     path: "/apps/modules",
+    //     component: Layout,
+    //     redirect: "noredirect",
+    //     name: "additional_modules",
+    //     meta: {
+    //         title: "additional_modules",
+    //         icon: "fa fa-icon fa-plus",
+    //     },
+    //     children: [
+    //         {
+    //             path: "RNA-seq",
+    //             // component: _import("apps/modules/rna_sec/index"),
+    //             name: "additional_modules_rnaseq",
+    //             meta: {
+    //                 title: "additional_modules_rnaseq",
+    //                 icon: "fa fa-icon fa-play",
+    //                 restrictions: { file: true, extension: ["gz"] },
+    //             },
+    //             hidden: false,
+    //         },
+    //     ],
+    // },
 ];
 
 export default new Router({

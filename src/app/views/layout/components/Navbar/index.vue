@@ -7,8 +7,9 @@
                 <search id="header-search" class="right-menu-item" />
             -->
 
-            <!-- Selected Files and Exploation IDs -->
+            <!-- Selected Files and Exploration IDs -->
             <selected-files class="right-menu-item"></selected-files>
+            
             <error-log v-if="errorLogs.length > 0" class="right-menu-item error-logs"></error-log>
             <lang-select class="right-menu-item international "></lang-select>
             <el-dropdown class="avatar-container right-menu-item" trigger="click">

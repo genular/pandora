@@ -10,9 +10,12 @@ const getters = {
     packageVersion: (state) => state.main.packageVersion,
     packageEnviroment: (state) => state.main.packageEnviroment,
 
+    workspace_current_directory: (state) => state.main.workspace.currentDirectory,
+
     /** tagsView.js **/
     visitedViews: (state) => state.tagsView.visitedViews,
     cachedViews: (state) => state.tagsView.cachedViews,
+
     /** user.js **/
     user_username: (state) => state.user.username,
     auth_token: (state) => state.user.auth_token,
@@ -27,8 +30,10 @@ const getters = {
     /** permission.js **/
     permission_routers: (state) => state.permission.routers,
     addRouters: (state) => state.permission.addRouters,
+
     /** errorLog.js **/
     errorLogs: (state) => state.errorLog.logs,
+
     /** apps.js **/
     pandoraAvaliablePackages: (state) => state.apps.pandora.avaliablePackages,
     pandoraSelectedPackages: (state) => state.apps.pandora.selectedPackages,

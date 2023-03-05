@@ -2,29 +2,29 @@
     <div class="app-container workspace-container" v-loading="loading" :element-loading-text="$t('globals.page_loading')" @click="closeContextMenus">
         <el-row type="flex" align="top">
             <el-col :span="24">
-                <public-import style="float: left" ref="publicImporte" v-on:refresh-items="refreshFilesInDirectory"></public-import>
+                <public-import style="float: left" ref="publicImporte" v-on:refresh-items="refreshFilesInDirectory">
+                </public-import>
                 <el-button style="float: right" icon="el-icon-delete" size="mini" type="primary" round @click.prevent.stop="deleteFilesInDirectory">
                     {{ $t("views.workspace.index.buttons.delete_all") }}
+                </el-button>
+                <el-button style="float: right; margin-right: 15px;" icon="el-icon-folder-add" size="mini" type="primary" round @click.prevent.stop="createDirectory">
+                    {{ $t("views.workspace.index.buttons.create_directory") }}
                 </el-button>
             </el-col>
         </el-row>
         <el-row class="dropzone-container" type="flex" align="top">
             <el-col :span="24">
-                <dropzone
-                    ref="workspaceDropzone"
-                    id="workspaceDropzone"
-                    v-on:fileRemoved="dropzoneRemoved"
-                    v-on:fileUploaded="dropzoneUploaded"
-                    v-on:actionListener="dropzoneFileClick"
-                    :showRemoveLink="!$config.isDemoServer"
-                    :thumbnailHeight="100"
-                    :thumbnailWidth="100"
-                    :maxFiles="1000"
-                    :maxFilesize="1000000"
-                    :authToken="auth_token"
-                    acceptedFiles=".txt,.csv"
-                    :url="user_settings_server_address_backend + '/backend/system/filesystem/upload'"
-                ></dropzone>
+                <dropzone ref="workspaceDropzone" id="workspaceDropzone" v-on:fileRemoved="dropzoneRemoved" v-on:fileUploaded="dropzoneUploaded" v-on:actionListener="dropzoneFileClick" :showRemoveLink="!$config.isDemoServer" :thumbnailHeight="100" :thumbnailWidth="100" :maxFiles="1000" :maxFilesize="1000000" :authToken="auth_token" acceptedFiles=".txt,.csv,.gz" :url="user_settings_server_address_backend + '/backend/system/filesystem/upload'"></dropzone>
+            </el-col>
+        </el-row>
+        <el-row class="dropzone-container" type="flex" align="top">
+            <el-col :span="24">
+                <i class="el-icon-s-home" style="float: left;font-size: 24px;line-height: 24px;"></i>
+                <el-breadcrumb style="float: left;padding-left: 10px;line-height: 24px;font-size: 18px;" separator-class="el-icon-arrow-right">
+                    <el-breadcrumb-item v-for="(item, index) in workspace_current_directory.split('/')" :key="index">
+                        <a @click="changeDirectory(workspace_current_directory.split('/').slice(0, index + 1).join('/'))">{{ item }}</a>
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
             </el-col>
         </el-row>
         <el-row type="flex" align="top" style="padding-top: 10px; text-align: right">
@@ -32,14 +32,7 @@
                 <el-select @change="refreshFilesInDirectory" style="width: 140px; padding-right: 10px" class="filter-item" v-model="fetchSettings.args.sort_by">
                     <el-option v-for="item in fetchSettings.options.sort" :key="item.key" :label="item.label" :value="item.key"></el-option>
                 </el-select>
-                <el-switch
-                    v-model="fetchSettings.args.sort"
-                    @change="refreshFilesInDirectory"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949"
-                    active-text="ASC"
-                    inactive-text="DESC"
-                ></el-switch>
+                <el-switch v-model="fetchSettings.args.sort" @change="refreshFilesInDirectory" active-color="#13ce66" inactive-color="#ff4949" active-text="ASC" inactive-text="DESC"></el-switch>
             </el-col>
         </el-row>
         <el-row class="files-container" type="flex" align="top">
@@ -62,7 +55,7 @@
 import { Dropzone, publicImport } from "./components";
 import { mapGetters } from "vuex";
 
-import { readFilesInUserDirectory as ApiReadFilesInUserDirectory, deleteFile as ApiDeleteFile } from "@/api/backend";
+import { readFilesInUserDirectory as ApiReadFilesInUserDirectory, deleteFile as ApiDeleteFile, createDirectory as ApiCreateDirectory } from "@/api/backend";
 import { md5String } from "@/utils";
 
 export default {
@@ -79,6 +72,7 @@ export default {
             totalFileSize: 0,
             totalFiles: 0,
             directoryFilesHash: "",
+
             fetchSettings: {
                 args: {
                     sort_by: "display_filename",
@@ -89,6 +83,7 @@ export default {
                         { label: "Name", key: "display_filename" },
                         { label: "Date", key: "created" },
                         { label: "Size", key: "size" },
+                        { label: "Type", key: "item_type" }
                     ],
                 },
             },
@@ -105,6 +100,14 @@ export default {
     },
     computed: {
         ...mapGetters(["user_settings_server_address_backend", "auth_token"]),
+        workspace_current_directory: {
+            get() {
+                return this.$store.getters.workspace_current_directory;
+            },
+            set(value) {
+                this.$store.dispatch("setWorkspaceDirectory", value);
+            },
+        },
         selectedFiles: {
             get() {
                 return this.$store.getters.selectedFiles;
@@ -123,10 +126,19 @@ export default {
         },
     },
     methods: {
+        changeDirectory(newDirectory) {
+            console.log("Current directory: " + this.workspace_current_directory);
+            console.log("New directory: " + newDirectory);
+
+            if (newDirectory !== this.workspace_current_directory) {
+                this.workspace_current_directory = newDirectory;
+                this.refreshFilesInDirectory();
+            }
+        },
         deleteFilesInDirectory() {
             this.$confirm(this.$t("views.workspace.index.operations.delete_all.dialog.description"), this.$t("views.workspace.index.operations.delete_all.dialog.title"), {
-                type: "warning",
-            })
+                    type: "warning",
+                })
                 .then((_) => {
                     if (!this.$config.isDemoServer) {
                         this.$refs.workspaceDropzone.removeAllFiles(false);
@@ -148,14 +160,29 @@ export default {
             if (Array.isArray(files)) {
                 files.map((file, i) => {
                     this.totalFileSize += file.size;
+
+                    let name = "";
+                    let extension = "";
+                    let size = "";
+
+                    if(parseInt(file.item_type) === 1){
+                        name = file.display_filename + file.extension;
+                        extension = file.extension.replace(".", "");
+                        size = file.size || 0;
+                    }else{
+                        name = file.display_filename;
+                        extension = "";
+                        size = null;
+                    }
+
                     this.$refs.workspaceDropzone.manuallyAddFile({
                         fileId: parseInt(file.id),
-                        size: file.size,
-                        name: file.display_filename + file.extension,
+                        size: size,
+                        name: name,
                         basename: file.display_filename,
-                        extension: file.extension.replace(".", ""),
+                        extension: extension,
                         mime_type: file.mime_type || "text/plain",
-                        type: file.item_type,
+                        item_type: parseInt(file.item_type),
                     });
                 });
             }
@@ -209,8 +236,15 @@ export default {
                 id: parseInt(item.file.fileId),
                 basename: item.file.name,
                 extension: item.file.extension,
-                type: item.file.type,
+                item_type: item.file.item_type,
             };
+
+            if (selectedFile.item_type === 3) {
+                let newDirectory = this.workspace_current_directory + "/" + selectedFile.basename;
+                this.changeDirectory(newDirectory);
+                return;
+            }
+
             let isAlreadySelected = this.selectedFiles.some((file) => file.id === selectedFile.id);
 
             // if no files are selected select this one
@@ -253,24 +287,29 @@ export default {
             }
         },
         dropzoneRemoved(file) {
-            console.log("dropzoneRemoved");
-            // If loading is already running don't delete files since probably its all about
-            // fetchReadFilesInDirectory => removeAllFiles
             if (this.refreshLoading === true) {
                 return;
             }
-
             this.loading = true;
-            ApiDeleteFile({ selectedFiles: [file.fileId] })
+            ApiDeleteFile({ selectedFiles: [file] })
                 .then((response) => {
                     if (response.data.success === true) {
                         this.$message({ message: file.name + " " + this.$t("globals.messages.deleted"), type: "success" });
-                        this.selectedFiles = this.selectedFiles.filter(function (item) {
+                        this.selectedFiles = this.selectedFiles.filter(function(item) {
                             return file.fileId !== item.id;
                         });
                     } else {
                         console.log(response);
-                        this.$message({ message: this.$t("globals.errors.request_general"), type: "warning" });
+                        if (file.item_type === 3) {
+                            this.$message({
+                                type: "info",
+                                message: this.$t("globals.messages.not_implemented"),
+                            });
+                        } else {
+                            this.$message({ message: this.$t("globals.errors.request_general"), type: "warning" });
+                        }
+
+                        this.refreshFilesInDirectory();
                     }
                     this.loading = false;
                 })
@@ -278,17 +317,55 @@ export default {
                     console.log(error);
                     this.loading = false;
                     this.$message({ message: this.$t("globals.errors.request_general"), type: "warning" });
+                    this.refreshFilesInDirectory();
                 });
+        },
+        createDirectory() {
+            this.$prompt('Please enter directory name', 'Directory name', {
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Cancel',
+            }).then(({ value }) => {
+                this.loading = true;
+                ApiCreateDirectory({ currentDirectory: this.workspace_current_directory, subDirectory: value })
+                    .then((response) => {
+                        if (response.data.success === true) {
+                            this.$message({ message: value + " " + this.$t("views.workspace.components.dropzone.messages.directory_created_success"), type: "success" });
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: this.$t("views.workspace.components.dropzone.messages.directory_created_error")
+                            });
+                        }
+                        this.loading = false;
+                        this.refreshFilesInDirectory();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.loading = false;
+                        this.$message({
+                            type: 'error',
+                            message: this.$t("views.workspace.components.dropzone.messages.directory_created_error")
+                        });
+                    });
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: 'Input canceled'
+                });
+                this.refreshFilesInDirectory();
+            });
         },
         fetchReadFilesInDirectory() {
             this.loading = true;
-            ApiReadFilesInUserDirectory({ selectedDirectory: "uploads", settings: this.fetchSettings.args })
+            ApiReadFilesInUserDirectory({ selectedDirectory: this.workspace_current_directory, settings: this.fetchSettings.args })
                 .then((response) => {
                     if (response.data.success === true) {
                         const directoryFilesHash = md5String(JSON.stringify(response.data.message));
                         if (this.directoryFilesHash !== directoryFilesHash) {
+
                             this.totalFiles = response.data.message.length;
                             this.manuallyAddFiles(response.data.message);
+
                             if (this.selectedFiles.length > 0) {
                                 this.$refs.workspaceDropzone.preselectFilesByID(this.selectedFiles);
                             }
@@ -320,11 +397,13 @@ export default {
         },
     },
 };
+
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dropzone-container {
     margin-top: 10px;
 }
+
 .dropzone-context-menu {
     box-shadow: 0 4px 5px 3px rgb(239, 240, 249);
     position: fixed;
@@ -352,4 +431,5 @@ export default {
 .files-container {
     margin-top: 10px;
 }
+
 </style>

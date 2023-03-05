@@ -110,9 +110,16 @@ export default {
             background-size: contain;
         }
         .about-container {
+
             font-size: 14px;
             color: #606266;
             letter-spacing: 1px;
+            word-break: normal;
+
+            > div {
+                line-height: 18px;
+            }
+
             blockquote {
                 display: block;
                 margin-top: 25px;

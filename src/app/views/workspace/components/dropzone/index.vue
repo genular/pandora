@@ -5,6 +5,7 @@
 </template>
 <script>
 import Dropzone from "dropzone";
+
 Dropzone.autoDiscover = false;
 
 export default {
@@ -15,6 +16,16 @@ export default {
             dropzone: null,
             initOnce: true
         };
+    },
+    computed: {
+       workspace_current_directory: {
+            get() {
+                return this.$store.getters.workspace_current_directory;
+            },
+            set(value) {
+                this.$store.dispatch("setWorkspaceDirectory", value);
+            },
+        }
     },
     mounted() {
         const element = document.getElementById(this.id);
@@ -39,25 +50,39 @@ export default {
             retryChunks: true,
             retryChunksLimit: 3,
             createImageThumbnails: false,
-            timeout: 50000,
+            timeout: (1000 * 60 * 60 * 24 * 1),
             dictDefaultMessage:
                 '<i style="display: table-cell; vertical-align: middle;" class="el-icon-upload">  ' +
                 this.$t("views.workspace.components.dropzone.messages.upload_placeholder") +
                 "</i>",
             headers: {
-                "X-Token": this.authToken || "failed"
+                "X-Token": this.authToken || "failed",
+                "U-Path": this.workspace_current_directory
             },
             dictMaxFilesExceeded: "You can not upload any more files.",
-            previewTemplate:
-                '<div class="dz-preview dz-file-preview">\n  <div class="dz-image" style="width:' +
-                this.thumbnailWidth +
-                "px;height:" +
-                this.thumbnailHeight +
-                'px" ><img data-dz-thumbnail style="margin: 0 auto; width:' +
-                this.thumbnailWidth +
-                "px;height:" +
-                this.thumbnailHeight +
-                'px" /></div>\n  <div class="dz-details">\n    <div class="dz-size"><span data-dz-size></span></div>\n    <div class="dz-filename"><span data-dz-name></span></div>\n  </div>\n  <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>\n  <div class="dz-error-message"><span data-dz-errormessage></span></div>\n  <div class="dz-success-mark">\n <i class="el-icon-success"></i> \n</div>\n  <div class="dz-error-mark">\n<i class="el-icon-warning"></i>\n</div>\n</div>',
+            previewTemplate: `
+                <div class="dz-preview dz-file-preview">
+                    <div class="dz-image" style="width: ${this.thumbnailWidth}px; height: ${this.thumbnailHeight}px" >
+                        <img data-dz-thumbnail style="margin: 0 auto; width: ${this.thumbnailWidth}px; height: ${this.thumbnailHeight}px" />
+                    </div>
+                    <div class="dz-details">
+                        <div class="dz-size"><span data-dz-size></span></div>
+                        <div class="dz-filename"><span data-dz-name></span></div>
+                    </div>
+                    <div class="dz-progress">
+                        <span class="dz-upload" data-dz-uploadprogress></span>
+                    </div>
+                    <div class="dz-error-message">
+                        <span data-dz-errormessage></span>
+                    </div>
+                    <div class="dz-success-mark">
+                        <i class="el-icon-success"></i> 
+                    </div>
+                    <div class="dz-error-mark">
+                        <i class="el-icon-warning"></i>
+                    </div>
+                </div>
+            `,
 
             init() {
                 const val = vm.defaultImg;
@@ -94,14 +119,24 @@ export default {
             if (response.success === true) {
                 const remoteFileInfo = response.message;
                 addedFile.fileId = remoteFileInfo.id;
-                // addedFile.size = remoteFileInfo.size;
-                // addedFile.name = remoteFileInfo.filename + remoteFileInfo.extension;
-                addedFile.basename = remoteFileInfo.filename + remoteFileInfo.extension;
-                addedFile.extension = remoteFileInfo.extension.replace(".", "");
+
+                if(remoteFileInfo.item_type === 1){
+                    addedFile.basename = remoteFileInfo.filename + remoteFileInfo.extension;
+                    addedFile.extension = remoteFileInfo.extension.replace(".", "");
+                }else{
+                    addedFile.basename = remoteFileInfo.filename;
+                    addedFile.extension = "";
+                }
+
                 addedFile.mime_type = remoteFileInfo.mime_type || "text/plain";
-                // addedFile.type = "file";
-                addedFile.url = "/static/icons/defult.png";
-                // Add fileID
+                addedFile.item_type = remoteFileInfo.item_type || 1;
+
+                if(addedFile.item_type === 1){
+                    addedFile.url = "/static/icons/file_type.png";    
+                }else if(addedFile.item_type === 3){
+                    addedFile.url = "/static/icons/directory_type.png";
+                }
+
             } else {
                 addedFile.remote_message = response.message;
             }
@@ -121,11 +156,19 @@ export default {
             }
         });
         this.dropzone.on("addedfile", item => {
-            this.dropzone.emit("thumbnail", item, "/static/icons/defult.png");
+
+            if(item.item_type === 1){
+                this.dropzone.emit("thumbnail", item, "/static/icons/file_type.png");
+            }else if(item.item_type === 3){
+                this.dropzone.emit("thumbnail", item, "/static/icons/directory_type.png");
+            } else {
+                this.dropzone.emit("thumbnail", item, "/static/icons/file_type.png");
+            }
 
             item.previewElement.addEventListener("click", e => {
                 vm.$emit("actionListener", { action: "click", file: item, event: e });
             });
+            
             item.previewElement.addEventListener("contextmenu", e => {
                 vm.$emit("actionListener", { action: "contextmenu", file: item, event: e });
             });
@@ -151,6 +194,13 @@ export default {
         this.dropzone.on("successmultiple", (file, error, xhr) => {
             vm.$emit("dropzone-successmultiple", file, error, xhr);
         });
+        this.dropzone.on("sending", (file, error, xhr) => {
+            /*Called just before each file is sent*/
+            xhr.ontimeout = (() => {
+                /*Execute on case of timeout only*/
+                console.log('==> Server Timeout')
+            });
+        });
     },
     methods: {
         filesAvaliable() {
@@ -170,6 +220,8 @@ export default {
             }
         },
         manuallyAddFile(file) {
+            console.log("Manually adding file to dropzone");
+
             file.manuallyAdded = true;
             this.dropzone.emit("addedfile", file);
             this.dropzone.files.push(file);

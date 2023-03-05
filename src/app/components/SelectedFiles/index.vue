@@ -7,7 +7,7 @@
         </div>
         <div v-if="selectedQueueID != ''" class="files-view-item selectedQueueID animated flipInY" closable>
             Queue ID: {{ selectedQueueID }}
-            <span class="close-container" @click.prevent.stop="handleCloseExplorationJobId()">x</span>
+            <span class="close-container" @click.prevent.stop="closeSelectedQueue()">x</span>
         </div>
     </div>
 </template>
@@ -41,14 +41,20 @@ export default {
         },
     },
     methods: {
-        handleCloseExplorationJobId() {
-            this.selectedQueueID = "";
+        closeSelectedQueue() {
+            this.$store.dispatch("resetPandoraSelectedQueue");
         },
         closeSelectedFile(selectdFileID) {
-            this.selectedFiles = this.selectedFiles.filter(function (item) {
-                return selectdFileID !== item.id;
-            });
-            this.selectedFileDetails = { id: null, columns: [], summary: [] };
+            if (this.selectedFiles.length === 1) {
+                this.$store.dispatch("resetPandoraSelectedFiles");
+            } else {
+
+                this.selectedFiles = this.selectedFiles.filter(function (item) {
+                    return selectdFileID !== item.id;
+                });
+
+                this.selectedFileDetails = { id: null, columns: [], summary: [] };
+            }
         },
     },
 };
@@ -58,10 +64,12 @@ export default {
 
 .selected-files-container {
     vertical-align: middle;
+
     .empty-selection {
         font-size: 14px;
         font-weight: 400;
     }
+
     .files-view-item {
         /* display: inline-block; */
         float: left;
@@ -77,6 +85,7 @@ export default {
         &:not(:last-child) {
             margin-right: 10px;
         }
+
         .close-container {
             width: 20px;
             height: 20px;
@@ -88,12 +97,14 @@ export default {
             line-height: 20px;
             margin-top: 10px;
             margin-left: 5px;
+
             &:hover {
                 background-color: $ui-background;
                 color: #fff;
             }
         }
     }
+
     .selectedQueueID {
         background-color: $pink;
         color: $white;

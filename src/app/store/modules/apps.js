@@ -171,6 +171,14 @@ const apps = {
     },
 
     actions: {
+        resetPandoraSelectedQueue({ commit, state }) {
+            commit("SET_PANDORA_EXPLORATION_QUEUE_IDS", []);
+            commit("SET_PANDORA_EXPLORATION_SELECTED_QUEUE_ID", "");
+            commit("SET_PANDORA_EXPLORATION_SELECTED_FEATURE_SET_ID", 0);
+            commit("SET_PANDORA_EXPLORATION_SELECTED_MODEL_ID", []);
+            commit("SET_PANDORA_EXPLORATION_ACTIVE_TAB_NAME", "datasetsTab");
+            commit("SET_PANDORA_EXPLORATION_ACTIVE_DATASETS_TAB_MAP_OPTIONS", []);
+        },
         addSimonJobAnalysis({ commit, state }, submitData) {
             return new Promise((resolve, reject) => {
                 ApiSubmitDatasetQueueTask(submitData)
@@ -189,7 +197,6 @@ const apps = {
                     });
             });
         },
-
         /** Fetch and set available statistical packages in the Store */
         setSimonAvailablePackages({ commit, state }, selectedFiles) {
             return new Promise((resolve, reject) => {

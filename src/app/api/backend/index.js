@@ -206,6 +206,18 @@ export function readFilesInUserDirectory(submitData) {
 }
 
 /**
+* Creates new directory in users upload directory
+* @param  {object} submitData Object containing one string variable: selectedDirectory that corresponds to upload_directory column in users_files table
+* @return {object}            JSON decoded API response object
+*/
+export function createDirectory(submitData) {
+    return request({
+        url: baseUrlPath + "/system/filesystem/directory-create/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
+        method: "GET",
+    });
+}
+
+/**
  * Deletes file from database and from file system
  * @param  {int} fileID ID of the desired file to be deleted from users_files database table
  * @return {object}            JSON decoded API response object

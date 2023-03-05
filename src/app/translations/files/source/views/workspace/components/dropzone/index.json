@@ -7,7 +7,9 @@
 						"upload_placeholder": "Drop files here or click to upload",
 						"delimiters_check": "Please check file delimiters: use dot (.) for the decimal point and a comma (,) for the delimiter",
 						"upload_sucessfull": "File successfully uploaded",
-						"upload_unsucessfull": "Errors while uploading file"
+						"upload_unsucessfull": "Errors while uploading file",
+						"directory_created_success": "Directory created successfully",
+						"directory_created_error": "Error while creating directory"
 					},
 					"buttons": {
 						"delete_file": "Delete"
