@@ -18,7 +18,7 @@ export default {
         };
     },
     computed: {
-       workspace_current_directory: {
+       workingDirectory: {
             get() {
                 return this.$store.getters.workspace_current_directory;
             },
@@ -57,7 +57,7 @@ export default {
                 "</i>",
             headers: {
                 "X-Token": this.authToken || "failed",
-                "U-Path": this.workspace_current_directory
+                "U-Path": this.workingDirectory
             },
             dictMaxFilesExceeded: "You can not upload any more files.",
             previewTemplate: `
@@ -68,7 +68,7 @@ export default {
                     <div class="dz-details">
                         <div class="dz-size"><span data-dz-size></span></div>
                         <div class="dz-filename"><span data-dz-name></span></div>
-                    </div>
+                    </div> 
                     <div class="dz-progress">
                         <span class="dz-upload" data-dz-uploadprogress></span>
                     </div>
@@ -259,6 +259,11 @@ export default {
             if (!this.initOnce) return;
             this.initFiles(val);
             this.initOnce = false;
+        },
+        workingDirectory(newVal, oldVal) {
+            if (newVal !== oldVal) {
+              this.dropzone.options.headers['U-Path'] = newVal;
+            }
         }
     },
     props: {
@@ -370,9 +375,11 @@ export default {
         transition: all 0.3s linear;
         border-bottom: 1px dashed transparent;
         min-height: 120px;
+
         &:not(:first-child) {
             margin: 0 0 0 5px;
         }
+
         &:hover {
             .dz-image {
                 > img {

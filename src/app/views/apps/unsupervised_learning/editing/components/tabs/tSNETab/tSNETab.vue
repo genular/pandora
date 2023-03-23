@@ -92,7 +92,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.tSNETab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -133,7 +133,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.tSNETab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -180,7 +180,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.tSNETab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -216,7 +216,7 @@
                                 filterable
                                 default-first-option
                                 reserve-keyword
-                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.tSNETab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')"
                             >
                                 <el-option v-for="item in settingsOptions.clusterType" :key="item.value" :label="item.name" :value="item.value">
                                     <span style="float: left">
@@ -236,15 +236,15 @@
                             <el-select
                                 style="float: right"
                                 v-model="settingsForm.clustLinkage"
-                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.tSNETab.form.clust_method.placeholder')"
+                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.placeholder')"
                             >
                                 <el-option
                                     v-for="item in settingsOptions.clustLinkage"
                                     :key="item.id"
-                                    :label="$t(['views.apps.pandora.exploration.components.tabs.tSNETab.form.clust_method.options.', item.id].join(''))"
+                                    :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options.', item.id].join(''))"
                                     :value="item.id"
                                 >
-                                    <span>{{ $t("views.apps.pandora.exploration.components.tabs.tSNETab.form.clust_method.options." + item.id) }}</span>
+                                    <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -764,7 +764,7 @@ export default {
 
                 clusterType: "Louvain",
                 cutOffColumnSize: 50000,
-                removeNA: false,
+                removeNA: true,
                 perplexity: 5,
                 knn_clusters: 25,
                 clustLinkage: "ward.D2",
