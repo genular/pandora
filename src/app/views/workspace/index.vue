@@ -232,6 +232,8 @@ export default {
                 return false;
             }
 
+            
+
             const selectedFile = {
                 id: parseInt(item.file.fileId),
                 basename: item.file.name,

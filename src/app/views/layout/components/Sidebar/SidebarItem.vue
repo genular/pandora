@@ -121,6 +121,10 @@ export default {
                 });
             }
 
+            console.log("generateMenuClass: " + childItem.name + " " + cssClass);
+
+
+
             return cssClass;
         },
         checkRouteAction: function (event, data) {

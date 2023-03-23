@@ -119,6 +119,8 @@ export default {
             if (response.success === true) {
                 const remoteFileInfo = response.message;
                 addedFile.fileId = remoteFileInfo.id;
+                remoteFileInfo.item_type = parseInt(remoteFileInfo.item_type) || 1;
+
 
                 if(remoteFileInfo.item_type === 1){
                     addedFile.basename = remoteFileInfo.filename + remoteFileInfo.extension;

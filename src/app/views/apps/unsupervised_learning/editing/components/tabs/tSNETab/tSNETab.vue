@@ -16,10 +16,12 @@
             <el-col :span="4">
                 <el-row>
                     <el-form ref="settingsForm" :model="settingsForm">
-                        <el-form-item label="Columns">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.title')">
                             <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                             <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">Please select columns you wish to analyze and plot. Leaving this empty will take all columns except excluded ones.</div>
+                            <div slot="content">
+                                {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.description") }}
+                            </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <br />
@@ -33,7 +35,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                 :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -63,9 +65,11 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="First (n) columns">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.first_n_columns.title')">
                             <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">If you have not selected any columns we will take first n columns from your dataset, based on this value.</div>
+                                <div slot="content">
+                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.first_n_columns.description") }}
+                                </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <br />
@@ -88,7 +92,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -129,7 +133,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -176,7 +180,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -212,7 +216,7 @@
                                 filterable
                                 default-first-option
                                 reserve-keyword
-                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.tSNETab.form.columns.placeholder')"
                             >
                                 <el-option v-for="item in settingsOptions.clusterType" :key="item.value" :label="item.name" :value="item.value">
                                     <span style="float: left">
@@ -232,15 +236,15 @@
                             <el-select
                                 style="float: right"
                                 v-model="settingsForm.clustLinkage"
-                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.clusteringTab.form.clust_method.placeholder')"
+                                :placeholder="$t('views.apps.pandora.exploration.components.tabs.tSNETab.form.clust_method.placeholder')"
                             >
                                 <el-option
                                     v-for="item in settingsOptions.clustLinkage"
                                     :key="item.id"
-                                    :label="$t(['views.apps.pandora.exploration.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
+                                    :label="$t(['views.apps.pandora.exploration.components.tabs.tSNETab.form.clust_method.options.', item.id].join(''))"
                                     :value="item.id"
                                 >
-                                    <span>{{ $t("views.apps.pandora.exploration.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
+                                    <span>{{ $t("views.apps.pandora.exploration.components.tabs.tSNETab.form.clust_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -266,7 +270,7 @@
                             <el-input-number style="float: right" v-model="settingsForm.reachabilityDistance" :step="1" :min="1" :max="512"></el-input-number>
                         </el-form-item>
 
-                        <el-form-item label="Preprocess">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.preProcessDataset"></el-switch>
                             <el-tooltip placement="top">
                                 <div slot="content">Should we apply preprocessing ("medianImpute", "center", "scale") to dataset before drawing any plots?</div>
@@ -274,18 +278,22 @@
                             </el-tooltip>
                         </el-form-item>
 
-                        <el-form-item label="Remove NA">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.remove_na.title')">
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.removeNA"></el-switch>
                             <el-tooltip placement="top">
-                                <div slot="content">Should we drop rows with NA values in dataset before any calculation?</div>
+                                <div slot="content">
+                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.remove_na.description") }}
+                                </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
 
-                        <el-form-item label="Perplexity">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.perplexity.title')">
                             <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.perplexity" :step="1" :min="1" :max="100" show-input></el-slider>
                             <el-tooltip placement="top">
-                                <div slot="content">The performance of SNE is fairly robust to changes in the perplexity, and typical values are between 5 and 50.</div>
+                                <div slot="content">
+                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.perplexity.description") }}
+                                </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
@@ -321,15 +329,15 @@
                                 style="float: right"
                                 size="mini"
                                 v-model="settingsForm.datasetAnalysisClustLinkage"
-                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.placeholder')"
+                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.placeholder')"
                             >
                                 <el-option
                                     v-for="item in settingsOptions.clustLinkage"
                                     :key="item.id"
-                                    :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
+                                    :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options.', item.id].join(''))"
                                     :value="item.id"
                                 >
-                                    <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
+                                    <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -339,15 +347,15 @@
                                 style="float: right"
                                 size="mini"
                                 v-model="settingsForm.datasetAnalysisClustOrdering"
-                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.placeholder')"
+                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.placeholder')"
                             >
                                 <el-option
                                     v-for="item in settingsOptions.clustOrdering"
                                     :key="item.id"
-                                    :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.options.', item.id].join(''))"
+                                    :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.options.', item.id].join(''))"
                                     :value="item.id"
                                 >
-                                    <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.options." + item.id) }}</span>
+                                    <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.options." + item.id) }}</span>
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -426,7 +434,7 @@
                                         <div slot="content">
                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.description") }}
                                         </div>
-                                        <el-button style="float: left" type="danger" round @click="downloadRawData">
+                                        <el-button style="float: left" type="danger" round @click="downloadRawData(plot_data.saveObjectHash)">
                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.title") }}
                                             <i class="el-icon-download el-icon-right"></i>
                                         </el-button>
@@ -645,6 +653,20 @@
                             <el-col v-if="plot_data.tsne_cluster_heatmap_plot !== false">
                                 <el-row>
                                     <el-col :span="24">
+                                        <span style="float: left;">Heatmap of clustered t-SNE on main data</span>
+                                        <el-dropdown style="float: right;" @command="downloadRawData">
+                                            <el-button type="primary">
+                                            Actions<i class="el-icon-arrow-down el-icon--right"></i>
+                                            </el-button>
+                                            <el-dropdown-menu slot="dropdown">
+                                                <el-dropdown-item 
+                                                    :command="plot_data.saveDatasetHash">
+                                                    Download dataset
+                                                </el-dropdown-item>
+                                            </el-dropdown-menu>
+                                        </el-dropdown>
+                                    </el-col>
+                                    <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
                                                 <el-button type="success" round @click="downloadPlotImage('tsne_cluster_heatmap_plot')">
@@ -768,6 +790,7 @@ export default {
                 tsne_cluster_heatmap_plot_png: false,
 
                 saveObjectHash: false,
+                saveDatasetHash: false,
             },
         };
     },
@@ -863,8 +886,13 @@ export default {
                 this.fetchRemoteAnalysis();
             }
         },
-        downloadRawData() {
-            const downloadLink = this.$store.getters.user_settings_server_address_plots + "/plots/general/download-saved-object?objectHash=" + this.plot_data.saveObjectHash;
+
+        downloadRawData(downloadHash) {
+            const downloadLink = this.$store.getters.user_settings_server_address_plots + 
+            "/plots/general/download-saved-object?objectHash=" + downloadHash;
+
+            console.log(downloadLink);
+
             window.open(downloadLink, "_blank");
         },
         fetchRemoteAnalysis() {
@@ -1064,6 +1092,7 @@ export default {
                 tsne_cluster_heatmap_plot_png: false,
 
                 saveObjectHash: false,
+                saveDatasetHash: false
             };
         },
     },

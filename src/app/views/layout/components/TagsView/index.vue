@@ -148,7 +148,7 @@ export default {
             color: #ffffff;
             background: $ui-background;
             padding: 0 10px;
-            font-size: 12px;
+            font-size: 14px;
             margin-left: 5px;
             &:first-of-type {
                 margin-left: 5px;

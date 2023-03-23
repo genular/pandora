@@ -60,7 +60,7 @@
                         </el-form-item>
 
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.first_n_columns.title')">
-                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="500000"></el-input-number>
+                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="10" :max="50000"></el-input-number>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
                                     {{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.first_n_columns.description") }}
@@ -311,7 +311,7 @@ export default {
 
             settingsForm: {
                 selectedColumns: [],
-                cutOffColumnSize: 50,
+                cutOffColumnSize: 10,
                 groupingVariable: [],
                 preProcessedData: true,
                 fontSize: 12,
