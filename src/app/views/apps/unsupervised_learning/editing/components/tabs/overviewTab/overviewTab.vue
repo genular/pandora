@@ -5,13 +5,13 @@
                 <el-alert
                     :title="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.alert.function_disabled.title')"
                     description="Tab is currently disabled. Please try to refresh or choose another file from Workspace."
-                    type="warning"
+                    type="danger"
                     style="margin-top: 20px"
                     show-icon
                     :closable="false"
                 ></el-alert>
 
-                <pre>{{ JSON.stringify(selectedFileDetails, null, "\t") }}</pre>
+                <!-- <pre>{{ JSON.stringify(selectedFileDetails, null, "\t") }}</pre> -->
             </el-col>
         </el-row>
         <el-row v-else type="flex" align="top">

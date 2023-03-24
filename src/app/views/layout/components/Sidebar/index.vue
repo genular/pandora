@@ -32,7 +32,7 @@ export default {
         return {
             currentServerLoad: 0,
             serverLoadUpdate: false,
-            serverLoadUpdateInterval: 5000
+            serverLoadUpdateInterval: 15000
         };
     },
     computed: {

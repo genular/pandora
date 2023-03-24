@@ -1,90 +1,284 @@
 {
-	"sidebar": {
-		"dashboard": "Dashboard",
-		"settings": "Settings",
-		"workspace": "Workspace",
+    "sidebar":
+    {
+        "dashboard": "Dashboard",
+        "settings": "Settings",
+        "workspace": "Workspace",
 
-		"supervised_learning": "Supervised learning",
-		"supervised_learning_analysis": "Start Analysis",
-		"supervised_learning_analysis_exploratory": "Analysis Exploration",
+        "supervised_learning": "Supervised learning",
+        "supervised_learning_analysis": "Start Analysis",
+        "supervised_learning_analysis_exploratory": "Analysis Exploration",
 
-		"unsupervised_learning": "Unsupervised learning",
-		"unsupervised_learning_exploration": "Start Exploration",
+        "unsupervised_learning": "Unsupervised learning",
+        "unsupervised_learning_exploration": "Start Exploration",
 
-		"additional_modules": "Modules",
-		"additional_modules_rnaseq": "RNA-seq"
-	},
-	"globals": {
-		"page_loading": "Processing",
-		"page_loading_slow": "please be patient this may take a while...",
-		"buttons": {
-			"copy": "Copy",
-			"ok": "OK",
-			"cancel": "Cancel",
-			"close": "Close",
-			"guide": {
-				"title": "Guide",
-				"doneBtnText": "Done",
-				"closeBtnText": "Close",
-				"nextBtnText": "Next",
-				"prevBtnText": "Previous"
-			}
-		},
-		"messages": {
-			"success": "success",
-			"failed": "failed",
-			"canceled": "canceled",
-			"deleted": "deleted",
-			"upload_sucessfull": "uploaded successfully",
-			"upload_unsucessfull": "file upload error",
-			"not_implemented": "Function is not available in this software version"
-		},
-		"demo_server": {
-			"function_disabled": "This function is disabled on demo server"
-		},
-		"errors": {
-			"request_general": "There was an error processing your request. Please try again latter.",
-			"unsupported_device": "Unfortunately your device is still unsupported. We are working on supporting smaller screen devices. Please visit us again with bigger screen 😞"
-		},
-		"performanceVariables": {
-			"placeholder": "Select performance measurement",
-			"options": {
-				"Accuracy": { "title": "Accuracy", "description": "" },
-				"AccuracyLower": { "title": "Accuracy Lower", "description": "" },
-				"AccuracyNull": { "title": "Accuracy Null", "description": "" },
-				"AccuracyPValue": { "title": "Accuracy P-Value", "description": "" },
-				"AccuracyUpper": { "title": "Accuracy Upper", "description": "" },
-				"Balanced Accuracy": { "title": "Balanced Accuracy", "description": "" },
-				"Detection Prevalence": { "title": "Detection Prevalence", "description": "" },
-				"Detection Rate": { "title": "Detection Rate", "description": "" },
-				"F1": { "title": "F1", "description": "" },
-				"Kappa": { "title": "Kappa", "description": "" },
-				"McnemarPValue": { "title": "Mcnemar P-Value", "description": "" },
-				"Neg Pred Value": { "title": "Neg Pred Value", "description": "" },
-				"Pos Pred Value": { "title": "Pos Pred Value", "description": "" },
-				"PositiveControl": { "title": "Positive Control", "description": "" },
-				"Precision": { "title": "Precision", "description": "" },
-				"PredictAUC": { "title": "Predict AUC", "description": "" },
-				"prAUC": { "title": "prAUC", "description": "" },
-				"Prevalence": { "title": "Prevalence", "description": "" },
-				"Recall": { "title": "Recall", "description": "" },
-				"Sensitivity": { "title": "Sensitivity", "description": "" },
-				"Specificity": { "title": "Specificity", "description": "" },
-				"TrainAccuracy": { "title": "Train Accuracy", "description": "" },
-				"TrainAUC": { "title": "Train AUC", "description": "" },
-				"TrainBalanced_Accuracy": { "title": "Train Balanced_Accuracy", "description": "" },
-				"TrainDetection_Rate": { "title": "Train Detection_Rate", "description": "" },
-				"TrainF1": { "title": "Train F1", "description": "" },
-				"TrainKappa": { "title": "Train Kappa", "description": "" },
-				"TrainlogLoss": { "title": "TrainlogLoss", "description": "" },
-				"TrainNeg_Pred_Value": { "title": "Train Neg Pred Value", "description": "" },
-				"TrainPos_Pred_Value": { "title": "Train Pos Pred Value", "description": "" },
-				"TrainprAUC": { "title": "Trainpr AUC", "description": "" },
-				"TrainPrecision": { "title": "Train Precision", "description": "" },
-				"TrainRecall": { "title": "Train Recall", "description": "" },
-				"TrainSensitivity": { "title": "Train Sensitivity", "description": "" },
-				"TrainSpecificity": { "title": "Train Specificity", "description": "" }
-			}
-		}
-	}
+        "additional_modules": "Modules",
+        "additional_modules_rnaseq": "RNA-seq"
+    },
+    "globals":
+    {
+        "page_loading": "Processing",
+        "page_loading_slow": "please be patient this may take a while...",
+        "buttons":
+        {
+            "copy": "Copy",
+            "ok": "OK",
+            "cancel": "Cancel",
+            "close": "Close",
+            "guide":
+            {
+                "title": "Guide",
+                "doneBtnText": "Done",
+                "closeBtnText": "Close",
+                "nextBtnText": "Next",
+                "prevBtnText": "Previous"
+            }
+        },
+        "messages":
+        {
+            "success": "success",
+            "failed": "failed",
+            "canceled": "canceled",
+            "deleted": "deleted",
+            "upload_sucessfull": "uploaded successfully",
+            "upload_unsucessfull": "file upload error",
+            "not_implemented": "Function is not available in this software version"
+        },
+        "demo_server":
+        {
+            "function_disabled": "This function is disabled on demo server"
+        },
+        "errors":
+        {
+            "request_general": "There was an error processing your request. Please try again latter.",
+            "unsupported_device": "Unfortunately your device is still unsupported. We are working on supporting smaller screen devices. Please visit us again with bigger screen 😞"
+        },
+        "performanceVariables":
+        {
+            "placeholder": "Select performance measurement",
+            "options":
+            {
+                "Accuracy":
+                {
+                    "title": "Accuracy",
+                    "description": "The proportion of correctly classified instances out of the total instances"
+                },
+                "AccuracyLower":
+                {
+                    "title": "Accuracy Lower",
+                    "description": "The lower bound of the accuracy's confidence interval"
+                },
+                "AccuracyNull":
+                {
+                    "title": "Accuracy Null",
+                    "description": "The accuracy that could be achieved by a random model"
+                },
+                "AccuracyPValue":
+                {
+                    "title": "Accuracy P-Value",
+                    "description": "The p-value of the accuracy, which indicates the level of confidence in the model's performance"
+                },
+                "AccuracyUpper":
+                {
+                    "title": "Accuracy Upper",
+                    "description": "The upper bound of the accuracy's confidence interval"
+                },
+                "BalancedAccuracy":
+                {
+                    "title": "Balanced Accuracy",
+                    "description": "The average of sensitivity and specificity, useful for imbalanced datasets"
+                },
+                "DetectionPrevalence":
+                {
+                    "title": "Detection Prevalence",
+                    "description": "The proportion of actual positive cases in the dataset"
+                },
+                "DetectionRate":
+                {
+                    "title": "Detection Rate",
+                    "description": "The proportion of true positive cases out of the total instances"
+                },
+                "F1":
+                {
+                    "title": "F1 Score",
+                    "description": "The harmonic mean of precision and recall, a measure of the trade-off between precision and recall"
+                },
+                "Kappa":
+                {
+                    "title": "Cohen's Kappa",
+                    "description": "A measure of agreement between the predicted and actual labels, accounting for chance"
+                },
+                "McnemarPValue":
+                {
+                    "title": "Mcnemar's P-Value",
+                    "description": "The p-value of Mcnemar's test, which tests the null hypothesis of equal misclassification rates"
+                },
+                "NegPredValue":
+                {
+                    "title": "Negative Predictive Value",
+                    "description": "The proportion of true negative cases among the instances predicted as negative"
+                },
+                "PosPredValue":
+                {
+                    "title": "Positive Predictive Value",
+                    "description": "The proportion of true positive cases among the instances predicted as positive"
+                },
+                "PositiveControl":
+                {
+                    "title": "Positive Control",
+                    "description": "A reference model that always predicts the positive class"
+                },
+                "Precision":
+                {
+                    "title": "Precision",
+                    "description": "The proportion of true positive cases among the instances predicted as positive, also known as Positive Predictive Value"
+                },
+                "PredictAUC":
+                {
+                    "title": "Predicted AUC",
+                    "description": "The area under the Receiver Operating Characteristic (ROC) curve for the predicted probabilities"
+                },
+                "prAUC":
+                {
+                    "title": "Precision-Recall AUC",
+                    "description": "The area under the Precision-Recall curve"
+                },
+                "Prevalence":
+                {
+                    "title": "Prevalence",
+                    "description": "The proportion of actual positive cases in the dataset"
+                },
+                "Recall":
+                {
+                    "title": "Recall",
+                    "description": "The proportion of true positive cases among the actual positive cases, also known as Sensitivity"
+                },
+                "Sensitivity":
+                {
+                    "title": "Sensitivity",
+                    "description": "The proportion of true positive cases among the actual positive cases, also known as Recall"
+                },
+                "Specificity":
+                {
+                    "title": "Specificity",
+                    "description": "The proportion of true negative cases among the actual negative cases"
+                },
+                "TrainAccuracy":
+                {
+                    "title": "Training Accuracy",
+                    "description": "The accuracy of the model on the training dataset"
+                },
+                "TrainAUC":
+                {
+                    "title": "Training AUC",
+                    "description": "The area under the Receiver Operating Characteristic (ROC) curve for the training dataset"
+                },
+                "TrainBalanced_Accuracy":
+                {
+                    "title": "Training Balanced Accuracy",
+                    "description": "The balanced accuracy of the model on the training dataset"
+                },
+                "TrainDetection_Rate":
+                {
+                    "title": "Training Detection Rate",
+                    "description": "The detection rate of the model on the training dataset"
+                },
+                "TrainF1":
+                {
+                    "title": "Training F1 Score",
+                    "description": "The F1 score of the model on the training dataset"
+                },
+                "TrainKappa":
+                {
+                    "title": "Training Cohen's Kappa",
+                    "description": "Cohen's Kappa of the model on the training dataset"
+                },
+                "TrainlogLoss":
+                {
+                    "title": "Training Log Loss",
+                    "description": "The logarithm of the likelihood of the true labels given the predicted probabilities on the training dataset"
+                },
+                "TrainNeg_Pred_Value":
+                {
+                    "title": "Training Negative Predictive Value",
+                    "description": "The negative predictive value of the model on the training dataset"
+                },
+                "TrainPos_Pred_Value":
+                {
+                    "title": "Training Positive Predictive Value",
+                    "description": "The positive predictive value of the model on the training dataset"
+                },
+                "TrainprAUC":
+                {
+                    "title": "Training Precision-Recall AUC",
+                    "description": "The area under the Precision-Recall curve for the training dataset"
+                },
+                "TrainPrecision":
+                {
+                    "title": "Training Precision",
+                    "description": "The precision of the model on the training dataset"
+                },
+                "TrainRecall":
+                {
+                    "title": "Training Recall",
+                    "description": "The recall of the model on the training dataset"
+                },
+                "TrainSensitivity":
+                {
+                    "title": "Training Sensitivity",
+                    "description": "The sensitivity of the model on the training dataset"
+                },
+                "TrainSpecificity":
+                {
+                    "title": "Training Specificity",
+                    "description": "The specificity of the model on the training dataset"
+                },
+                "TrainMean_F1":
+                {
+                    "title": "Training Mean F1 Score",
+                    "description": "The average F1 score across multiple training runs"
+                },
+                "TrainMean_Sensitivity":
+                {
+                    "title": "Training Mean Sensitivity",
+                    "description": "The average sensitivity across multiple training runs"
+                },
+                "TrainMean_Specificity":
+                {
+                    "title": "Training Mean Specificity",
+                    "description": "The average specificity across multiple training runs"
+                },
+                "TrainMean_Pos_Pred_Value":
+                {
+                    "title": "Training Mean Positive Predictive Value",
+                    "description": "The average positive predictive value across multiple training runs"
+                },
+                "TrainMean_Neg_Pred_Value":
+                {
+                    "title": "Training Mean Negative Predictive Value",
+                    "description": "The average negative predictive value across multiple training runs"
+                },
+                "TrainMean_Precision":
+                {
+                    "title": "Training Mean Precision",
+                    "description": "The average precision across multiple training runs"
+                },
+                "TrainMean_Recall":
+                {
+                    "title": "Training Mean Recall",
+                    "description": "The average recall across multiple training runs"
+                },
+                "TrainMean_Detection_Rate":
+                {
+                    "title": "Training Mean Detection Rate",
+                    "description": "The average detection rate across multiple training runs"
+                },
+                "TrainMean_Balanced_Accuracy":
+                {
+                    "title": "Training Mean Balanced Accuracy",
+                    "description": "The average balanced accuracy across multiple training runs"
+                }
+            }
+        }
+    }
 }

@@ -434,7 +434,8 @@
                                         <div slot="content">
                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.description") }}
                                         </div>
-                                        <el-button style="float: left" type="danger" round @click="downloadRawData(plot_data.saveObjectHash)">
+                                        <el-button style="float: left" type="danger" round 
+                                            @click="downloadRawData({downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_export'})">
                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.title") }}
                                             <i class="el-icon-download el-icon-right"></i>
                                         </el-button>
@@ -654,17 +655,19 @@
                                 <el-row>
                                     <el-col :span="24">
                                         <span style="float: left;">Heatmap of clustered t-SNE on main data</span>
+
                                         <el-dropdown style="float: right;" @command="downloadRawData">
                                             <el-button type="primary">
                                             Actions<i class="el-icon-arrow-down el-icon--right"></i>
                                             </el-button>
                                             <el-dropdown-menu slot="dropdown">
                                                 <el-dropdown-item 
-                                                    :command="plot_data.saveDatasetHash">
+                                                    :command="{downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_export'}">
                                                     Download dataset
                                                 </el-dropdown-item>
                                             </el-dropdown-menu>
                                         </el-dropdown>
+
                                     </el-col>
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
@@ -886,13 +889,11 @@ export default {
                 this.fetchRemoteAnalysis();
             }
         },
-
-        downloadRawData(downloadHash) {
+        downloadRawData(command) {
+            // Filename without extension
+            const downloadFilename = this.selectedFiles[0].basename.replace(/\.[^/.]+$/, "");
             const downloadLink = this.$store.getters.user_settings_server_address_plots + 
-            "/plots/general/download-saved-object?objectHash=" + downloadHash;
-
-            console.log(downloadLink);
-
+            "/plots/general/download-saved-object?objectHash=" + command.downloadHash + "&downloadFilename=" + downloadFilename + command.filenameAddon;
             window.open(downloadLink, "_blank");
         },
         fetchRemoteAnalysis() {

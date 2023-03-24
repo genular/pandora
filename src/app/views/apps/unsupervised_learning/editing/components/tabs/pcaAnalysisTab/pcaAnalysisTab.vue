@@ -335,7 +335,8 @@
                                     <div slot="content">
                                         {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.description") }}
                                     </div>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">
+                                    <el-button style="float: left" type="danger" round 
+                                    @click="downloadRawData(plot_data.saveObjectHash, '_pca_analysis')">
                                         {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.title") }}
                                         <i class="el-icon-download el-icon-right"></i>
                                     </el-button>
@@ -1325,8 +1326,11 @@ export default {
                 this.fetchRemoteAnalysis();
             }
         },
-        downloadRawData() {
-            const downloadLink = this.$store.getters.user_settings_server_address_plots + "/plots/general/download-saved-object?objectHash=" + this.plot_data.saveObjectHash;
+        downloadRawData(downloadHash, filenameAddon = "") {
+            // Filename without extension
+            const downloadFilename = this.selectedFiles[0].basename.replace(/\.[^/.]+$/, "");
+            const downloadLink = this.$store.getters.user_settings_server_address_plots + 
+            "/plots/general/download-saved-object?objectHash=" + downloadHash + "&downloadFilename=" + downloadFilename + filenameAddon;
             window.open(downloadLink, "_blank");
         },
         isTabEnabled() {
