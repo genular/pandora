@@ -222,3 +222,17 @@ export function fetchGraphDistribution(query) {
         params: query,
     });
 }
+
+/**
+ * [getDatasetTempPath description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function getDatasetTempPath(query) {
+    return request({
+        url: baseUrlPath + "/general/get-temp-file-path",
+        method: "GET",
+        params: query,
+    });
+}
+

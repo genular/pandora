@@ -19,14 +19,14 @@
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.title')">
                             <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                             <el-tooltip placement="top" style="padding-left: 5px">
-                            <div slot="content">
-                                {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.description") }}
-                            </div>
+                                <div slot="content">
+                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.description") }}
+                                </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <br />
                             <el-select
-                                style="float: left;width: 100%;"
+                                style="float: left; width: 100%"
                                 v-model="settingsForm.selectedColumns"
                                 multiple
                                 filterable
@@ -35,7 +35,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
-                                 :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')"
+                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
@@ -55,7 +55,7 @@
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
                                             {{ item.na_percentage > 0 ? "NA" : "" }}
@@ -73,7 +73,7 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <br />
-                            <el-input-number style="float: left;width: 100%;" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="50000"></el-input-number>
+                            <el-input-number style="float: left; width: 100%" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="50000"></el-input-number>
                         </el-form-item>
 
                         <el-form-item label="Exclude Columns">
@@ -83,7 +83,7 @@
                             </el-tooltip>
                             <br />
                             <el-select
-                                style="float: left;width: 100%;"
+                                style="float: left; width: 100%"
                                 v-model="settingsForm.excludedColumns"
                                 multiple
                                 filterable
@@ -104,7 +104,7 @@
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
                                             {{ item.na_percentage > 0 ? "NA" : "" }}
@@ -124,7 +124,7 @@
                             </el-tooltip>
                             <br />
                             <el-select
-                                style="float: left;width: 100%;"
+                                style="float: left; width: 100%"
                                 v-model="settingsForm.groupingVariables"
                                 multiple
                                 filterable
@@ -151,7 +151,7 @@
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
                                             {{ item.na_percentage > 0 ? "NA" : "" }}
@@ -171,7 +171,7 @@
                             </el-tooltip>
                             <br />
                             <el-select
-                                style="float: left;width: 100%;"
+                                style="float: left; width: 100%"
                                 v-model="settingsForm.colorVariables"
                                 multiple
                                 filterable
@@ -198,7 +198,7 @@
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
                                         </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
                                             {{ item.valid_10p === 1 ? "*" : "" }}
                                             {{ item.unique_count }}
                                             {{ item.na_percentage > 0 ? "NA" : "" }}
@@ -211,7 +211,7 @@
                         <el-form-item label="Clustering alghoritam:">
                             <br />
                             <el-select
-                                style="float: left;width: 100%;"
+                                style="float: left; width: 100%"
                                 v-model="settingsForm.clusterType"
                                 filterable
                                 default-first-option
@@ -222,7 +222,7 @@
                                     <span style="float: left">
                                         {{ item.name }}
                                     </span>
-                                    <el-tooltip placement="top" style="float: right; padding-top: 10px;">
+                                    <el-tooltip placement="top" style="float: right; padding-top: 10px">
                                         <div slot="content">
                                             {{ item.description }}
                                         </div>
@@ -249,14 +249,12 @@
                             </el-select>
                         </el-form-item>
 
-
-
                         <el-form-item label="K" v-if="['Louvain'].includes(settingsForm.clusterType)">
                             <el-input-number style="float: right" v-model="settingsForm.knn_clusters" :step="1" :min="2" :max="2048"></el-input-number>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
-                                    Maximum number of nearest neighbors to search.
-                                    The optimal K value usually found is the square root of N, where N is the total number of samples.
+                                    Maximum number of nearest neighbors to search. The optimal K value usually found is the square root of N, where N is the total number of
+                                    samples.
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
@@ -302,10 +300,7 @@
 
                         <el-form-item label="Dataset analysis type">
                             <br />
-                            <el-select 
-                            style="float: left;width: 100%;" 
-                            v-model="settingsForm.datasetAnalysisType" 
-                            placeholder="Select">
+                            <el-select style="float: left; width: 100%" v-model="settingsForm.datasetAnalysisType" placeholder="Select">
                                 <el-option v-for="item in settingsOptions.datasetAnalysisType" :key="item.id" :label="item.label" :value="item.id">
                                     <span>{{ item.label }}</span>
                                 </el-option>
@@ -314,10 +309,7 @@
 
                         <el-form-item label="Sort column" v-if="settingsForm.datasetAnalysisType === 'heatmap'">
                             <br />
-                            <el-select 
-                            style="float: left;width: 100%;" 
-                            v-model="settingsForm.datasetAnalysisSortColumn"
-                            placeholder="Select">
+                            <el-select style="float: left; width: 100%" v-model="settingsForm.datasetAnalysisSortColumn" placeholder="Select">
                                 <el-option v-for="item in settingsOptions.datasetAnalysisSortColumn" :key="item.id" :label="item.id" :value="item.id">
                                     <span>{{ item.id }}</span>
                                 </el-option>
@@ -400,11 +392,7 @@
 
                         <el-form-item label="Legend position">
                             <br />
-                            <el-select 
-                            style="float: left;width: 100%;" 
-                            v-model="settingsForm.legendPosition" 
-                            size="mini" 
-                            placeholder="Select">
+                            <el-select style="float: left; width: 100%" v-model="settingsForm.legendPosition" size="mini" placeholder="Select">
                                 <el-option v-for="item in settingsOptions.legendPosition" :key="item.id" :label="item.label" :value="item.id">
                                     <span>{{ item.label }}</span>
                                 </el-option>
@@ -434,8 +422,12 @@
                                         <div slot="content">
                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.description") }}
                                         </div>
-                                        <el-button style="float: left" type="danger" round 
-                                            @click="downloadRawData({downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_export'})">
+                                        <el-button
+                                            style="float: left"
+                                            type="danger"
+                                            round
+                                            @click="downloadRawData({ downloadHash: plot_data.saveObjectHash, filenameAddon: '_tsne_export', action: 'downloadData' })"
+                                        >
                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.title") }}
                                             <i class="el-icon-download el-icon-right"></i>
                                         </el-button>
@@ -654,20 +646,24 @@
                             <el-col v-if="plot_data.tsne_cluster_heatmap_plot !== false">
                                 <el-row>
                                     <el-col :span="24">
-                                        <span style="float: left;">Heatmap of clustered t-SNE on main data</span>
+                                        <span style="float: left">Heatmap of clustered t-SNE on main data</span>
 
-                                        <el-dropdown style="float: right;" @command="downloadRawData">
+                                        <el-dropdown style="float: right" @command="downloadRawData">
                                             <el-button type="primary">
-                                            Actions<i class="el-icon-arrow-down el-icon--right"></i>
+                                                Actions
+                                                <i class="el-icon-arrow-down el-icon--right"></i>
                                             </el-button>
                                             <el-dropdown-menu slot="dropdown">
-                                                <el-dropdown-item 
-                                                    :command="{downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_export'}">
-                                                    Download dataset
+                                                <el-dropdown-item :command="{ downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_export', action: 'downloadData' }">
+                                                    Download clustered dataset
+                                                </el-dropdown-item>
+                                                <el-dropdown-item
+                                                    :command="{ downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_clustered', action: 'sendToWorkspace' }"
+                                                >
+                                                    Send clustered to workspace
                                                 </el-dropdown-item>
                                             </el-dropdown-menu>
                                         </el-dropdown>
-
                                     </el-col>
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
@@ -697,7 +693,9 @@
     </div>
 </template>
 <script>
-import { getOverViewAavailableColumns, fetchTsnePlot } from "@/api/plots";
+import { getOverViewAavailableColumns, fetchTsnePlot, getDatasetTempPath } from "@/api/plots";
+import { uploadTempToWorkspace } from "@/api/backend";
+
 import Fuse from "fuse.js";
 
 import plotColorPalettes from "@/assets/plots/color_palettes.json";
@@ -748,7 +746,11 @@ export default {
                 ],
                 datasetAnalysisSortColumn: [],
 
-                legendPosition: [{ id: "left", label: "Left" }, { id: "right", label: "Right" }, { id: "none", label: "None" }],
+                legendPosition: [
+                    { id: "left", label: "Left" },
+                    { id: "right", label: "Right" },
+                    { id: "none", label: "None" },
+                ],
             },
 
             settingsForm: {
@@ -781,7 +783,7 @@ export default {
                 datasetAnalysisSortColumn: "cluster",
                 datasetAnalysisClustOrdering: 1,
                 anyNAValues: false,
-                categoricalVariables: false
+                categoricalVariables: false,
             },
             plot_data: {
                 tsne_plot: [],
@@ -890,11 +892,71 @@ export default {
             }
         },
         downloadRawData(command) {
+            if (command.action === "downloadData") {
+                // Filename without extension
+                const downloadFilename = this.selectedFiles[0].basename.replace(/\.[^/.]+$/, "");
+
+                const downloadLink =
+                    this.$store.getters.user_settings_server_address_plots +
+                    "/plots/general/download-saved-object?objectHash=" +
+                    command.downloadHash +
+                    "&downloadFilename=" +
+                    downloadFilename +
+                    command.filenameAddon;
+                window.open(downloadLink, "_blank");
+            } else {
+                this.sendToWorkspace(command);
+            }
+        },
+        sendToWorkspace(command) {
             // Filename without extension
-            const downloadFilename = this.selectedFiles[0].basename.replace(/\.[^/.]+$/, "");
-            const downloadLink = this.$store.getters.user_settings_server_address_plots + 
-            "/plots/general/download-saved-object?objectHash=" + command.downloadHash + "&downloadFilename=" + downloadFilename + command.filenameAddon;
-            window.open(downloadLink, "_blank");
+            let exportedFilename = this.selectedFiles[0].basename.replace(/\.[^/.]+$/, "");
+            exportedFilename = exportedFilename.toLowerCase() + "" + command.filenameAddon;
+
+            this.$prompt("Please enter new file name", "Datasets name", {
+                confirmButtonText: "OK",
+                cancelButtonText: "Cancel",
+                inputValue: exportedFilename + ".csv",
+            })
+                .then(({ value }) => {
+                    //this.loading = true;
+
+                    // 1. get original file name
+                    getDatasetTempPath({ objectHash: command.downloadHash })
+                        .then((response) => {
+                            const local_file_path = response.data.message;
+
+                            console.log(local_file_path);
+                            console.log(value);
+
+                            // 2. create new file
+                            uploadTempToWorkspace(local_file_path, value)
+                                .then((response) => {
+                                    this.$message({
+                                        message: "Generated dataset sent to Workspace!",
+                                        type: "success",
+                                    });
+                                })
+                                .catch((error) => {
+                                    this.$message({
+                                        message: this.$t("globals.errors.request_general"),
+                                        type: "error",
+                                    });
+                                });
+                        })
+                        .catch((error) => {
+                            this.$message({
+                                message: this.$t("globals.errors.request_general"),
+                                type: "error",
+                            });
+                        });
+                })
+                .catch(() => {
+                    this.$message({
+                        type: "info",
+                        message: "Dataset export canceled",
+                    });
+                });
         },
         fetchRemoteAnalysis() {
             this.loadingPlot = true;
@@ -930,7 +992,7 @@ export default {
             this.settingsForm.categoricalVariables = false;
             // Loop selectedColumns and groupingVariables to check if any are NA
             settingsForm.groupingVariables.forEach((x) => {
-                let item = this.settingsForm.groupingVariables.find(o => o.remapped === x);
+                let item = this.settingsForm.groupingVariables.find((o) => o.remapped === x);
 
                 if (item && item.na_percentage > 0) {
                     this.settingsForm.anyNAValues = true;
@@ -938,8 +1000,8 @@ export default {
             });
 
             // If the are any NA Values in grouping variables we need to have removeNA option enabled
-            if(this.settingsForm.anyNAValues === true){
-                if(this.settingsForm.removeNA === false){
+            if (this.settingsForm.anyNAValues === true) {
+                if (this.settingsForm.removeNA === false) {
                     this.$message({
                         message: "NA Values detected in 'grouping variables'. Please enable 'Remove NA' option.",
                         type: "error",
@@ -950,7 +1012,7 @@ export default {
             }
             // If the are any NA Values in selectedColumns we need to have removeNA or preProcessDataset option enabled
             settingsForm.selectedColumns.forEach((x) => {
-                let item = this.settingsForm.selectedColumns.find(o => o.remapped === x);
+                let item = this.settingsForm.selectedColumns.find((o) => o.remapped === x);
                 if (item && item.na_percentage > 0) {
                     this.settingsForm.anyNAValues = true;
                 }
@@ -959,8 +1021,8 @@ export default {
                 }
             });
 
-            if(this.settingsForm.anyNAValues === true){
-                if(this.settingsForm.removeNA === false && this.settingsForm.preProcessDataset === false){
+            if (this.settingsForm.anyNAValues === true) {
+                if (this.settingsForm.removeNA === false && this.settingsForm.preProcessDataset === false) {
                     this.$message({
                         message: "NA Values detected in 'selected columns'. Please enable 'Remove NA' or 'Pre-process dataset' option.",
                         type: "error",
@@ -969,7 +1031,6 @@ export default {
                     return;
                 }
             }
-
 
             fetchTsnePlot({
                 selectedFileID: this.selectedFiles[0].id,
@@ -1093,7 +1154,7 @@ export default {
                 tsne_cluster_heatmap_plot_png: false,
 
                 saveObjectHash: false,
-                saveDatasetHash: false
+                saveDatasetHash: false,
             };
         },
     },

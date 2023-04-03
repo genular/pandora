@@ -206,14 +206,25 @@ export function readFilesInUserDirectory(submitData) {
 }
 
 /**
-* Creates new directory in users upload directory
-* @param  {object} submitData Object containing one string variable: selectedDirectory that corresponds to upload_directory column in users_files table
-* @return {object}            JSON decoded API response object
-*/
+ * Creates new directory in users upload directory
+ * @param  {object} submitData Object containing one string variable: selectedDirectory that corresponds to upload_directory column in users_files table
+ * @return {object}            JSON decoded API response object
+ */
 export function createDirectory(submitData) {
     return request({
         url: baseUrlPath + "/system/filesystem/directory-create/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
         method: "GET",
+    });
+}
+
+/**
+ * Moves file from temporary directory to users upload directory
+ * @return {object}            JSON decoded API response object
+ */
+export function uploadTempToWorkspace(local_file_path, new_file_name) {
+    return request({
+        url: baseUrlPath + "/system/filesystem/local-upload/" + encodeURIComponent(window.btoa(local_file_path) + "/" + encodeURIComponent(window.btoa(new_file_name))),
+        method: "POST",
     });
 }
 
