@@ -218,7 +218,7 @@
                         <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.preProcessDataset"></el-switch>
                         <el-tooltip placement="top">
                             <div slot="content">
-                                Should we apply preprocessing ("medianImpute", "center", "scale") and remove "near-zero-variance" features before any calculation?
+                                Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features before any calculation?
                             </div>
                             <i class="el-icon-question"></i>
                         </el-tooltip>

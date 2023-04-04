@@ -169,7 +169,7 @@
                         <el-form-item label="Preprocess">
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.preProcessDataset"></el-switch>
                             <el-tooltip placement="top">
-                                <div slot="content">Should we apply preprocessing ("medianImpute", "center", "scale") to dataset before drawing any plots?</div>
+                                <div slot="content">Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features before any calculation?</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
