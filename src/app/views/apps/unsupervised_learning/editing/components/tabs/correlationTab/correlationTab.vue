@@ -89,6 +89,30 @@
                         </el-select>
                     </el-form-item>
 
+
+                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
+                        <el-tooltip placement="top">
+                            <div slot="content">
+                                Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features
+                                before any calculation?
+                            </div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        <el-select
+                            style="float: left; width: 100%"
+                            v-model="selectedPreProcess"
+                            clearable
+                            :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')"
+                            multiple
+                        >
+                            <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
+                                <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                <span style="float: right">
+                                    {{ $t("views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}
+                                </span>
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.na_action.label')">
                         <br />
                         <el-select
@@ -424,6 +448,48 @@ export default {
 
             loadingPlot: false,
 
+            selectedPreProcessOptions: [
+                {
+                    value: "center",
+                    incompatible: [],
+                    disabled: false,
+                },
+                {
+                    value: "scale",
+                    incompatible: [],
+                    disabled: false,
+                },
+                {
+                    value: "knnImpute",
+                    incompatible: ["scale", "center"],
+                    disabled: false,
+                },
+                {
+                    value: "bagImpute",
+                    incompatible: ["medianImpute"],
+                    disabled: false,
+                },
+                {
+                    value: "medianImpute",
+                    incompatible: ["bagImpute"],
+                    disabled: false,
+                },
+                {
+                    value: "corr",
+                    incompatible: [],
+                    disabled: false,
+                },
+                {
+                    value: "zv",
+                    incompatible: [],
+                    disabled: false,
+                },
+                {
+                    value: "nzv",
+                    incompatible: [],
+                    disabled: false,
+                }
+            ],
             plot_data: {
                 correlation_plot: false,
                 correlation_plot_png: false,
@@ -482,6 +548,7 @@ export default {
                 selectedColumns: [],
                 cutOffColumnSize: 100,
                 correlation_method: "pearson",
+                preProcessDataset: [],
                 na_action: "everything",
                 // Only if confidence.enable is false
                 plot_method: "circle",
@@ -550,6 +617,14 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSelectedFileDetails", value);
+            },
+        },
+        selectedPreProcess: {
+            get() {
+                return this.$store.getters.pandoraEditingSelectedPreProcess;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonEditingSelectedPreProcess", value);
             },
         },
     },
@@ -655,6 +730,9 @@ export default {
         },
         fetchRemoteAnalysis() {
             this.loadingPlot = true;
+
+            this.settingsForm.preProcessDataset = this.selectedPreProcess;
+
             // Clone objects as an simple object
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
             // If any columns are selected make remapping

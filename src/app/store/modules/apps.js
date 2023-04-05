@@ -48,6 +48,7 @@ const apps = {
             },
             editing: {
                 activeTabName: estore.get("apps-pandora-editing-activeTabName") || "overviewTab",
+                selectedPreProcess: estore.get("apps-pandora-editing-selectedPreProcess") || ["medianImpute", "center", "scale","corr", "nzv", "zv"],
             },
         },
     },
@@ -90,6 +91,10 @@ const apps = {
         SET_PANDORA_EDITING_ACTIVE_TAB_NAME: (state, activeTabName) => {
             state.pandora.editing.activeTabName = activeTabName;
             estore.set("apps-pandora-editing-activeTabName", activeTabName);
+        },
+        SET_PANDORA_EDITING_SELECTED_PREPROCESS: (state, selectedPreProcess) => {
+            state.pandora.editing.selectedPreProcess = selectedPreProcess;
+            estore.set("apps-pandora-editing-selectedPreProcess", selectedPreProcess);
         },
         // analysis
         SET_PANDORA_ANALYSIS_JOB_ID: (state, job_id) => {
@@ -351,6 +356,9 @@ const apps = {
         // editing
         setSimonEditingActiveTabName({ commit }, activeTabName) {
             commit("SET_PANDORA_EDITING_ACTIVE_TAB_NAME", activeTabName);
+        },
+        setSimonEditingSelectedPreProcess({ commit }, selectedPreProcess) {
+            commit("SET_PANDORA_EDITING_SELECTED_PREPROCESS", selectedPreProcess);
         },
     },
 };

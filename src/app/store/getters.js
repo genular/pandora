@@ -66,5 +66,6 @@ const getters = {
     datasetsTabMapOptions: (state) => state.apps.pandora.exploration.datasetsTabMapOptions,
     // editing
     pandoraEditingActiveTabName: (state) => state.apps.pandora.editing.activeTabName,
+    pandoraEditingSelectedPreProcess: (state) => state.apps.pandora.editing.selectedPreProcess,
 };
 export default getters;

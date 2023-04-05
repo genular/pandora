@@ -269,11 +269,27 @@
                         </el-form-item>
 
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
-                            <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.preProcessDataset"></el-switch>
                             <el-tooltip placement="top">
-                                <div slot="content">Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features before any calculation?</div>
+                                <div slot="content">
+                                    Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features
+                                    before any calculation?
+                                </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
+                            <el-select
+                                style="float: left; width: 100%"
+                                v-model="selectedPreProcess"
+                                clearable
+                                :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')"
+                                multiple
+                            >
+                                <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
+                                    <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                    <span style="float: right">
+                                        {{ $t("views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}
+                                    </span>
+                                </el-option>
+                            </el-select>
                         </el-form-item>
 
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.remove_na.title')">
@@ -718,6 +734,48 @@ export default {
 
             selectedFileDetailsDisplay: [],
 
+            selectedPreProcessOptions: [
+                {
+                    value: "center",
+                    incompatible: [],
+                    disabled: false,
+                },
+                {
+                    value: "scale",
+                    incompatible: [],
+                    disabled: false,
+                },
+                {
+                    value: "knnImpute",
+                    incompatible: ["scale", "center"],
+                    disabled: false,
+                },
+                {
+                    value: "bagImpute",
+                    incompatible: ["medianImpute"],
+                    disabled: false,
+                },
+                {
+                    value: "medianImpute",
+                    incompatible: ["bagImpute"],
+                    disabled: false,
+                },
+                {
+                    value: "corr",
+                    incompatible: [],
+                    disabled: false,
+                },
+                {
+                    value: "zv",
+                    incompatible: [],
+                    disabled: false,
+                },
+                {
+                    value: "nzv",
+                    incompatible: [],
+                    disabled: false,
+                }
+            ],
             settingsOptions: {
                 availableColumns: [],
                 theme: plotThemes,
@@ -758,7 +816,7 @@ export default {
                 excludedColumns: [],
                 groupingVariables: [],
                 colorVariables: [],
-                preProcessDataset: true,
+                preProcessDataset: [],
 
                 fontSize: 12,
                 pointSize: 1.5,
@@ -827,6 +885,14 @@ export default {
         },
         reverseSelectedColumns() {
             return this.settingsForm.selectedColumns.slice().reverse();
+        },
+        selectedPreProcess: {
+            get() {
+                return this.$store.getters.pandoraEditingSelectedPreProcess;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonEditingSelectedPreProcess", value);
+            },
         },
     },
     mounted() {
@@ -960,8 +1026,13 @@ export default {
         },
         fetchRemoteAnalysis() {
             this.loadingPlot = true;
+
+            this.settingsForm.preProcessDataset = this.selectedPreProcess;
+
             // Clone objects as an simple object
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
+            console.log(settingsForm);
+            
             // If any columns are selected get their names
             if (settingsForm.selectedColumns.length > 0) {
                 settingsForm.selectedColumns = this.settingsForm.selectedColumns.map((x) => x.remapped);
@@ -1022,7 +1093,7 @@ export default {
             });
 
             if (this.settingsForm.anyNAValues === true) {
-                if (this.settingsForm.removeNA === false && this.settingsForm.preProcessDataset === false) {
+                if (this.settingsForm.removeNA === false && settingsForm.preProcessDataset.length === 0){
                     this.$message({
                         message: "NA Values detected in 'selected columns'. Please enable 'Remove NA' or 'Pre-process dataset' option.",
                         type: "error",
