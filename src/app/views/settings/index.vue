@@ -96,11 +96,10 @@
                 <div style="color: #781717; font-size: 13px; text-align: right">
                     Version information:
                     <br />
-                    genular {{ packageVersion }} ({{ packageEnviroment }})
+                    PANDORA {{ packageVersion }} ({{ packageEnviroment }})
                     <br />
                     Developed by the
-                    <a href="https://github.com/genular/pandora" target="_blank">genular community</a>
-                    .
+                    <a href="https://github.com/genular/pandora" target="_blank">genular community</a>.
                 </div>
             </el-col>
         </el-row>
