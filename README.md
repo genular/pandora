@@ -5,7 +5,7 @@
             <img width="200" src="https://github.com/genular/pandora/raw/master/.github/static/favicon.png"></a>
     </p>
     -->
-    <h1>PANDORA<br/><sub>uncover hidden insights and patterns from complex data</sub></h1>
+    <h1>PANDORA<br/><sub>Pan-Dimensional Omics and Research Analysis</sub></h1>
     <p align="center">
         <a href="https://crowdin.com/project/genular" alt="Help us translate">
             <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
@@ -16,18 +16,14 @@
     </p>
 </div>
 
-## Intro
+`PANDORA` is a versatile web-based platform for integrating, analyzing, and visualizing diverse biological data, including clinical, transcriptome, and microbiome datasets.
 
-`PANDORA` is a machine learning (ML) tool that can be used to integrate various data types, including clinical, transcriptome and microbiome data and find connections in large datasets.
-
-It can be used for a variety of use cases, for example:
-- Identify markers in a patient's blood associated with a severe infection
-- Find certain bacteria in the gut related to type of cancer
-- Predict the outcome of a disease
+## Overview
+It can be applied to various use cases, such as identifying infection markers, discovering gut bacteria connections to cancer, predicting disease outcomes, examining vaccine immune responses, drug discovery, biomarker identification for personalized medicine, and analyzing omics data for systems biology research. Perform complex analyses using multiple supported machine learning models and techniques, including clustering, heatmap generation, t-SNE, UMAP, and much more.
 
 ## Installation Quick-start
 
-`PANDORA` can be easily installed using Docker, a pre-built version of the software can be pulled from [DockerHub](https://hub.docker.com/). In order to run a test instance of PANDORA, users will first need to prepare their local environment by downloading, installing and configuring [Docker](https://www.docker.com/).
+`PANDORA` can be installed using Docker, a pre-built version of the platform can be pulled from [DockerHub](https://hub.docker.com/). In order to run `PANDORA`, users will first need to install [Docker](https://www.docker.com/).
 
 #### Requirements
 
@@ -43,7 +39,7 @@ It can be used for a variety of use cases, for example:
 
 #### Installing PANDORA
 
--   Once [Docker](https://www.docker.com/) is installed and configured please **open** your favorite **Terminal** and **run** the **command below**. On Windows - open `Windows Power Shell` => _Click Start, type PowerShell, and then click Windows PowerShel_
+-   Please **open** your favorite **Terminal** and **run** the **command below**. On Windows - open `Windows Power Shell` => _Click Start, type PowerShell, and then click Windows PowerShel_
 
 ```bash
 docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --oom-kill-disable --volume genular_data_latest:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/pandora:latest
@@ -63,7 +59,7 @@ docker stop genular
 docker system prune -a --volumes
 ```
 
-Please be sure to delete `PANDORA` data volume and image before reinstalling otherwise you will maybe still use old `PANDORA` instance when you run it!
+Please make sure to delete `PANDORA` data volume and image before reinstalling otherwise you will maybe still use old `PANDORA` instance when you run it!
 
 ### Contributing, writing code
 
@@ -76,7 +72,7 @@ If you need any help, please use [community forums](https://community.genular.or
 3. Fork the project ([Need help forking a project?][3]). You'll do all of your work on your forked copy.
 4. Create a branch specific to the issue or feature you are working on. Push your work on that branch ([Need help with branching?][4]).
 5. Name the branch something like `fixes-xxx-issue` or `add-xxx-feature` where `xxx` is a short description of the changes or feature you are adding.
-6. Once your code is ready, submit a pull request from your branch to PANDORA `master` branch. We'll do a quick review and give you feedback.
+6. Once your code is ready, submit a pull request from your branch to `PANDORA` `master` branch. We'll do a quick review and give you feedback.
 
 [0]: https://github.com/genular/pandora/issues
 [1]: https://github.com/genular/pandora/issues/new/choose
@@ -106,11 +102,11 @@ If you discover a security vulnerability within `PANDORA`, please [e-mail us](ma
 
 ## License
 
-`PANDORA` is open-source software for more information please check `LICENCE` file.
+`PANDORA` is open-source platform, for more information please check `LICENCE` file.
 
 ## Citation
 
-This software can be used for research purposes, you should cite
+`PANDORA` can be used for research purposes, you should cite
 the aforementioned papers in any resulting publication.
 
 ```bash
