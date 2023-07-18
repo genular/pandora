@@ -416,7 +416,7 @@
                         </el-form-item>
 
                         <el-form-item label="Font size">
-                            <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="48"></el-input-number>
+                            <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="4" :max="48"></el-input-number>
                         </el-form-item>
 
                         <el-form-item label="Point size">
