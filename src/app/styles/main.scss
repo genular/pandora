@@ -340,11 +340,11 @@ div:focus {
             
                 border: none;
                 &:hover {
-                    color: $pink;
+                    font-weight: bold;
                 }
             }
             &:is(.is-active) {
-                color: $pink;
+
                 font-weight: bold;
                 border: none;
             }

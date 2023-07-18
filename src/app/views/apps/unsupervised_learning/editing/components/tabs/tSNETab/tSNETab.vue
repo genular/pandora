@@ -999,7 +999,7 @@ export default {
                             uploadTempToWorkspace(local_file_path, value)
                                 .then((response) => {
                                     this.$message({
-                                        message: "Generated dataset sent to Workspace!",
+                                        message: "Generated data-set sent to Workspace!",
                                         type: "success",
                                     });
                                 })
