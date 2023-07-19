@@ -731,6 +731,7 @@
   "views.settings.profile_information.first_name": "Სახელი",
   "views.settings.profile_information.last_name": "Გვარი",
   "views.settings.profile_information.phone": "ტელეფონი",
+  "views.settings.profile_information.openai_api": "OpenAI API key",
   "views.settings.profile_information.save_button": "Გადარჩენა",
   "views.settings.profile_picture.title": "პროფილის სურათის შეცვლა ",
   "views.settings.profile_picture.description": "თქვენი avatar ავტომატურად გენერირდება, ამიტომ, სამწუხაროდ, გავლენას ვერ მოახდენთ avatar- ის დიზაინზე.",
