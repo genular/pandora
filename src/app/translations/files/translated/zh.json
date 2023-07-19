@@ -731,6 +731,7 @@
   "views.settings.profile_information.first_name": "第一名",
   "views.settings.profile_information.last_name": "最后一名",
   "views.settings.profile_information.phone": "电话",
+  "views.settings.profile_information.openai_api": "OpenAI API key",
   "views.settings.profile_information.save_button": "保存",
   "views.settings.profile_picture.title": "改变的资料图片 ",
   "views.settings.profile_picture.description": "你的头像是自动产生，因此不幸的是你无法产生影响的化身的设计。",
