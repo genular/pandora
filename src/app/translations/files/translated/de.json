@@ -731,6 +731,7 @@
   "views.settings.profile_information.first_name": "Vorname",
   "views.settings.profile_information.last_name": "Nachname",
   "views.settings.profile_information.phone": "Telefon",
+  "views.settings.profile_information.openai_api": "OpenAI API key",
   "views.settings.profile_information.save_button": "Speichern",
   "views.settings.profile_picture.title": "Profilbild ändern ",
   "views.settings.profile_picture.description": "Ihr avatar wird automatisch erzeugt, daher leider können Sie keine Auswirkungen auf die avatar-design.",

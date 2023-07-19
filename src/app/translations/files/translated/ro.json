@@ -731,6 +731,7 @@
   "views.settings.profile_information.first_name": "Prenume",
   "views.settings.profile_information.last_name": "Nume de familie",
   "views.settings.profile_information.phone": "Telefon",
+  "views.settings.profile_information.openai_api": "OpenAI API key",
   "views.settings.profile_information.save_button": "Salva",
   "views.settings.profile_picture.title": "Modificarea imaginii de profil ",
   "views.settings.profile_picture.description": "Avatarul tău este generat automat, prin urmare, din păcate, nu poți avea impact asupra designului avatarului.",

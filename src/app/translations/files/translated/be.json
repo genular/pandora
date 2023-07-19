@@ -731,6 +731,7 @@
   "views.settings.profile_information.first_name": "Імя",
   "views.settings.profile_information.last_name": "Прозвішча",
   "views.settings.profile_information.phone": "Тэлефон",
+  "views.settings.profile_information.openai_api": "OpenAI API key",
   "views.settings.profile_information.save_button": "Захаваць",
   "views.settings.profile_picture.title": "Змяніць выяву профілю ",
   "views.settings.profile_picture.description": "Ваш аватар ствараецца аўтаматычна, таму, на жаль, вы не можаце паўплываць на дызайн аватары.",

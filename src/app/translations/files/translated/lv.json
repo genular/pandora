@@ -731,6 +731,7 @@
   "views.settings.profile_information.first_name": "Pirmais nosaukums",
   "views.settings.profile_information.last_name": "Vārds, uzvārds",
   "views.settings.profile_information.phone": "Tālrunis:",
+  "views.settings.profile_information.openai_api": "OpenAI API key",
   "views.settings.profile_information.save_button": "Saglabāt",
   "views.settings.profile_picture.title": "Mainīt profila attēlu ",
   "views.settings.profile_picture.description": "Jūsu avatar ir automātiski ģenerēts, tāpēc diemžēl jūs nevarat ietekmēt avatar dizainu.",

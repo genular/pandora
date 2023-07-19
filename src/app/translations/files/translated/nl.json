@@ -731,6 +731,7 @@
   "views.settings.profile_information.first_name": "Voornaam",
   "views.settings.profile_information.last_name": "Achternaam",
   "views.settings.profile_information.phone": "Telefoon",
+  "views.settings.profile_information.openai_api": "OpenAI API key",
   "views.settings.profile_information.save_button": "Opslaan",
   "views.settings.profile_picture.title": "Profielafbeelding wijzigen ",
   "views.settings.profile_picture.description": "Uw avatar wordt automatisch gegenereerd, daarom kan u helaas geen invloed hebben op het avatar design.",

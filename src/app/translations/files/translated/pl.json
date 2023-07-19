@@ -731,6 +731,7 @@
   "views.settings.profile_information.first_name": "Imię",
   "views.settings.profile_information.last_name": "Nazwisko",
   "views.settings.profile_information.phone": "Telefon",
+  "views.settings.profile_information.openai_api": "OpenAI API key",
   "views.settings.profile_information.save_button": "Zapisz",
   "views.settings.profile_picture.title": "Zmień obraz profilu ",
   "views.settings.profile_picture.description": "Twój awatar jest generowany automatycznie, dlatego niestety nie możesz mieć wpływu na projekt awatara.",
