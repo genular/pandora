@@ -731,6 +731,7 @@
   "views.settings.profile_information.first_name": "Нэр",
   "views.settings.profile_information.last_name": "Овог",
   "views.settings.profile_information.phone": "Утас",
+  "views.settings.profile_information.openai_api": "OpenAI API key",
   "views.settings.profile_information.save_button": "Хадгалах",
   "views.settings.profile_picture.title": "Профайл зургийг өөрчлөх ",
   "views.settings.profile_picture.description": "Таны аватар автоматаар үүсгэгддэг тул харамсалтай нь та аватар дизайнд нөлөөлж чадахгүй.",
