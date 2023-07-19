@@ -13,6 +13,7 @@
 				"first_name": "First name",
 				"last_name": "Last name",
 				"phone": "Phone",
+				"openai_api": "OpenAI API key",
 				"save_button": "Save"
 			},
 			"profile_picture": {

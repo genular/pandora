@@ -404,3 +404,20 @@ export function fetchSelectedFilesDetails(submitData) {
         method: "GET",
     });
 }
+
+
+/**
+ * Calls openai API with input text as a parameter
+ * @param  {[type]} submitData [description]
+ * @return {[type]}            [description]
+ */
+export function openaiApi(submitData) {
+    const data = {
+        submitData: encodeURIComponent(window.btoa(JSON.stringify(submitData))),
+    };
+    return request({
+        url: baseUrlPath + "/system/describe_ai",
+        method: "POST",
+        data,
+    });
+}

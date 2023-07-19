@@ -14,7 +14,7 @@
         </el-row>
         <el-row class="dropzone-container" type="flex" align="top">
             <el-col :span="24">
-                <dropzone ref="workspaceDropzone" id="workspaceDropzone" v-on:fileRemoved="dropzoneRemoved" v-on:fileUploaded="dropzoneUploaded" v-on:actionListener="dropzoneFileClick" :showRemoveLink="!$config.isDemoServer" :thumbnailHeight="100" :thumbnailWidth="100" :maxFiles="1000" :maxFilesize="1000000" :authToken="auth_token" acceptedFiles=".txt,.csv,.gz" :url="user_settings_server_address_backend + '/backend/system/filesystem/upload'"></dropzone>
+                <dropzone ref="workspaceDropzone" id="workspaceDropzone" v-on:fileRemoved="dropzoneRemoved" v-on:fileUploaded="dropzoneUploaded" v-on:actionListener="dropzoneFileClick" :showRemoveLink="!$config.isDemoServer" :thumbnailHeight="100" :thumbnailWidth="100" :maxFiles="1000" :maxFilesize="1000000" :authToken="auth_token" acceptedFiles=".txt,.csv,.gz,.fcs" :url="user_settings_server_address_backend + '/backend/system/filesystem/upload'"></dropzone>
             </el-col>
         </el-row>
         <el-row class="dropzone-container" type="flex" align="top">
@@ -168,6 +168,10 @@ export default {
                     if(parseInt(file.item_type) === 1){
                         name = file.display_filename + file.extension;
                         extension = file.extension.replace(".", "");
+                        size = file.size || 0;
+                    }else if(parseInt(file.item_type) === 3){
+                        name = file.display_filename;
+                        extension = "";
                         size = file.size || 0;
                     }else{
                         name = file.display_filename;

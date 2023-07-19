@@ -47,6 +47,9 @@
                             <el-form-item :label="$t('views.settings.profile_information.phone')">
                                 <el-input name="phone" type="text" prop="phone" v-model="settingsForm.phone"></el-input>
                             </el-form-item>
+                            <el-form-item :label="$t('views.settings.profile_information.openai_api')">
+                                <el-input name="openai_api" type="text" prop="openai_api" v-model="settingsForm.openai_api"></el-input>
+                            </el-form-item>
                         </el-form>
                         <div style="text-align: right">
                             <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="updateProfile">
@@ -131,6 +134,7 @@ export default {
                 last_name: null,
                 email: null,
                 phone: null,
+                openai_api: null,
                 profile_picture: null,
                 account_type: null,
                 oid: null,
