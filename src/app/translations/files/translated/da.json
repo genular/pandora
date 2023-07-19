@@ -731,6 +731,7 @@
   "views.settings.profile_information.first_name": "Fornavn",
   "views.settings.profile_information.last_name": "Efternavn",
   "views.settings.profile_information.phone": "Telefon",
+  "views.settings.profile_information.openai_api": "OpenAI API key",
   "views.settings.profile_information.save_button": "Gem",
   "views.settings.profile_picture.title": "Revidér profilbillede ",
   "views.settings.profile_picture.description": "Din avatar er genereret automatisk, og derfor kan du desværre ikke påvirke avatar-designet.",
