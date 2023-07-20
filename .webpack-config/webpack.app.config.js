@@ -22,7 +22,8 @@ module.exports = env => {
             chunkFilename: "[name].[chunkhash].js",
             filename: env === "production" ? "[name].bundle.[hash].js" : "[name].bundle.[hash].js",
             publicPath: "/",
-            path: OUTPUT_DIR
+            path: OUTPUT_DIR,
+            hashFunction: "sha256"
         }
     };
     if (isWeb === false) {
