@@ -55,8 +55,12 @@ docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='tru
 To reinstall PANDORA, users will need to delete the previously installed PANDORA Docker container and associated data/volumes by stopping the currently running container:
 
 ```bash
+## Stop running instance
 docker stop genular
+## Remove container and data
 docker system prune -a --volumes
+## In some cases data is not removed, please run
+docker volume prune --all
 ```
 
 Please make sure to delete `PANDORA` data volume and image before reinstalling otherwise you will maybe still use old `PANDORA` instance when you run it!
