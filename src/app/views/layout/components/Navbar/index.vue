@@ -125,6 +125,7 @@ export default {
             text-align: center;
         }
         .error-logs {
+            color: #E4D04D;
             vertical-align: top;
             font-size: 20px;
             cursor: pointer;
