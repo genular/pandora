@@ -183,6 +183,7 @@ export default {
     }
 }
 #varImp-svg {
+    width: 100%;
     margin: 0 auto; 
     margin-top: 10px; 
     display: block;
