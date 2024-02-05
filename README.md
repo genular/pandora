@@ -42,21 +42,7 @@ It can be applied to various use cases, such as identifying infection markers, d
 -   Please **open** your favorite **Terminal** and **run** the **command below**. On Windows - open `Windows Power Shell` => _Click Start, type PowerShell, and then click Windows PowerShel_
 
 ```bash
-docker run --rm --detach \
-  --name genular \
-  --tty \
-  --interactive \
-  --env IS_DOCKER='true' \
-  --env TZ=Europe/London \
-  --oom-kill-disable \
-  --volume genular_frontend_latest:/var/www/genular/pandora \
-  --volume genular_backend_latest:/var/www/genular/pandora-backend \
-  --volume genular_data_latest:/mnt/usrdata \
-  --publish 3010:3010 \
-  --publish 3011:3011 \
-  --publish 3012:3012 \
-  --publish 3013:3013 \
-  genular/pandora:latest
+docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --oom-kill-disable --volume genular_frontend_latest:/var/www/genular/pandora --volume genular_backend_latest:/var/www/genular/pandora-backend --volume genular_data_latest:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/pandora:latest
 ```
 
 `PANDORA` will be downloaded and started, and it can be accessed via a web browser at [http://localhost:3010](http://localhost:3010)

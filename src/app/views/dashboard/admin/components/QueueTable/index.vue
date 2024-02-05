@@ -319,7 +319,7 @@
                             style="width: 100%"
                             height="250"
                         >
-                            <el-table-column type="selection" reserve-selection width="40" fixed></el-table-column>
+                            <el-table-column type="selection" reserve-selection width="50" fixed></el-table-column>
                             <el-table-column
                                 align="center"
                                 :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.resample_id')"
@@ -476,7 +476,7 @@
                             <el-table-column
                                 fixed
                                 align="center"
-                                width="30"
+                                width="50"
                                 prop="status"
                                 :filters="[
                                     { text: 'Failed', value: 0 },
@@ -787,6 +787,8 @@ export default {
                                     dangerouslyUseHTMLString: true,
                                     callback: (action) => {},
                                 });
+                            }else{
+                                console.log(response.data);
                             }
                             this.queueListLoading = false;
                         })

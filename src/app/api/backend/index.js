@@ -222,9 +222,13 @@ export function createDirectory(submitData) {
  * @return {object}            JSON decoded API response object
  */
 export function uploadTempToWorkspace(local_file_path, new_file_name) {
+    const encodedFilePath = encodeURIComponent(window.btoa(local_file_path));
+    const encodedFileName = encodeURIComponent(window.btoa(new_file_name));
+
+    
     return request({
-        url: baseUrlPath + "/system/filesystem/local-upload/" + encodeURIComponent(window.btoa(local_file_path) + "/" + encodeURIComponent(window.btoa(new_file_name))),
-        method: "POST",
+        url: `${baseUrlPath}/system/filesystem/local-upload/${encodedFilePath}/${encodedFileName}`,
+        method: "GET",
     });
 }
 

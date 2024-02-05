@@ -673,13 +673,11 @@
                                                 <el-dropdown-item :command="{ downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_export', action: 'downloadData' }">
                                                     Download clustered dataset
                                                 </el-dropdown-item>
-                                                <!--
-                                                    <el-dropdown-item
-                                                        :command="{ downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_clustered', action: 'sendToWorkspace' }"
-                                                    >
-                                                        Send clustered to workspace
-                                                    </el-dropdown-item>
-                                                -->
+                                                <el-dropdown-item
+                                                    :command="{ downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_clustered', action: 'sendToWorkspace' }"
+                                                >
+                                                    Send clustered to workspace
+                                                </el-dropdown-item>
                                             </el-dropdown-menu>
                                         </el-dropdown>
                                     </el-col>
@@ -977,54 +975,52 @@ export default {
             }
         },
         sendToWorkspace(command) {
-            // Filename without extension
-            let exportedFilename = this.selectedFiles[0].basename.replace(/\.[^/.]+$/, "");
-            exportedFilename = exportedFilename.toLowerCase() + "" + command.filenameAddon;
+            // Extract filename without extension and append filenameAddon.
+            let exportedFilename = `${this.selectedFiles[0].basename.replace(/\.[^/.]+$/, "").toLowerCase()}${command.filenameAddon}`;
 
+            // Prompt user for new filename, defaulting to modified exportedFilename.
             this.$prompt("Please enter new file name", "Datasets name", {
                 confirmButtonText: "OK",
                 cancelButtonText: "Cancel",
-                inputValue: exportedFilename + ".csv",
+                inputValue: `${exportedFilename}.csv`,
             })
-                .then(({ value }) => {
-                    //this.loading = true;
+            .then(({ value }) => {
+                // Fetch original file path.
+                getDatasetTempPath({ objectHash: command.downloadHash })
+                    .then((response) => {
+                        const localFilePath = response.data.message;
 
-                    // 1. get original file name
-                    getDatasetTempPath({ objectHash: command.downloadHash })
-                        .then((response) => {
-                            const local_file_path = response.data.message;
-
-                            console.log(local_file_path);
-                            console.log(value);
-
-                            // 2. create new file
-                            uploadTempToWorkspace(local_file_path, value)
-                                .then((response) => {
-                                    this.$message({
-                                        message: "Generated data-set sent to Workspace!",
-                                        type: "success",
-                                    });
-                                })
-                                .catch((error) => {
-                                    this.$message({
-                                        message: this.$t("globals.errors.request_general"),
-                                        type: "error",
-                                    });
+                        this.loadingPlot = true;
+                        // Create new file with the given name.
+                        uploadTempToWorkspace(localFilePath, value)
+                            .then(() => {
+                                this.$message({
+                                    message: "Dataset saved to Workspace",
+                                    type: "success",
                                 });
-                        })
-                        .catch((error) => {
-                            this.$message({
-                                message: this.$t("globals.errors.request_general"),
-                                type: "error",
+                                this.loadingPlot = false;
+                            })
+                            .catch(() => {
+                                this.$message({
+                                    message: this.$t("globals.errors.request_general"),
+                                    type: "error",
+                                });
+                                this.loadingPlot = false;
                             });
+                    })
+                    .catch(() => {
+                        this.$message({
+                            message: this.$t("globals.errors.request_general"),
+                            type: "error",
                         });
-                })
-                .catch(() => {
-                    this.$message({
-                        type: "info",
-                        message: "Dataset export canceled",
                     });
+            })
+            .catch(() => {
+                this.$message({
+                    type: "info",
+                    message: "Dataset export canceled",
                 });
+            });
         },
         fetchRemoteAnalysis() {
             this.loadingPlot = true;
