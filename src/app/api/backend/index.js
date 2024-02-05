@@ -421,3 +421,18 @@ export function openaiApi(submitData) {
         data,
     });
 }
+
+/**
+ * Initiates a system update by sending a GET request to the system update endpoint.
+ * This function calls the backend API to perform operations such as pulling the latest
+ * changes for the project's frontend and backend from their respective git repositories
+ * and rebuilding the frontend if necessary.
+ * 
+ * @returns {Promise} A Promise that resolves to the response of the system update request.
+ */
+export function systemUpdate() {
+    return request({
+        url: baseUrlPath + "/system/update",
+        method: "GET",
+    });
+}

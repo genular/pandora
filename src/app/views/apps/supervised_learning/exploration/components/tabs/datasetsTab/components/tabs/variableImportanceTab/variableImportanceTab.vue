@@ -53,7 +53,7 @@
                         size="small"
                         border
                     >
-                        <el-table-column type="selection" reserve-selection width="35" fixed></el-table-column>
+                        <el-table-column type="selection" reserve-selection></el-table-column>
 
                         <el-table-column fixed label="Model">
                             <template slot-scope="scope">

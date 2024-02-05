@@ -59,7 +59,7 @@
             <el-col :span="24" v-loading="loadingPlot" element-loading-text="Processing..." style="text-align: center;">
                 <!-- SVG Plot placeholder -->
                 <div v-if="renderedImage !== false" style="text-align: center;">
-                    <img id="varImp-svg" class="animated fadeIn" :src="renderedImageDisplay" fit="scale-down">
+                    <img id="var_imp_chart" class="animated fadeIn" :src="renderedImageDisplay" fit="scale-down">
                 </div>
                 <div v-else class="plot-placeholder">
                     <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
@@ -182,10 +182,12 @@ export default {
         color: #333333;
     }
 }
-#varImp-svg {
-    width: 100%;
-    margin: 0 auto; 
-    margin-top: 10px; 
+#var_imp_chart {
+    max-width: 100%;
+    margin: 0 auto;
+    margin-top: 10px;
     display: block;
+    image-rendering: pixelated;
+    float: right;
 }
 </style>

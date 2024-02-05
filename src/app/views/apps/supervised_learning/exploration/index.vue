@@ -74,24 +74,24 @@ export default {
             explorationLoading: true,
             tabMapOptions: [
                 { label: "Datasets", key: "datasetsTab", icon: "el-icon-date", restriction: ["jobDetailsData", "resamplesList"] },
-                {
-                    label: "Correlation",
-                    key: "correlationTab",
-                    icon: "el-icon-date",
-                    restriction: "selectedFeatureSetId",
-                },
-                {
-                    label: "Clustering",
-                    key: "clusteringTab",
-                    icon: "el-icon-date",
-                    restriction: "selectedFeatureSetId",
-                },
-                {
-                    label: "Data distribution",
-                    key: "distributionTab",
-                    icon: "el-icon-date",
-                    restriction: "selectedFeatureSetId",
-                },
+                // {
+                //     label: "Correlation",
+                //     key: "correlationTab",
+                //     icon: "el-icon-date",
+                //     restriction: "selectedFeatureSetId",
+                // },
+                // {
+                //     label: "Clustering",
+                //     key: "clusteringTab",
+                //     icon: "el-icon-date",
+                //     restriction: "selectedFeatureSetId",
+                // },
+                // {
+                //     label: "Data distribution",
+                //     key: "distributionTab",
+                //     icon: "el-icon-date",
+                //     restriction: "selectedFeatureSetId",
+                // },
             ],
 
             jobDetailsData: {

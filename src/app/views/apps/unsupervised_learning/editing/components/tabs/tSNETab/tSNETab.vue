@@ -673,11 +673,13 @@
                                                 <el-dropdown-item :command="{ downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_export', action: 'downloadData' }">
                                                     Download clustered dataset
                                                 </el-dropdown-item>
-                                                <el-dropdown-item
-                                                    :command="{ downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_clustered', action: 'sendToWorkspace' }"
-                                                >
-                                                    Send clustered to workspace
-                                                </el-dropdown-item>
+                                                <!--
+                                                    <el-dropdown-item
+                                                        :command="{ downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_clustered', action: 'sendToWorkspace' }"
+                                                    >
+                                                        Send clustered to workspace
+                                                    </el-dropdown-item>
+                                                -->
                                             </el-dropdown-menu>
                                         </el-dropdown>
                                     </el-col>

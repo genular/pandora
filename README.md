@@ -42,8 +42,21 @@ It can be applied to various use cases, such as identifying infection markers, d
 -   Please **open** your favorite **Terminal** and **run** the **command below**. On Windows - open `Windows Power Shell` => _Click Start, type PowerShell, and then click Windows PowerShel_
 
 ```bash
-docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='true' --env TZ=Europe/London --oom-kill-disable --volume genular_data_latest:/mnt/usrdata --publish 3010:3010 --publish 3011:3011 --publish 3012:3012 --publish 3013:3013 genular/pandora:latest
-
+docker run --rm --detach \
+  --name genular \
+  --tty \
+  --interactive \
+  --env IS_DOCKER='true' \
+  --env TZ=Europe/London \
+  --oom-kill-disable \
+  --volume genular_frontend_latest:/var/www/genular/pandora \
+  --volume genular_backend_latest:/var/www/genular/pandora-backend \
+  --volume genular_data_latest:/mnt/usrdata \
+  --publish 3010:3010 \
+  --publish 3011:3011 \
+  --publish 3012:3012 \
+  --publish 3013:3013 \
+  genular/pandora:latest
 ```
 
 `PANDORA` will be downloaded and started, and it can be accessed via a web browser at [http://localhost:3010](http://localhost:3010)
@@ -52,15 +65,17 @@ docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='tru
 
 #### Reinstalling PANDORA
 
-To reinstall PANDORA, users will need to delete the previously installed PANDORA Docker container and associated data/volumes by stopping the currently running container:
+To ensure a clean reinstallation of PANDORA, follow these steps to remove the existing Docker container, images, and volumes associated with PANDORA. This process will remove all data and settings related to the previous PANDORA installation.
 
 ```bash
-## Stop running instance
+## Stop the Running PANDORA Container
 docker stop genular
-## Remove container and data
-docker system prune -a --volumes
-## In some cases data is not removed, please run
-docker volume prune --all
+
+## Remove the PANDORA Container
+docker rm genular
+
+## Remove PANDORA Volumes
+docker volume rm genular_frontend_latest genular_backend_latest genular_data_latest
 ```
 
 Please make sure to delete `PANDORA` data volume and image before reinstalling otherwise you will maybe still use old `PANDORA` instance when you run it!

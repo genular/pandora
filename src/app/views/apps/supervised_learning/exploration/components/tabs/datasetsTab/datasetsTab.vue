@@ -44,12 +44,8 @@
                         :border="true"
                         style="width: 100%"
                     >
-                        <el-table-column fixed type="expand" style="padding: 0">
-                            <template slot-scope="props">
-                                <span>TODO!</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column type="selection" reserve-selection width="40" fixed></el-table-column>
+ 
+                        <el-table-column type="selection" reserve-selection></el-table-column>
 
                         <el-table-column
                             fixed
@@ -119,7 +115,7 @@
                                 <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">
                                     {{ scope.row.performance[performanceItem] }}
                                 </span>
-                                <span v-else>N/A</span>
+                                <span v-else style="font-weight: bold; color: red;">N/A</span>
                             </template>
                         </el-table-column>
 
@@ -289,7 +285,7 @@
                         :border="true"
                         style="width: 100%"
                     >
-                        <el-table-column type="selection" reserve-selection @selectable="checkModelsSelectionChange" width="40" fixed></el-table-column>
+                        <el-table-column type="selection" reserve-selection @selectable="checkModelsSelectionChange"></el-table-column>
 
                         <el-table-column
                             fixed
@@ -352,7 +348,7 @@
                                 <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">
                                     {{ scope.row.performance[performanceItem] }}
                                 </span>
-                                <span v-else>N/A</span>
+                                <span v-else style="font-weight: bold; color: red;">N/A</span>
                             </template>
                         </el-table-column>
 
@@ -882,36 +878,46 @@ export default {
         },
         // Selects models on user check-box click
         handleModelsSelectionChange(selection) {
-            let filteredSelection = selection;
-            // Only select models if they are visible
-            if (this.displayModels.length > 0) {
-                filteredSelection = selection.filter((model) => model.status > 0);
-                this.selectedModelsIDs = filteredSelection.map((model) => model.modelID);
-                // If they are different in lenght this means we have some models that are Invalid (status 0)
-                if (filteredSelection.length !== selection.length) {
-                    const invalidModels = selection.filter((model) => model.status === 0);
-                    // Lets de-select those models!
-                    invalidModels.forEach((row) => {
-                        this.$refs.modelDetailsTable.toggleRowSelection(row, false);
-                    });
-                }
-            }
+            const isPerformanceValid = (performance) => {
+                // Check every value to ensure it is neither undefined nor 0
+                return Object.values(performance).every(value => value !== undefined && value !== 0);
+            };
+
+            const isValidModel = (model) => {
+                // Check if the model is visible and all performance metrics are defined
+                return model.status > 0 && (model.performance && isPerformanceValid(model.performance));
+            };
+
+            const invalidModelDeselection = (model) => {
+                // A model is considered invalid if its status is 0 or any performance metric is undefined
+                return model.status === 0 || !(model.performance && isPerformanceValid(model.performance));
+            };
+
+            console.log(selection);
+
+            // Filter valid selections based on visibility and performance validity
+            const filteredSelection = selection.filter(isValidModel);
             this.selectedModels = filteredSelection;
+            this.selectedModelsIDs = filteredSelection.map(model => model.modelID);
+
+            // Deselect invalid models
+            selection.filter(invalidModelDeselection).forEach(model => {
+                this.$refs.modelDetailsTable.toggleRowSelection(model, false);
+            });
+
             console.log("handleModelsSelectionChange: ", this.selectedModels);
 
-            // If no models are selected lets activate some other TAB except Variable Importance Tab
+            // Update active tab based on the number of selected models
             if (this.selectedModels.length === 0) {
-                let check = false;
-                this.datasetsTabMapOptions.forEach((tab) => {
-                    if (check == false && !this.isTabDisabled(tab)) {
-                        this.activeDatasetSubTabName = tab.key;
-                        check = true;
-                    }
-                });
+                // Activate the first enabled tab if no models are selected
+                const firstEnabledTab = this.datasetsTabMapOptions.find(tab => !this.isTabDisabled(tab));
+                if (firstEnabledTab) this.activeDatasetSubTabName = firstEnabledTab.key;
             } else if (this.selectedModels.length === 1) {
+                // Activate the Variable Importance tab if one model is selected
                 this.activeDatasetSubTabName = "varImp";
             }
         },
+
         paginateResamplesSizeChange(val) {
             this.paginateResamplesData.page_size = val;
             this.paginateResamples(this.paginateResamplesData.currentPage);

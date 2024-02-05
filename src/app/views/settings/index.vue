@@ -111,7 +111,10 @@
 <script>
 import NProgress from "nprogress"; // progress bar
 import { mapGetters } from "vuex";
-import { userDetials as ApiBackendUserDetails, generateSystemLogFileDownloadLink as ApiGenerateSystemLogFileDownloadLink } from "@/api/backend";
+import { 
+    userDetials as ApiBackendUserDetails, 
+    systemUpdate as ApiSystemUpdate,
+    generateSystemLogFileDownloadLink as ApiGenerateSystemLogFileDownloadLink } from "@/api/backend";
 import { downloadItemsTemplate } from "@/utils/templates.js";
 
 export default {
@@ -241,32 +244,50 @@ export default {
             }
         },
         updateSimonVersion() {
-            this.$message({
-                type: "info",
-                message: "Not available in this version",
-            });
+            this.$confirm(
+                "This can permanently destroy all your PANDORA data and settings. Continue?",
+                "Update minor PANDORA version", {
+                    confirmButtonText: "OK",
+                    cancelButtonText: "Cancel",
+                    type: "warning",
+                }
+            )
+            .then(() => {
+                this.requestLoading = true;
+                ApiSystemUpdate()
+                    .then(response => {
+                        console.log("System update initiated:", response);
 
-            return;
-
-            this.$confirm("This can permanently destroy all your PANDORA data and settings. Continue?", "Update minor PANDORA version", {
-                confirmButtonText: "OK",
-                cancelButtonText: "Cancel",
-                type: "warning",
+                        // Handle the successful update here
+                        setTimeout(() => { // Introduce a delay before setting requestLoading to false
+                            this.$message({
+                                type: response.data.success === true ? "success" : "error",
+                                message: response.data.message,
+                            });
+                            this.requestLoading = false;
+                        }, 30000);
+                    })
+                    .catch(error => {
+                        // Handle any errors that occur during the update process
+                        console.error("System update failed:", error);
+                        this.$message({
+                            type: "error",
+                            message: "System update failed.",
+                        });
+                        setTimeout(() => { // Use setTimeout to delay setting requestLoading to false even in case of error
+                            this.requestLoading = false;
+                        }, 30000); // Delay for 30 seconds before setting requestLoading to false
+                    });
             })
-                .then(() => {
-                    this.$message({
-                        type: "info",
-                        message: "Update canceled",
-                    });
-                })
-                .catch(() => {
-                    this.$message({
-                        type: "info",
-                        message: "Update canceled",
-                    });
+            .catch(() => {
+                // This block is executed if the user cancels the update
+                this.$message({
+                    type: "info",
+                    message: "Update canceled",
                 });
-        },
-    },
+            });
+        }
+    }
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">

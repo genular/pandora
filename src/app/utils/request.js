@@ -95,7 +95,7 @@ service.interceptors.response.use(
             }
             // The request was made but no response was received
         } else if (error.request) {
-            errorMessage = "Request failed, cannot communicate with backend server. Please try again latter.";
+            errorMessage = "Request failed, cannot communicate with backend server. Make sure Docker container is running.";
         } else {
             // Something happened in setting up the request that triggered an Error
             errorMessage = "Request failed, cannot set up request. Please try again latter.";

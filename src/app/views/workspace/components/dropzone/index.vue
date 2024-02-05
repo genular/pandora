@@ -157,8 +157,10 @@ export default {
                 this.dropzone.removeFile(file);
             }
         });
-        this.dropzone.on("addedfile", item => {
 
+
+        this.dropzone.on("addedfile", item => {
+            
             if(item.item_type === 1){
                 this.dropzone.emit("thumbnail", item, "/static/icons/file_type.png");
             }else if(item.item_type === 3){
@@ -174,7 +176,14 @@ export default {
             item.previewElement.addEventListener("contextmenu", e => {
                 vm.$emit("actionListener", { action: "contextmenu", file: item, event: e });
             });
+
+            document.querySelectorAll('.dz-size').forEach(el => {
+                if (el.textContent.trim() === "0 b") {
+                    el.style.display = 'none';
+                }
+            });
         });
+
         this.dropzone.on("removedfile", file => {
             if (this.isDestroyEvent === false) {
                 console.log("Event: removedfile");
@@ -190,12 +199,16 @@ export default {
                 }
             }
         });
+
+
         this.dropzone.on("error", (file, error, xhr) => {
             vm.$emit("dropzone-error", file, error, xhr);
         });
+
         this.dropzone.on("successmultiple", (file, error, xhr) => {
             vm.$emit("dropzone-successmultiple", file, error, xhr);
         });
+
         this.dropzone.on("sending", (file, error, xhr) => {
             /*Called just before each file is sent*/
             xhr.ontimeout = (() => {
