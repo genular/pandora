@@ -1,1 +1,0 @@
-http ALL=(login) NOPASSWD: /usr/bin/git, /usr/local/bin/composer, /usr/bin/yarn
