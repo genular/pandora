@@ -689,13 +689,13 @@ export default {
             this.selectedFilesHash = "";
             this.selectedFeatures = [];
             this.excludeFeatures = [];
-            this.selectedPartitionSplit = 75;
+            this.selectedPartitionSplit = 85;
             this.modelProcessingTimeLimit = 5;
             this.selectedOutcome = [];
             this.selectedClasses = [];
             this.selectedFormula = [];
             this.timeSeriesDate = [];
-            this.selectedPreProcess = ["center", "scale"];
+            this.selectedPreProcess = ["center", "scale", "medianImpute"];
             this.regressionFormula = "";
             this.classificationFormula = [];
             this.avaliableFeaturesDisplay = [];

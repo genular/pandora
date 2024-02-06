@@ -43,14 +43,15 @@
         <div class="dropzone-context-menu">
             <ul class="menu-options">
                 <li class="menu-option" @click="contextAction('select')">{{ $t("views.workspace.index.context_menu.select") }}</li>
-                <li class="menu-option" @click="contextAction('download')">{{ $t("views.workspace.index.context_menu.download") }}</li>
+                <!-- <li class="menu-option"
+                    @click="contextAction('download')">{{ $t("views.workspace.index.context_menu.download") }}</li> -->
                 <li class="menu-option" @click="contextAction('delete')">{{ $t("views.workspace.index.context_menu.delete") }}</li>
-                <li class="menu-option" @click="contextAction('preview')">{{ $t("views.workspace.index.context_menu.preview") }}</li>
+                <li class="menu-option" v-if="contextmenu.selectedFile && contextmenu.selectedFile.extension === 'csv'" @click="contextAction('preview')">{{ $t("views.workspace.index.context_menu.preview") }}</li>
             </ul>
         </div>
-        <el-dialog title="Preview of first 100 rows and 50 columns" :visible.sync="previewFileDataDialog" width="50%">
+        <el-dialog :title="'Preview of the First ' + currentPreviewRows + ' Rows and 50 Columns, with the Last Column as Sum'" :visible.sync="previewFileDataDialog" width="50%">
             <div class="dataset_preview_container">
-                <el-table height="500" show-summary :data="previewFileData" size="mini" v-if="previewFileData.length > 0">
+                <el-table height="500" border :summary-method="getPreviewSummaries" show-summary :data="previewFileData" size="mini" v-if="previewFileData.length > 0">
                     <el-table-column v-for="(colItem, colIndex) in Object.keys(previewFileData[0])" :prop="colItem" :key="colItem + '_' + colIndex" :label="colItem">
                     </el-table-column>
                 </el-table>
@@ -82,6 +83,7 @@ export default {
 
             previewFileData: [],
             currentPreviewPage: 1,
+            currentPreviewRows: 100,
             previewFileDataDialog: false,
 
             fetchSettings: {
@@ -216,11 +218,30 @@ export default {
             this.contextmenu.element.style.top = `${top}px`;
             this.toggleMenu("show");
         },
+        getPreviewSummaries(param) {
+            const { columns, data } = param;
+            const sums = [];
+            columns.forEach((column, index) => {
+
+                // Convert column values to numbers, filtering out non-numeric values
+                const values = data.map(item => parseFloat(item[column.property])).filter(value => !isNaN(value));
+
+                if (values.length > 0) {
+                    // Calculate sum and round to 3 decimal places
+                    const sum = values.reduce((prev, curr) => prev + curr, 0);
+                    sums[index] = parseFloat(sum.toFixed(3)); // Ensure the result is a number
+                } else {
+                    sums[index] = 'N/A'; // Use 'N/A' if there are no numeric values to sum
+                }
+            });
+            return sums;
+        },
+
         loadPreview(page = 1) {
             this.loading = true;
             this.currentPreviewPage = page;
 
-            ApiFilePreview({ selectedFile: this.contextmenu.selectedFile, page: this.currentPreviewPage })
+            ApiFilePreview({ selectedFile: this.contextmenu.selectedFile, page: this.currentPreviewPage, rows: this.currentPreviewRows })
                 .then(response => {
                     if (response.data.success) {
                         if (page === 1) {
@@ -275,6 +296,8 @@ export default {
             }
             if (item.action === "contextmenu") {
                 item.event.preventDefault();
+
+
                 this.contextmenu.selectedFile = item.file;
 
                 this.setPosition({

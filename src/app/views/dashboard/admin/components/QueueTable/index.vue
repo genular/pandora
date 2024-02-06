@@ -837,9 +837,16 @@ export default {
                                             type: "success",
                                             message: this.$t("globals.messages.success"),
                                         });
-                                        console.log(response);
                                         this.queueListLoading = false;
-                                        this.getDatasetQueueList();
+                                        
+                                        this.$nextTick(() => {
+                                            // Force update of the table
+                                            this.queueListHash = "";
+                                            this.getDatasetQueueList();
+                                            this.$refs.queueTable.doLayout()
+                                        });
+                                       
+                                        console.log(response);
                                     })
                                     .catch((error) => {
                                         this.queueListLoading = false;
@@ -930,12 +937,13 @@ export default {
                     const queueData = response.data.message;
                     const queueListHash = md5String(JSON.stringify(queueData));
                     // Update elements only if needed to avoid DOM rendering
-                    if (this.queueListHash !== queueListHash && response.data.success === true) {
+                    if (this.queueListHash !== queueListHash) {
                         this.queueListHash = queueListHash;
 
                         this.queueList = queueData.queueList;
                         this.queueTotalItems = queueData.queueTotalItems;
                     }
+                    
                     if (this.queueListLoading === true) {
                         this.queueListLoading = false;
                     }
