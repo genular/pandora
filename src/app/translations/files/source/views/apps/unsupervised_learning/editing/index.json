@@ -6,10 +6,9 @@
 					"index": {
 						"button": {
 							"download_r_data": {
-								"title": "Download Rdata object",
-								"description": "Here you can download R data object with all data that was used to make to analysis.<br />R object can be loaded in R/RStudio using: load('/path/to/the/file') command.<br />This can be useful if you wish to change the analysis, modify plot colors etc."
+								"title": "Download Rdata",
+								"description": "Here you can download R data object with all data that was used to make to analysis. R object can be loaded in R/RStudio using: load('/path/to/the/file') command.This can be useful if you wish to change the analysis, modify plot colors etc."
 							},
-
 							"download_svg_plot": {
 								"title": "Download (.svg)"
 							}

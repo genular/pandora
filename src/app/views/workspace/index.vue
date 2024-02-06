@@ -46,16 +46,23 @@
                 <li class="menu-option" @click="contextAction('download')">{{ $t("views.workspace.index.context_menu.download") }}</li>
                 <li class="menu-option" @click="contextAction('delete')">{{ $t("views.workspace.index.context_menu.delete") }}</li>
                 <li class="menu-option" @click="contextAction('preview')">{{ $t("views.workspace.index.context_menu.preview") }}</li>
-                <li class="menu-option" @click="contextAction('stats')">{{ $t("views.workspace.index.context_menu.stats") }}</li>
             </ul>
         </div>
+        <el-dialog title="Preview of first 100 rows and 50 columns" :visible.sync="previewFileDataDialog" width="50%">
+            <div class="dataset_preview_container">
+                <el-table height="500" show-summary :data="previewFileData" size="mini" v-if="previewFileData.length > 0">
+                    <el-table-column v-for="(colItem, colIndex) in Object.keys(previewFileData[0])" :prop="colItem" :key="colItem + '_' + colIndex" :label="colItem">
+                    </el-table-column>
+                </el-table>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
 import { Dropzone, publicImport } from "./components";
 import { mapGetters } from "vuex";
 
-import { readFilesInUserDirectory as ApiReadFilesInUserDirectory, deleteFile as ApiDeleteFile, createDirectory as ApiCreateDirectory } from "@/api/backend";
+import { readFilesInUserDirectory as ApiReadFilesInUserDirectory, deleteFile as ApiDeleteFile, createDirectory as ApiCreateDirectory, filePreview as ApiFilePreview } from "@/api/backend";
 import { md5String } from "@/utils";
 
 export default {
@@ -73,9 +80,13 @@ export default {
             totalFiles: 0,
             directoryFilesHash: "",
 
+            previewFileData: [],
+            currentPreviewPage: 1,
+            previewFileDataDialog: false,
+
             fetchSettings: {
                 args: {
-                    sort_by: "display_filename",
+                    sort_by: "created",
                     sort: true,
                 },
                 options: {
@@ -165,15 +176,15 @@ export default {
                     let extension = "";
                     let size = "";
 
-                    if(parseInt(file.item_type) === 1){
+                    if (parseInt(file.item_type) === 1) {
                         name = file.display_filename + file.extension;
                         extension = file.extension.replace(".", "");
                         size = file.size || 0;
-                    }else if(parseInt(file.item_type) === 3){
+                    } else if (parseInt(file.item_type) === 3) {
                         name = file.display_filename;
                         extension = "";
                         size = file.size || 0;
-                    }else{
+                    } else {
                         name = file.display_filename;
                         extension = "";
                         size = null;
@@ -205,10 +216,47 @@ export default {
             this.contextmenu.element.style.top = `${top}px`;
             this.toggleMenu("show");
         },
+        loadPreview(page = 1) {
+            this.loading = true;
+            this.currentPreviewPage = page;
+
+            ApiFilePreview({ selectedFile: this.contextmenu.selectedFile, page: this.currentPreviewPage })
+                .then(response => {
+                    if (response.data.success) {
+                        if (page === 1) {
+                            this.previewFileData = response.data.message;
+                        } else {
+                            this.previewFileData = [...this.previewFileData, ...response.data.message];
+                        }
+                        this.previewFileDataDialog = true;
+                    } else {
+                        this.$message({
+                            type: "info",
+                            message: this.$t("globals.messages.not_implemented"),
+                        });
+                        this.previewFileDataDialog = false;
+                    }
+                    this.loading = false;
+                })
+                .catch(error => {
+                    console.error(error);
+                    this.loading = false;
+                    this.previewFileDataDialog = false;
+                });
+        },
         contextAction(action) {
             console.log(action);
             if (action === "select") {
                 this.dropzoneFileClick({ file: this.contextmenu.selectedFile });
+            } else if (action === "preview") {
+                this.loadPreview(this.currentPreviewPage);
+            } else if (action === "download") {
+                this.$message({
+                    type: "info",
+                    message: this.$t("globals.messages.not_implemented"),
+                });
+            } else if (action === "delete") {
+                this.dropzoneRemoved(this.contextmenu.selectedFile);
             } else {
                 this.$message({
                     type: "info",
@@ -235,8 +283,6 @@ export default {
                 });
                 return false;
             }
-
-            
 
             const selectedFile = {
                 id: parseInt(item.file.fileId),
@@ -314,9 +360,9 @@ export default {
                         } else {
                             this.$message({ message: this.$t("globals.errors.request_general"), type: "warning" });
                         }
-
-                        this.refreshFilesInDirectory();
                     }
+
+                    this.refreshFilesInDirectory();
                     this.loading = false;
                 })
                 .catch((error) => {
@@ -436,6 +482,11 @@ export default {
 
 .files-container {
     margin-top: 10px;
+}
+
+.dataset_preview_container {
+    max-height: 500px;
+    overflow: auto;
 }
 
 </style>

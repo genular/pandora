@@ -3,11 +3,10 @@
 		"workspace": {
 			"index": {
 				"context_menu": {
-					"select": "select",
-					"download": "download",
-					"delete": "delete",
-					"preview": "preview",
-					"stats": "stats"
+					"select": "Select",
+					"download": "Download",
+					"delete": "Delete",
+					"preview": "Preview"
 				},
 				"buttons": {
 					"delete_all": "Delete all",

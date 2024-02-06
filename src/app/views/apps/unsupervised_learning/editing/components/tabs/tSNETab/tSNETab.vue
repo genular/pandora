@@ -208,7 +208,7 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="Clustering alghoritam:">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_algorithm.title')">
                             <br />
                             <el-select
                                 style="float: left; width: 100%"
@@ -232,7 +232,7 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="Clustering method" v-if="['Hierarchical'].includes(settingsForm.clusterType)">
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.label')" v-if="['Hierarchical'].includes(settingsForm.clusterType)">
                             <el-select
                                 style="float: right"
                                 v-model="settingsForm.clustLinkage"

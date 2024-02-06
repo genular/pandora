@@ -205,6 +205,14 @@ export function readFilesInUserDirectory(submitData) {
     });
 }
 
+export function filePreview(submitData) {
+    return request({
+        url: baseUrlPath + "/system/filesystem/preview-file/" + encodeURIComponent(window.btoa(JSON.stringify(submitData))),
+        method: "GET",
+    });
+}
+
+
 /**
  * Creates new directory in users upload directory
  * @param  {object} submitData Object containing one string variable: selectedDirectory that corresponds to upload_directory column in users_files table

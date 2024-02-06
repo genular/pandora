@@ -29,6 +29,35 @@
 									"perplexity": {
 										"title": "Perplexity",
 										"description": "The performance of SNE is fairly robust to changes in the perplexity, and typical values are between 5 and 50."
+									},
+									"clust_algorithm": {
+										"title": "Clustering algorithm"
+									},
+									"clust_method": {
+										"label": "Clustering method",
+										"placeholder": "Select",
+										"options": {
+											"single": "Single",
+											"complete": "Complete",
+											"average": "Average",
+											"mcquitty": "mcquitty",
+											"median": "Median",
+											"centroid": "Centroid",
+											"ward.D2": "Ward.D2",
+											"ward.D": "Ward.D"
+										}
+									},
+									"tree_ordering": {
+										"label": "Tree ordering",
+										"placeholder": "Select",
+										"options": {
+											"1": "Tightest cluster first",
+											"2": "Higher median value first",
+											"3": "Higher mean value first",
+											"4": "Lower median value first",
+											"5": "Original",
+											"6": "Reverse original"
+										}
 									}
 								},
 								"buttons": {
