@@ -369,7 +369,7 @@
                                     </el-col>
 
                                     <el-col
-                                        :span="typeof plotData.test !== 'undefined' && typeof plotData.test.png !== 'undefined' ? 12 : 24"
+                                        :span="typeof plotData.train !== 'undefined' && typeof plotData.train.png !== 'undefined' ? 12 : 24"
                                         v-if="plotData.train"
                                         class="umap_training"
                                     >
