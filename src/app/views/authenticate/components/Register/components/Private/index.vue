@@ -100,7 +100,7 @@
                                     <!-- Info Text and Link for Registration Code Request -->
                                     <div style="margin-top: 10px;">
                                         <span>Don't have a registration code? </span>
-                                        <el-link href="https://genular.atomic-lab.org/contact" target="_blank" type="primary">Request one here</el-link>
+                                        <el-link href="https://genular.atomic-lab.org/contact?bl=pandora" target="_blank" type="primary">Request one here</el-link>
                                     </div>
                                 </el-form-item>
                             </div>
@@ -351,13 +351,15 @@ export default {
             } else if (validationField === "org_invite_code") {
                 const isMD5 = /^[a-f0-9]{32}$/i.test(validationValue);
 
-                if (!isMD5) {
-                    // If not MD5, show error
-                    if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
-                        this.validation[formName][validationField] = "el-input__icon el-icon-error";
-                        this[formName].validated -= 1;
+                if(validationValue !== "aTomicLab"){
+                    if (!isMD5) {
+                        // If not MD5, show error
+                        if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
+                            this.validation[formName][validationField] = "el-input__icon el-icon-error";
+                            this[formName].validated -= 1;
+                        }
+                        return;
                     }
-                    return;
                 }
             }
 
