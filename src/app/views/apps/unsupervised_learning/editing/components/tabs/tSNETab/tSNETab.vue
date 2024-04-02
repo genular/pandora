@@ -265,6 +265,8 @@
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
                                     Determines the quantile used for setting the eps parameter in DBSCAN, controlling the density threshold for clustering; a higher value increases the neighborhood size.
+                                    Lower the quantile used to calculate eps from 0.95 to a smaller value, making the criterion for neighborhood density stricter. This increases the likelihood of points being considered outliers. 
+                                    Experiment with values to find a balance suitable for your dataset's characteristics.
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
@@ -274,7 +276,7 @@
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.excludeOutliers"></el-switch>
                             <el-tooltip placement="top">
                                 <div slot="content">
-                                    Enables the exclusion of outlier data points based on DBSCAN results before performing hierarchical or Mclust clustering, focusing analysis on core groups.
+                                    Decide whether to include or exclude outliers in the clustering analysis.
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
