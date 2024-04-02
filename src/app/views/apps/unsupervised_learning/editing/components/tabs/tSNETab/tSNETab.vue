@@ -35,6 +35,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
+                                collapse-tags
                                 :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -92,6 +93,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
+                                collapse-tags
                                 :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -133,6 +135,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
+                                collapse-tags
                                 :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -180,6 +183,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
+                                collapse-tags
                                 :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -846,7 +850,7 @@ export default {
                 preProcessDataset: [],
 
                 fontSize: 12,
-                pointSize: 1.5,
+                pointSize: 8,
                 theme: "theme_bw",
                 colorPalette: "Set1",
                 aspect_ratio: 1,
@@ -858,11 +862,11 @@ export default {
 
                 cutOffColumnSize: 50000,
                 removeNA: true,
-                perplexity: 5,
+                perplexity: 30,
                 knn_clusters: 25,
                 clustLinkage: "ward.D2",
 
-                clustGroups: 9,
+                clustGroups: 3,
                 reachabilityDistance: 2,
                 legendPosition: "right",
 

@@ -34,6 +34,7 @@
                             reserve-keyword
                             value-key="remapped"
                             clearable
+                            collapse-tags
                             :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.columns.placeholder')"
                             :remote-method="
                                 (userInput) => {

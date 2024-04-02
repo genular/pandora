@@ -34,6 +34,7 @@
                             reserve-keyword
                             value-key="remapped"
                             clearable
+                            collapse-tags
                             :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
                             :remote-method="
                                 (userInput) => {
@@ -79,6 +80,7 @@
                             reserve-keyword
                             value-key="remapped"
                             clearable
+                            collapse-tags
                             :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.rows.placeholder')"
                             :remote-method="
                                 (userInput) => {
