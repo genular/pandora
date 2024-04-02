@@ -260,6 +260,27 @@
                             </el-tooltip>
                         </el-form-item>
 
+                        <el-form-item label="epsQuantile" v-if="['Hierarchical', 'Mclust'].includes(settingsForm.clusterType)">
+                            <el-input-number style="float: right" v-model="settingsForm.epsQuantile" :step="0.1" :min="0" :max="1"></el-input-number>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    Determines the quantile used for setting the eps parameter in DBSCAN, controlling the density threshold for clustering; a higher value increases the neighborhood size.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item label="Exclude outliers" v-if="['Hierarchical', 'Mclust'].includes(settingsForm.clusterType)">
+                            <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.excludeOutliers"></el-switch>
+                            <el-tooltip placement="top">
+                                <div slot="content">
+                                    Enables the exclusion of outlier data points based on DBSCAN results before performing hierarchical or Mclust clustering, focusing analysis on core groups.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+
                         <el-form-item label="Cluster groups" v-if="['Hierarchical', 'Mclust'].includes(settingsForm.clusterType)">
                             <el-input-number style="float: right" v-model="settingsForm.clustGroups" :step="1" :min="2" :max="128"></el-input-number>
                         </el-form-item>
@@ -796,6 +817,10 @@ export default {
                     { id: "ward.D2" },
                     { id: "ward.D" },
                 ],
+
+                epsQuantile: 0.9,
+                excludeOutliers: true,
+
                 clustOrdering: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }],
 
                 datasetAnalysisType: [
@@ -826,6 +851,9 @@ export default {
                 plot_size: 12,
 
                 clusterType: "Louvain",
+                epsQuantile: 0.9,
+                excludeOutliers: true,
+
                 cutOffColumnSize: 50000,
                 removeNA: true,
                 perplexity: 5,

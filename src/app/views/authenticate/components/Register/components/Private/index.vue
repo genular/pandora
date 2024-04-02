@@ -87,8 +87,21 @@
                                         @input.native="checkFieldAvailability('users_details', 'phoneNumber', $event, 'userForm')"
                                     ></el-input>
                                 </el-form-item>
-                                <el-form-item label="Registration code" style="width: 49%; float: left; margin-left: 2%">
-                                    <el-input name="org_invite_code" v-model="userForm.org_invite_code" type="text"></el-input>
+                                <el-form-item label="Registration code*" style="width: 49%; float: left; margin-left: 2%">
+                                    <el-input
+                                        name="org_invite_code"
+                                        v-model="userForm.org_invite_code"
+                                        type="text"
+                                        placeholder=""
+                                        @input.native="checkFieldAvailability('users_details', 'org_invite_code', $event, 'userForm')"
+                                    >
+                                        <i slot="suffix" :class="validation['userForm'].org_invite_code"></i>
+                                    </el-input>
+                                    <!-- Info Text and Link for Registration Code Request -->
+                                    <div style="margin-top: 10px;">
+                                        <span>Don't have a registration code? </span>
+                                        <el-link href="https://genular.atomic-lab.org/contact" target="_blank" type="primary">Request one here</el-link>
+                                    </div>
                                 </el-form-item>
                             </div>
                             <div style="width: 100%; float: left; text-align: right">
@@ -112,8 +125,7 @@
 
                 <el-row style="margin-top: 25px">
                     <el-button-group style="float: right">
-                        <el-button type="primary" v-if="$config.name === 'development'" @click="fillDemoData(1)">DEMO</el-button>
-                        <el-button type="primary" :loading="loading.account" @click="registerAccount" :disabled="userForm.validated !== 5">
+                        <el-button type="primary" :loading="loading.account" @click="registerAccount" :disabled="userForm.validated !== 6">
                             Create account
                             <i class="el-icon-arrow-right el-icon-right"></i>
                         </el-button>
@@ -122,7 +134,7 @@
             </div>
 
             <div v-if="currentStep == 1" class="form-step step-1">
-                <h2 class="steps-container-title">Welcome to genular {{ userForm.firstName }}!</h2>
+                <h2 class="steps-container-title">Welcome to PANDORA {{ userForm.firstName }}!</h2>
                 <el-row>
                     <el-col :span="24">
                         <p class="welcome_text">
@@ -176,6 +188,7 @@ export default {
                     firstName: "el-input__icon el-icon-error",
                     lastName: "el-input__icon el-icon-error",
                     phoneNumber: "el-input__icon el-icon-error",
+                    org_invite_code: "el-input__icon el-icon-error",
                 },
             },
             // Loading progress
@@ -192,7 +205,7 @@ export default {
                 lastName: "",
                 phoneNumber: "",
                 install_statistics: true,
-                org_invite_code: Math.random().toString(36).substring(7).toUpperCase(),
+                org_invite_code: "",
                 validated: 0,
                 packageVersion: this.packageVersion,
                 packageEnviroment: this.packageEnviroment,
@@ -215,25 +228,10 @@ export default {
         console.log("mounted: register - Private");
     },
     methods: {
-        fillDemoData(dataStep) {
-            this.userForm.username = "demouser";
-            this.userForm.firstName = "John";
-            this.userForm.lastName = "Doe";
-            this.userForm.phoneNumber = "+358502818692";
-            this.userForm.password = "demouser";
-            // Should be 5 to pass, but we don't want to validate email automatically
-            this.userForm.validated = 4;
-            this.userForm.org_invite_code = Math.random().toString(36).substring(7);
-            for (const name in this.validation["userForm"]) {
-                if (name !== "email" && this.validation["userForm"].hasOwnProperty(name)) {
-                    this.validation["userForm"][name] = "el-input__icon el-icon-success";
-                }
-            }
-        },
         navigateToStep(step) {
             console.log("navigateToStep :" + step);
             if (step > 0) {
-                if (this.userForm.validated === 5) {
+                if (this.userForm.validated === 6) {
                     this.currentStep = step;
                     this.$router.push({
                         path: "/authenticate/?action=register&usertype=private&step=" + step,
@@ -331,7 +329,6 @@ export default {
                     return;
                 }
             } else if (validationField === "password") {
-                console.log("Validate pass:" + validatePassword(validationValue));
                 if (validatePassword(validationValue) === false) {
                     if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
                         this.validation[formName][validationField] = "el-input__icon el-icon-error";
@@ -350,6 +347,18 @@ export default {
                     this[formName].validated += 1;
                 }
                 return;
+
+            } else if (validationField === "org_invite_code") {
+                const isMD5 = /^[a-f0-9]{32}$/i.test(validationValue);
+
+                if (!isMD5) {
+                    // If not MD5, show error
+                    if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
+                        this.validation[formName][validationField] = "el-input__icon el-icon-error";
+                        this[formName].validated -= 1;
+                    }
+                    return;
+                }
             }
 
             checkDatabaseAvailability(validationTable, validationField, validationValue)
