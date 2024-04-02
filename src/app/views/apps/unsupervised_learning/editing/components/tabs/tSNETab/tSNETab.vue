@@ -852,7 +852,7 @@ export default {
                 fontSize: 12,
                 pointSize: 8,
                 theme: "theme_bw",
-                colorPalette: "Set1",
+                colorPalette: "Dark2",
                 aspect_ratio: 1,
                 plot_size: 12,
 
