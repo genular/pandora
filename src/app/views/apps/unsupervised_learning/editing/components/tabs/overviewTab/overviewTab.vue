@@ -37,6 +37,7 @@
                                 reserve-keyword
                                 value-key="remapped"
                                 clearable
+                                collapse-tags
                                 :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.placeholder')"
                                 :remote-method="
                                     (userInput) => {
@@ -446,22 +447,36 @@ export default {
                 .then((response) => {
                     let respData = response.data.message;
                     // Update the image data.
+                    let lastValid = false;
+
                     for (let respIndex in respData) {
                         if (typeof this.plot_data[respIndex] !== "undefined") {
                             this.plot_data[respIndex] = false;
                             let respItem = respData[respIndex];
-                            if (respItem.length < 15 || typeof respItem == "undefined") {
-                                this.plot_data[respIndex] = false;
-                                this.$message({
-                                    message: this.$t("views.apps.unsupervised_learning.editing.index.errors.plot_response.title"),
-                                    type: "error",
-                                });
+
+                            if (respItem.length < 15 || typeof respItem == "undefined" || (typeof respItem === "object" && Object.keys(respItem).length === 0 && respItem.constructor === Object)) {
+
+                                if (!respIndex.endsWith("_png")) {
+                                    this.$message({
+                                        message: this.$t("views.apps.unsupervised_learning.editing.index.errors.plot_response.title"),
+                                        type: "error",
+                                    });
+                                }
                             } else {
                                 this.plot_data[respIndex] = encodeURIComponent(respItem);
+
+                                if(!respIndex.endsWith("_png") && respIndex !== "saveObjectHash" && lastValid === false){
+                                    lastValid = respIndex;
+                                }
                             }
                         }
                     }
                     this.loadingPlot = false;
+                    
+                    this.$nextTick(() => {
+                        console.log("Setting active tab: " + lastValid);
+                        this.activeTab = lastValid;
+                    });
                 })
                 .catch((error) => {
                     this.$message({

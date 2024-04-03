@@ -513,7 +513,9 @@
                                                 <i class="el-icon-arrow-down el-icon--right"></i>
                                             </el-button>
                                             <el-dropdown-menu slot="dropdown">
-                                                <el-dropdown-item :command="{ downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_clustered', action: 'sendToSimon' }" style="font-size: 18px; padding: 15px;">
+                                                <el-dropdown-item :command="{ downloadHash: plot_data.saveDatasetHash, 
+                                                filenameAddon: '_tsne_' + settingsForm.clusterType, 
+                                                action: 'sendToSimon' }" style="font-size: 18px; padding: 15px;">
                                                     Start ML analysis
                                                 </el-dropdown-item>
                                                 <el-dropdown-item :command="{ downloadHash: plot_data.saveDatasetHash, filenameAddon: '_tsne_export', action: 'downloadData' }" style="font-size: 18px; padding: 15px;">
@@ -545,6 +547,55 @@
                 </el-tabs>
             </el-col>
         </el-row>
+        <el-dialog title="Select columns for machine learning" :visible.sync="machineLearningDialogVisible" width="30%">
+            <el-form ref="machineLearningSettingsForm" :model="machineLearningSettingsForm">
+                <el-form-item  label="Include Columns (selecting none will include all except excluded ones)">
+                    <el-select style="float: left; width: 100%" v-model="machineLearningSettingsForm.selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
+                    (userInput) => {
+                        querySearch(userInput);
+                    }
+                ">
+                        <el-option v-for="item in selectedMLFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                            <el-row>
+                                <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                    {{ item.original }}
+                                </el-col>
+                                <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
+                                    {{ item.valid_10p === 1 ? "*" : "" }}
+                                    {{ item.unique_count }}
+                                    {{ item.na_percentage > 0 ? "NA" : "" }}
+                                </el-col>
+                            </el-row>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="Exclude columns">
+                    <el-select style="float: left; width: 100%" v-model="machineLearningSettingsForm.excludedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
+                        (userInput) => {
+                            querySearch(userInput);
+                        }
+                    ">
+                        <el-option v-for="item in selectedMLFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                            <el-row>
+                                <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                    {{ item.original }}
+                                </el-col>
+                                <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
+                                    {{ item.valid_10p === 1 ? "*" : "" }}
+                                    {{ item.unique_count }}
+                                    {{ item.na_percentage > 0 ? "NA" : "" }}
+                                </el-col>
+                            </el-row>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            ML Prediction outcome is 'pandora_clusters' column.
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="machineLearningDialogVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="startSIMONAnalysis">Confirm</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -570,6 +621,15 @@ export default {
             fuseIndex: null,
             loadingPlot: false,
             activeTab: "tsne_plot",
+            // ML
+            machineLearningSettingsForm: {
+                selectedColumns: [],
+                excludedColumns: [],
+                dataset: null
+            },
+            machineLearningDialogVisible: false,
+            selectedMLFileDetailsDisplay: [],
+            // ML
 
             selectedFileDetailsDisplay: [],
 
@@ -688,7 +748,6 @@ export default {
                 anyNAValues: false,
                 categoricalVariables: false,
             },
-            settingsFormFinal: null,
             plot_data: {
                 tsne_plot: [],
 
@@ -822,15 +881,22 @@ export default {
                 this.sendToWorkspace(command);
             }
         },
-        startSIMONAnalysis(data) {
+        startSIMONAnalysis() {
 
-            let outcome_column = Object.values(data.message.details.header.formatted)
+            let datasetDetails = this.machineLearningSettingsForm.dataset;
+            console.log(this.machineLearningSettingsForm);
+
+            if(datasetDetails === null){
+                this.loadingPlot = false;
+                return;
+            }
+
+            let outcome_column = Object.values(datasetDetails.details.header.formatted)
                 .filter(x => x.original === "pandora_cluster");
 
-            let selectedColumns = this.settingsFormFinal.selectedColumns;
-
+            let selectedColumns = this.machineLearningSettingsForm.selectedColumns.map(x => x.remapped);
             if (selectedColumns.length > 0) {
-                selectedColumns = Object.values(data.message.details.header.formatted)
+                selectedColumns = Object.values(datasetDetails.details.header.formatted)
                     .filter(x => selectedColumns.includes(x.remapped));
             } else {
                 selectedColumns = [{
@@ -841,21 +907,21 @@ export default {
             }
 
 
-            let excludedColumns = this.settingsFormFinal.excludedColumns;
+            let excludedColumns = this.machineLearningSettingsForm.excludedColumns.map(x => x.remapped);
             if (excludedColumns.length > 0) {
-                excludedColumns = Object.values(data.message.details.header.formatted)
+                excludedColumns = Object.values(datasetDetails.details.header.formatted)
                     .filter(x => excludedColumns.includes(x.remapped));
             } else {
                 excludedColumns = [];
             }
 
             const submitData = {
-                "selectedFiles": [data.message.id],
+                "selectedFiles": [datasetDetails.id],
                 "selectedFilesHash": "",
                 "selectedFeatures": selectedColumns,
                 "excludeFeatures": excludedColumns,
                 "selectedOutcome": outcome_column,
-                "selectedPreProcess": this.settingsFormFinal.preProcessDataset,
+                "selectedPreProcess": this.selectedPreProcess,
                 "selectedPartitionSplit": 75,
                 "modelProcessingTimeLimit": 10,
                 "selectedFormula": [],
@@ -864,13 +930,15 @@ export default {
                 "selectedPackages": [7, 27, 34, 37, 49, 64, 73, 77, 84, 91, 102, 127, 148, 155, 173, 199],
                 "extraction": false,
                 "backwardSelection": false,
-                "autoStartAnalasys": true
+                "autoStartAnalysis": true
             };
 
+            this.machineLearningDialogVisible = false;
 
+            this.loadingPlot = true;
             ApiGetSimonPreAnalysisDetails(submitData)
                 .then((response) => {
-                     if (response.data.success === true) {
+                    if (response.data.success === true) {
                         this.$message({
                             message: "Analysis started",
                             type: "success",
@@ -904,22 +972,25 @@ export default {
                         const timestamp = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14); // Format: YYYYMMDDHHMMSS
                         // Create new file with the given name.
                         const newFileName = `${exportedFilename}_${timestamp}.csv`;
-                        
+
                         uploadTempToWorkspace(localFilePath, newFileName)
                             .then((response) => {
+                                this.loadingPlot = false;
                                 if (response.data.success == true) {
                                     this.$message({
                                         message: "Data saved to workspace: " + response.data.message.display_filename,
                                         type: "success",
                                     });
-                                    this.startSIMONAnalysis(response.data);
+
+                                    this.machineLearningSettingsForm.dataset = response.data.message;
+                                    this.selectedMLFileDetailsDisplay =  this.machineLearningSettingsForm.dataset.details.header.formatted;
+                                    this.machineLearningDialogVisible = true;
                                 } else {
                                     this.$message({
                                         message: this.$t("globals.errors.request_general"),
                                         type: "error",
                                     });
                                 }
-                                this.loadingPlot = false;
                             })
                             .catch(() => {
                                 this.$message({
@@ -1061,11 +1132,9 @@ export default {
                 }
             }
 
-            this.settingsFormFinal = settingsForm;
-
             fetchTsnePlot({
                     selectedFileID: this.selectedFiles[0].id,
-                    settings: this.settingsFormFinal,
+                    settings: settingsForm,
                 })
                 .then((response) => {
                     let respData = response.data.message;
