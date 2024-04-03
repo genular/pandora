@@ -18,7 +18,7 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <br />
-                            <el-select style="float: left; width: 100%" v-model="settingsForm.selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
+                            <el-select style="float: left; width: 100%" v-model="selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
                                     }
@@ -170,8 +170,10 @@
                                     Determines the quantile used for setting the eps parameter in DBSCAN, controlling the density threshold for clustering; a higher value increases the neighborhood size.
                                     Lower the quantile used to calculate eps from 0.95 to a smaller value, making the criterion for neighborhood density stricter. This increases the likelihood of points being considered outliers.
                                     Experiment with values to find a balance suitable for your dataset's characteristics.
+                                    
                                     How eps is calculated?
                                     k_dist Calculation: The kNNdist function calculates the distance to the k-th nearest neighbor for each point in the dataset, where k is one less than minPts. This distance indicates how far you need to go from each point to find a certain number of neighbors, providing a sense of the local density around each point.
+                                    
                                     Choosing eps with a Quantile: The eps parameter is then chosen based on a quantile (settings$epsQuantile) of these distances. By taking, for example, the 90th percentile (if epsQuantile is 0.9), you set eps to a value where 90% of points have their minPts-1 nearest neighbors within this distance. This quantile approach allows eps to adapt to the spread and density of your dataset, aiming to capture the majority of dense areas while excluding the most sparse outliers.
                                 </div>
                                 <i class="el-icon-question"></i>
@@ -188,9 +190,6 @@
                         </el-form-item>
                         <el-form-item label="Cluster groups" v-if="['Hierarchical', 'Mclust'].includes(settingsForm.clusterType)">
                             <el-input-number style="float: right" v-model="settingsForm.clustGroups" :step="1" :min="2" :max="128"></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="Reachability distance" v-if="['Density'].includes(settingsForm.clusterType)">
-                            <el-input-number style="float: right" v-model="settingsForm.reachabilityDistance" :step="1" :min="1" :max="512"></el-input-number>
                         </el-form-item>
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
                             <el-tooltip placement="top">
@@ -622,11 +621,6 @@ export default {
             loadingPlot: false,
             activeTab: "tsne_plot",
             // ML
-            machineLearningSettingsForm: {
-                selectedColumns: [],
-                excludedColumns: [],
-                dataset: null
-            },
             machineLearningDialogVisible: false,
             selectedMLFileDetailsDisplay: [],
             // ML
@@ -714,7 +708,6 @@ export default {
             },
 
             settingsForm: {
-                selectedColumns: [],
                 excludedColumns: [],
                 groupingVariables: [],
                 colorVariables: [],
@@ -738,7 +731,6 @@ export default {
                 clustLinkage: "ward.D2",
 
                 clustGroups: 3,
-                reachabilityDistance: 2,
                 legendPosition: "right",
 
                 datasetAnalysisClustLinkage: "ward.D2",
@@ -789,7 +781,7 @@ export default {
             },
         },
         reverseSelectedColumns() {
-            return this.settingsForm.selectedColumns.slice().reverse();
+            return this.selectedColumns.slice().reverse();
         },
         selectedPreProcess: {
             get() {
@@ -799,7 +791,26 @@ export default {
                 this.$store.dispatch("setSimonEditingSelectedPreProcess", value);
             },
         },
+        machineLearningSettingsForm: {
+            get() {
+                return this.$store.getters.pandoraEditingMLSettingsForm;
+            },
+            set(value) {
+                this.$store.dispatch("setPandoraEditingMLSettingsForm", value);
+            },
+        },
+        selectedColumns: {
+            get() {
+                return this.$store.getters.pandoraEditingSelectedColumns;
+            },
+            set(value) {
+                this.$store.dispatch("setPandoraEditingSelectedColumns", value);
+            },
+        },
     },
+
+
+
     mounted() {
         console.log("mounted: " + this.$options.name);
         this.isTabEnabled();
@@ -814,8 +825,6 @@ export default {
             import("@/vendor/Export2Excel").then((excel) => {
                 const tHeader = ["Feature", "Remapped", "Unique values", "Numeric", "Zero variance", "10% Unique", "NA percentage"];
                 const filterVal = ["original", "remapped", "unique_count", "valid_numeric", "valid_zv", "valid_10p", "na_percentage"];
-
-                console.log(tHeader);
 
                 excel.export_json_to_excel(tHeader, this.formatJson(filterVal, exportData), "column_info");
             });
@@ -882,9 +891,7 @@ export default {
             }
         },
         startSIMONAnalysis() {
-
             let datasetDetails = this.machineLearningSettingsForm.dataset;
-            console.log(this.machineLearningSettingsForm);
 
             if(datasetDetails === null){
                 this.loadingPlot = false;
@@ -1060,12 +1067,16 @@ export default {
 
             // Clone objects as an simple object
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
-            console.log(settingsForm);
 
             // If any columns are selected get their names
-            if (settingsForm.selectedColumns.length > 0) {
-                settingsForm.selectedColumns = this.settingsForm.selectedColumns.map((x) => x.remapped);
+            if (this.selectedColumns.length > 0) {
+                const selectedColumns = JSON.parse(JSON.stringify(this.selectedColumns));
+                settingsForm.selectedColumns = selectedColumns.map((x) => x.remapped);
+            }else{
+                settingsForm.selectedColumns = [];
             }
+
+
 
             // Remove any excluded columns from selected columns
             if (settingsForm.excludedColumns !== null && typeof settingsForm.excludedColumns === "object") {
@@ -1076,6 +1087,7 @@ export default {
             if (settingsForm.colorVariables.length > 0) {
                 settingsForm.colorVariables = settingsForm.colorVariables.map((x) => x.remapped);
             }
+
 
             // Remove any grouping variable from selected columns
             if (settingsForm.groupingVariables.length > 0) {
@@ -1099,6 +1111,7 @@ export default {
                 }
             });
 
+            console.log(settingsForm);
             // If the are any NA Values in grouping variables we need to have removeNA option enabled
             if (this.settingsForm.anyNAValues === true) {
                 if (this.settingsForm.removeNA === false) {
@@ -1112,7 +1125,7 @@ export default {
             }
             // If the are any NA Values in selectedColumns we need to have removeNA or preProcessDataset option enabled
             settingsForm.selectedColumns.forEach((x) => {
-                let item = this.settingsForm.selectedColumns.find((o) => o.remapped === x);
+                let item = this.selectedColumns.find((o) => o.remapped === x);
                 if (item && item.na_percentage > 0) {
                     this.settingsForm.anyNAValues = true;
                 }

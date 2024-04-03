@@ -48,7 +48,15 @@ const apps = {
             },
             editing: {
                 activeTabName: estore.get("apps-pandora-editing-activeTabName") || "overviewTab",
+
+                selectedColumns: estore.get("apps-pandora-editing-selectedColumns") || [],
+
                 selectedPreProcess: estore.get("apps-pandora-editing-selectedPreProcess") || ["medianImpute", "center", "scale","corr", "nzv", "zv"],
+                mlSettingsForm:  estore.get("apps-pandora-editing-mlSettingsForm") || {
+                    selectedColumns: [],
+                    excludedColumns: [],
+                    dataset: null
+                },
             },
         },
     },
@@ -62,6 +70,7 @@ const apps = {
             state.pandora.selectedPackages = selectedPackages;
             estore.set("apps-pandora-selectedPackages", selectedPackages);
         },
+
         // exploration
         SET_PANDORA_EXPLORATION_QUEUE_IDS: (state, queueIDs) => {
             state.pandora.exploration.queueIDs = queueIDs;
@@ -87,6 +96,7 @@ const apps = {
             state.pandora.exploration.datasetsTabMapOptions = datasetsTabMapOptions;
             estore.set("apps-pandora-exploration-datasetsTabMapOptions", datasetsTabMapOptions);
         },
+
         // editing
         SET_PANDORA_EDITING_ACTIVE_TAB_NAME: (state, activeTabName) => {
             state.pandora.editing.activeTabName = activeTabName;
@@ -96,6 +106,15 @@ const apps = {
             state.pandora.editing.selectedPreProcess = selectedPreProcess;
             estore.set("apps-pandora-editing-selectedPreProcess", selectedPreProcess);
         },
+        SET_PANDORA_EDITING_ML_SETTINGS_FORM: (state, settingsForm) => {
+            state.pandora.editing.mlSettingsForm = settingsForm;
+            estore.set("apps-pandora-editing-mlSettingsForm", settingsForm);
+        },
+        SET_PANDORA_EDITING_SELECTED_COLUMNS: (state, selectedColumns) => {
+            state.pandora.editing.selectedColumns = selectedColumns;
+            estore.set("apps-pandora-editing-selectedColumns", selectedColumns);
+        },
+
         // analysis
         SET_PANDORA_ANALYSIS_JOB_ID: (state, job_id) => {
             state.pandora.analysis.job_id = job_id;
@@ -360,6 +379,12 @@ const apps = {
         setSimonEditingSelectedPreProcess({ commit }, selectedPreProcess) {
             commit("SET_PANDORA_EDITING_SELECTED_PREPROCESS", selectedPreProcess);
         },
+        setPandoraEditingMLSettingsForm({ commit }, settingsForm) {
+            commit("SET_PANDORA_EDITING_ML_SETTINGS_FORM", settingsForm);
+        },
+        setPandoraEditingSelectedColumns({ commit }, selectedColumns) {
+            commit("SET_PANDORA_EDITING_SELECTED_COLUMNS", selectedColumns);
+        }
     },
 };
 
