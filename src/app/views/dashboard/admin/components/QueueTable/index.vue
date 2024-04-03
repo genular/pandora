@@ -11,10 +11,10 @@
             <el-select @change="handleFilter" style="width: 140px" class="filter-item" v-model="queueFilterQuery.sort">
                 <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"></el-option>
             </el-select>
-            <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">
+            <el-button class="filter-item" size="medium" type="primary" v-waves icon="el-icon-search" @click="handleFilter">
                 {{ $t("views.dashboard.admin.components.QueueTable.filters.buttons.search") }}
             </el-button>
-            <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">
+            <el-button class="filter-item" size="medium" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">
                 {{ $t("views.dashboard.admin.components.QueueTable.filters.buttons.export") }}
             </el-button>
             <el-button
@@ -35,6 +35,7 @@
             row-key="queueID"
             stripe
             :border="true"
+            size="medium"
             fit
             class="queue-list-container-table"
             highlight-current-row
