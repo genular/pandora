@@ -173,7 +173,7 @@
                                     
                                     How eps is calculated?
                                     k_dist Calculation: The kNNdist function calculates the distance to the k-th nearest neighbor for each point in the dataset, where k is one less than minPts. This distance indicates how far you need to go from each point to find a certain number of neighbors, providing a sense of the local density around each point.
-                                    
+
                                     Choosing eps with a Quantile: The eps parameter is then chosen based on a quantile (settings$epsQuantile) of these distances. By taking, for example, the 90th percentile (if epsQuantile is 0.9), you set eps to a value where 90% of points have their minPts-1 nearest neighbors within this distance. This quantile approach allows eps to adapt to the spread and density of your dataset, aiming to capture the majority of dense areas while excluding the most sparse outliers.
                                 </div>
                                 <i class="el-icon-question"></i>
@@ -235,6 +235,17 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
+
+                        <el-form-item label="Grouped display">
+                            <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisGrouped"></el-switch>
+                            <el-tooltip placement="top">
+                                <div slot="content">
+                                   ...
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
                         <el-form-item label="Sort column" v-if="settingsForm.datasetAnalysisType === 'heatmap'">
                             <br />
                             <el-select style="float: left; width: 100%" v-model="settingsForm.datasetAnalysisSortColumn" placeholder="Select">
@@ -405,14 +416,14 @@
                                         <el-tab-pane v-for="(plotDataColor, plotIndexColor) in plotData.colorby" :key="'tab_tsne_grouped_' + plotIndex + '_colorby_' + plotIndexColor" :label="plotDataColor.name" :name="'tab_tsne_grouped_' + plotIndex + '_colorby_' + plotIndexColor">
                                             <el-row>
                                                 <el-col :span="12">
-                                                    <span class="tab_intro_text">Graph of individuals colored by: "{{ plotDataColor.name }}".</span>
+                                                    <span class="tab_intro_text_tsne">Graph of individuals colored by: "{{ plotDataColor.name }}".</span>
                                                 </el-col>
                                                 <el-col :span="12">
-                                                    <span class="tab_intro_text" v-if="plotData.name === 'Main plot'">
+                                                    <span class="tab_intro_text_tsne" v-if="plotData.name === 'Main plot'">
                                                         Barnes-Hut t-Distributed Stochastic Neighbor Embedding. t-SNE is a method for constructing a low dimensional embedding of
                                                         high-dimensional data, distances or similarities.
                                                     </span>
-                                                    <span class="tab_intro_text" v-else>Graph of individuals grouped by: "{{ plotData.name }}".</span>
+                                                    <span class="tab_intro_text_tsne" v-else>Graph of individuals grouped by: "{{ plotData.name }}".</span>
                                                 </el-col>
                                             </el-row>
                                             <el-row>
@@ -449,11 +460,11 @@
                                 <!-- we dont have any color variables -->
                                 <el-row v-else>
                                     <el-col :span="24">
-                                        <span class="tab_intro_text" v-if="plotData.name === 'Main plot'">
+                                        <span class="tab_intro_text_tsne" v-if="plotData.name === 'Main plot'">
                                             Barnes-Hut t-Distributed Stochastic Neighbor Embedding. t-SNE is a method for constructing a low dimensional embedding of
                                             high-dimensional data, distances or similarities.
                                         </span>
-                                        <span class="tab_intro_text" v-else>Graph of individuals grouped by: "{{ plotData.name }}".</span>
+                                        <span class="tab_intro_text_tsne" v-else>Graph of individuals grouped by: "{{ plotData.name }}".</span>
                                     </el-col>
                                     <el-col :span="24" v-if="plotData.png">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
@@ -479,7 +490,13 @@
                             <el-col v-if="plot_data.tsne_cluster_plot_png !== false">
                                 <el-row>
                                     <el-col :span="24">
-                                        <span>Clustered t-SNE plot, on t-SNE dimensions, without grouping and color variables, using: {{ settingsForm.clusterType }}. Cluster "100" is reserved name for outliers if detection is enabled.</span>
+                                        <span class="tab_intro_text_tsne">
+                                            This is a clustered t-SNE plot, visualizing the t-SNE dimensions without the use of grouping or color variables. The clustering method used is: {{ settingsForm.clusterType }}. Note that cluster "100" is specially designated for outliers, should outlier detection be enabled.
+                                            <div v-if="plot_data.avg_silhouette_score" style="font-size: 14px; padding-top: 5px;">
+                                                The average silhouette score for the clustering is: <strong>{{ plot_data.avg_silhouette_score }}</strong>. The value ranges from -1 to +1, where a high value indicates that the object is well matched to its own cluster and poorly matched to neighboring clusters.<br />
+                                                <i>Rousseeuw, P.J. (1987) Silhouettes: A graphical aid to the interpretation and validation of cluster analysis. J. Comput. Appl. Math., 20, 53–65.</i>
+                                            </div>
+                                        </span>
                                     </el-col>
                                     <el-col :span="24">
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
@@ -735,6 +752,7 @@ export default {
 
                 datasetAnalysisClustLinkage: "ward.D2",
                 datasetAnalysisType: "heatmap",
+                datasetAnalysisGrouped: true,
                 datasetAnalysisSortColumn: "pandora_cluster",
                 datasetAnalysisClustOrdering: 1,
                 anyNAValues: false,
@@ -748,6 +766,7 @@ export default {
 
                 tsne_cluster_heatmap_plot: false,
                 tsne_cluster_heatmap_plot_png: false,
+                avg_silhouette_score: false,
 
                 saveObjectHash: false,
                 saveDatasetHash: false,
@@ -1264,6 +1283,7 @@ export default {
 
                 tsne_cluster_heatmap_plot: false,
                 tsne_cluster_heatmap_plot_png: false,
+                avg_silhouette_score: false,
 
                 saveObjectHash: false,
                 saveDatasetHash: false,
@@ -1302,6 +1322,13 @@ export default {
             float: right;
         }
     }
+}
+
+.tab_intro_text_tsne {
+    text-align: left;
+    float: left;
+    font-size: 16px;
+    padding-bottom: 20px;
 }
 
 .analysis_images {
