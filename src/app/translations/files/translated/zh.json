@@ -308,7 +308,7 @@
   "views.apps.supervised_learning.exploration.header.selected_queue": "的队列",
   "views.apps.supervised_learning.exploration.header.selected_dataset": "数据集的ID",
   "views.apps.supervised_learning.exploration.header.selected_models": "所选择的模型(s)",
-  "views.apps.unsupervised_learning.editing.index.button.download_r_data.title": "Download Rdata",
+  "views.apps.unsupervised_learning.editing.index.button.download_r_data.title": "Download",
   "views.apps.unsupervised_learning.editing.index.button.download_r_data.description": "Here you can download R data object with all data that was used to make to analysis. R object can be loaded in R/RStudio using: load('/path/to/the/file') command.This can be useful if you wish to change the analysis, modify plot colors etc.",
   "views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title": "下载（.svg）",
   "views.apps.unsupervised_learning.editing.index.validation.unique_count.title": "唯一值数量",
