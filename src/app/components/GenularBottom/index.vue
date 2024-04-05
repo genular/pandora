@@ -1,21 +1,10 @@
 <template>
     <div class="genular-bottom-buttons">
         <el-button-group>
-            <el-button
-                :title="$t('components.GenularBottom.buttons.star')"
-                @click.prevent.stop="navigateTo('https://github.com/genular/pandora')"
-                type="primary"
-                icon="fa fa-github"
-            ></el-button>
-            <el-button
-                :title="$t('components.GenularBottom.buttons.help')"
-                @click.prevent.stop="navigateTo('https://crowdin.com/project/genular')"
-                type="primary"
-                icon="fa fa-language"
-            ></el-button>
-            <el-button :title="$t('components.GenularBottom.buttons.about')" @click.prevent.stop="navigateTo('about')" type="primary" icon="fa fa-info-circle"></el-button>
+            <el-button :title="$t('components.GenularBottom.buttons.star')" @click.prevent.stop="navigateTo('https://github.com/genular/pandora')" type="primary" size="medium" icon="fa fa-github"></el-button>
+            <el-button :title="$t('components.GenularBottom.buttons.help')" @click.prevent.stop="navigateTo('https://crowdin.com/project/genular')" type="primary" size="medium" icon="fa fa-language"></el-button>
+            <el-button :title="$t('components.GenularBottom.buttons.about')" @click.prevent.stop="navigateTo('about')" type="primary" size="medium" icon="fa fa-info-circle"></el-button>
         </el-button-group>
-
         <el-dialog class="about-dialog" :title="$t('components.GenularBottom.dialog.title')" :visible.sync="centerDialogVisible" width="600px" center>
             <div class="about-container">
                 <div>
@@ -51,7 +40,6 @@
         </el-dialog>
     </div>
 </template>
-
 <script>
 export default {
     name: "GenularBottom",
@@ -70,18 +58,20 @@ export default {
         }
     }
 };
-</script>
 
+</script>
 <style rel="stylesheet/scss" lang="scss">
 .hideSidebar {
     .genular-bottom-buttons {
         .el-button-group {
             left: 0;
             width: 50px;
+
             button {
                 width: 50px;
                 border: 0 none;
                 border-radius: 0;
+                
             }
         }
     }
@@ -91,24 +81,31 @@ export default {
     a {
         width: auto !important;
     }
+
     .el-button-group {
         position: absolute;
         left: 0;
         margin: 0 auto;
         bottom: 0;
         width: 100%;
+
         .el-button {
             width: 33.333%;
+            .fa {
+              font-size: 24px;  
+            }
         }
     }
+
     .about-dialog {
-        > .el-dialog {
+        >.el-dialog {
             background-image: url(/static/images/sky.png);
             background-color: #eff0f9;
             background-repeat: no-repeat;
             background-position: bottom;
             background-size: contain;
         }
+
         .about-container {
 
             font-size: 14px;
@@ -116,7 +113,7 @@ export default {
             letter-spacing: 1px;
             word-break: normal;
 
-            > div {
+            >div {
                 line-height: 18px;
             }
 
@@ -158,4 +155,5 @@ export default {
         }
     }
 }
+
 </style>

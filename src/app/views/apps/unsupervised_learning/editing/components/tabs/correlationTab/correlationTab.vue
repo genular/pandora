@@ -385,7 +385,7 @@
                                     <div slot="content">
                                         {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.description") }}
                                     </div>
-                                    <el-button style="float: left" type="danger" round @click="downloadRawData">
+                                    <el-button style="float: left"  size="large" type="danger" round @click="downloadRawData">
                                         {{ $t("views.apps.unsupervised_learning.editing.index.button.download_r_data.title") }}
                                         <i class="el-icon-download el-icon-right"></i>
                                     </el-button>
@@ -395,7 +395,7 @@
 
                         <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                             <el-form-item>
-                                <el-button type="primary" round @click="redrawImage" style="float: right">
+                                <el-button type="primary" size="large" round @click="redrawImage" style="float: right">
                                     {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.buttons.plot_image") }}
                                 </el-button>
                             </el-form-item>
