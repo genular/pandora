@@ -508,15 +508,41 @@
                                             </div>
                                         </span>
                                     </el-col>
+                                </el-row>
+                                <el-row>
                                     <el-col :span="24">
-                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                            <div slot="content">
-                                                <el-button type="success" round @click="downloadPlotImage('tsne_cluster_plot')">
-                                                    {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
-                                                </el-button>
-                                            </div>
-                                            <img id="analysis_images_tsne_clustered_plot" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.tsne_cluster_plot_png" fit="scale-down" />
-                                        </el-tooltip>
+                                        <el-tabs tab-position="right">
+                                            <el-tab-pane label="Clusters">
+                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                    <div slot="content">
+                                                        <el-button type="success" round @click="downloadPlotImage('tsne_cluster_plot')">
+                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
+                                                        </el-button>
+                                                    </div>
+                                                    <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.tsne_cluster_plot_png" fit="scale-down" />
+                                                </el-tooltip>
+                                            </el-tab-pane>
+                                            <el-tab-pane label="Features">
+                                               <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                        <div slot="content">
+                                                            <el-button type="success" round @click="downloadPlotImage('cluster_features_means')">
+                                                                {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
+                                                            </el-button>
+                                                        </div>
+                                                        <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.cluster_features_means_png" fit="scale-down" />
+                                                    </el-tooltip>
+                                            </el-tab-pane>
+                                            <el-tab-pane label="FoldChange">
+                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                        <div slot="content">
+                                                            <el-button type="success" round @click="downloadPlotImage('cluster_features_means_separated')">
+                                                                {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
+                                                            </el-button>
+                                                        </div>
+                                                        <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.cluster_features_means_separated_png" fit="scale-down" />
+                                                    </el-tooltip>
+                                            </el-tab-pane>
+                                        </el-tabs>
                                     </el-col>
                                 </el-row>
                             </el-col>
@@ -776,8 +802,15 @@ export default {
                 tsne_cluster_plot: false,
                 tsne_cluster_plot_png: false,
 
+                cluster_features_means: false,
+                cluster_features_means_png: false,
+
+                cluster_features_means_separated: false,
+                cluster_features_means_separated_png: false,
+
                 tsne_cluster_heatmap_plot: false,
                 tsne_cluster_heatmap_plot_png: false,
+
                 avg_silhouette_score: false,
 
                 saveObjectHash: false,
@@ -1292,6 +1325,12 @@ export default {
 
                 tsne_cluster_plot: false,
                 tsne_cluster_plot_png: false,
+
+                cluster_features_means: false,
+                cluster_features_means_png: false,
+
+                cluster_features_means_separated: false,
+                cluster_features_means_separated_png: false,
 
                 tsne_cluster_heatmap_plot: false,
                 tsne_cluster_heatmap_plot_png: false,
