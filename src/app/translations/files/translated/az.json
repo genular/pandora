@@ -622,7 +622,7 @@
   "sidebar.supervised_learning_analysis": "Start",
   "sidebar.supervised_learning_analysis_exploratory": "Exploration",
   "sidebar.unsupervised_learning": "Discovery",
-  "sidebar.unsupervised_learning_exploration": "Exploration",
+  "sidebar.unsupervised_learning_exploration": "Start",
   "sidebar.additional_modules": "Modules",
   "sidebar.additional_modules_rnaseq": "RNA-seq",
   "globals.page_loading": "Qenerasiya olunur",
