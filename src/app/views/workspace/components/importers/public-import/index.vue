@@ -1,6 +1,6 @@
 <template>
     <div class="workspace-public-import">
-        <el-button icon="el-icon-question" size="mini" type="primary" round v-waves :loading="datasetsLoading" @click.prevent.stop="fetchDatasets">
+        <el-button icon="el-icon-question" size="medium" type="primary" round v-waves :loading="datasetsLoading" @click.prevent.stop="fetchDatasets">
             {{ $t("views.workspace.components.importers.public_import.button") }}
         </el-button>
 
@@ -24,7 +24,7 @@
 
             <el-table
                 :data="datasetsData"
-                size="mini"
+                size="medium"
                 @expand-change="highlightMatches"
                 row-key="datasetID"
                 v-loading="datasetsLoading"
@@ -143,7 +143,7 @@
                         >
                             <div class="preview_container">
                                 <div v-if="scope.row.example.length > 2">
-                                    <el-table :data="scope.row.example" size="mini">
+                                    <el-table :data="scope.row.example" size="medium">
                                         <el-table-column
                                             v-for="(colItem, colIndex) in Object.keys(scope.row.example[0])"
                                             :prop="colItem"
@@ -165,7 +165,7 @@
                                 round
                                 plain
                                 type="info"
-                                size="mini"
+                                size="small"
                                 icon="el-icon-info"
                                 slot="reference"
                                 :title="$t('views.workspace.components.importers.public_import.dialog.table.operations.preview.title')"
@@ -176,7 +176,7 @@
                             round
                             plain
                             type="success"
-                            size="mini"
+                            size="small"
                             icon="el-icon-download"
                             :title="$t('views.workspace.components.importers.public_import.dialog.table.operations.import.title')"
                             @click.prevent.stop="importDatasets([scope.row.datasetID])"

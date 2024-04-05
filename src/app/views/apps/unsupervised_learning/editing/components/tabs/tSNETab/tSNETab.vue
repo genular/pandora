@@ -240,7 +240,17 @@
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisGrouped"></el-switch>
                             <el-tooltip placement="top">
                                 <div slot="content">
-                                   ...
+                                   Should we display mean values of clusters on a heatmap, scale by row, when enabled or column?
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item label="Remove outliers" v-if="['Hierarchical', 'Mclust', 'Density'].includes(settingsForm.clusterType)">
+                            <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisRemoveOutliersDownstream"></el-switch>
+                            <el-tooltip placement="top">
+                                <div slot="content">
+                                   Should we remove outlier cluster and data from heatmep display and downstream dataset (ML)?
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
@@ -606,7 +616,7 @@
                     </el-select>
                 </el-form-item>
             </el-form>
-            ML Prediction outcome is 'pandora_clusters' column.
+            ML Prediction outcome is 'pandora_clusters' column (Excluded automatically, do not exclude it here)
             <span slot="footer" class="dialog-footer">
                 <el-button @click="machineLearningDialogVisible = false">Cancel</el-button>
                 <el-button type="primary" @click="startSIMONAnalysis">Confirm</el-button>
@@ -753,6 +763,8 @@ export default {
                 datasetAnalysisClustLinkage: "ward.D2",
                 datasetAnalysisType: "heatmap",
                 datasetAnalysisGrouped: true,
+                datasetAnalysisRemoveOutliersDownstream: true,
+
                 datasetAnalysisSortColumn: "pandora_cluster",
                 datasetAnalysisClustOrdering: 1,
                 anyNAValues: false,

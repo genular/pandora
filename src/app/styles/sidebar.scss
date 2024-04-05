@@ -41,6 +41,8 @@
         .el-submenu__title {
             color: $white;
             height: 50px;
+            font-size: 18px;
+
             &:hover {
                 background-color: $ui-background-secondary;
             }
@@ -124,6 +126,7 @@
         .fa-icon {
             margin-right: 15px;
             color: #ffffff;
+            font-size: 21px;
         }
         span {
             color: #ffffff;

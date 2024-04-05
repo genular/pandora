@@ -165,6 +165,7 @@ export default {
         color: #ffffff;
         height: 50px;
         line-height: 50px;
+        font-size: 18px;
     }
     .is-active {
         background-color: $ui-background-secondary !important;

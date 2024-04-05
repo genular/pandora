@@ -332,6 +332,7 @@ div:focus {
         border-bottom: none;
         .el-tabs__item {
             color: $ui-background-secondary;
+            font-size: 16px;
             
             &:is(.is-disabled) {
                 color: $ui-background-secondary;

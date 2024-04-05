@@ -5,12 +5,12 @@
         "settings": "Settings",
         "workspace": "Workspace",
 
-        "supervised_learning": "Supervised learning",
-        "supervised_learning_analysis": "Start Analysis",
-        "supervised_learning_analysis_exploratory": "Analysis Exploration",
+        "supervised_learning": "Predictive",
+        "supervised_learning_analysis": "Start",
+        "supervised_learning_analysis_exploratory": "Exploration",
 
-        "unsupervised_learning": "Unsupervised learning",
-        "unsupervised_learning_exploration": "Start Exploration",
+        "unsupervised_learning": "Discovery",
+        "unsupervised_learning_exploration": "Exploration",
 
         "additional_modules": "Modules",
         "additional_modules_rnaseq": "RNA-seq"

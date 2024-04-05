@@ -49,7 +49,7 @@ export default {
 .app-breadcrumb.el-breadcrumb {
 
     display: inline-block;
-    font-size: 14px;
+    font-size: 18px;
     line-height: 50px;
     margin-left: 10px;
 

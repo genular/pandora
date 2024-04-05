@@ -14,7 +14,8 @@
             <lang-select class="right-menu-item international "></lang-select>
             <el-dropdown class="avatar-container right-menu-item" trigger="click">
                 <div class="avatar-wrapper">
-                    <img class="user-avatar" :src="user_settings_server_address_backend + '/backend/user/avatar?id=' + user_id + '&size=64'" />
+                    <!-- <img :src="user_settings_server_address_backend + '/backend/user/avatar?id=' + user_id + '&size=64'" /> -->
+                    <i class="el-icon-user-solid user-avatar"></i>
                     <i class="el-icon-caret-bottom"></i>
                 </div>
                 <el-dropdown-menu slot="dropdown">
@@ -134,7 +135,7 @@ export default {
         }
         .avatar-container {
             height: 50px;
-            margin-right: 30px;
+            margin-right: 5px;
             width: 40px;
             margin-left: 0;
             float: right;
@@ -145,12 +146,10 @@ export default {
                 margin-top: 5px;
                 position: relative;
                 .user-avatar {
-                    width: 40px;
-                    height: 40px;
+                    font-size: 24px;
                 }
                 .el-icon-caret-bottom {
                     position: absolute;
-                    right: -20px;
                     top: 15px;
                     font-size: 12px;
                 }

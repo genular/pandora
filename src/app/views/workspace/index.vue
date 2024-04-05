@@ -4,10 +4,10 @@
             <el-col :span="24">
                 <public-import style="float: left" ref="publicImporte" v-on:refresh-items="refreshFilesInDirectory">
                 </public-import>
-                <el-button style="float: right" icon="el-icon-delete" size="mini" type="primary" round @click.prevent.stop="deleteFilesInDirectory">
+                <el-button style="float: right" icon="el-icon-delete" size="medium" type="primary" round @click.prevent.stop="deleteFilesInDirectory">
                     {{ $t("views.workspace.index.buttons.delete_all") }}
                 </el-button>
-                <el-button style="float: right; margin-right: 15px;" icon="el-icon-folder-add" size="mini" type="primary" round @click.prevent.stop="createDirectory">
+                <el-button style="float: right; margin-right: 15px;" icon="el-icon-folder-add" size="medium" type="primary" round @click.prevent.stop="createDirectory">
                     {{ $t("views.workspace.index.buttons.create_directory") }}
                 </el-button>
             </el-col>
@@ -43,15 +43,15 @@
         <div class="dropzone-context-menu">
             <ul class="menu-options">
                 <li class="menu-option" @click="contextAction('select')">{{ $t("views.workspace.index.context_menu.select") }}</li>
-                <!-- <li class="menu-option"
-                    @click="contextAction('download')">{{ $t("views.workspace.index.context_menu.download") }}</li> -->
+                <li class="menu-option"
+                    @click="contextAction('download')">{{ $t("views.workspace.index.context_menu.download") }}</li>
                 <li class="menu-option" @click="contextAction('delete')">{{ $t("views.workspace.index.context_menu.delete") }}</li>
                 <li class="menu-option" v-if="contextmenu.selectedFile && contextmenu.selectedFile.extension === 'csv'" @click="contextAction('preview')">{{ $t("views.workspace.index.context_menu.preview") }}</li>
             </ul>
         </div>
-        <el-dialog :title="'Preview of the First ' + currentPreviewRows + ' Rows and 50 Columns, with the Last Column as Sum'" :visible.sync="previewFileDataDialog" width="50%">
+        <el-dialog :title="'Preview of the First ' + currentPreviewRows + ' Rows and 50 Columns, with the summery row as Sum'" :visible.sync="previewFileDataDialog" width="50%">
             <div class="dataset_preview_container">
-                <el-table height="500" border :summary-method="getPreviewSummaries" show-summary :data="previewFileData" size="mini" v-if="previewFileData.length > 0">
+                <el-table height="500" border :summary-method="getPreviewSummaries" show-summary :data="previewFileData" size="medium" v-if="previewFileData.length > 0">
                     <el-table-column v-for="(colItem, colIndex) in Object.keys(previewFileData[0])" :prop="colItem" :key="colItem + '_' + colIndex" :label="colItem">
                     </el-table-column>
                 </el-table>
@@ -63,8 +63,10 @@
 import { Dropzone, publicImport } from "./components";
 import { mapGetters } from "vuex";
 
-import { readFilesInUserDirectory as ApiReadFilesInUserDirectory, deleteFile as ApiDeleteFile, createDirectory as ApiCreateDirectory, filePreview as ApiFilePreview } from "@/api/backend";
+import { readFilesInUserDirectory as ApiReadFilesInUserDirectory, deleteFile as ApiDeleteFile, createDirectory as ApiCreateDirectory, filePreview as ApiFilePreview, genarateFileDownloadLink as ApiGenarateFileDownloadLink } from "@/api/backend";
 import { md5String } from "@/utils";
+import { downloadItemsTemplate } from "@/utils/templates.js";
+
 
 export default {
     name: "workspace",
@@ -272,10 +274,22 @@ export default {
             } else if (action === "preview") {
                 this.loadPreview(this.currentPreviewPage);
             } else if (action === "download") {
-                this.$message({
-                    type: "info",
-                    message: this.$t("globals.messages.not_implemented"),
-                });
+
+                    ApiGenarateFileDownloadLink({ downloadType: "userFile", recordID: this.contextmenu.selectedFile.fileId })
+                        .then((response) => {
+                            if (response.data.success === true && response.data.message.length > 0) {
+                                this.$alert(downloadItemsTemplate(response.data.message), "Download links", {
+                                    dangerouslyUseHTMLString: true,
+                                    callback: (action) => {},
+                                });
+                            }else{
+                                console.log(response.data);
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+
             } else if (action === "delete") {
                 this.dropzoneRemoved(this.contextmenu.selectedFile);
             } else {
@@ -511,5 +525,6 @@ export default {
     max-height: 500px;
     overflow: auto;
 }
+
 
 </style>

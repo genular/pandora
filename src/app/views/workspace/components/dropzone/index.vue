@@ -52,7 +52,7 @@ export default {
             createImageThumbnails: false,
             timeout: (1000 * 60 * 60 * 24 * 1),
             dictDefaultMessage:
-                '<i style="display: table-cell; vertical-align: middle;" class="el-icon-upload">  ' +
+                '<i style="display: table-cell; vertical-align: middle; font-size: 24px;" class="el-icon-upload">  ' +
                 this.$t("views.workspace.components.dropzone.messages.upload_placeholder") +
                 "</i>",
             headers: {
