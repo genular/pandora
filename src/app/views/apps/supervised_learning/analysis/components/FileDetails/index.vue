@@ -25,7 +25,7 @@
                         </div>
                     </el-col>
                     <el-col :span="4">
-                        <el-button style="float: right" type="primary" @click="clearSelection">{{ $t("views.apps.supervised_learning.analysis.components.FileDetails.head.clear") }}</el-button>
+                        <el-button style="float: right" size="medium" type="primary" @click="clearSelection">{{ $t("views.apps.supervised_learning.analysis.components.FileDetails.head.clear") }}</el-button>
                     </el-col>
                 </el-row>
             </div>

@@ -195,10 +195,6 @@ export default {
 .tags-view-wrapper {
     .tags-view-item {
         .el-icon-close {
-            width: 16px;
-            height: 16px;
-            vertical-align: 2px;
-            border-radius: 50%;
             text-align: center;
             transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
             transform-origin: 100% 50%;

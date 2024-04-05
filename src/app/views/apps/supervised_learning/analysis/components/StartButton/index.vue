@@ -4,7 +4,7 @@
             <el-col :offset="13" :span="11">
                 <el-row type="flex" align="middle">
                     <el-col :span="24">
-                        <el-button class="validate-analysis" type="primary" round icon="el-icon-caret-right" :disabled="isValidateDisabled == true" @click="validateJob">
+                        <el-button class="validate-analysis" size="large" type="primary" round icon="el-icon-caret-right" :disabled="isValidateDisabled == true" @click="validateJob">
                             Validate data
                         </el-button>
                     </el-col>
@@ -76,7 +76,7 @@
                                 <template slot-scope="scope">
                                     <el-button
                                         type="primary"
-                                        size="mini"
+                                        size="small"
                                         @click.native.prevent="downloadResampleDataset(scope.$index, index)"
                                         icon="el-icon-download"
                                         circle
@@ -92,7 +92,7 @@
                                         <div v-for="(message, messageIndex) in scope.row.message">
                                             {{ $t("views.apps.supervised_learning.analysis.components.StartButton.dialogs.errors_resample.messages." + message.msg_info) }} {{ message.data }}
                                         </div>
-                                        <el-button slot="reference" type="danger" size="mini" icon="el-icon-warning" circle></el-button>
+                                        <el-button slot="reference" type="danger" size="small" icon="el-icon-warning" circle></el-button>
                                     </el-popover>
                                 </template>
                             </el-table-column>
@@ -107,10 +107,10 @@
                 {{ $t("views.apps.supervised_learning.analysis.components.StartButton.dialogs.confirm.footer_2") }}
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="info" round icon="el-icon-caret-right" @click="handleSubmissionCancle">
+                <el-button type="info" size="medium" round icon="el-icon-caret-right" @click="handleSubmissionCancle">
                     {{ $t("views.apps.supervised_learning.analysis.components.StartButton.dialogs.confirm.buttons.cancel") }}
                 </el-button>
-                <el-button class="submit-analysis" type="primary" round icon="el-icon-caret-right" :disabled="!processTaskVisible" @click="processTask">
+                <el-button class="submit-analysis" size="medium" type="primary" round icon="el-icon-caret-right" :disabled="!processTaskVisible" @click="processTask">
                     {{ $t("views.apps.supervised_learning.analysis.components.StartButton.dialogs.confirm.buttons.process") }}
                 </el-button>
             </span>
@@ -125,7 +125,7 @@
         >
             <el-alert v-for="(item, index) in messageWarnings" :title="item" :key="index" type="info" :closable="false" show-icon></el-alert>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="messageWarnings = []">{{ $t("views.apps.supervised_learning.analysis.components.StartButton.dialogs.errors.confirm") }}</el-button>
+                <el-button type="primary" size="medium" @click="messageWarnings = []">{{ $t("views.apps.supervised_learning.analysis.components.StartButton.dialogs.errors.confirm") }}</el-button>
             </span>
         </el-dialog>
         <div class="progress-circle" v-if="progressBar.percentage > 0 || progressBar.status != ''">
