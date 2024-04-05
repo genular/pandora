@@ -10,7 +10,7 @@
         "supervised_learning_analysis_exploratory": "Exploration",
 
         "unsupervised_learning": "Discovery",
-        "unsupervised_learning_exploration": "Exploration",
+        "unsupervised_learning_exploration": "Start",
 
         "additional_modules": "Modules",
         "additional_modules_rnaseq": "RNA-seq"
