@@ -53,12 +53,20 @@ docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='tru
 
 To ensure a clean reinstallation of PANDORA, follow these steps to remove the existing Docker container, images, and volumes associated with PANDORA. This process will remove all data and settings related to the previous PANDORA installation.
 
+Identify Your Docker Entities
+Identify the names or IDs of your PANDORA container(s), volume(s), and image(s). 
+
+Use these commands to list entities:
+Containers: `docker ps` (for running) or `docker ps -a` (for all)
+Volumes: `docker volume ls`
+Images: `docker images`
+
 ```bash
 ## Stop the Running PANDORA Container
-docker stop genular
+docker stop <ContainerName>
 
 ## Remove the PANDORA Container
-docker rm genular
+docker rm <ContainerName>
 
 ## Remove PANDORA Volumes
 docker volume rm genular_frontend_latest genular_backend_latest genular_data_latest
