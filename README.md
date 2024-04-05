@@ -57,9 +57,10 @@ Identify Your Docker Entities
 Identify the names or IDs of your PANDORA container(s), volume(s), and image(s). 
 
 Use these commands to list entities:
-Containers: `docker ps` (for running) or `docker ps -a` (for all)
-Volumes: `docker volume ls`
-Images: `docker images`
+
+-   Containers: `docker ps` (for running) or `docker ps -a` (for all)
+-   Volumes: `docker volume ls`
+-   Images: `docker images`
 
 ```bash
 ## Stop the Running PANDORA Container
