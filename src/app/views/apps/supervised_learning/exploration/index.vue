@@ -2,8 +2,13 @@
     <div class="app-container" v-loading="explorationLoading" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="middle">
             <el-col :span="12">
-                <el-select v-model="selectedOutcomeOptionsID" placeholder="Outcome class" @change="getDatasetResamples">
+                <el-select v-model="selectedOutcomeOptionsID" size="large" placeholder="Outcome class" @change="getDatasetResamples">
                     <el-option v-for="item in selectedOutcomeOptions" :key="item.id" :label="'Outcome: ' + item.class_original" :value="item.id">
+                    </el-option>
+                </el-select>
+                <el-select style="padding-left: 10px; width: auto;"  v-model="jobDetailsData.performance" multiple filterable collapse-tags size="large" :loading="explorationLoading" :placeholder="$t('globals.performanceVariables.placeholder')">
+                    <el-option v-for="item in jobDetailsData.performaceVariables" :key="item" :value="item" :label="$t(['globals.performanceVariables.options.', item, '.title'].join(''))">
+                        <span>{{ $t("globals.performanceVariables.options." + item + ".title") }}</span>
                     </el-option>
                 </el-select>
             </el-col>
@@ -26,15 +31,6 @@
                         {{ $t("views.apps.supervised_learning.exploration.header.selected_models") }}: {{ selectedModelsIDs.join(", ") }}
                     </el-button>
                 </el-tooltip>
-            </el-col>
-        </el-row>
-        <el-row type="flex" style="padding-top: 15px;">
-            <el-col :span="24">
-                <el-select style="float: left; width: 100%;" v-model="jobDetailsData.performance" multiple filterable collapse-tags size="large" :loading="explorationLoading" :placeholder="$t('globals.performanceVariables.placeholder')">
-                    <el-option v-for="item in jobDetailsData.performaceVariables" :key="item" :value="item" :label="$t(['globals.performanceVariables.options.', item, '.title'].join(''))">
-                        <span>{{ $t("globals.performanceVariables.options." + item + ".title") }}</span>
-                    </el-option>
-                </el-select>
             </el-col>
         </el-row>
         <br />

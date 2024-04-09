@@ -879,8 +879,8 @@ export default {
         // Selects models on user check-box click
         handleModelsSelectionChange(selection) {
             const isPerformanceValid = (performance) => {
-                // Check every value to ensure it is neither undefined nor 0
-                return Object.values(performance).every(value => value !== undefined && value !== 0);
+                // Check if any value is not undefined or 0
+                return Object.values(performance).some(value => value !== undefined && value !== 0);
             };
 
             const isValidModel = (model) => {

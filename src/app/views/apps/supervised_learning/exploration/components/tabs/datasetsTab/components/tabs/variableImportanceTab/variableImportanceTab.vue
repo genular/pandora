@@ -1,66 +1,47 @@
 <template>
     <div class="variableImportanceTab-container" v-loading="listLoading" element-loading-text="Processing...">
         <div v-if="!isTabDisabled">
-            <el-row style="height: 50px" align="top">
-                <el-col :span="10">
-                    <el-form :inline="true">
-                        <el-form-item label="Order by">
-                            <el-select @change="handleTableFilter" style="width: 140px" class="filter-item" v-model="paginateVariableImpData.sort_by">
-                                <el-option v-for="item in tableSortOptions" :key="item.key" :label="item.label" :value="item.key"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-switch
-                                v-model="paginateVariableImpData.sort"
-                                @change="handleTableFilter"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949"
-                                active-text="ASC"
-                                inactive-text="DESC"
-                            ></el-switch>
-                        </el-form-item>
-                        <el-form-item style="float: right">
-                            <el-button size="mini" class="filter-item" type="success" :loading="downloadLoading" v-waves icon="el-icon-download" @click="downloadTable"></el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-col>
-                <el-col :span="14">
-                    <div class="feature-tag-container" v-if="selectedVariableImp.length > 0">
-                        <el-tag
-                            size="mini"
-                            :key="feature.id"
-                            v-for="feature in selectedVariableImp"
-                            :disable-transitions="false"
-                            type="success"
-                            closable
-                            @close="deselectVariableImp(feature)"
-                        >
-                            {{ feature.original | truncateString(10) }}
-                        </el-tag>
+            <el-row style="height: 50px; align-items: center;" class="filter-row">
+                <el-col :span="24">
+                    <div class="filter-and-tags-container" style="display: flex; justify-content: space-between; align-items: center;">
+                        <!-- Inline Form for filters -->
+                        <el-form :inline="true" class="filter-form">
+                            <el-form-item label="Class">
+                                <el-select @change="handleTableFilter" class="filter-item" v-model="paginateVariableImpData.outcome_class_ids">
+                                    <el-option v-for="item in selectedOutcomeOptions" :key="item.id" :label="item.class_original" :value="item.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="Order">
+                                <el-select @change="handleTableFilter" class="filter-item" v-model="paginateVariableImpData.sort_by">
+                                    <el-option v-for="item in tableSortOptions" :key="item.key" :label="item.label" :value="item.key"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-switch v-model="paginateVariableImpData.sort" @change="handleTableFilter" active-color="#13ce66" inactive-color="#ff4949" active-text="ASC" inactive-text="DESC"></el-switch>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button size="mini" class="filter-item" type="success" :loading="downloadLoading" v-waves icon="el-icon-download" @click="downloadTable"></el-button>
+                            </el-form-item>
+                        </el-form>
+                        <!-- Feature Tags Container -->
+                        <div class="feature-tag-container" v-if="selectedVariableImp.length > 0">
+                            <el-tag size="mini" :key="feature.id" v-for="feature in selectedVariableImp" :disable-transitions="false" type="success" closable @close="deselectVariableImp(feature)">
+                                {{ feature.original | truncateString(10) }}
+                            </el-tag>
+                        </div>
                     </div>
                 </el-col>
             </el-row>
+            
             <el-row align="top" style="padding-top: 10px">
                 <el-col :span="10">
-                    <el-table
-                        ref="variableImpTable"
-                        :data="displayVariableImp"
-                        :row-class-name="tableVariableImpClass"
-                        row-key="id"
-                        @select-all="handleVarImpSelection"
-                        @select="handleVarImpSelection"
-                        style="min-height: 600px"
-                        size="small"
-                        border
-                    >
+                    <el-table ref="variableImpTable" :data="displayVariableImp" :row-class-name="tableVariableImpClass" row-key="id" @select-all="handleVarImpSelection" @select="handleVarImpSelection" style="min-height: 600px" size="small" border>
                         <el-table-column type="selection" reserve-selection></el-table-column>
-
                         <el-table-column fixed label="Model">
                             <template slot-scope="scope">
                                 <span>{{ scope.row.model_internal_id }}</span>
                             </template>
                         </el-table-column>
-
                         <el-table-column fixed label="Feature">
                             <template slot-scope="scope">
                                 <el-tooltip class="item" effect="dark" placement="top-start">
@@ -69,7 +50,6 @@
                                 </el-tooltip>
                             </template>
                         </el-table-column>
-
                         <el-table-column width="125px" align="center" label="Rank" prop="rank">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.rank">{{ scope.row.rank }}</span>
@@ -83,19 +63,8 @@
                             </template>
                         </el-table-column>
                     </el-table>
-
                     <div class="pagination-container">
-                        <el-pagination
-                            v-if="paginateVariableImpData.total_items > 20"
-                            background
-                            @size-change="handlePaginationPageSizeChange"
-                            @current-change="handlePaginationPageChange"
-                            :current-page.sync="paginateVariableImpData.page"
-                            :page-sizes="[10, 20, 30, 50]"
-                            :page-size="paginateVariableImpData.page_size"
-                            layout="total, prev, pager, next, jumper"
-                            :total="paginateVariableImpData.total_items"
-                        ></el-pagination>
+                        <el-pagination v-if="paginateVariableImpData.total_items > 20" background @size-change="handlePaginationPageSizeChange" @current-change="handlePaginationPageChange" :current-page.sync="paginateVariableImpData.page" :page-sizes="[10, 20, 30, 50]" :page-size="paginateVariableImpData.page_size" layout="total, prev, pager, next, jumper" :total="paginateVariableImpData.total_items"></el-pagination>
                     </div>
                 </el-col>
                 <el-col :span="14">
@@ -106,13 +75,7 @@
                                     <var-imp-chart :selectedVariableImp="selectedVariableImp"></var-imp-chart>
                                 </div>
                                 <div v-else>
-                                    <el-alert
-                                        title="Notification:"
-                                        description="Please select at least one Feature to display Graphs.. You can select maximum of 25 Features."
-                                        type="warning"
-                                        show-icon
-                                        :closable="false"
-                                    ></el-alert>
+                                    <el-alert title="Notification:" description="Please select at least one Feature to display Graphs.. You can select maximum of 25 Features." type="warning" show-icon :closable="false"></el-alert>
                                 </div>
                             </el-tab-pane>
                             <el-tab-pane label="Variable Importance Chart" name="variable_importance_chart">
@@ -125,14 +88,7 @@
         </div>
         <!-- ELSE if Tab is DISABLED -->
         <div v-else>
-            <el-alert
-                title="Notification"
-                description="Unfortionatly this function is currently disabled"
-                type="warning"
-                style="margin-top: 20px"
-                show-icon
-                :closable="false"
-            ></el-alert>
+            <el-alert title="Notification" description="Unfortionatly this function is currently disabled" type="warning" style="margin-top: 20px" show-icon :closable="false"></el-alert>
         </div>
     </div>
 </template>
@@ -173,9 +129,17 @@ export default {
                 sort: false,
                 sort_by: "score_perc",
                 total_items: null,
+                outcome_class_ids: [0]
             },
-            tableSortOptions: [
-                {
+            selectedOutcomeOptions: [{
+                "id": 0,
+                "drid": 0,
+                "class_column": "",
+                "class_type": 2,
+                "class_original": "Overall",
+                "class_remapped": "overall"
+            }],
+            tableSortOptions: [{
                     label: "Feature name",
                     key: "feature_name",
                 },
@@ -269,11 +233,11 @@ export default {
             this.listLoading = true;
 
             getVariableImportance({
-                pqid: this.selectedQueueID,
-                resampleID: this.selectedFeatureSetId,
-                modelsID: this.selectedModelsIDs,
-                ...this.paginateVariableImpData,
-            })
+                    pqid: this.selectedQueueID,
+                    resampleID: this.selectedFeatureSetId,
+                    modelsID: this.selectedModelsIDs,
+                    ...this.paginateVariableImpData,
+                })
                 .then((response) => {
                     if (response.data.success === true) {
                         this.displayVariableImp = response.data.data;
@@ -305,15 +269,15 @@ export default {
             this.downloadLoading = true;
 
             getVariableImportance({
-                pqid: this.selectedQueueID,
-                resampleID: this.selectedFeatureSetId,
-                modelsID: this.selectedModelsIDs,
-                page: 1,
-                page_size: 100000,
-                sort: true,
-                sort_by: "score_perc",
-                total_items: 100000,
-            })
+                    pqid: this.selectedQueueID,
+                    resampleID: this.selectedFeatureSetId,
+                    modelsID: this.selectedModelsIDs,
+                    page: 1,
+                    page_size: 100000,
+                    sort: true,
+                    sort_by: "score_perc",
+                    total_items: 100000,
+                })
                 .then((response) => {
                     if (response.data.success === true) {
                         import("@/vendor/Export2Excel").then((excel) => {
@@ -363,7 +327,7 @@ export default {
          * @param  {[type]} oldVal [description]
          * @return {[type]}        [description]
          */
-        selectedModelsIDs: function (newVal, oldVal) {
+        selectedModelsIDs: function(newVal, oldVal) {
             console.log("variableImportanceTab getting new variables based on model change");
             if (this.isTabDisabled === false) {
                 // Remove any previously selected variables
@@ -377,7 +341,7 @@ export default {
          * @param  boolean  oldVal Old item value
          * @return null
          */
-        isTabDisabled: function (newVal, oldVal) {
+        isTabDisabled: function(newVal, oldVal) {
             console.log("variableImportanceTab isTabDisabled: " + newVal);
             if (newVal === false) {
                 // Remove any previously selected variables
@@ -387,6 +351,7 @@ export default {
         },
     },
 };
+
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .feature-tag-container {
@@ -398,4 +363,5 @@ export default {
         margin-top: 5px;
     }
 }
+
 </style>
