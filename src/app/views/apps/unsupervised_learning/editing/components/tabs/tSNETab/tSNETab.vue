@@ -512,7 +512,7 @@
                                 <el-row>
                                     <el-col :span="24">
                                         <el-tabs tab-position="right">
-                                            <el-tab-pane label="Clusters">
+                                            <el-tab-pane label="Clusters" v-if="plot_data.tsne_cluster_plot_png !== false">
                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                     <div slot="content">
                                                         <el-button type="success" round @click="downloadPlotImage('tsne_cluster_plot')">
@@ -522,7 +522,7 @@
                                                     <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.tsne_cluster_plot_png" fit="scale-down" />
                                                 </el-tooltip>
                                             </el-tab-pane>
-                                            <el-tab-pane label="Features">
+                                            <el-tab-pane label="Features" v-if="plot_data.cluster_features_means_png !== false">
                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                         <div slot="content">
                                                             <el-button type="success" round @click="downloadPlotImage('cluster_features_means')">
@@ -532,7 +532,7 @@
                                                         <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.cluster_features_means_png" fit="scale-down" />
                                                     </el-tooltip>
                                             </el-tab-pane>
-                                            <el-tab-pane label="FoldChange">
+                                            <el-tab-pane label="FoldChange" v-if="plot_data.cluster_features_means_png !== false">
                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                         <div slot="content">
                                                             <el-button type="success" round @click="downloadPlotImage('cluster_features_means_separated')">

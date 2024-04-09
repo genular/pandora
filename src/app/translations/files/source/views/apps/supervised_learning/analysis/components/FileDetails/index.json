@@ -42,7 +42,7 @@
 								},
 								"classes": {
 									"title": "Additional Exploration Classes",
-									"description": "Please select all fields that are not being used as Response nor Predictor variables. This fields will be available to you in latter on Exploratory analysis, where you will be able to plot them against your results.",
+									"description": "Please select all fields that are not being used as Response nor Predictor variables. This fields will be available to you in later on Exploratory analysis, where you will be able to plot them against your results.",
 									"placeholder": "Select other exploration class properties"
 								},
 								"preprocessing": {

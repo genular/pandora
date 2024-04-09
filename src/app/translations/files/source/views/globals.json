@@ -50,7 +50,7 @@
         },
         "errors":
         {
-            "request_general": "There was an error processing your request. Please try again latter.",
+            "request_general": "There was an error processing your request. Please try again later.",
             "unsupported_device": "Unfortunately your device is still unsupported. We are working on supporting smaller screen devices. Please visit us again with bigger screen 😞"
         },
         "performanceVariables":
