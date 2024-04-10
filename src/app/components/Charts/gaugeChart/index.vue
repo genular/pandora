@@ -1,15 +1,24 @@
 <template>
-    <div :class="className" :style="{ height: height, width: width }"></div>
+  <div :class="className" :style="{ height: height, width: width }"></div>
 </template>
 
 <script>
-import echarts from "echarts";
-// echarts theme
-require("echarts/theme/macarons");
+// Import core and necessary chart type
+import * as echarts from 'echarts/core';
+import { GaugeChart } from 'echarts/charts';
+import {
+  TooltipComponent,
+  TitleComponent
+} from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
+
+// Import the theme
+import 'echarts/theme/macarons';
 
 import { debounce } from "@/utils/helpers";
 
-
+// Register components and the renderer
+echarts.use([GaugeChart, TooltipComponent, TitleComponent, CanvasRenderer]);
 
 export default {
     name: "gaugeChart",
@@ -86,7 +95,7 @@ export default {
                     },
                     pointer: {
                         itemStyle: {
-                            color: "auto",
+                            color: "inherit",
                         },
                     },
                     axisTick: {
@@ -106,14 +115,14 @@ export default {
                         },
                     },
                     axisLabel: {
-                        color: "auto",
-                        distance: 10,
-                        fontSize: 12,
+                        color: "inherit",
+                        distance: 30,
+                        fontSize: 14,
                     },
                     detail: {
                         valueAnimation: true,
                         formatter: "{value}",
-                        color: "auto",
+                        color: "inherit",
                         fontSize: 14,
                     },
                     data: [
@@ -127,10 +136,10 @@ export default {
             this.chart.setOption(chartOptions);
         },
         initChart() {
-            this.chart = echarts.init(this.$el, "macarons");
-            // Init chart options
-            this.setChartOptions();
-        },
+          // Initialize the chart
+          this.chart = echarts.init(this.$el, 'macarons');
+          this.setChartOptions();
+        }
     },
 };
 </script>

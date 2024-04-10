@@ -62,6 +62,11 @@ const getters = {
     pandoraExplorationSelectedQueueID: (state) => state.apps.pandora.exploration.selectedQueueID,
     pandoraExplorationSelectedFeatureSetId: (state) => state.apps.pandora.exploration.selectedFeatureSetId,
     pandoraExplorationSelectedModelId: (state) => state.apps.pandora.exploration.selectedModelsIDs,
+
+
+    pandoraExplorationSelectedOutcomeOptions: (state) => state.apps.pandora.exploration.selectedOutcomeOptions,
+    pandoraExplorationSelectedOutcomeOptionsIDs: (state) => state.apps.pandora.exploration.selectedOutcomeOptionsIDs,
+
     pandoraExplorationActiveTabName: (state) => state.apps.pandora.exploration.activeTabName,
     datasetsTabMapOptions: (state) => state.apps.pandora.exploration.datasetsTabMapOptions,
     // editing

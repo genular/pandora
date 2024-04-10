@@ -198,13 +198,25 @@ export function fetchGraphSummary(query) {
     });
 }
 /**
- * [fetchGraphModelSummary description]
+ * [fetchGraphModelSummaryTwoClass description]
  * @param  {[type]} query [description]
  * @return {[type]}       [description]
  */
-export function fetchGraphModelSummary(query) {
+export function fetchGraphModelSummaryTwoClass(query) {
     return request({
-        url: baseUrlPath + "/model-summary/render-plot",
+        url: baseUrlPath + "/model-summary/render-plot/two-class",
+        method: "GET",
+        params: query,
+    });
+}
+/**
+ * [fetchGraphModelSummaryMultiClass description]
+ * @param  {[type]} query [description]
+ * @return {[type]}       [description]
+ */
+export function fetchGraphModelSummaryMultiClass(query) {
+    return request({
+        url: baseUrlPath + "/model-summary/render-plot/multi-class",
         method: "GET",
         params: query,
     });

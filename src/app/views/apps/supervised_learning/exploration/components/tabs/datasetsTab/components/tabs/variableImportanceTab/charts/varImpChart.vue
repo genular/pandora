@@ -86,6 +86,12 @@ export default {
             default: function() {
                 return [];
             }
+        },
+        selectedOutcomeOptionsIDs: {
+            type: Array,
+            default: function() {
+                return [];
+            }
         }
     },
     data() {
@@ -157,6 +163,7 @@ export default {
                 resampleID: this.selectedFeatureSetId,
                 modelsID: JSON.stringify(this.selectedModelsIDs),
                 variables: JSON.stringify(this.selectedVariableImp.map(item => item.feature_name)),
+                selectedOutcomeOptionsIDs: JSON.stringify(this.selectedOutcomeOptionsIDs),
                 settings: JSON.stringify(this.settingsForm)
             })
                 .then(response => {

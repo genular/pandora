@@ -2,7 +2,7 @@
     <div class="app-container" v-loading="explorationLoading" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="middle">
             <el-col :span="12">
-                <el-select v-model="selectedOutcomeOptionsID" size="large" placeholder="Outcome class" @change="getDatasetResamples">
+                <el-select v-model="selectedOutcomeOptionsIDs" collapse-tags size="large" multiple placeholder="Outcome class" @change="getDatasetResamples">
                     <el-option v-for="item in selectedOutcomeOptions" :key="item.id" :label="'Outcome: ' + item.class_original" :value="item.id">
                     </el-option>
                 </el-select>
@@ -83,16 +83,6 @@ export default {
                 // },
             ],
 
-            selectedOutcomeOptions: [{
-                "id": 0,
-                "drid": 0,
-                "class_column": "",
-                "class_type": 2,
-                "class_original": "Overall",
-                "class_remapped": "overall"
-            }],
-            selectedOutcomeOptionsID: 0,
-
             initialMeasurements: [],
 
             jobDetailsData: {
@@ -141,6 +131,22 @@ export default {
                 this.$store.dispatch("setSimonExplorationSelectedModelId", value);
             },
         },
+        selectedOutcomeOptions: {
+            get() {
+                return this.$store.getters.pandoraExplorationSelectedOutcomeOptions;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonExplorationSelectedOutcomeOptions", value);
+            },
+        },
+        selectedOutcomeOptionsIDs: {
+            get() {
+                return this.$store.getters.pandoraExplorationSelectedOutcomeOptionsIDs;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonExplorationSelectedOutcomeOptionsIDs", value);
+            }
+        },
     },
     mounted() {
         console.log("mounted: " + this.$options.name);
@@ -180,6 +186,7 @@ export default {
                 this.selectedFeatureSetId = 0;
                 // Reset any selected models for the resample
                 this.selectedModelsIDs = [];
+
                 this.getDatasetResamples();
                 this.activeTabName = "datasetsTab";
             }
@@ -190,7 +197,7 @@ export default {
             this.jobDetailsData.performance = [];
 
             this.explorationLoading = true;
-            ApiFetchQueueExplorationDetails({ queueID: this.selectedQueueID, measurements: this.initialMeasurements, outcome_class_id: this.selectedOutcomeOptionsID })
+            ApiFetchQueueExplorationDetails({ queueID: this.selectedQueueID, measurements: this.initialMeasurements, selectedOutcomeOptionsIDs: this.selectedOutcomeOptionsIDs })
                 .then((response) => {
                     if (response.data.success === true) {
                         this.jobDetailsData.resamplesList = response.data.message.resamplesList;
@@ -257,9 +264,9 @@ export default {
                             showClose: true,
                         });
 
-                        this.$router.push({
-                            path: "/dashboard",
-                        });
+                        // this.$router.push({
+                        //     path: "/dashboard",
+                        // });
                     }
                     this.explorationLoading = false;
                 })

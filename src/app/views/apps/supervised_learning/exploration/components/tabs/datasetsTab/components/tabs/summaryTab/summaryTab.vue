@@ -140,6 +140,24 @@ export default {
             },
         };
     },
+    computed: {
+        selectedOutcomeOptions: {
+            get() {
+                return this.$store.getters.pandoraExplorationSelectedOutcomeOptions;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonExplorationSelectedOutcomeOptions", value);
+            },
+        },
+        selectedOutcomeOptionsIDs: {
+            get() {
+                return this.$store.getters.pandoraExplorationSelectedOutcomeOptionsIDs;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonExplorationSelectedOutcomeOptionsIDs", value);
+            }
+        },
+    },
     mounted() {
         console.log("mounted: summaryTab");
         if (this.isTabDisabled === false) {

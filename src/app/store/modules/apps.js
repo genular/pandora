@@ -43,6 +43,17 @@ const apps = {
                 selectedQueueID: estore.get("apps-pandora-exploration-selected-queueID") || "",
                 selectedFeatureSetId: estore.get("apps-pandora-exploration-selectedFeatureSetId") || 0,
                 selectedModelsIDs: estore.get("apps-pandora-exploration-selectedModelsIDs") || [],
+
+                selectedOutcomeOptions: estore.get("apps-pandora-exploration-selectedOutcomeOptions") || [{
+                    "id": 0,
+                    "drid": 0,
+                    "class_column": "",
+                    "class_type": 2,
+                    "class_original": "Overall",
+                    "class_remapped": "overall"
+                }],
+                selectedOutcomeOptionsIDs: estore.get("apps-pandora-exploration-selectedOutcomeOptionsIDs") || [0],
+
                 activeTabName: estore.get("apps-pandora-exploration-activeTabName") || "datasetsTab",
                 datasetsTabMapOptions: estore.get("apps-pandora-exploration-datasetsTabMapOptions") || [],
             },
@@ -51,8 +62,8 @@ const apps = {
 
                 selectedColumns: estore.get("apps-pandora-editing-selectedColumns") || [],
 
-                selectedPreProcess: estore.get("apps-pandora-editing-selectedPreProcess") || ["medianImpute", "center", "scale","corr", "nzv", "zv"],
-                mlSettingsForm:  estore.get("apps-pandora-editing-mlSettingsForm") || {
+                selectedPreProcess: estore.get("apps-pandora-editing-selectedPreProcess") || ["medianImpute", "center", "scale", "corr", "nzv", "zv"],
+                mlSettingsForm: estore.get("apps-pandora-editing-mlSettingsForm") || {
                     selectedColumns: [],
                     excludedColumns: [],
                     dataset: null
@@ -87,6 +98,14 @@ const apps = {
         SET_PANDORA_EXPLORATION_SELECTED_MODEL_ID: (state, selectedModelsIDs) => {
             state.pandora.exploration.selectedModelsIDs = selectedModelsIDs;
             estore.set("apps-pandora-exploration-selectedModelsIDs", selectedModelsIDs);
+        },
+        SET_PANDORA_EXPLORATION_SELECTED_OUTCOME_OPTIONS: (state, selectedOutcomeOptions) => {
+            state.pandora.exploration.selectedOutcomeOptions = selectedOutcomeOptions;
+            estore.set("apps-pandora-exploration-selectedOutcomeOptions", selectedOutcomeOptions);
+        },
+        SET_PANDORA_EXPLORATION_SELECTED_OUTCOME_OPTIONS_IDS: (state, selectedOutcomeOptionsIDs) => {
+            state.pandora.exploration.selectedOutcomeOptionsIDs = selectedOutcomeOptionsIDs;
+            estore.set("apps-pandora-exploration-selectedOutcomeOptionsIDs", selectedOutcomeOptionsIDs);
         },
         SET_PANDORA_EXPLORATION_ACTIVE_TAB_NAME: (state, activeTabName) => {
             state.pandora.exploration.activeTabName = activeTabName;
@@ -200,6 +219,16 @@ const apps = {
             commit("SET_PANDORA_EXPLORATION_SELECTED_QUEUE_ID", "");
             commit("SET_PANDORA_EXPLORATION_SELECTED_FEATURE_SET_ID", 0);
             commit("SET_PANDORA_EXPLORATION_SELECTED_MODEL_ID", []);
+            commit("SET_PANDORA_EXPLORATION_SELECTED_OUTCOME_OPTIONS", [{
+                "id": 0,
+                "drid": 0,
+                "class_column": "",
+                "class_type": 2,
+                "class_original": "Overall",
+                "class_remapped": "overall"
+            }]);
+            commit("SET_PANDORA_EXPLORATION_SELECTED_OUTCOME_OPTIONS_IDS", [0]);
+
             commit("SET_PANDORA_EXPLORATION_ACTIVE_TAB_NAME", "datasetsTab");
             commit("SET_PANDORA_EXPLORATION_ACTIVE_DATASETS_TAB_MAP_OPTIONS", []);
         },
@@ -250,7 +279,7 @@ const apps = {
         setSimonAnalysisFeatures({ commit }, selectedFiles) {
             return new Promise((resolve, reject) => {
                 ApiSimonHeaderVerify(selectedFiles)
-                    .then(function (response) {
+                    .then(function(response) {
                         const success = response.data.success;
                         const message = response.data.message;
 
@@ -366,6 +395,14 @@ const apps = {
         setSimonExplorationSelectedModelId({ commit }, selectedModelsIDs) {
             commit("SET_PANDORA_EXPLORATION_SELECTED_MODEL_ID", selectedModelsIDs);
         },
+
+        setSimonExplorationSelectedOutcomeOptions({ commit }, selectedOutcomeOptions) {
+            commit("SET_PANDORA_EXPLORATION_SELECTED_OUTCOME_OPTIONS", selectedOutcomeOptions);
+        },
+        setSimonExplorationSelectedOutcomeOptionsIDs({ commit }, selectedOutcomeOptionsIDs) {
+            commit("SET_PANDORA_EXPLORATION_SELECTED_OUTCOME_OPTIONS_IDS", selectedOutcomeOptionsIDs);
+        },
+
         setSimonExplorationnActiveTabName({ commit }, activeTabName) {
             commit("SET_PANDORA_EXPLORATION_ACTIVE_TAB_NAME", activeTabName);
         },

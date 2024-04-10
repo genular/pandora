@@ -1039,7 +1039,6 @@ export default {
          * @return {[type]}                [description]
          */
         renderFilterHeader(h, { column, store }, tableReference) {
-            console.log("====> Rendering header for: " + tableReference);
             let element = column.label;
 
             let exportData = null;
