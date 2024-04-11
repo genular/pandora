@@ -84,7 +84,7 @@
             <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
                 <el-row>
                     <el-col :span="12" v-if="Object.keys(plot_data['training']).length > 0">
-                        <el-row :span="24" style="padding-top: 20px">Model Training Evaluation: ROC Curve Analysis</el-row>
+                        <el-row :span="24" style="padding-top: 20px">Training Evaluation: ROC Curve Analysis</el-row>
                         <!-- Dynamically generate tabs based on data -->
                         <el-tabs v-model="activeTabTraining">
                             <el-tab-pane v-for="(plotItem, respItemIndex) in plot_data['training']['auc_roc']" :key="respItemIndex" :label="respItemIndex" :name="respItemIndex">
@@ -103,7 +103,7 @@
                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                     </el-col>
                     <el-col :span="12" v-if="Object.keys(plot_data['testing']).length > 0">
-                        <el-row :span="24" style="padding-top: 20px">Model Testing Evaluation: ROC Curve Analysis</el-row>
+                        <el-row :span="24" style="padding-top: 20px">Testing Evaluation: ROC Curve Analysis</el-row>
                         <el-tabs v-model="activeTabTesting">
                             <el-tab-pane v-for="(plotItem, respItemIndex) in plot_data['testing']['auc_roc']" :key="respItemIndex" :label="respItemIndex" :name="respItemIndex">
                                 <!-- Iterate over each sub-item to display multiple images per tab if needed -->
@@ -121,7 +121,7 @@
                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                     </el-col>
                 </el-row>
-                <el-row>
+                <el-row style="text-align: left; font-size: 16px;">
                     <h2>Understanding ROC Curve Analysis in Model Training and Testing</h2>
                     <p>
                         Receiver Operating Characteristic (ROC) curves are pivotal in evaluating the performance of binary classification models. By graphically representing the trade-off between the true positive rate (TPR) and the false positive rate (FPR) across various thresholds, ROC curves provide a nuanced understanding of a model's diagnostic ability. This analysis is split into two critical phases: Training and Testing.
