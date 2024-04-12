@@ -7,9 +7,15 @@
         </el-row>
         <el-row v-else type="flex" align="top">
             <el-col :span="4">
-                <el-form ref="settingsForm" :model="settingsForm">
+                <el-form ref="settingsForm" :model="settingsForm" size="large">
+                    <el-form-item label="Class">
+                        <el-select v-model="settingsForm.selectedOutcomeOptionsIDs" collapse-tags multiple placeholder="Outcome class" style="float: right">
+                            <el-option v-for="item in selectedOutcomeOptions" :key="item.id" :label="'Outcome: ' + item.class_original" :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item label="Theme">
-                        <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
+                        <el-select v-model="settingsForm.theme" placeholder="Select" style="float: right">
                             <el-option v-for="item in selectedOptions.theme" :key="item.id" :label="item.name" :value="item.id">
                                 <span style="float: left">{{ item.name }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">
@@ -26,7 +32,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Color">
-                        <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
+                        <el-select v-model="settingsForm.colorPalette" placeholder="Select" style="float: right">
                             <el-option v-for="item in selectedOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
                                 <span style="float: left">{{ item.value }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">
@@ -52,10 +58,10 @@
                         <el-input-number style="float: right" v-model="settingsForm.labelSize" :step="1" :min="0.1" :max="124"></el-input-number>
                     </el-form-item>
                     <el-form-item label="Ratio">
-                        <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
+                        <el-input-number style="float: right" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                     </el-form-item>
                     <el-form-item label="Plot size">
-                        <el-input-number style="float: right" size="mini" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
+                        <el-input-number style="float: right" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
                     </el-form-item>
                     <el-row>
                         <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
@@ -88,14 +94,28 @@
                         <!-- Dynamically generate tabs based on data -->
                         <el-tabs v-model="activeTabTraining">
                             <el-tab-pane v-for="(plotItem, respItemIndex) in plot_data['training']['auc_roc']" :key="respItemIndex" :label="respItemIndex" :name="respItemIndex">
-                                <!-- Iterate over each sub-item to display multiple images per tab if needed -->
-                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                    <template v-slot:content>
-                                        <el-button type="success" round 
-                                        @click="downloadPlotImage('training', 'auc_roc', respItemIndex)">Download</el-button>
-                                    </template>
-                                    <img class="animated fadeIn analysis_images" :src="'data:image/svg+xml;base64,' + plot_data['training']['auc_roc'][respItemIndex]" fit="scale-down" />
-                                </el-tooltip>
+                                <el-tabs v-model="trainingTabsInner" tab-position="right">
+                                    <el-tab-pane name="single">
+                                        <span slot="label" style="float: left;"><i class="el-icon-date"></i> One-vs-All</span>
+                                        <!-- Iterate over each sub-item to display multiple images per tab if needed -->
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <template v-slot:content>
+                                                <el-button type="success" round @click="downloadPlotImage('training', 'auc_roc', respItemIndex)">Download</el-button>
+                                            </template>
+                                            <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data['training']['auc_roc_png'][respItemIndex]" fit="scale-down" />
+                                        </el-tooltip>
+                                    </el-tab-pane>
+                                    <el-tab-pane name="multi">
+                                        <span slot="label" style="float: left;"><i class="el-icon-date"></i> One-vs-One</span>
+                                        <!-- Iterate over each sub-item to display multiple images per tab if needed -->
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <template v-slot:content>
+                                                <el-button type="success" round @click="downloadPlotImage('training', 'auc_roc_multiclass', respItemIndex)">Download</el-button>
+                                            </template>
+                                            <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data['training']['auc_roc_multiclass_png'][respItemIndex]" fit="scale-down" />
+                                        </el-tooltip>
+                                    </el-tab-pane>
+                                </el-tabs>
                             </el-tab-pane>
                         </el-tabs>
                     </el-col>
@@ -106,14 +126,28 @@
                         <el-row :span="24" style="padding-top: 20px">Testing Evaluation: ROC Curve Analysis</el-row>
                         <el-tabs v-model="activeTabTesting">
                             <el-tab-pane v-for="(plotItem, respItemIndex) in plot_data['testing']['auc_roc']" :key="respItemIndex" :label="respItemIndex" :name="respItemIndex">
-                                <!-- Iterate over each sub-item to display multiple images per tab if needed -->
-                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                    <template v-slot:content>
-                                        <el-button type="success" round 
-                                        @click="downloadPlotImage('testing', 'auc_roc', respItemIndex)">Download</el-button>
-                                    </template>
-                                    <img class="animated fadeIn analysis_images" :src="'data:image/svg+xml;base64,' + plot_data['testing']['auc_roc'][respItemIndex]" fit="scale-down" />
-                                </el-tooltip>
+                                    <el-tabs v-model="testingTabsInner" tab-position="right">
+                                    <el-tab-pane name="single">
+                                        <span slot="label" style="float: left;"><i class="el-icon-date"></i> One-vs-All</span>
+                                        <!-- Iterate over each sub-item to display multiple images per tab if needed -->
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <template v-slot:content>
+                                                <el-button type="success" round @click="downloadPlotImage('testing', 'auc_roc', respItemIndex)">Download</el-button>
+                                            </template>
+                                            <img class="animated fadeIn analysis_images" :src="'data:image/svg+xml;base64,' + plot_data['testing']['auc_roc'][respItemIndex]" fit="scale-down" />
+                                        </el-tooltip>
+                                    </el-tab-pane>
+                                    <el-tab-pane name="multi">
+                                        <span slot="label" style="float: left;"><i class="el-icon-date"></i> One-vs-One</span>
+                                        <!-- Iterate over each sub-item to display multiple images per tab if needed -->
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <template v-slot:content>
+                                                <el-button type="success" round @click="downloadPlotImage('testing', 'auc_roc_multiclass', respItemIndex)">Download</el-button>
+                                            </template>
+                                            <img class="animated fadeIn analysis_images" :src="'data:image/svg+xml;base64,' + plot_data['testing']['auc_roc_multiclass'][respItemIndex]" fit="scale-down" />
+                                        </el-tooltip>
+                                    </el-tab-pane>
+                                </el-tabs>
                             </el-tab-pane>
                         </el-tabs>
                     </el-col>
@@ -172,6 +206,9 @@ export default {
             activeTabTraining: null,
             activeTabTesting: null,
 
+            testingTabsInner: "single",
+            trainingTabsInner: "single",
+
             partial_dependence_supported_models: [
                 "C5.0",
                 "BinaryTree",
@@ -217,6 +254,7 @@ export default {
                 fontSize: 12,
                 pointSize: 0.5,
                 labelSize: 3.88,
+                selectedOutcomeOptionsIDs: false,
             },
         };
     },
@@ -235,12 +273,17 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedOutcomeOptionsIDs", value);
-            },
-        },
+            }
+        }
     },
     mounted() {
         console.log("mounted: modelDetailsTab");
         if (this.isTabDisabled === false) {
+
+            if (this.settingsForm.selectedOutcomeOptionsIDs.length === 0 && this.selectedOutcomeOptionsIDs.length > 0) {
+                this.settingsForm.selectedOutcomeOptionsIDs = this.selectedOutcomeOptionsIDs;
+            }
+
             this.handleFetchSummaryPlots();
         }
     },
@@ -355,41 +398,54 @@ export default {
                     this.loadingPlot = false;
                 });
         },
-        downloadPlotImage(imageType, itemIndex = null, modelIndex) {
-            if (typeof this.plot_data[imageType] === "undefined") {
+        downloadPlotImage(imageType, itemIndex = null, modelIndex = null) {
+            // Check if imageType exists in plot_data
+            if (!this.plot_data[imageType]) {
+                console.error("Image type is undefined.");
                 return;
             }
 
             let svgString = "";
-            let downloadName = this.$options.name + "_" + imageType;
-            if (itemIndex !== null) {
+            let downloadName = `${this.$options.name}_${imageType}`;
 
-                if (typeof this.plot_data[imageType][itemIndex] !== "undefined") {
-                    if (typeof this.plot_data[imageType][itemIndex][modelIndex] !== "undefined") {
-                        svgString = this.plot_data[imageType][itemIndex][modelIndex];
-                        downloadName = downloadName + "_" + itemIndex + "_" + modelIndex;
-                    }
+            // Process download based on itemIndex and modelIndex
+            if (itemIndex !== null) {
+                const itemData = this.plot_data[imageType][itemIndex];
+                if (!itemData) {
+                    console.error("Item index data is undefined.");
+                    return;
                 }
 
+                if (modelIndex !== null && itemData[modelIndex]) {
+                    svgString = itemData[modelIndex];
+                    downloadName += `_${itemIndex}_${modelIndex}`;
+                } else {
+                    console.error("Model index data is undefined.");
+                    return;
+                }
             } else {
                 svgString = this.plot_data[imageType];
             }
-            if (svgString === "") {
+
+            // Check if svgString is empty
+            if (!svgString) {
+                console.error("SVG data is empty.");
                 return;
             }
 
-            downloadName = downloadName + ".svg";
+            downloadName += ".svg";
 
-            const svgImage = "data:image/svg+xml;base64," + svgString;
-            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by PANDORA: https://genular.org -->"], {
-                type: "image/svg+xml;charset=utf-8",
-            });
+            // Create and download the SVG file
+            this.createAndDownloadBlob(svgString, downloadName);
+        },
 
+        createAndDownloadBlob(svgData, fileName) {
+            const svgBlob = new Blob([atob(svgData)], { type: "image/svg+xml;charset=utf-8" });
             const svgUrl = URL.createObjectURL(svgBlob);
             const downloadLink = document.createElement("a");
-            downloadLink.href = svgUrl;
-            downloadLink.download = downloadName;
 
+            downloadLink.href = svgUrl;
+            downloadLink.download = fileName;
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);

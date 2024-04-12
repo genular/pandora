@@ -28,7 +28,7 @@
                 <el-col :span="12">
                     <el-row type="flex" align="top">
                         <el-col :span="24" style="text-align: center">
-                            <span>ROC curve charts comparison</span>
+                            <span>ROC curve charts comparison (two-class models)</span>
                             <el-button
                                 style="float: right"
                                 size="mini"
