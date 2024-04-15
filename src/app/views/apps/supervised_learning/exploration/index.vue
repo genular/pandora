@@ -158,11 +158,12 @@ export default {
     },
     methods: {
         resetExploration() {
+            console.log("Current selectedModelsIDs:", this.selectedModelsIDs);
             // Check if new queue is selected if we already have loaded queue details
             if (typeof this.jobDetailsData.queueDetails.id !== "undefined") {
                 // If completely new queue is selected
                 if (this.selectedQueueID !== this.jobDetailsData.queueDetails.id) {
-                    console.log("Reseting exploration variables");
+                    console.log("Resting exploration variables");
                     this.selectedFeatureSetId = 0;
                     this.jobDetailsData = {
                         // Returned from server
@@ -173,12 +174,10 @@ export default {
                         // In the JS
                         resampleModels: [],
                         // Array of selected performaceVariables
-                        performance: [],
+                        performance: []
                     };
                     // Reset any selected models for the resample
                     this.selectedModelsIDs = [];
-                    this.activeTabName = "datasetsTab";
-                    this.getDatasetResamples();
                 }
             } else {
                 console.log("Fetching queue exploration details for first time (resetExploration)");
@@ -186,10 +185,14 @@ export default {
                 this.selectedFeatureSetId = 0;
                 // Reset any selected models for the resample
                 this.selectedModelsIDs = [];
-
-                this.getDatasetResamples();
-                this.activeTabName = "datasetsTab";
             }
+
+             this.$nextTick(() => {
+                this.activeTabName = "datasetsTab";
+                this.getDatasetResamples();
+                this.selectedOutcomeOptionsIDs = [0];
+            });
+
         },
         getDatasetResamples() {
             console.log("getDatasetResamples: " + this.selectedQueueID);

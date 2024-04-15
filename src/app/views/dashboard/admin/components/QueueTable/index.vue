@@ -41,6 +41,7 @@
             highlight-current-row
             @current-change="selectWorkingQueueID"
             @selection-change="selectQueueSelection"
+            :row-class-name="queueTableRowClassName"
             style="width: 100%"
         >
             <el-table-column type="selection" reserve-selection width="40" fixed></el-table-column>
@@ -654,6 +655,27 @@ export default {
         this.updateInterval = null;
     },
     methods: {
+        queueTableRowClassName({ row, rowIndex }) {
+            // Base class for all rows
+            const baseClass = 'queue-row';
+
+            // Determine additional class based on status using a switch statement for clarity
+            let statusClass = '';
+            switch (row.status) {
+                case 'processing':
+                    statusClass = 'processing-row';
+                    break;
+                case 'completed':
+                    statusClass = 'completed-row';
+                    break;
+                case 'failed':
+                    statusClass = 'failed-row';
+                    break;
+            }
+
+            // Combine base class with status class
+            return `${baseClass} ${statusClass}`;
+        },
         /**
          * Update value in the table
          * @param  {[type]} row        [description]
@@ -1118,6 +1140,10 @@ export default {
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+        }
+
+        .queue-row {
+            cursor: pointer;
         }
     }
 

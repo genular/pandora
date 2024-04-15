@@ -93,26 +93,36 @@
                         <el-row :span="24" style="padding-top: 20px">Training Evaluation: ROC Curve Analysis</el-row>
                         <!-- Dynamically generate tabs based on data -->
                         <el-tabs v-model="activeTabTraining">
-                            <el-tab-pane v-for="(plotItem, respItemIndex) in plot_data['training']['auc_roc']" :key="respItemIndex" :label="respItemIndex" :name="respItemIndex">
+                            <el-tab-pane v-for="(plotItem, respItemIndex) in plot_data['training']['auc_roc_png']" :key="respItemIndex" :label="respItemIndex" :name="respItemIndex">
                                 <el-tabs v-model="trainingTabsInner" tab-position="right">
-                                    <el-tab-pane name="single">
+                                    <el-tab-pane :disabled="plot_data['training']['auc_roc_png'][respItemIndex] === false" name="single">
                                         <span slot="label" style="float: left;"><i class="el-icon-date"></i> One-vs-All</span>
                                         <!-- Iterate over each sub-item to display multiple images per tab if needed -->
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <template v-slot:content>
                                                 <el-button type="success" round @click="downloadPlotImage('training', 'auc_roc', respItemIndex)">Download</el-button>
                                             </template>
-                                            <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data['training']['auc_roc_png'][respItemIndex]" fit="scale-down" />
+                                            <img v-if="plot_data['training']['auc_roc_png'][respItemIndex]" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data['training']['auc_roc_png'][respItemIndex]" fit="scale-down" />
                                         </el-tooltip>
                                     </el-tab-pane>
-                                    <el-tab-pane name="multi">
+                                    <el-tab-pane :disabled="selectedOutcomeOptions.length === 3 || plot_data['training']['auc_roc_multiclass_png'][respItemIndex] === false" name="multi">
                                         <span slot="label" style="float: left;"><i class="el-icon-date"></i> One-vs-One</span>
                                         <!-- Iterate over each sub-item to display multiple images per tab if needed -->
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <template v-slot:content>
                                                 <el-button type="success" round @click="downloadPlotImage('training', 'auc_roc_multiclass', respItemIndex)">Download</el-button>
                                             </template>
-                                            <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data['training']['auc_roc_multiclass_png'][respItemIndex]" fit="scale-down" />
+                                            <img v-if="plot_data['training']['auc_roc_multiclass_png'][respItemIndex]" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data['training']['auc_roc_multiclass_png'][respItemIndex]" fit="scale-down" />
+                                        </el-tooltip>
+                                    </el-tab-pane>
+                                    <el-tab-pane :disabled="plot_data['training']['comparison_png']['comparison'] === false" name="comparison">
+                                        <span slot="label" style="float: left;"><i class="el-icon-date"></i> Comparison</span>
+                                        <!-- Iterate over each sub-item to display multiple images per tab if needed -->
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <template v-slot:content>
+                                                <el-button type="success" round @click="downloadPlotImage('training', 'comparison_png', 'comparison')">Download</el-button>
+                                            </template>
+                                            <img v-if="plot_data['training']['comparison_png']['comparison']" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data['training']['comparison_png']['comparison']" fit="scale-down" />
                                         </el-tooltip>
                                     </el-tab-pane>
                                 </el-tabs>
@@ -125,26 +135,36 @@
                     <el-col :span="12" v-if="Object.keys(plot_data['testing']).length > 0">
                         <el-row :span="24" style="padding-top: 20px">Testing Evaluation: ROC Curve Analysis</el-row>
                         <el-tabs v-model="activeTabTesting">
-                            <el-tab-pane v-for="(plotItem, respItemIndex) in plot_data['testing']['auc_roc']" :key="respItemIndex" :label="respItemIndex" :name="respItemIndex">
-                                    <el-tabs v-model="testingTabsInner" tab-position="right">
-                                    <el-tab-pane name="single">
+                            <el-tab-pane v-for="(plotItem, respItemIndex) in plot_data['testing']['auc_roc_png']" :key="respItemIndex" :label="respItemIndex" :name="respItemIndex">
+                                <el-tabs v-model="testingTabsInner" tab-position="right">
+                                    <el-tab-pane :disabled="plot_data['testing']['auc_roc_png'][respItemIndex] === false" name="single">
                                         <span slot="label" style="float: left;"><i class="el-icon-date"></i> One-vs-All</span>
                                         <!-- Iterate over each sub-item to display multiple images per tab if needed -->
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <template v-slot:content>
                                                 <el-button type="success" round @click="downloadPlotImage('testing', 'auc_roc', respItemIndex)">Download</el-button>
                                             </template>
-                                            <img class="animated fadeIn analysis_images" :src="'data:image/svg+xml;base64,' + plot_data['testing']['auc_roc'][respItemIndex]" fit="scale-down" />
+                                            <img v-if="plot_data['testing']['auc_roc_png'][respItemIndex]" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data['testing']['auc_roc_png'][respItemIndex]" fit="scale-down" />
                                         </el-tooltip>
                                     </el-tab-pane>
-                                    <el-tab-pane name="multi">
+                                    <el-tab-pane :disabled="plot_data['testing']['auc_roc_multiclass_png'][respItemIndex] === false" name="multi">
                                         <span slot="label" style="float: left;"><i class="el-icon-date"></i> One-vs-One</span>
                                         <!-- Iterate over each sub-item to display multiple images per tab if needed -->
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <template v-slot:content>
                                                 <el-button type="success" round @click="downloadPlotImage('testing', 'auc_roc_multiclass', respItemIndex)">Download</el-button>
                                             </template>
-                                            <img class="animated fadeIn analysis_images" :src="'data:image/svg+xml;base64,' + plot_data['testing']['auc_roc_multiclass'][respItemIndex]" fit="scale-down" />
+                                            <img v-if="plot_data['testing']['auc_roc_multiclass_png'][respItemIndex]" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data['testing']['auc_roc_multiclass_png'][respItemIndex]" fit="scale-down" />
+                                        </el-tooltip>
+                                    </el-tab-pane>
+                                    <el-tab-pane :disabled="plot_data['testing']['comparison_png']['comparison'] === false" name="comparison">
+                                        <span slot="label" style="float: left;"><i class="el-icon-date"></i> Comparison</span>
+                                        <!-- Iterate over each sub-item to display multiple images per tab if needed -->
+                                        <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                            <template v-slot:content>
+                                                <el-button type="success" round @click="downloadPlotImage('testing', 'comparison_png', 'comparison')">Download</el-button>
+                                            </template>
+                                            <img v-if="plot_data['testing']['comparison'][respItemIndex] !== false" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data['testing']['comparison_png']['comparison']" fit="scale-down" />
                                         </el-tooltip>
                                     </el-tab-pane>
                                 </el-tabs>
@@ -209,33 +229,6 @@ export default {
             testingTabsInner: "single",
             trainingTabsInner: "single",
 
-            partial_dependence_supported_models: [
-                "C5.0",
-                "BinaryTree",
-                "party",
-                "rpart",
-                "bagging",
-                "classbagg",
-                "regbagg",
-                "boosting",
-                "gbm",
-                "xgb.Booster",
-                "cubist",
-                "lda",
-                "qda",
-                "glm",
-                "lm",
-                "lm",
-                "nls",
-                "earth",
-                "ppr",
-                "randomForest",
-                "ranger",
-                "RandomForest",
-                "cforest",
-                "svm",
-                "ksvm",
-            ],
             plot_data: {
                 training: {},
                 testing: {},
@@ -332,13 +325,15 @@ export default {
             window.open(downloadLink, "_blank");
         },
         handleFetchSummaryPlots() {
+
             this.loadingPlot = true;
 
             let remotePlotCall;
-            if (this.selectedOutcomeOptions.length > 2) {
+
+            if (this.selectedOutcomeOptions.length > 3) {
                 remotePlotCall = fetchGraphModelSummaryMultiClass;
             } else {
-                remotePlotCall = fetchGraphModelSummaryTwoClass;
+                remotePlotCall = fetchGraphModelSummaryMultiClass; //fetchGraphModelSummaryTwoClass;
             }
 
             remotePlotCall({
@@ -353,14 +348,19 @@ export default {
                     let activeTab = false;
 
                     for (const [respIndex, respItem] of Object.entries(respData)) {
-                        // Check if respIndex exists in plot_data and initialize if not
                         if (!this.plot_data.hasOwnProperty(respIndex)) {
                             this.$set(this.plot_data, respIndex, {});
                         }
 
                         if (typeof respItem === 'object' && Object.keys(respItem).length !== 0) {
+                            let resetPlotData = false; // Flag to determine if plot_data needs to be reset
+
                             for (const [respItemIndex, item] of Object.entries(respItem)) {
-                                // Initialize respItemIndex as an object if it doesn't exist or isn't an object
+                                if (item === false) {
+                                    resetPlotData = true; // Set flag if any item is false
+                                    break; // No need to process further if we're going to reset this entry
+                                }
+
                                 if (typeof this.plot_data[respIndex][respItemIndex] !== 'object' || this.plot_data[respIndex][respItemIndex] === null) {
                                     this.$set(this.plot_data[respIndex], respItemIndex, {});
                                 }
@@ -370,16 +370,17 @@ export default {
                                         if (activeTab === false) {
                                             activeTab = index2;
                                         }
-                                        // Here, we can safely assign value since respItemIndex is guaranteed to be an object
                                         this.$set(this.plot_data[respIndex][respItemIndex], index2, value);
                                     }
                                 } else {
-                                    // Direct assignment is safe since respItemIndex is initialized above
                                     this.plot_data[respIndex][respItemIndex] = item;
                                 }
                             }
+
+                            if (resetPlotData) {
+                                this.plot_data[respIndex] = false; // Reset the entire plot_data index if the flag is true
+                            }
                         } else {
-                            // Directly setting respIndex as it's guaranteed to exist in plot_data
                             this.plot_data[respIndex] = Object.keys(respItem).length === 0 ? false : encodeURIComponent(respItem);
                         }
                     }

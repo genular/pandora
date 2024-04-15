@@ -796,10 +796,10 @@ export default {
         },
         // Restore user selection of models for specific feature set!
         initSelectedModels() {
-            console.log("initPreSelectedModels: ", this.selectedModelsIDs);
+            console.log("==> initPreSelectedModels: ", this.selectedModelsIDs.length);
             if (this.selectedModelsIDs.length > 0 && this.selectedModels.length === 0) {
                 if (this.selectedFeatureSetId > 0) {
-                    console.log(this.jobDetailsData.resampleModels);
+                    console.log("Checking models")
                     if (this.jobDetailsData.resampleModels.length > 0 && typeof this.jobDetailsData.resampleModels[this.selectedFeatureSetId] !== "undefined") {
                         if (this.jobDetailsData.resampleModels[this.selectedFeatureSetId].length > 0) {
                             this.selectedModels = this.activeModelsList.filter((model) => this.selectedModelsIDs.includes(model.modelID));
@@ -878,6 +878,11 @@ export default {
         },
         // Selects models on user check-box click
         handleModelsSelectionChange(selection) {
+
+            console.log("=============> handleModelsSelectionChange")
+            console.log(this.selectedModels)
+            console.log(this.selectedModelsIDs)
+
             const isPerformanceValid = (performance) => {
                 // Check if any value is not undefined or 0
                 return Object.values(performance).some(value => value !== undefined && value !== 0);
@@ -897,6 +902,7 @@ export default {
 
             // Filter valid selections based on visibility and performance validity
             const filteredSelection = selection.filter(isValidModel);
+
             this.selectedModels = filteredSelection;
             this.selectedModelsIDs = filteredSelection.map(model => model.modelID);
 
@@ -905,7 +911,9 @@ export default {
                 this.$refs.modelDetailsTable.toggleRowSelection(model, false);
             });
 
-            console.log("handleModelsSelectionChange: ", this.selectedModels);
+            console.log("=============")
+            console.log(this.selectedModels)
+            console.log(this.selectedModelsIDs)
 
             // Update active tab based on the number of selected models
             if (this.selectedModels.length === 0) {
@@ -991,7 +999,9 @@ export default {
 
                 this.selectedFeatureSetId = row.resampleID;
                 if (init === false) {
+                    console.log("Resetting model ids")
                     this.selectedModelsIDs = [];
+                    this.$refs.modelDetailsTable.clearSelection();
                 }
 
                 // Select only models with that feature set ID
@@ -999,7 +1009,9 @@ export default {
 
                 this.$refs.resamplesTable.setCurrentRow(row);
                 this.paginateModels(1);
+
                 this.$nextTick(() => {
+                    console.log("models:" + this.selectedModelsIDs.length)
                     this.initSelectedModels();
                     this.$refs.modelDetailsTable.doLayout();
                 });
