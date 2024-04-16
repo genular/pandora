@@ -222,6 +222,15 @@ export function fetchGraphModelSummaryMultiClass(query) {
     });
 }
 
+
+export function fetchModelInterpretationPlot(query) {
+    return request({
+        url: baseUrlPath + "/model-interpretation/render-plot",
+        method: "GET",
+        params: query,
+    });
+}
+
 /**
  * [fetchGraphDistribution description]
  * @param  {[type]} query [description]

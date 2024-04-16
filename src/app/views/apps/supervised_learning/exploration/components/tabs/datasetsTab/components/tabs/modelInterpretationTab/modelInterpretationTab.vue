@@ -14,12 +14,6 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="Class">
-                        <el-select v-model="settingsForm.selectedOutcomeOptionsIDs" collapse-tags multiple placeholder="Outcome class" style="float: right">
-                            <el-option v-for="item in selectedOutcomeOptions" :key="item.id" :label="'Outcome: ' + item.class_original" :value="item.id">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item label="Theme">
                         <el-select v-model="settingsForm.theme" placeholder="Select" style="float: right">
                             <el-option v-for="item in selectedOptions.theme" :key="item.id" :label="item.name" :value="item.id">
@@ -94,15 +88,62 @@
                 </el-form>
             </el-col>
             <el-col :span="19" :offset="1" style="text-align: center">
-                <el-row>
-                    Test
+                <el-row v-if="Object.keys(plot_data['scatter']).length > 0">
+                    <el-tabs v-model="activeModelTab">
+                        <el-tab-pane
+                            v-for="(plotItems, methodName) in plot_data['scatter']"
+                            :key="methodName"
+                            :name="methodName"
+                            >
+                            <span slot="label"> {{ methodName }}</span>
+                            
+                            <!-- Vertical Tabs for each plot item -->
+                            <el-tabs tab-position="right" class="inner-tabs" v-model="activeModelTabPlots[methodName]">
+                                <el-tab-pane
+                                    v-for="(item, imageType) in plot_data"
+                                    v-if="imageType !== 'saveObjectHash' && !imageType.endsWith('_png')"
+                                    :key="imageType + '_' + methodName"
+                                    :name="imageType + '_' + methodName">
+                                    
+                                    <span slot="label" style="float: left;">
+                                        {{ imageType }}
+                                       <el-tooltip placement="top" style="padding-left: 5px">
+                                            <div slot="content">
+                                                {{ plotDescriptions[imageType] }}
+                                            </div>
+                                            <i class="el-icon-question"></i>
+                                        </el-tooltip>
+                                    </span>
+
+                                    <el-tabs tab-position="left" v-model="activeModelTabPlotsFeature[imageType + '_png' + '_' + methodName]">
+                                        <el-tab-pane
+                                            v-if="plot_data[imageType + '_png'] && plot_data[imageType + '_png'][methodName]"
+                                            v-for="(plotItems, featureName) in plot_data[imageType + '_png'][methodName]"
+                                            :key="imageType + '_png' + '_' + methodName + '_' + featureName"
+                                            :name="imageType + '_png' + '_' + methodName + '_' + featureName">
+                                            <span slot="label" style="float: left;">{{ featureName }}</span>
+                                          <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                <template v-slot:content>
+                                                    <el-button type="success" round @click="downloadPlotImage('testing', 'comparison_png', 'comparison')">Download</el-button>
+                                                </template>
+                                                <img v-if="plot_data[imageType + '_png'][methodName][featureName]" 
+                                                class="animated fadeIn" 
+                                                :src="'data:image/png;base64,' + plot_data[imageType + '_png'][methodName][featureName]" 
+                                                fit="scale-down" />
+                                            </el-tooltip>
+                                        </el-tab-pane>
+                                    </el-tabs>
+                                </el-tab-pane>
+                            </el-tabs>
+                        </el-tab-pane>
+                    </el-tabs>
                 </el-row>
             </el-col>
         </el-row>
     </div>
 </template>
 <script>
-import { fetchGraphModelSummary } from "@/api/plots";
+import { fetchModelInterpretationPlot } from "@/api/plots";
 import { md5String } from "@/utils";
 import clipboard from "@/utils/clipboard";
 
@@ -127,10 +168,24 @@ export default {
         return {
             loadingPlot: false,
 
-            plot_data: {
-                training: {},
-                testing: {},
+            activeModelTab: false,
+            activeModelTabPlots: {},
+            activeModelTabPlotsFeature: {},
 
+            plotDescriptions: {
+                scatter: "Scatter plots visualize the relationship between two variables by displaying them as points distributed across a Cartesian plane. They help illustrate how changes in feature values could affect the model's output.",
+                heatmap: "Heatmaps depict the interactions between two features by coloring cells according to the model’s output for combinations of feature values, showing how joint variations influence the prediction.",
+                ice: "ICE plots (Individual Conditional Expectation) visualize the change in the prediction outcome as a feature varies while all other features are held constant, highlighting the marginal effect of each feature.",
+                lime: "LIME plots (Local Interpretable Model-agnostic Explanations) explain individual predictions by showing which features were most influential, helping to demystify the model’s behavior on a case-by-case basis.",
+                iml: "IML plots provide insights into model predictions, often through features importance and partial dependence, offering a broader, model-level interpretation across multiple instances or features."
+            },
+
+            plot_data: {
+                scatter: {},
+                heatmap: {},
+                ice: {},
+                lime: {},
+                iml: {},
                 saveObjectHash: false,
             },
             selectedOptions: {
@@ -145,7 +200,6 @@ export default {
                 fontSize: 12,
                 pointSize: 0.5,
                 labelSize: 3.88,
-                selectedOutcomeOptionsIDs: false,
                 displayVariableImportance: false,
             },
         };
@@ -168,22 +222,6 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setSimonExplorationSelectedModelId", value);
-            },
-        },
-        selectedOutcomeOptions: {
-            get() {
-                return this.$store.getters.pandoraExplorationSelectedOutcomeOptions;
-            },
-            set(value) {
-                this.$store.dispatch("setSimonExplorationSelectedOutcomeOptions", value);
-            },
-        },
-        selectedOutcomeOptionsIDs: {
-            get() {
-                return this.$store.getters.pandoraExplorationSelectedOutcomeOptionsIDs;
-            },
-            set(value) {
-                this.$store.dispatch("setSimonExplorationSelectedOutcomeOptionsIDs", value);
             },
         },
         displayVariableImportance: {
@@ -213,13 +251,30 @@ export default {
     methods: {
         redrawImage() {
             if (this.isTabDisabled === false) {
-                this.handleFetchSummaryPlots();
+                this.handleFetchModelInterpretationPlot();
             }
         },
-        handleFetchSummaryPlots() {
+        downloadRawData() {
+            const downloadLink = this.$store.getters.user_settings_server_address_plots + "/plots/general/download-saved-object?objectHash=" + this.plot_data.saveObjectHash;
+            window.open(downloadLink, "_blank");
+        },
+        handleFetchModelInterpretationPlot() {
             this.loadingPlot = true;
 
-            fetchGraphModelSummary({
+            this.activeModelTab = false;
+            this.activeModelTabPlots = {};
+            this.activeModelTabPlotsFeature = {};
+
+            this.plot_data = {
+                scatter: {},
+                heatmap: {},
+                ice: {},
+                lime: {},
+                iml: {},
+                saveObjectHash: false
+            };
+
+            fetchModelInterpretationPlot({
                     resampleID: this.selectedFeatureSetId,
                     modelsIDs: JSON.stringify(this.selectedModelsIDs),
                     settings: this.settingsForm,
@@ -227,41 +282,62 @@ export default {
                 .then((response) => {
                     const respData = response.data.message;
                     const details = response.data.details;
-                    console.log("1");
+
+                    let activeTab = false;
                     // Update the image data.
-                    for (let respIndex in respData) {
-                        console.log("2");
-                        if (typeof this.plot_data[respIndex] !== "undefined") {
-                            console.log("3");
-                            let respItem = respData[respIndex];
-                            if (typeof respItem === "object" && Object.keys(respItem).length === 0) {
-                                console.log("4");
-                                this.plot_data[respIndex] = false;
-                            } else if (typeof respItem === "object") {
-                                console.log("5");
-                                for (let respItemIndex in respItem) {
-                                    this.plot_data[respIndex][respItemIndex] = respItem[respItemIndex];
+                    for (const [respIndex, respItem] of Object.entries(respData)) {
+                        if (!this.plot_data.hasOwnProperty(respIndex)) {
+                            this.$set(this.plot_data, respIndex, {});
+                        }
+
+                        if (typeof respItem === 'object' && Object.keys(respItem).length !== 0) {
+                            let resetPlotData = false; // Flag to determine if plot_data needs to be reset
+
+                            for (const [respItemIndex, item] of Object.entries(respItem)) {
+                                if (item === false) {
+                                    resetPlotData = true; // Set flag if any item is false
+                                    break; // No need to process further if we're going to reset this entry
                                 }
-                            } else {
-                                console.log("6");
-                                this.plot_data[respIndex] = encodeURIComponent(respItem);
+
+                                if (typeof this.plot_data[respIndex][respItemIndex] !== 'object' || this.plot_data[respIndex][respItemIndex] === null) {
+                                    this.$set(this.plot_data[respIndex], respItemIndex, {});
+                                }
+
+                                if (typeof item === 'object') {
+                                    for (const [index2, value] of Object.entries(item)) {
+
+                                        if (activeTab === false) {
+                                            activeTab = respItemIndex;
+                                        }
+
+                                        if(!this.activeModelTabPlots[respItemIndex]) {
+                                            this.activeModelTabPlots[respItemIndex] = respIndex + '_' + respItemIndex;
+                                        }
+
+                                        if(!this.activeModelTabPlotsFeature[respIndex + '_' + respItemIndex]) {
+                                            if(respIndex !== "saveObjectHash" && respIndex.endsWith('_png') === true) {
+                                                this.activeModelTabPlotsFeature[respIndex + '_' + respItemIndex] = respIndex + '_' + respItemIndex + '_' + index2;
+                                            }
+                                        }
+
+                                        this.$set(this.plot_data[respIndex][respItemIndex], index2, value);
+
+                                    }
+                                } else {
+                                    this.plot_data[respIndex][respItemIndex] = item;
+                                }
                             }
+
+                            if (resetPlotData) {
+                                this.plot_data[respIndex] = false; // Reset the entire plot_data index if the flag is true
+                            }
+                        } else {
+                            this.plot_data[respIndex] = Object.keys(respItem).length === 0 ? false : encodeURIComponent(respItem);
                         }
                     }
-                    // Update the details data.
-                    for (let respIndex in details) {
-                        if (typeof this.details[respIndex] !== "undefined") {
-                            console.log("7");
-                            this.details[respIndex] = false;
-                            let respItem = details[respIndex];
-                            if (typeof respItem === "object" || respItem.length < 15) {
-                                this.details[respIndex] = false;
-                            } else {
-                                console.log("8");
-                                this.details[respIndex] = window.atob(respItem);
-                            }
-                        }
-                    }
+
+                    this.activeModelTab = activeTab;
+
                     this.loadingPlot = false;
                 })
                 .catch((error) => {
@@ -272,7 +348,59 @@ export default {
                     console.log(error);
                     this.loadingPlot = false;
                 });
-        }
+        },
+        downloadPlotImage(imageType, itemIndex = null, modelIndex = null) {
+            // Check if imageType exists in plot_data
+            if (!this.plot_data[imageType]) {
+                console.error("Image type is undefined.");
+                return;
+            }
+
+            let svgString = "";
+            let downloadName = `${this.$options.name}_${imageType}`;
+
+            // Process download based on itemIndex and modelIndex
+            if (itemIndex !== null) {
+                const itemData = this.plot_data[imageType][itemIndex];
+                if (!itemData) {
+                    console.error("Item index data is undefined.");
+                    return;
+                }
+
+                if (modelIndex !== null && itemData[modelIndex]) {
+                    svgString = itemData[modelIndex];
+                    downloadName += `_${itemIndex}_${modelIndex}`;
+                } else {
+                    console.error("Model index data is undefined.");
+                    return;
+                }
+            } else {
+                svgString = this.plot_data[imageType];
+            }
+
+            // Check if svgString is empty
+            if (!svgString) {
+                console.error("SVG data is empty.");
+                return;
+            }
+
+            downloadName += ".svg";
+
+            // Create and download the SVG file
+            this.createAndDownloadBlob(svgString, downloadName);
+        },
+
+        createAndDownloadBlob(svgData, fileName) {
+            const svgBlob = new Blob([atob(svgData)], { type: "image/svg+xml;charset=utf-8" });
+            const svgUrl = URL.createObjectURL(svgBlob);
+            const downloadLink = document.createElement("a");
+
+            downloadLink.href = svgUrl;
+            downloadLink.download = fileName;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        },
     },
     watch: {
         /**
