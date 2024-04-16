@@ -58,6 +58,7 @@ export default {
                 .then(status => {
                     if (status === true && "cpu" in this.backendServerLoad) {
                         this.currentServerLoad = this.backendServerLoad.cpu;
+
                         if(this.currentServerLoad > 75 && this.serverLoadUpdateInterval === 5000){
                             this.serverLoadUpdateInterval = 60000;
                             clearInterval(this.serverLoadUpdate);

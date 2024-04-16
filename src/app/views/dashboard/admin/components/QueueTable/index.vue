@@ -6,15 +6,16 @@
                 style="width: 300px"
                 class="filter-item"
                 :placeholder="$t('views.dashboard.admin.components.QueueTable.filters.queue_id.placeholder')"
+                size="large"
                 v-model="queueFilterQuery.queueID"
             ></el-input>
-            <el-select @change="handleFilter" style="width: 140px" class="filter-item" v-model="queueFilterQuery.sort">
+            <el-select @change="handleFilter" size="large" style="width: 140px" class="filter-item" v-model="queueFilterQuery.sort">
                 <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"></el-option>
             </el-select>
-            <el-button class="filter-item" size="medium" type="primary" v-waves icon="el-icon-search" @click="handleFilter">
+            <el-button class="filter-item" size="large" type="primary" v-waves icon="el-icon-search" @click="handleFilter">
                 {{ $t("views.dashboard.admin.components.QueueTable.filters.buttons.search") }}
             </el-button>
-            <el-button class="filter-item" size="medium" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">
+            <el-button class="filter-item" size="large" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">
                 {{ $t("views.dashboard.admin.components.QueueTable.filters.buttons.export") }}
             </el-button>
             <el-button
@@ -22,6 +23,7 @@
                 :title="$t('views.dashboard.admin.components.QueueTable.table.operations.delete.title')"
                 class="filter-item"
                 type="primary"
+                size="large"
                 v-waves
                 icon="el-icon-delete"
                 @click="handleOperationsMultiple('delete')"
@@ -35,7 +37,7 @@
             row-key="queueID"
             stripe
             :border="true"
-            size="medium"
+            size="large"
             fit
             class="queue-list-container-table"
             highlight-current-row
@@ -257,6 +259,7 @@
         <div class="pagination-container">
             <el-pagination
                 background
+                size="large"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page.sync="queueFilterQuery.page"
@@ -280,7 +283,7 @@
                             v-model="selectedPerformace"
                             multiple
                             filterable
-                            size="small"
+                            size="large"
                             :placeholder="$t('globals.performanceVariables.placeholder')"
                         >
                             <el-option
@@ -296,10 +299,10 @@
                 </el-row>
                 <el-row type="flex" align="top" style="text-align: right; margin-right: 25px; padding-top: 25px">
                     <el-col :span="24">
-                        <el-button style="cursor: copy" type="success" class="animated flipInX" size="small">
+                        <el-button style="cursor: copy" type="success" class="animated flipInX" size="large">
                             {{ $t("views.dashboard.admin.components.QueueTable.dialog.selected_queue_id") }}: {{ selectedQueueID }}
                         </el-button>
-                        <el-button style="cursor: copy" type="success" class="animated flipInX" size="small">
+                        <el-button style="cursor: copy" type="success" class="animated flipInX" size="large">
                             {{ $t("views.dashboard.admin.components.QueueTable.dialog.selected_resamples_ids") }}: {{ selectedResampleIDs.join(", ") }}
                         </el-button>
                     </el-col>
@@ -319,6 +322,7 @@
                             :border="true"
                             fit
                             style="width: 100%"
+                            size="large"
                             height="250"
                         >
                             <el-table-column type="selection" reserve-selection width="50" fixed></el-table-column>
@@ -474,6 +478,7 @@
                             row-key="modelID"
                             style="width: 100%"
                             height="300"
+                            size="large"
                         >
                             <el-table-column
                                 fixed
@@ -658,24 +663,49 @@ export default {
         queueTableRowClassName({ row, rowIndex }) {
             // Base class for all rows
             const baseClass = 'queue-row';
-
+            
             // Determine additional class based on status using a switch statement for clarity
             let statusClass = '';
             switch (row.status) {
-                case 'processing':
+                case 0: // Created
+                    statusClass = 'created-row';
+                    break;
+                case 1: // User confirmed - and resamples active
+                    statusClass = 'confirmed-active-row';
+                    break;
+                case 2: // User canceled - Inactive
+                    statusClass = 'canceled-inactive-row';
+                    break;
+                case 3: // Marked for processing - cron job must pick it up
+                    statusClass = 'marked-processing-row';
+                    break;
+                case 4: // R Processing
                     statusClass = 'processing-row';
                     break;
-                case 'completed':
-                    statusClass = 'completed-row';
+                case 5: // R Finished - Success
+                    statusClass = 'success-row';
                     break;
-                case 'failed':
-                    statusClass = 'failed-row';
+                case 6: // R Finished - Errors
+                    statusClass = 'error-row';
+                    break;
+                case 7: // User Paused
+                    statusClass = 'paused-row';
+                    break;
+                case 8: // User resumed
+                    statusClass = 'resumed-row';
+                    break;
+                default:
+                    statusClass = 'unknown-status-row';
                     break;
             }
 
+            if ([4, 5, 6].includes(row.status) && row.modelsSuccess > 0) {
+                statusClass += ' models-success';
+            }
             // Combine base class with status class
             return `${baseClass} ${statusClass}`;
         },
+
         /**
          * Update value in the table
          * @param  {[type]} row        [description]
@@ -1133,7 +1163,8 @@ export default {
     },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+
+<style rel="stylesheet/scss" lang="scss">
 .queue-list-container {
     .queue-list-container-table {
         .queue-name {
@@ -1142,8 +1173,38 @@ export default {
             white-space: nowrap;
         }
 
+        /* Base styling for all rows */
         .queue-row {
-            cursor: pointer;
+            border-bottom: 1px solid #e0e0e0; // Light grey border for separation
+            transition: background-color 0.3s ease; // Smooth transition for hover effects
+
+            &:hover {
+                background-color: #f5f5f5; // Lighter grey on hover
+            }
+        }
+
+        // Specific status styles using nested rules for clarity and maintainability
+        $success-color: #2a662a;
+        $error-color: #d32f2f;
+
+        .queue-row {
+            &.created-row { background-color: #e7f4ff; } // Very light blue for created rows
+            &.confirmed-active-row { background-color: #d9f7be; } // Soft green for active confirmations
+            &.canceled-inactive-row { background-color: #ffdce0; } // Light pink for canceled
+            &.marked-processing-row { background-color: #fff5c4; } // Light yellow for pending processing
+            &.processing-row { background-color: #cceeff; } // Lighter blue for processing
+            &.success-row {
+                background-color: #e6ffed; // Light green for success
+                color: $success-color; // Darker green text for better contrast and readability
+                cursor: pointer; // Change cursor to pointer on hover for better UX
+            }
+            &.error-row {
+                background-color: #ffebee; // Very light red for errors
+                color: $error-color; // Dark red text for visibility
+            }
+            &.paused-row { background-color: #fef7e0; } // Pale yellow for paused
+            &.resumed-row { background-color: #e0f7ff; } // Very light cyan for resumed
+            &.unknown-status-row { background-color: #e0e0e0; } // Grey indicating an unknown status
         }
     }
 
@@ -1151,7 +1212,6 @@ export default {
         padding: 0 20px;
     }
 }
-
 .el-table .warning-row {
     background-color: rgba(53, 34, 74, 0.05);
 }
@@ -1168,4 +1228,5 @@ export default {
 .el-icon-warning {
     color: #e3006e;
 }
+
 </style>

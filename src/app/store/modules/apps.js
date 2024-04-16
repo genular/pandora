@@ -53,6 +53,7 @@ const apps = {
                     "class_remapped": "overall"
                 }],
                 selectedOutcomeOptionsIDs: estore.get("apps-pandora-exploration-selectedOutcomeOptionsIDs") || [0],
+                displayVariableImportance: estore.get("apps-pandora-exploration-displayVariableImportance") || [],
 
                 activeTabName: estore.get("apps-pandora-exploration-activeTabName") || "datasetsTab",
                 datasetsTabMapOptions: estore.get("apps-pandora-exploration-datasetsTabMapOptions") || [],
@@ -106,6 +107,10 @@ const apps = {
         SET_PANDORA_EXPLORATION_SELECTED_OUTCOME_OPTIONS_IDS: (state, selectedOutcomeOptionsIDs) => {
             state.pandora.exploration.selectedOutcomeOptionsIDs = selectedOutcomeOptionsIDs;
             estore.set("apps-pandora-exploration-selectedOutcomeOptionsIDs", selectedOutcomeOptionsIDs);
+        },
+        SET_PANDORA_EXPLORATION_DISPLAY_VARIABLE_IMPORTANCE: (state, displayVariableImportance) => {
+            state.pandora.exploration.displayVariableImportance = displayVariableImportance;
+            estore.set("apps-pandora-exploration-displayVariableImportance", displayVariableImportance);
         },
         SET_PANDORA_EXPLORATION_ACTIVE_TAB_NAME: (state, activeTabName) => {
             state.pandora.exploration.activeTabName = activeTabName;
@@ -228,6 +233,7 @@ const apps = {
                 "class_remapped": "overall"
             }]);
             commit("SET_PANDORA_EXPLORATION_SELECTED_OUTCOME_OPTIONS_IDS", [0]);
+            commit("SET_PANDORA_EXPLORATION_DISPLAY_VARIABLE_IMPORTANCE", []);
 
             commit("SET_PANDORA_EXPLORATION_ACTIVE_TAB_NAME", "datasetsTab");
             commit("SET_PANDORA_EXPLORATION_ACTIVE_DATASETS_TAB_MAP_OPTIONS", []);
@@ -401,6 +407,9 @@ const apps = {
         },
         setSimonExplorationSelectedOutcomeOptionsIDs({ commit }, selectedOutcomeOptionsIDs) {
             commit("SET_PANDORA_EXPLORATION_SELECTED_OUTCOME_OPTIONS_IDS", selectedOutcomeOptionsIDs);
+        },
+        setSimonExplorationDisplayVariableImportance({ commit }, displayVariableImportance) {
+            commit("SET_PANDORA_EXPLORATION_DISPLAY_VARIABLE_IMPORTANCE", displayVariableImportance);
         },
 
         setSimonExplorationnActiveTabName({ commit }, activeTabName) {

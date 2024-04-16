@@ -6,7 +6,7 @@
             <span class="close-container" @click="closeSelectedFile(file.id)">x</span>
         </div>
         <div v-if="selectedQueueID != ''" class="files-view-item selectedQueueID animated flipInY" closable>
-            Queue ID: {{ selectedQueueID }}
+            Queue ID: <strong>{{ selectedQueueID }}</strong>
             <span class="close-container" @click.prevent.stop="closeSelectedQueue()">x</span>
         </div>
     </div>

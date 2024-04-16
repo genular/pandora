@@ -14,7 +14,7 @@
                         <span>{{ $t("views.settings.account_information.title") }}</span>
                     </div>
                     <div>
-                        <el-form ref="settingsAccountForm" v-model="settingsForm" label-width="120px">
+                        <el-form size="large" ref="settingsAccountForm" v-model="settingsForm" label-width="120px">
                             <el-form-item :label="$t('views.settings.account_information.username')">
                                 <el-input name="username" type="text" prop="username" v-model="settingsForm.username"></el-input>
                             </el-form-item>
@@ -26,7 +26,7 @@
                             </el-form-item>
                         </el-form>
                         <div style="text-align: right">
-                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="updateAccount">
+                            <el-button type="primary" size="large" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="updateAccount">
                                 {{ $t("views.settings.account_information.save_button") }}
                             </el-button>
                         </div>
@@ -37,7 +37,7 @@
                         <span>{{ $t("views.settings.profile_information.title") }}</span>
                     </div>
                     <div>
-                        <el-form ref="settingsProfileForm" v-model="settingsForm" label-width="120px">
+                        <el-form size="large" ref="settingsProfileForm" v-model="settingsForm" label-width="120px">
                             <el-form-item :label="$t('views.settings.profile_information.first_name')">
                                 <el-input name="first_name" type="text" prop="first_name" v-model="settingsForm.first_name"></el-input>
                             </el-form-item>
@@ -52,7 +52,7 @@
                             </el-form-item>
                         </el-form>
                         <div style="text-align: right">
-                            <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="updateProfile">
+                            <el-button size="large" type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="updateProfile">
                                 {{ $t("views.settings.profile_information.save_button") }}
                             </el-button>
                         </div>
@@ -74,7 +74,7 @@
                         <span>{{ $t("views.settings.danger_area.title") }}</span>
                     </div>
                     <div style="text-align: right">
-                        <el-button type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="deleteAccount">
+                        <el-button size="large" type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="deleteAccount">
                             {{ $t("views.settings.danger_area.delete_button") }}
                         </el-button>
                     </div>
@@ -83,11 +83,11 @@
                     <div slot="header" class="clearfix"><span>System debugging</span></div>
                     <el-row type="flex" class="row-bg" justify="space-between">
                         <el-col :span="6" style="text-align: left">
-                            <el-button type="primary" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">Update minor PANDORA version</el-button>
+                            <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">Update minor PANDORA version</el-button>
                         </el-col>
                         <el-col :span="18" style="text-align: right">
-                            <el-button type="primary" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">Generate system log file</el-button>
-                            <el-button type="primary" :disabled="this.$config.isDemoServer == true" @click="generateBrowserLogFile">Generate browser log file</el-button>
+                            <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">Generate system log file</el-button>
+                            <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="generateBrowserLogFile">Generate browser log file</el-button>
                         </el-col>
                     </el-row>
                 </el-card>
@@ -270,6 +270,7 @@ export default {
                     .catch(error => {
                         // Handle any errors that occur during the update process
                         console.error("System update failed:", error);
+
                         this.$message({
                             type: "error",
                             message: "System update failed.",

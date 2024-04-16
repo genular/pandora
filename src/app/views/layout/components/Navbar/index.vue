@@ -12,7 +12,7 @@
             
             <error-log v-if="errorLogs.length > 0" class="right-menu-item error-logs"></error-log>
             <lang-select class="right-menu-item international "></lang-select>
-            <el-dropdown class="avatar-container right-menu-item" trigger="click">
+            <el-dropdown class="avatar-container right-menu-item" size="large" trigger="click">
                 <div class="avatar-wrapper">
                     <!-- <img :src="user_settings_server_address_backend + '/backend/user/avatar?id=' + user_id + '&size=64'" /> -->
                     <i class="el-icon-user-solid user-avatar"></i>

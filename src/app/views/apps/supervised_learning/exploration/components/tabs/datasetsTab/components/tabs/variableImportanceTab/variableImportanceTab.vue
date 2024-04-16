@@ -35,7 +35,7 @@
                     -->
                 </el-row>
                 <el-row style="padding-top: 15px;">
-                    <el-table ref="variableImpTable" :data="displayVariableImp" :row-class-name="tableVariableImpClass" row-key="id" @select-all="handleVarImpSelection" @select="handleVarImpSelection" style="min-height: 600px" size="small" border>
+                    <el-table ref="variableImpTable" :data="displayVariableImportance" :row-class-name="tableVariableImpClass" row-key="id" @select-all="handleVarImpSelection" @select="handleVarImpSelection" style="min-height: 600px" size="small" border>
                         <el-table-column type="selection" reserve-selection></el-table-column>
                         <el-table-column fixed label="Model">
                             <template slot-scope="scope">
@@ -74,7 +74,7 @@
                 </el-row>
             </el-col>
             <el-col :span="14" style="padding-left: 10px">
-                <div v-if="displayVariableImp.length > 0">
+                <div v-if="displayVariableImportance.length > 0">
                     <el-tabs :value="'features_across_dataset'">
                         <el-tab-pane label="Features across dataset" name="features_across_dataset">
                             <div v-if="selectedVariableImp.length > 0 && selectedVariableImp.length <= 25">
@@ -127,7 +127,6 @@ export default {
     data() {
         return {
             listLoading: false,
-            displayVariableImp: [],
             selectedVariableImp: [],
 
             categoryStackData: {
@@ -209,6 +208,14 @@ export default {
                 this.$store.dispatch("setSimonExplorationSelectedOutcomeOptionsIDs", value);
             }
         },
+        displayVariableImportance: {
+            get() {
+                return this.$store.getters.pandoraExplorationDisplayVariableImportance;
+            },
+            set(value) {
+                this.$store.dispatch("setSimonExplorationDisplayVariableImportance", value);
+            }
+        },
     },
     mounted() {
         console.log("mounted: variableImportanceTab: " + this.isTabDisabled);
@@ -217,7 +224,7 @@ export default {
             this.paginateVariableImpData.selectedOutcomeOptionsIDs = this.selectedOutcomeOptionsIDs;
         }
 
-        if (this.listLoading === false && this.displayVariableImp.length === 0) {
+        if (this.listLoading === false && this.displayVariableImportance.length === 0) {
             this.handleFetchVariableImp();
         }
     },
@@ -270,7 +277,7 @@ export default {
                 })
                 .then((response) => {
                     if (response.data.success === true) {
-                        this.displayVariableImp = response.data.data;
+                        this.displayVariableImportance = response.data.data;
                         this.paginateVariableImpData.total_items = response.data.total;
 
                         this.prepareDataForChart();

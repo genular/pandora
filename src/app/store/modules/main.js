@@ -12,6 +12,7 @@ const main = {
         },
         is_online: false,
         backendServerLoad: {},
+        systemUpdate: false,
         language: estore.get("main-language") || "en",
         is_configured: estore.get("main-is_configured") || false,
 
@@ -45,6 +46,9 @@ const main = {
         },
         SET_BACKEND_SERVER_LOAD: (state, backendServerLoad) => {
             state.backendServerLoad = backendServerLoad;
+        },
+        SET_BACKEND_SYSTEM_UPDATE: (state, systemUpdate) => {
+            state.systemUpdate = systemUpdate;
         },
         SET_LANGUAGE: (state, language) => {
             state.language = language;
@@ -96,6 +100,11 @@ const main = {
                     .then(response => {
                         if (response.data.success === true) {
                             commit("SET_BACKEND_SERVER_LOAD", response.data.message);
+
+                            if("system_update" in response.data.message){
+                                commit("SET_BACKEND_SYSTEM_UPDATE", response.data.message.system_update);
+                            }
+
                             resolve(true);
                         } else {
                             resolve(false);

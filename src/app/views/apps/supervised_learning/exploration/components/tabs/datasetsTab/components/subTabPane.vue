@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { variableImportanceTab, booleanDistributionTab, otherDistributionTab, samrAnalysisTab, catBoostTab, summaryTab, rocAnalysisTab, modelInterpretationTab } from "./tabs";
+import { variableImportanceTab, summaryTab, rocAnalysisTab, samrAnalysisTab, modelInterpretationTab } from "./tabs";
 
 export default {
     name: "subTabPane",
@@ -27,12 +27,9 @@ export default {
     },
     components: {
         variableImportanceTab,
-        booleanDistributionTab,
-        otherDistributionTab,
-        samrAnalysisTab,
-        catBoostTab,
         summaryTab,
         rocAnalysisTab,
+        samrAnalysisTab,
         modelInterpretationTab,
     },
     data() {

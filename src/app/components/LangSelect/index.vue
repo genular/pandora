@@ -1,5 +1,5 @@
 <template>
-    <el-dropdown trigger="click" class="international" @command="handleSetLanguage">
+    <el-dropdown trigger="click" class="international" size="large" @command="handleSetLanguage">
         <i class="fa fa-globe" aria-hidden="true"></i>
         <el-dropdown-menu slot="dropdown" class="language-dropdown">
             <el-dropdown-item v-for="lang in getLanguages()" :key="lang" :command="lang" :disabled="language === lang">

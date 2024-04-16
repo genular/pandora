@@ -9,9 +9,9 @@ export { default as variableImportanceTab } from "./variableImportanceTab/variab
 export { default as summaryTab } from "./summaryTab/summaryTab.vue";
 export { default as rocAnalysisTab } from "./rocAnalysisTab/rocAnalysisTab.vue";
 export { default as samrAnalysisTab } from "./samrAnalysisTab/samrAnalysisTab.vue";
-
-
-export { default as catBoostTab } from "./catBoostTab/catBoostTab.vue";
 export { default as modelInterpretationTab } from ".//modelInterpretationTab/modelInterpretationTab.vue";
-export { default as booleanDistributionTab } from "./booleanDistributionTab/booleanDistributionTab.vue";
-export { default as otherDistributionTab } from "./otherDistributionTab/otherDistributionTab.vue";
+
+
+// export { default as catBoostTab } from "./catBoostTab/catBoostTab.vue";
+// export { default as booleanDistributionTab } from "./booleanDistributionTab/booleanDistributionTab.vue";
+// export { default as otherDistributionTab } from "./otherDistributionTab/otherDistributionTab.vue";

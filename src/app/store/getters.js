@@ -3,6 +3,7 @@ const getters = {
     sidebar: (state) => state.main.sidebar,
     is_online: (state) => state.main.is_online,
     backendServerLoad: (state) => state.main.backendServerLoad,
+    systemUpdate: (state) => state.main.systemUpdate,
     language: (state) => state.main.language,
     is_configured: (state) => state.main.is_configured,
     selectedFiles: (state) => state.main.selectedFiles,
@@ -62,7 +63,7 @@ const getters = {
     pandoraExplorationSelectedQueueID: (state) => state.apps.pandora.exploration.selectedQueueID,
     pandoraExplorationSelectedFeatureSetId: (state) => state.apps.pandora.exploration.selectedFeatureSetId,
     pandoraExplorationSelectedModelId: (state) => state.apps.pandora.exploration.selectedModelsIDs,
-
+    pandoraExplorationDisplayVariableImportance: (state) => state.apps.pandora.exploration.displayVariableImportance,
 
     pandoraExplorationSelectedOutcomeOptions: (state) => state.apps.pandora.exploration.selectedOutcomeOptions,
     pandoraExplorationSelectedOutcomeOptionsIDs: (state) => state.apps.pandora.exploration.selectedOutcomeOptionsIDs,

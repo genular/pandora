@@ -3,8 +3,8 @@
         <div v-if="!isTabDisabled">
             <el-row type="flex" align="top" :gutter="20">
                 <el-col :span="7" v-loading="loadingOptions" element-loading-text="Processing">
-                    <el-form ref="settingsForm" :model="settingsForm" class="samr_form" label-width="200px">
-                        <el-form-item label="Delta Slider">
+                    <el-form ref="settingsForm" :model="settingsForm" class="samr_form" size="large" label-width="200px">
+                        <el-form-item label="Delta">
                             <el-slider
                                 v-model="settingsForm.deltaInput.value"
                                 :min="settingOptions.deltaInput.min"
@@ -14,7 +14,7 @@
                             >
                             </el-slider>
                         </el-form-item>
-                        <el-form-item label="Response Type">
+                        <el-form-item label="Response">
                             <el-select v-model="settingsForm.responseType_array" placeholder="Select">
                                 <el-option v-for="(item, index) in settingOptions.responseType_array" :key="index" :label="item.title" :value="item.value"> </el-option>
                             </el-select>

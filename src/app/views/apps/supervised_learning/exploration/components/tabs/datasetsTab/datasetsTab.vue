@@ -5,54 +5,18 @@
                 <el-card class="box-card animated fadeIn">
                     <div slot="header" class="clearfix">
                         <div class="card_intro">{{ $t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.title") }}</div>
-
                         <div v-if="selectedFeatureSetId > 0">
                             <div class="models_actions animated fadeIn" v-if="queueClassesDisplay.length > 0">
-                                <el-select
-                                    style="min-width: 350px"
-                                    v-model="selectedClasses"
-                                    multiple
-                                    filterable
-                                    remote
-                                    default-first-option
-                                    :placeholder="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.filters.exploration_classes.placeholder')"
-                                    size="large"
-                                    :remote-method="filterAvaliableClasses"
-                                    @change="selectChangeClasses"
-                                    @focus="selectSuggestClasses"
-                                >
-                                    <el-option
-                                        v-for="(classItem, index) in queueClassesDisplay"
-                                        :key="classItem.remapped"
-                                        :label="classItem.original"
-                                        :value="classItem.remapped"
-                                        :disabled="classItem.unique < 2"
-                                    ></el-option>
+                                <el-select style="min-width: 350px" v-model="selectedClasses" multiple filterable remote default-first-option :placeholder="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.filters.exploration_classes.placeholder')" size="large" :remote-method="filterAvaliableClasses" @change="selectChangeClasses" @focus="selectSuggestClasses">
+                                    <el-option v-for="(classItem, index) in queueClassesDisplay" :key="classItem.remapped" :label="classItem.original" :value="classItem.remapped" :disabled="classItem.unique < 2"></el-option>
                                 </el-select>
                             </div>
                         </div>
                     </div>
                     <!-- Main queue Resamples Table -->
-                    <el-table
-                        ref="resamplesTable"
-                        v-loading="tableLoading.resamples"
-                        :data="displayResamples"
-                        :row-class-name="resamplesTableRowClass"
-                        @select-all="selectResample"
-                        @select="selectResample"
-                        row-key="resampleID"
-                        :border="true"
-                        style="width: 100%"
-                    >
- 
+                    <el-table ref="resamplesTable" v-loading="tableLoading.resamples" :data="displayResamples" :row-class-name="resamplesTableRowClass" @select-all="selectResample" @select="selectResample" row-key="resampleID" :border="true" style="width: 100%">
                         <el-table-column type="selection" reserve-selection></el-table-column>
-
-                        <el-table-column
-                            fixed
-                            :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.title')"
-                            prop="dataSource"
-                            :show-overflow-tooltip="true"
-                        >
+                        <el-table-column fixed :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.title')" prop="dataSource" :show-overflow-tooltip="true">
                             <template slot-scope="scope">
                                 <span>
                                     <span v-if="scope.row.dataSource == 1">
@@ -65,52 +29,30 @@
                                 </span>
                             </template>
                         </el-table-column>
-
-                        <el-table-column
-                            fixed
-                            :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.resample_id')"
-                            prop="resampleID"
-                            width="100"
-                            :show-overflow-tooltip="true"
-                            :render-header="
+                        <el-table-column fixed :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.resample_id')" prop="resampleID" width="100" :show-overflow-tooltip="true" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'resamplesTable');
                                 }
-                            "
-                        >
+                            ">
                             <template slot-scope="scope">
                                 <span>{{ scope.row.resampleID }}</span>
                             </template>
                         </el-table-column>
-
-                        <el-table-column
-                            :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_features')"
-                            prop="featuresTotal"
-                            :show-overflow-tooltip="true"
-                            :render-header="
+                        <el-table-column :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_features')" prop="featuresTotal" :show-overflow-tooltip="true" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'resamplesTable');
                                 }
-                            "
-                        >
+                            ">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.featuresTotal">{{ scope.row.featuresTotal }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-
-                        <el-table-column
-                            v-for="(performanceItem, performanceIndex) in jobDetailsData.performance"
-                            :prop="'performance|' + performanceItem"
-                            :key="performanceItem + '_' + performanceIndex"
-                            :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))"
-                            :show-overflow-tooltip="true"
-                            :render-header="
+                        <el-table-column v-for="(performanceItem, performanceIndex) in jobDetailsData.performance" :prop="'performance|' + performanceItem" :key="performanceItem + '_' + performanceIndex" :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))" :show-overflow-tooltip="true" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'resamplesTable');
                                 }
-                            "
-                        >
+                            ">
                             <template slot-scope="scope">
                                 <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">
                                     {{ scope.row.performance[performanceItem] }}
@@ -118,85 +60,54 @@
                                 <span v-else style="font-weight: bold; color: red;">N/A</span>
                             </template>
                         </el-table-column>
-
-                        <el-table-column
-                            :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_total')"
-                            prop="samplesTotal"
-                            :render-header="
+                        <el-table-column :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_total')" prop="samplesTotal" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'resamplesTable');
                                 }
-                            "
-                        >
+                            ">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                            :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_training')"
-                            prop="samplesTraining"
-                            :render-header="
+                        <el-table-column :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_training')" prop="samplesTraining" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'resamplesTable');
                                 }
-                            "
-                        >
+                            ">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column
-                            :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_testing')"
-                            prop="samplesTesting"
-                            :render-header="
+                        <el-table-column :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_testing')" prop="samplesTesting" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'resamplesTable');
                                 }
-                            "
-                        >
+                            ">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-
-                        <el-table-column
-                            :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_models')"
-                            prop="modelsTotal"
-                            :render-header="
+                        <el-table-column :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_models')" prop="modelsTotal" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'resamplesTable');
                                 }
-                            "
-                        >
+                            ">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.modelsTotal">{{ scope.row.modelsTotal }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
-
-                        <el-table-column
-                            align="center"
-                            class-name="settings"
-                            fixed="right"
-                            min-width="125"
-                            :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.actions')"
-                        >
+                        <el-table-column align="center" class-name="settings" fixed="right" min-width="125" :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.actions')">
                             <template slot="header" slot-scope="scope">
                                 <el-popover placement="left" trigger="hover" v-show="tableFiltersOrder['resamplesTable'].length > 0">
                                     <el-card class="box-card">
                                         <div slot="header" class="clearfix">
                                             <el-button @click="clearTableFilter('resamplesTable')" type="text">Clear all filters</el-button>
                                         </div>
-
-                                        <div
-                                            v-if="tableFiltersOrder['resamplesTable'].length > 0"
-                                            v-for="(item, index) in tableFiltersOrder['resamplesTable']"
-                                            :key="item"
-                                            class="text item"
-                                        >
+                                        <div v-if="tableFiltersOrder['resamplesTable'].length > 0" v-for="(item, index) in tableFiltersOrder['resamplesTable']" :key="item" class="text item">
                                             {{ index + " - " + item }}
                                         </div>
                                         <div v-else>Nothing to display!</div>
@@ -206,37 +117,13 @@
                             </template>
                             <template slot-scope="scope">
                                 <el-button-group>
-                                    <el-button
-                                        size="mini"
-                                        :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.operations.download.title')"
-                                        style="float: left"
-                                        type="success"
-                                        icon="el-icon-download"
-                                        @click="handleOperations('downloadResample', scope.row)"
-                                    ></el-button>
-                                    <el-button
-                                        size="mini"
-                                        :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.title')"
-                                        style="float: right"
-                                        type="danger"
-                                        icon="el-icon-delete"
-                                        @click="handleOperations('deleteResample', scope.row)"
-                                    ></el-button>
+                                    <el-button size="mini" :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.operations.download.title')" style="float: left" type="success" icon="el-icon-download" @click="handleOperations('downloadResample', scope.row)"></el-button>
+                                    <el-button size="mini" :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.title')" style="float: right" type="danger" icon="el-icon-delete" @click="handleOperations('deleteResample', scope.row)"></el-button>
                                 </el-button-group>
                             </template>
                         </el-table-column>
                     </el-table>
-                    <el-pagination
-                        background
-                        @size-change="paginateResamplesSizeChange"
-                        @current-change="paginateResamples"
-                        :current-page.sync="paginateResamplesData.currentPage"
-                        :page-sizes="[5, 10, 25, 50]"
-                        :page-size="paginateResamplesData.page_size"
-                        layout="total, sizes, prev, pager, next, jumper"
-                        :total="paginateResamplesData.total_items"
-                        :disabled="paginateResamplesData.total_items <= 5"
-                    ></el-pagination>
+                    <el-pagination background @size-change="paginateResamplesSizeChange" @current-change="paginateResamples" :current-page.sync="paginateResamplesData.currentPage" :page-sizes="[5, 10, 25, 50]" :page-size="paginateResamplesData.page_size" layout="total, sizes, prev, pager, next, jumper" :total="paginateResamplesData.total_items" :disabled="paginateResamplesData.total_items <= 5"></el-pagination>
                 </el-card>
             </el-col>
         </el-row>
@@ -247,13 +134,7 @@
                         <div class="card_intro">{{ $t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.title") }}</div>
                         <div class="models_actions" v-if="selectedModelsIDs.length > 0">
                             <el-button-group>
-                                <el-button
-                                    size="small"
-                                    :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.operations.download.title')"
-                                    type="success"
-                                    icon="el-icon-download"
-                                    @click="handleOperations('downloadModels', null)"
-                                ></el-button>
+                                <el-button size="small" :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.operations.download.title')" type="success" icon="el-icon-download" @click="handleOperations('downloadModels', null)"></el-button>
                                 <!-- TODO
                                 <el-button
                                     size="small"
@@ -274,47 +155,22 @@
                         </div>
                     </div>
                     <!-- Model Details data -->
-                    <el-table
-                        ref="modelDetailsTable"
-                        v-loading="tableLoading.models"
-                        :data="displayModels"
-                        @select-all="handleModelsSelectionChange"
-                        @select="handleModelsSelectionChange"
-                        row-key="modelID"
-                        :empty-text="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.no_data')"
-                        :border="true"
-                        style="width: 100%"
-                    >
+                    <el-table ref="modelDetailsTable" v-loading="tableLoading.models" :data="displayModels" @select-all="handleModelsSelectionChange" @select="handleModelsSelectionChange" row-key="modelID" :empty-text="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.no_data')" :border="true" style="width: 100%">
                         <el-table-column type="selection" reserve-selection @selectable="checkModelsSelectionChange"></el-table-column>
-
-                        <el-table-column
-                            fixed
-                            align="center"
-                            :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.resample_id')"
-                            prop="modelID"
-                            width="100"
-                            :render-header="
+                        <el-table-column fixed align="center" :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.resample_id')" prop="modelID" width="100" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'modelDetailsTable');
                                 }
-                            "
-                        >
+                            ">
                             <template slot-scope="scope">
                                 <span>{{ scope.row.modelID }}</span>
                             </template>
                         </el-table-column>
-
-                        <el-table-column
-                            fixed
-                            prop="modelName"
-                            :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.header.model_name')"
-                            :show-overflow-tooltip="true"
-                            :render-header="
+                        <el-table-column fixed prop="modelName" :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.header.model_name')" :show-overflow-tooltip="true" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'modelDetailsTable');
                                 }
-                            "
-                        >
+                            ">
                             <template slot-scope="scope">
                                 <div v-if="scope.row.status > 0" style="float: left">
                                     <span class="el-icon-success"></span>
@@ -331,19 +187,11 @@
                                 <span v-else style="padding-left: 10px">N/A</span>
                             </template>
                         </el-table-column>
-
-                        <el-table-column
-                            v-for="(performanceItem, performanceIndex) in jobDetailsData.performance"
-                            :prop="'performance|' + performanceItem"
-                            :key="performanceItem + '_' + performanceIndex"
-                            :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))"
-                            :show-overflow-tooltip="true"
-                            :render-header="
+                        <el-table-column v-for="(performanceItem, performanceIndex) in jobDetailsData.performance" :prop="'performance|' + performanceItem" :key="performanceItem + '_' + performanceIndex" :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))" :show-overflow-tooltip="true" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'modelDetailsTable');
                                 }
-                            "
-                        >
+                            ">
                             <template slot-scope="scope">
                                 <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">
                                     {{ scope.row.performance[performanceItem] }}
@@ -351,33 +199,18 @@
                                 <span v-else style="font-weight: bold; color: red;">N/A</span>
                             </template>
                         </el-table-column>
-
-                        <el-table-column
-                            align="center"
-                            prop="processing_time"
-                            :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.header.processing_time')"
-                            :show-overflow-tooltip="true"
-                            :render-header="
+                        <el-table-column align="center" prop="processing_time" :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.header.processing_time')" :show-overflow-tooltip="true" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'modelDetailsTable');
                                 }
-                            "
-                        >
+                            ">
                             <template slot-scope="scope">
                                 <span v-if="scope.row.processing_time">{{ scope.row.processing_time | millisecondsToStr }}</span>
                                 <span v-else>N/A</span>
                             </template>
                         </el-table-column>
                     </el-table>
-                    <el-pagination
-                        background
-                        @current-change="paginateModels"
-                        :current-page.sync="paginateModelsData.currentPage"
-                        :page-size="paginateModelsData.page_size"
-                        layout="total, prev, pager, next, jumper"
-                        :total="paginateModelsData.total_items"
-                        :disabled="paginateModelsData.total_items <= 5"
-                    ></el-pagination>
+                    <el-pagination background @current-change="paginateModels" :current-page.sync="paginateModelsData.currentPage" :page-size="paginateModelsData.page_size" layout="total, prev, pager, next, jumper" :total="paginateModelsData.total_items" :disabled="paginateModelsData.total_items <= 5"></el-pagination>
                 </el-card>
             </el-col>
         </el-row>
@@ -385,25 +218,13 @@
             <el-col :span="24" style="margin-top: 15px">
                 <el-tabs v-model="activeDatasetSubTabName" v-if="selectedFeatureSetId > 0" :value="activeDatasetSubTabName" type="card">
                     <!-- Don't display Tab Pane if we have only one Tab to display and he doesn't satisfy display criteria -->
-                    <el-tab-pane
-                        v-for="item in datasetsTabMapOptions"
-                        v-if="!isTabDisabled(item)"
-                        :label="item.label"
-                        :key="item.key"
-                        :name="item.key"
-                        :disabled="isTabDisabled(item)"
-                    >
+                    <el-tab-pane v-for="item in datasetsTabMapOptions" v-if="!isTabDisabled(item)" :label="item.label" :key="item.key" :name="item.key" :disabled="isTabDisabled(item)">
                         <span slot="label">
                             <i :class="item.icon"></i>
                             {{ item.label }}
                         </span>
                         <keep-alive>
-                            <sub-tab-pane
-                                v-if="activeDatasetSubTabName == item.key"
-                                :currentView="item.view"
-                                :columnName="item.key"
-                                :isTabDisabled="isTabDisabled(item)"
-                            ></sub-tab-pane>
+                            <sub-tab-pane v-if="activeDatasetSubTabName == item.key" :currentView="item.view" :columnName="item.key" :isTabDisabled="isTabDisabled(item)"></sub-tab-pane>
                             <!-- inactive components will be cached! -->
                         </keep-alive>
                     </el-tab-pane>
@@ -431,7 +252,7 @@ export default {
     props: {
         jobDetailsData: {
             type: Object,
-            default: function () {
+            default: function() {
                 return {};
             },
         },
@@ -477,8 +298,7 @@ export default {
             displayModels: [],
 
             selectedModels: [],
-            datasetsTabMapOptionsTemplate: [
-                {
+            datasetsTabMapOptionsTemplate: [{
                     label: this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.variableImportanceTab.title"),
                     view: "variableImportanceTab",
                     key: "varImp",
@@ -505,33 +325,31 @@ export default {
                     // Temp disable tab,
                     restriction_details: 1,
                 },
-                // {
-                //     label: this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.modelInterpretationTab.title"),
-                //     view: "modelInterpretationTab",
-                //     key: "modelInterpretationTab",
-                //     icon: "fa fa-balance-scale",
-                //     restriction: "selectedModels",
-                //     // restriction_details: 1
-                //     // Temp disable tab,
-                //     restriction_details: 1,
-                // },
+                {
+                    label: this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.modelInterpretationTab.title"),
+                    view: "modelInterpretationTab",
+                    key: "modelInterpretationTab",
+                    icon: "fa fa-balance-scale",
+                    restriction: "selectedModels",
+                    restriction_details: 1,
+                },
                 {
                     label: this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title"),
                     view: "samrAnalysisTab",
                     key: "samrAnalysisTab",
                     icon: "fa fa-balance-scale",
                     restriction: "selectedFeatureSetId",
-                },
-                {
-                    label: this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title"),
-                    view: "catBoostTab",
-                    key: "catBoostTab",
-                    icon: "fa fa-balance-scale",
-                    // restriction: "selectedFeatureSetId"
-                    // Temp disable tab
-                    restriction: "selectedModels",
-                    restriction_details: 10000,
-                },
+                }
+                // {
+                //     label: this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title"),
+                //     view: "catBoostTab",
+                //     key: "catBoostTab",
+                //     icon: "fa fa-balance-scale",
+                //     // restriction: "selectedFeatureSetId"
+                //     // Temp disable tab
+                //     restriction: "selectedModels",
+                //     restriction_details: 10000,
+                // },
             ],
             queueClassesDisplay: [],
             selectedClasses: [],
@@ -591,12 +409,11 @@ export default {
                     });
             } else if (clickAction === "deleteResample") {
                 this.$confirm(
-                    this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.dialog.description"),
-                    this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.dialog.title"),
-                    {
-                        type: "warning",
-                    }
-                )
+                        this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.dialog.description"),
+                        this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.operations.delete.dialog.title"), {
+                            type: "warning",
+                        }
+                    )
                     .then((_) => {
                         if (this.$config.isDemoServer) {
                             this.$message({
@@ -631,12 +448,11 @@ export default {
                     });
             } else if (clickAction === "deleteModels") {
                 this.$confirm(
-                    this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.description"),
-                    this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.title"),
-                    {
-                        type: "warning",
-                    }
-                )
+                        this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.description"),
+                        this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.operations.delete.dialog.title"), {
+                            type: "warning",
+                        }
+                    )
                     .then((_) => {
                         ApiDeleteDatasetResampleTask({ modelIDs: this.selectedModelsIDs })
                             .then((response) => {
@@ -739,7 +555,7 @@ export default {
                     let selectedClass = selectedClassesDetails[i];
                     console.log("selectedClass: ", selectedClass);
 
-                    let checkIfClassInSelectedTabs = this.datasetsTabMapOptions.filter(function (e) {
+                    let checkIfClassInSelectedTabs = this.datasetsTabMapOptions.filter(function(e) {
                         return e.key === selectedClass.remapped;
                     });
 
@@ -783,7 +599,7 @@ export default {
                         if (tabClass.key === this.activeDatasetSubTabName) {
                             this.activeDatasetSubTabName = this.datasetsTabMapOptions[0].key;
                         }
-                        this.datasetsTabMapOptions = this.datasetsTabMapOptions.filter(function (e) {
+                        this.datasetsTabMapOptions = this.datasetsTabMapOptions.filter(function(e) {
                             return e.key !== tabClass.key;
                         });
                     }
@@ -1030,7 +846,7 @@ export default {
                 return cssClass;
             }
 
-            perfValues.forEach(function (pref) {
+            perfValues.forEach(function(pref) {
                 if (typeof row.performance[pref] !== "undefined") {
                     if (row.performance[pref] > 0.6) {
                         cssClass = "success-row";
@@ -1078,7 +894,7 @@ export default {
                     if (prefValue[0] === "performance") {
                         prefValueSearch = prefValue[1];
 
-                        flattenData = exportData.map(function (item) {
+                        flattenData = exportData.map(function(item) {
                             let itemFlat = item;
                             if (typeof item.performance !== "undefined") {
                                 itemFlat = Object.assign(itemFlat, item.performance);
@@ -1105,16 +921,14 @@ export default {
                 element = h("span", { class: "custom-table-header-labels" }, [
                     h("span", { class: "custom-table-header-labels-text" }, [
                         h(
-                            "el-tooltip",
-                            {
+                            "el-tooltip", {
                                 props: { content: column.label, placement: "top" },
                             },
                             [h("span", { class: "custom-table-header-text-" + column.property }, column.label)]
                         ),
                     ]),
                     h(
-                        "el-popover",
-                        { props: { placement: "top-start", title: column.label + " filters", trigger: "click" } },
+                        "el-popover", { props: { placement: "top-start", title: column.label + " filters", trigger: "click" } },
 
                         [
                             h("div", {}, [
@@ -1147,8 +961,7 @@ export default {
                                     },
                                 }),
                                 h(
-                                    "el-select",
-                                    {
+                                    "el-select", {
                                         props: {
                                             value: this.tableFilters[tableReference][column.property]["sortby"],
                                             placeholder: "Sort by",
@@ -1189,8 +1002,7 @@ export default {
                                     ]
                                 ),
                                 h(
-                                    "el-checkbox",
-                                    {
+                                    "el-checkbox", {
                                         props: {
                                             value: this.tableFilters[tableReference][column.property]["locked"],
                                             size: "mini",
@@ -1262,8 +1074,7 @@ export default {
 
                 if (actionType === "sortby" && action === "descending") {
                     sortDirection = -1;
-                } else if (actionType === "range") {
-                } else if (actionType === "locked" && lockSorting === true) {
+                } else if (actionType === "range") {} else if (actionType === "locked" && lockSorting === true) {
                     lockSorting = action;
                 }
                 // If filter is not locked reset any previously declared sorting stack
@@ -1284,15 +1095,13 @@ export default {
                             sort_stack = firstBy(
                                 (v1, v2) => {
                                     return tableSorting(v1, v2, columnIds);
-                                },
-                                { ignoreCase: false, direction: sortDirection }
+                                }, { ignoreCase: false, direction: sortDirection }
                             );
                         } else {
                             sort_stack = sort_stack.thenBy(
                                 (v1, v2) => {
                                     return tableSorting(v1, v2, columnIds);
-                                },
-                                { ignoreCase: false, direction: sortDirection }
+                                }, { ignoreCase: false, direction: sortDirection }
                             );
                         }
                     }
@@ -1302,7 +1111,7 @@ export default {
                     if (sortType === "normal") {
                         sortData = sortData.filter((item) => item[columnIdentifier] >= action[0] && item[columnIdentifier] <= action[1]);
                     } else if (sortType === "subkey") {
-                        sortData = sortData.filter(function (item) {
+                        sortData = sortData.filter(function(item) {
                             if (typeof item[columnIds[0]] === "undefined") {
                                 item[columnIds[0]] = {};
                                 item[columnIds[0]][columnIds[1]] = 0;
@@ -1387,7 +1196,7 @@ export default {
                 console.log(exportData);
 
                 // Map performance and packageDetails variables to root column node
-                const flattenData = exportData.map(function (item) {
+                const flattenData = exportData.map(function(item) {
                     let itemFlat = item;
                     if (typeof item.performance !== "undefined") {
                         itemFlat = Object.assign(itemFlat, item.performance);
@@ -1437,7 +1246,7 @@ export default {
         },
     },
     watch: {
-        "jobDetailsData.queueDetails": function (newVal, oldVal) {
+        "jobDetailsData.queueDetails": function(newVal, oldVal) {
             console.log("Updating queueClassesDisplay");
             // And new selected queue classes
             if (typeof newVal.selectedOptions !== "undefined") {
@@ -1456,7 +1265,7 @@ export default {
                 });
             }
         },
-        "jobDetailsData.resamplesList": function (newVal, oldVal) {
+        "jobDetailsData.resamplesList": function(newVal, oldVal) {
             this.activeResamplesList = newVal;
 
             this.paginateResamples(1);
@@ -1481,11 +1290,11 @@ export default {
         },
     },
 };
-</script>
 
+</script>
 <style rel="stylesheet/scss" lang="scss">
 /* Mark active tab in bold */
-.el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
     font-weight: bold;
 }
 
@@ -1494,28 +1303,33 @@ export default {
     height: 40px;
     line-height: 40px;
 }
+
 .models_actions {
     float: right;
     height: 40px;
     line-height: 40px;
 }
+
 .el-table__expanded-cell[class*="cell"] {
     padding: 5px 0;
 }
+
 .el-table .warning-row {
     background: oldlace;
 }
+
 .el-table .success-row {
     background: #f0f9eb;
 }
+
 .flud-selects {
     width: 100%;
 }
 
 .el-table-header-resource {
-    .el-table-header-resource-title {
-    }
-    .el-table-header-resource-actions {
-    }
+    .el-table-header-resource-title {}
+
+    .el-table-header-resource-actions {}
 }
+
 </style>
