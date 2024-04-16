@@ -74,8 +74,8 @@
 										"summaryTab": {
 											"title": "Training Summary"
 										},
-										"modelDetailsTab": {
-											"title": "Model Summary"
+										"rocAnalysisTab": {
+											"title": "ROC Curve Analysis"
 										},
 										"modelInterpretationTab": {
 											"title": "Model Interpretation"

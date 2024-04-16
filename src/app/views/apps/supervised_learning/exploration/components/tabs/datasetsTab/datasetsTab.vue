@@ -496,9 +496,9 @@ export default {
                     restriction_details: 2,
                 },
                 {
-                    label: this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title"),
-                    view: "modelDetailsTab",
-                    key: "modelDetailsTab",
+                    label: this.$t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.rocAnalysisTab.title"),
+                    view: "rocAnalysisTab",
+                    key: "rocAnalysisTab",
                     icon: "fa fa-balance-scale",
                     restriction: "selectedModels",
                     // restriction_details: 1

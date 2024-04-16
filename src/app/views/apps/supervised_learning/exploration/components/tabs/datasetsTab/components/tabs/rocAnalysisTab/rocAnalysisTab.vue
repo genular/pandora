@@ -1,5 +1,5 @@
 <template>
-    <div class="modelDetailsTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
+    <div class="rocAnalysisTab-container" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="top" v-if="isTabDisabled === true">
             <el-col :span="24">
                 <el-alert :title="$t('views.apps.supervised_learning.editing.components.tabs.correlationTab.alert.function_disabled.title')" description="Tab is currently disabled. Please try to select another models to get overview." type="warning" style="margin-top: 20px" show-icon :closable="false"></el-alert>
@@ -208,7 +208,7 @@ import plotColorPalettes from "@/assets/plots/color_palettes.json";
 import plotThemes from "@/assets/plots/themes.json";
 
 export default {
-    name: "modelDetailsTab",
+    name: "rocAnalysisTab",
     props: {
         columnName: {
             type: String,
@@ -270,7 +270,7 @@ export default {
         }
     },
     mounted() {
-        console.log("mounted: modelDetailsTab");
+        console.log("mounted: rocAnalysisTab");
         if (this.isTabDisabled === false) {
 
             if (this.settingsForm.selectedOutcomeOptionsIDs.length === 0 && this.selectedOutcomeOptionsIDs.length > 0) {
@@ -460,7 +460,7 @@ export default {
          * @return {[type]}        [description]
          */
         selectedModelsIDs: function(newVal, oldVal) {
-            console.log("modelDetailsTab getting new handleFetchSummaryPlots based on model change");
+            console.log("rocAnalysisTab getting new handleFetchSummaryPlots based on model change");
             if (this.isTabDisabled === false) {
                 // Remove any previously selected variables
                 this.handleFetchSummaryPlots();

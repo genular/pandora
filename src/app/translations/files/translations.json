@@ -297,7 +297,7 @@
   "views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.messages.failed_model": "Model did not finished successfully",
   "views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.variableImportanceTab.title": "Variable Importance",
   "views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.summaryTab.title": "Training Summary",
-  "views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.modelDetailsTab.title": "Model Summary",
+  "views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.rocAnalysisTab.title": "ROC Curve Analysis",
   "views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.modelInterpretationTab.title": "Model Interpretation",
   "views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.samrAnalysisTab.title": "SAM",
   "views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.tabs.catBoostTab.title": "CatBoost",

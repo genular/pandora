@@ -2,19 +2,11 @@
     <div class="summaryTab-container" v-loading="loading" element-loading-text="Processing...">
         <div v-if="!isTabDisabled">
             <el-row type="flex" align="top" :gutter="20">
-                <el-col :span="12">
+                <el-col :span="24">
                     <el-row type="flex" align="top">
                         <el-col :span="24" style="text-align: center">
                             <span>Comparison of model performance measurements</span>
-                            <el-button
-                                style="float: right"
-                                size="mini"
-                                round
-                                type="success"
-                                icon="el-icon-download"
-                                :disabled="summary.boxplot === false"
-                                @click="downloadPlotImage('boxplot')"
-                            ></el-button>
+                            <el-button style="float: right" size="mini" round type="success" icon="el-icon-download" :disabled="summary.boxplot === false" @click="downloadPlotImage('boxplot')"></el-button>
                         </el-col>
                     </el-row>
                     <!-- SVG Plot placeholder -->
@@ -25,44 +17,13 @@
                         <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
                     </div>
                 </el-col>
-                <el-col :span="12">
-                    <el-row type="flex" align="top">
-                        <el-col :span="24" style="text-align: center">
-                            <span>ROC curve charts comparison (two-class models)</span>
-                            <el-button
-                                style="float: right"
-                                size="mini"
-                                round
-                                type="success"
-                                icon="el-icon-download"
-                                :disabled="summary.rocplot === false"
-                                @click="downloadPlotImage('rocplot')"
-                            ></el-button>
-                        </el-col>
-                    </el-row>
-                    <!-- SVG Plot placeholder -->
-                    <div v-if="summary.rocplot !== false" style="text-align: center">
-                        <img id="summary-rocplot" style="margin: 0 auto" class="animated fadeIn" :src="'data:image/png;base64,' + summary.rocplot_png" fit="scale-down" />
-                    </div>
-                    <div class="plot-placeholder" v-else>
-                        <i class="fa fa-line-chart animated flipInX" aria-hidden="true"></i>
-                    </div>
-                </el-col>
             </el-row>
-
             <el-row type="flex" align="top" :gutter="20">
-                <el-col :span="12" v-if="summary.info.differences">
+                <el-col :span="differencesColSpan" v-if="summary.info.differences">
                     <el-row type="flex" align="top">
                         <el-col :span="24" style="text-align: center">
                             <span>Performance measurements</span>
-                            <el-button
-                                style="float: right"
-                                size="mini"
-                                round
-                                type="success"
-                                icon="el-icon-document-copy"
-                                @click="copyToClipboard(summary.info.differences, $event)"
-                            ></el-button>
+                            <el-button style="float: right" size="mini" round type="success" icon="el-icon-document-copy" @click="copyToClipboard(summary.info.differences, $event)"></el-button>
                         </el-col>
                     </el-row>
                     <div class="code-output">
@@ -71,18 +32,11 @@
                         </div>
                     </div>
                 </el-col>
-                <el-col :span="12" v-if="summary.info.summary">
+                <el-col :span="summaryColSpan" v-if="summary.info.summary">
                     <el-row type="flex" align="top">
                         <el-col :span="24" style="text-align: center">
                             <span>Model fitting result summaries</span>
-                            <el-button
-                                style="float: right"
-                                size="mini"
-                                round
-                                type="success"
-                                icon="el-icon-document-copy"
-                                @click="copyToClipboard(summary.info.summary, $event)"
-                            ></el-button>
+                            <el-button style="float: right" size="mini" round type="success" icon="el-icon-document-copy" @click="copyToClipboard(summary.info.summary, $event)"></el-button>
                         </el-col>
                     </el-row>
                     <div class="code-output">
@@ -95,14 +49,7 @@
         </div>
         <!-- ELSE if Tab is DISABLED -->
         <div v-else>
-            <el-alert
-                title="Notification"
-                description="Unfortionatly this function is currently disabled"
-                type="warning"
-                style="margin-top: 20px"
-                show-icon
-                :closable="false"
-            ></el-alert>
+            <el-alert title="Notification" description="Unfortionatly this function is currently disabled" type="warning" style="margin-top: 20px" show-icon :closable="false"></el-alert>
         </div>
     </div>
 </template>
@@ -131,8 +78,6 @@ export default {
             summary: {
                 boxplot: false,
                 boxplot_png: false,
-                rocplot: false,
-                rocplot_png: false,
                 info: {
                     summary: false,
                     differences: false,
@@ -141,6 +86,14 @@ export default {
         };
     },
     computed: {
+        differencesColSpan() {
+            // If there is no summary, expand to full width
+            return this.summary.info.summary ? 12 : 24;
+        },
+        summaryColSpan() {
+            // If there are no differences, expand to full width
+            return this.summary.info.differences ? 12 : 24;
+        },
         selectedOutcomeOptions: {
             get() {
                 return this.$store.getters.pandoraExplorationSelectedOutcomeOptions;
@@ -160,7 +113,7 @@ export default {
     },
     mounted() {
         console.log("mounted: summaryTab");
-        if (this.isTabDisabled === false) {
+        if (this.isTabDisabled === false && this.selectedModelsIDs.length > 0) {
             this.handleFetchSummaryPlots();
         }
     },
@@ -226,30 +179,44 @@ export default {
             this.loading = true;
 
             fetchGraphSummary({
-                resampleID: this.selectedFeatureSetId,
-                modelsIDs: JSON.stringify(this.selectedModelsIDs),
-            })
+                    resampleID: this.selectedFeatureSetId,
+                    modelsIDs: JSON.stringify(this.selectedModelsIDs),
+                })
                 .then((response) => {
                     let respData = response.data.message;
-                    // Update the image data.
-                    // list( boxplot = NULL, rocplot = NULL, info = list(summary = NULL, differences = NULL))
-                    for (let respIndex in respData) {
-                        let respItem = respData[respIndex];
 
-                        // This is true if no plot is in question
-                        if (typeof respItem === "object") {
-                            for (let respsumIndex in respItem) {
-                                // Decode base64 encoded results
-                                this.summary.info[respsumIndex] = window.atob(respItem[respsumIndex]);
+                    for (const [respIndex, respItem] of Object.entries(respData)) {
+                        // Check if respItem is an object and not null
+                        if (typeof respItem === "object" && respItem !== null) {
+                            for (const [respSumIndex, encodedResult] of Object.entries(respItem)) {
+                                try {
+                                    // Safely decode base64 encoded results
+                                    if (typeof encodedResult === 'string') {
+                                        this.summary.info[respSumIndex] = window.atob(encodedResult);
+                                    }
+                                } catch (error) {
+                                    console.error('Error decoding base64 string:', error);
+                                    this.summary.info[respSumIndex] = false;
+                                }
                             }
-                        } else {
+                        } else if (typeof respItem === 'string') {
+                            // Check the length of the string response item
                             if (respItem.length < 15) {
                                 this.summary[respIndex] = line_chart_404;
                             } else {
-                                this.summary[respIndex] = encodeURIComponent(respItem);
+                                try {
+                                    this.summary[respIndex] = encodeURIComponent(respItem);
+                                } catch (error) {
+                                    console.error('Error encoding URI component:', error);
+                                    this.summary[respIndex] = false;
+                                }
                             }
+                        } else {
+                            console.error('Unexpected data type in response:', typeof respItem);
+                            console.log(respItem);
                         }
                     }
+
                     this.loading = false;
                 })
                 .catch((error) => {
@@ -269,7 +236,7 @@ export default {
          * @param  {[type]} oldVal [description]
          * @return {[type]}        [description]
          */
-        selectedModelsIDs: function (newVal, oldVal) {
+        selectedModelsIDs: function(newVal, oldVal) {
             console.log("summaryTab getting new handleFetchSummaryPlots based on model change");
             if (this.isTabDisabled === false) {
                 // Remove any previously selected variables
@@ -282,18 +249,20 @@ export default {
          * @param  boolean  oldVal Old item value
          * @return null
          */
-        isTabDisabled: function (newVal, oldVal) {
+        isTabDisabled: function(newVal, oldVal) {
             if (newVal === false) {
                 this.handleFetchSummaryPlots();
             }
         },
     },
 };
+
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .plot-placeholder {
     text-align: center;
-    > i {
+
+    >i {
         font-size: 256px;
         color: #333333;
     }
@@ -304,16 +273,19 @@ export default {
     font-size: 12px;
     overflow: auto;
     margin-top: 15px;
+
     pre {
         margin: 0;
+
         code {
             max-height: 300px;
         }
     }
 }
+
 /* Graphs */
-#summary-boxplot {
-}
-#summary-rocplot {
-}
+#summary-boxplot {}
+
+#summary-rocplot {}
+
 </style>
