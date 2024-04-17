@@ -5,7 +5,7 @@
             <img width="200" src="https://github.com/genular/pandora/raw/master/.github/static/favicon.png"></a>
     </p>
     -->
-    <h1>PANDORA<br/><sub>Predictive Analytics aNd Data Oriented Research Applications</sub></h1>
+    <h1>PANDORA</h1>
     <p align="center">
         <a href="https://crowdin.com/project/genular" alt="Help us translate">
             <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
