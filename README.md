@@ -114,7 +114,7 @@ If you discover a security vulnerability within `PANDORA`, please [e-mail us](ma
 
 ## License
 
-`PANDORA` is open-source platform, for more information please check `LICENCE` file.
+For more information please check `LICENCE` file.
 
 ## Citation
 
