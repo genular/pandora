@@ -108,7 +108,7 @@
                     </el-row>
                 </el-form>
             </el-col>
-            <el-col :span="19">
+            <el-col :span="19" style="padding-left: 15px;">
                 <el-row v-if="Object.keys(plot_data).length > 0 && settingsForm.selectedPlots.length > 0">
                     <el-tabs v-model="activeModelTab">
                         <el-tab-pane
