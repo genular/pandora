@@ -5,7 +5,7 @@
             <img width="200" src="https://github.com/genular/pandora/raw/master/.github/static/favicon.png"></a>
     </p>
     -->
-    <h1>PANDORA<br/><sub>Pan-Dimensional Omics and Research Analysis</sub></h1>
+    <h1>PANDORA<br/><sub>Predictive Analytics aNd Data Oriented Research Applications</sub></h1>
     <p align="center">
         <a href="https://crowdin.com/project/genular" alt="Help us translate">
             <img src="https://d322cqt584bo4o.cloudfront.net/genular/localized.svg" /></a>
@@ -16,10 +16,10 @@
     </p>
 </div>
 
-`PANDORA` is a versatile web-based platform for integrating, analyzing, and visualizing diverse biological data, including clinical, transcriptome, and microbiome datasets.
+`PANDORA` is a comprehensive suite of advanced analytical tools designed to support a wide range of biomedical research applications.
 
 ## Overview
-It can be applied to various use cases, such as identifying infection markers, discovering gut bacteria connections to cancer, predicting disease outcomes, examining vaccine immune responses, drug discovery, biomarker identification for personalized medicine, and analyzing omics data for systems biology research. Perform complex analyses using multiple supported machine learning models and techniques, including clustering, heatmap generation, t-SNE, UMAP, and much more.
+`PANDORA` uses advanced machine learning techniques, including clustering, t-SNE, PCA, UMAP, and interpretable machine learning models to enhance biomedical discovery. It supports multiclass outcomes, facilitating predictive modeling, biomarker discovery, and omics data analysis for systems biology.
 
 ## Installation Quick-start
 
