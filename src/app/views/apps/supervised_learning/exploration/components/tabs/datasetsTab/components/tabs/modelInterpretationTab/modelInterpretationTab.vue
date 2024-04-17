@@ -6,11 +6,32 @@
             </el-col>
         </el-row>
         <el-row v-else type="flex" align="top">
-            <el-col :span="4">
+            <el-col :span="5">
                 <el-form ref="settingsForm" :model="settingsForm" size="large">
                     <el-form-item label="Vars">
                         <el-select v-model="settingsForm.displayVariableImportance" collapse-tags multiple style="float: right">
                             <el-option v-for="item in uniqueDisplayVariableImportance" :key="item.id" :label="item.original" :value="item.feature_name">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="Analysis">
+                        <el-select v-model="settingsForm.selectedPlots" collapse-tags multiple style="float: right">
+                            <el-option v-for="(itemData, itemIndex) in plotDescriptions" :key="itemIndex" :label="itemData.title" 
+                                :value="itemIndex">
+                                <el-row>
+                                    <el-col :span="24" :title="itemData.title">
+                                        <span >
+                                            {{ itemData.title }}
+                                        </span>
+                                        <el-tooltip placement="top" style="padding-left: 5px">
+                                            <div slot="content">
+                                                <strong>{{ itemData.title }}</strong>
+                                                <p>{{ itemData.description }}</p>
+                                            </div>
+                                            <i class="el-icon-question"></i>
+                                        </el-tooltip>
+                                    </el-col>
+                                </el-row>
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -87,11 +108,11 @@
                     </el-row>
                 </el-form>
             </el-col>
-            <el-col :span="19" :offset="1" style="text-align: center">
-                <el-row v-if="Object.keys(plot_data['scatter']).length > 0">
+            <el-col :span="19">
+                <el-row v-if="Object.keys(plot_data).length > 0 && settingsForm.selectedPlots.length > 0">
                     <el-tabs v-model="activeModelTab">
                         <el-tab-pane
-                            v-for="(plotItems, methodName) in plot_data['scatter']"
+                            v-for="methodName in responseMethods"
                             :key="methodName"
                             :name="methodName"
                             >
@@ -101,15 +122,19 @@
                             <el-tabs tab-position="right" class="inner-tabs" v-model="activeModelTabPlots[methodName]">
                                 <el-tab-pane
                                     v-for="(item, imageType) in plot_data"
-                                    v-if="imageType !== 'saveObjectHash' && !imageType.endsWith('_png')"
+                                    v-if="imageType !== 'saveObjectHash' && !imageType.endsWith('_png') && typeof item === 'object' && item !== null"
                                     :key="imageType + '_' + methodName"
                                     :name="imageType + '_' + methodName">
                                     
                                     <span slot="label" style="float: left;">
-                                        {{ imageType }}
-                                       <el-tooltip placement="top" style="padding-left: 5px">
+                                        <span v-if="plotDescriptions[imageType]">
+                                            {{ plotDescriptions[imageType].title }}
+                                        </span>
+                                        <span v-else>{{ imageType }}</span>
+                                        <el-tooltip placement="top" style="padding-left: 5px" v-if="plotDescriptions[imageType]">
                                             <div slot="content">
-                                                {{ plotDescriptions[imageType] }}
+                                                <strong>{{ plotDescriptions[imageType].title }}</strong>
+                                                <p>{{ plotDescriptions[imageType].description }}</p>
                                             </div>
                                             <i class="el-icon-question"></i>
                                         </el-tooltip>
@@ -126,8 +151,9 @@
                                                 <template v-slot:content>
                                                     <el-button type="success" round @click="downloadPlotImage('testing', 'comparison_png', 'comparison')">Download</el-button>
                                                 </template>
+
                                                 <img v-if="plot_data[imageType + '_png'][methodName][featureName]" 
-                                                class="animated fadeIn" 
+                                                class="animated fadeIn" style="max-width: 100%;" 
                                                 :src="'data:image/png;base64,' + plot_data[imageType + '_png'][methodName][featureName]" 
                                                 fit="scale-down" />
                                             </el-tooltip>
@@ -168,16 +194,44 @@ export default {
         return {
             loadingPlot: false,
 
-            activeModelTab: false,
+            activeModelTab: "",
             activeModelTabPlots: {},
             activeModelTabPlotsFeature: {},
+            responseMethods: [],
 
             plotDescriptions: {
-                scatter: "Scatter plots visualize the relationship between two variables by displaying them as points distributed across a Cartesian plane. They help illustrate how changes in feature values could affect the model's output.",
-                heatmap: "Heatmaps depict the interactions between two features by coloring cells according to the model’s output for combinations of feature values, showing how joint variations influence the prediction.",
-                ice: "ICE plots (Individual Conditional Expectation) visualize the change in the prediction outcome as a feature varies while all other features are held constant, highlighting the marginal effect of each feature.",
-                lime: "LIME plots (Local Interpretable Model-agnostic Explanations) explain individual predictions by showing which features were most influential, helping to demystify the model’s behavior on a case-by-case basis.",
-                iml: "IML plots provide insights into model predictions, often through features importance and partial dependence, offering a broader, model-level interpretation across multiple instances or features."
+                scatter: {
+                    title: "Scatter Plot",
+                    description: "Scatter plots visualize the relationship between two variables by displaying them as points distributed across a Cartesian plane. They help illustrate how changes in feature values could affect the model's output."
+                },
+                heatmap: {
+                    title: "Heatmap",
+                    description: "Heatmaps depict the interactions between two features by coloring cells according to the model’s output for combinations of feature values, showing how joint variations influence the prediction."
+                },
+                ice: {
+                    title: "ICE Plot",
+                    description: "ICE plots (Individual Conditional Expectation) visualize the change in the prediction outcome as a feature varies while all other features are held constant, highlighting the marginal effect of each feature."
+                },
+                lime: {
+                    title: "LIME Plot",
+                    description: "LIME plots (Local Interpretable Model-agnostic Explanations) explain individual predictions by showing which features were most influential, helping to demystify the model’s behavior on a case-by-case basis."
+                },
+                iml_featureimp: {
+                    title: "Feature Importance",
+                    description: "This plot illustrates the importance of each feature in the predictive model, showing which features have the most significant impact on the model's predictions."
+                },
+                iml_interaction: {
+                    title: "Interaction Effects",
+                    description: "This plot shows the interaction effects between features, highlighting how the combination of different features affects the model's output."
+                },
+                iml_featureeffect_ale: {
+                    title: "ALE Plot",
+                    description: "ALE plots (Accumulated Local Effects) visualize how features impact the prediction on average, focusing on how the model’s output changes when a feature varies over its distribution."
+                },
+                iml_featureeffect_pdp_ice: {
+                    title: "PDP and ICE Plot",
+                    description: "This combined plot uses Partial Dependence Plots (PDP) and Individual Conditional Expectation (ICE) plots to show both average and individual feature effects on the model's prediction."
+                }
             },
 
             plot_data: {
@@ -185,7 +239,10 @@ export default {
                 heatmap: {},
                 ice: {},
                 lime: {},
-                iml: {},
+                iml_featureimp: {},
+                iml_interaction: {},
+                iml_featureeffect_ale: {},
+                iml_featureeffect_pdp_ice: {},
                 saveObjectHash: false,
             },
             selectedOptions: {
@@ -197,10 +254,11 @@ export default {
                 colorPalette: "Set1",
                 aspect_ratio: 1,
                 plot_size: 12,
-                fontSize: 12,
+                fontSize: 24,
                 pointSize: 0.5,
-                labelSize: 3.88,
+                labelSize: 4,
                 displayVariableImportance: false,
+                selectedPlots: ["scatter", "iml_featureimp", "iml_interaction", "iml_featureeffect_ale", "iml_featureeffect_pdp_ice"]
             },
         };
     },
@@ -250,8 +308,31 @@ export default {
     },
     methods: {
         redrawImage() {
+
             if (this.isTabDisabled === false) {
-                this.handleFetchModelInterpretationPlot();
+                
+                if(this.settingsForm.selectedPlots.length === 0) {
+                    this.$message({
+                        type: 'warning',
+                        message: 'Please select at least one plot type.'
+                    });
+                    return;
+                }
+
+                this.$confirm('Are you sure you want to continue? This can take some time.', 'Confirm Action', {
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    type: 'warning'
+                }).then(() => {
+                    // User confirmed the action
+                    this.handleFetchModelInterpretationPlot();
+                }).catch(() => {
+                    // User cancelled the action
+                    this.$message({
+                        type: 'info',
+                        message: 'Redraw cancelled'
+                    });
+                });
             }
         },
         downloadRawData() {
@@ -261,16 +342,20 @@ export default {
         handleFetchModelInterpretationPlot() {
             this.loadingPlot = true;
 
-            this.activeModelTab = false;
+            this.activeModelTab = "";
             this.activeModelTabPlots = {};
             this.activeModelTabPlotsFeature = {};
+            this.responseMethods = [];
 
             this.plot_data = {
                 scatter: {},
                 heatmap: {},
                 ice: {},
                 lime: {},
-                iml: {},
+                iml_featureimp: {},
+                iml_interaction: {},
+                iml_featureeffect_ale: {},
+                iml_featureeffect_pdp_ice: {},
                 saveObjectHash: false
             };
 
@@ -306,6 +391,7 @@ export default {
                                 if (typeof item === 'object') {
                                     for (const [index2, value] of Object.entries(item)) {
 
+
                                         if (activeTab === false) {
                                             activeTab = respItemIndex;
                                         }
@@ -320,8 +406,11 @@ export default {
                                             }
                                         }
 
-                                        this.$set(this.plot_data[respIndex][respItemIndex], index2, value);
+                                        if (!this.responseMethods.includes(respItemIndex)) {
+                                            this.responseMethods.push(respItemIndex);
+                                        }
 
+                                        this.$set(this.plot_data[respIndex][respItemIndex], index2, value);
                                     }
                                 } else {
                                     this.plot_data[respIndex][respItemIndex] = item;
