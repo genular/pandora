@@ -83,11 +83,11 @@
                     <div slot="header" class="clearfix"><span>System debugging</span></div>
                     <el-row type="flex" class="row-bg" justify="space-between">
                         <el-col :span="6" style="text-align: left">
-                            <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">Update minor PANDORA version</el-button>
+                            <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">Update</el-button>
                         </el-col>
                         <el-col :span="18" style="text-align: right">
-                            <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">Generate system log file</el-button>
-                            <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="generateBrowserLogFile">Generate browser log file</el-button>
+                            <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">System log file</el-button>
+                            <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="generateBrowserLogFile">Browser log file</el-button>
                         </el-col>
                     </el-row>
                 </el-card>
