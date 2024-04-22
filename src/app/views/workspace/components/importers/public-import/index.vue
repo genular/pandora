@@ -262,7 +262,7 @@ export default {
                             this.datasetsLoading = false;
                             if (response.data.success === true) {
                                 response.data.message.forEach(item => {
-                                    let statusMsg = item.status === true ? "success" : "warning";
+                                    let statusMsg = item.status === true ? " imported successfully!" : " not imported.";
                                     this.$message({
                                         type: statusMsg,
                                         message: "Dataset: " + item.datasetID + " " + statusMsg
