@@ -9,7 +9,7 @@
                 <h2 class="steps-container-title">Please create your account</h2>
                 <el-row>
                     <el-col :span="24">
-                        <el-form class="form" autoComplete="on" ref="userForm" label-position="top">
+                        <el-form class="form" size="large" autoComplete="on" ref="userForm" label-position="top">
                             <div style="width: 100%; float: left">
                                 <el-form-item label="Username*" style="width: 49%; float: left">
                                     <el-input
@@ -78,7 +78,7 @@
                                 </el-form-item>
                             </div>
                             <div style="width: 100%; float: left">
-                                <el-form-item label="Phone number" style="width: 49%; float: left">
+                                <el-form-item label="Phone number" style="width: 49%; float: left; margin-bottom: 0;">
                                     <el-input
                                         name="phoneNumber"
                                         v-model="userForm.phoneNumber"
@@ -87,7 +87,7 @@
                                         @input.native="checkFieldAvailability('users_details', 'phoneNumber', $event, 'userForm')"
                                     ></el-input>
                                 </el-form-item>
-                                <el-form-item label="Registration code*" style="width: 49%; float: left; margin-left: 2%">
+                                <el-form-item label="Registration code*" style="width: 49%; float: left; margin-left: 2%; margin-bottom: 0;">
                                     <el-input
                                         name="org_invite_code"
                                         v-model="userForm.org_invite_code"
@@ -98,7 +98,7 @@
                                         <i slot="suffix" :class="validation['userForm'].org_invite_code"></i>
                                     </el-input>
                                     <!-- Info Text and Link for Registration Code Request -->
-                                    <div style="margin-top: 10px;">
+                                    <div>
                                         <span>Don't have a registration code? </span>
                                         <el-link href="https://genular.atomic-lab.org/contact?bl=pandora" target="_blank" type="primary">Request one here</el-link>
                                     </div>
@@ -123,9 +123,9 @@
                     </el-col>
                 </el-row>
 
-                <el-row style="margin-top: 25px">
+                <el-row>
                     <el-button-group style="float: right">
-                        <el-button type="primary" :loading="loading.account" @click="registerAccount" :disabled="userForm.validated !== 6">
+                        <el-button type="primary" size="large" :loading="loading.account" @click="registerAccount" :disabled="userForm.validated !== 6">
                             Create account
                             <i class="el-icon-arrow-right el-icon-right"></i>
                         </el-button>
@@ -147,7 +147,7 @@
                 </el-row>
                 <el-row style="margin-top: 25px">
                     <el-button-group style="float: right">
-                        <el-button type="primary" @click="userLogin">
+                        <el-button type="primary" size="large" @click="userLogin">
                             LOGIN
                             <i class="el-icon-arrow-right el-icon-right"></i>
                         </el-button>
@@ -351,7 +351,7 @@ export default {
             } else if (validationField === "org_invite_code") {
                 const isMD5 = /^[a-f0-9]{32}$/i.test(validationValue);
 
-                if(validationValue !== "aTomicLab"){
+                if(validationValue.toLowerCase() !== atob("YXRvbWljbGFi")){
                     if (!isMD5) {
                         // If not MD5, show error
                         if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
@@ -379,7 +379,7 @@ export default {
                 .catch((error) => {
                     console.log(error);
                 });
-        }, 1000),
+        }, 250),
     },
 };
 </script>
@@ -440,6 +440,10 @@ export default {
             font-size: 12px;
             color: #333333;
         }
+    }
+
+    .el-form-item {
+        margin-bottom: 10px;
     }
 
     .el-form-item__label {

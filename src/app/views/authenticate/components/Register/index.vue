@@ -1,7 +1,6 @@
 <template>
     <div class="register-tab-container">
         <div class="title">New user registration</div>
-        <div class="lead">PANDORA - Data Science Knowledge Discovery platform</div>
         <el-row class="register-options-container" v-if="registrationType == null">
             <el-col :span="12">
                 <div class="register-options-user" @click.prevent.stop="navigateTo('private')">

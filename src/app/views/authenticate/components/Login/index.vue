@@ -21,7 +21,7 @@
                     </el-form-item>
                     <el-row>
                         <el-col :span="24">
-                            <el-button style="float: right" round @click.prevent.stop="navigateTo('reset')">
+                            <el-button size="large" style="float: right" round @click.prevent.stop="navigateTo('reset')">
                                 {{ $t("views.authenticate.components.Login.reset_password") }}
                             </el-button>
                         </el-col>
@@ -36,7 +36,7 @@
                 </el-form>
                 <el-row class="bottom-info">
                     <el-col :span="24" class="info-button">
-                        <el-button plain round @click.prevent.stop="navigateTo('register&usertype=private&step=0')">
+                        <el-button size="large" plain round @click.prevent.stop="navigateTo('register&usertype=private&step=0')">
                             {{ $t("views.authenticate.components.Login.sign_up") }}
                         </el-button>
                     </el-col>

@@ -4,7 +4,7 @@
         <div class="lead">{{ $t("views.authenticate.components.Reset.description") }}</div>
         <el-row>
             <el-col>
-                <el-form class="reset-tab-form" autoComplete="on" :model="resetForm" ref="resetForm" label-position="left">
+                <el-form disabled class="reset-tab-form" size="large" autoComplete="on" :model="resetForm" ref="resetForm" label-position="left">
                     <el-form-item>
                         <el-input name="email" type="email" v-model="resetForm.email" autoComplete="on" :placeholder="$t('views.authenticate.components.Reset.placeholder')" />
                     </el-form-item>
