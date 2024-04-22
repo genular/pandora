@@ -111,7 +111,10 @@ export default {
 
             previewFileData: [],
             currentPreviewPage: 1,
+
             currentPreviewRows: 100,
+            currentPreviewColumns: 100,
+
             previewFileDataDialog: false,
 
             fetchSettings: {
@@ -436,7 +439,7 @@ export default {
                 });
         },
         createDirectory() {
-            this.$prompt('Please enter directory name', 'Directory name', {
+            this.$prompt('Please enter directory name', 'New directory', {
                 confirmButtonText: 'OK',
                 cancelButtonText: 'Cancel',
             }).then(({ value }) => {

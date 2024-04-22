@@ -52,7 +52,7 @@ export default {
             createImageThumbnails: false,
             timeout: (1000 * 60 * 60 * 24 * 1),
             dictDefaultMessage:
-                '<i style="display: table-cell; vertical-align: middle; font-size: 24px;" class="el-icon-upload">  ' +
+                '<i style="display: table-cell; vertical-align: middle; font-size: 32px;" class="el-icon-upload">  ' +
                 this.$t("views.workspace.components.dropzone.messages.upload_placeholder") +
                 "</i>",
             headers: {
@@ -356,7 +356,7 @@ export default {
     }
 
     i {
-        color: #ccc;
+        color: #8b8b8b;
     }
     input[name="file"] {
         display: none;
