@@ -49,7 +49,7 @@
                 <li class="menu-option" v-if="contextmenu.selectedFile && contextmenu.selectedFile.extension === 'csv'" @click="contextAction('preview')">{{ $t("views.workspace.index.context_menu.preview") }}</li>
             </ul>
         </div>
-        <el-dialog :title="'Preview of the First ' + currentPreviewRows + ' Rows and 50 Columns, with the summery row as Sum'" :visible.sync="previewFileDataDialog" width="50%">
+        <el-dialog :title="'Preview of the First ' + currentPreviewRows + ' Rows and 50 Columns'" :visible.sync="previewFileDataDialog" width="50%">
             <div class="dataset_preview_container">
                 <el-table 
                     height="500" 
