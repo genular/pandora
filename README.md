@@ -35,7 +35,7 @@
 ##### Minimum suggested hardware recommendation:
 
 -   64GB RAM
--   8 CPU Cores / 16 threads with 3.60 GHz base frequency
+-   8 CPU Cores / 16 threads with 3 GHz base frequency
 
 #### Installing PANDORA
 
@@ -53,24 +53,31 @@ docker run --rm --detach --name genular --tty --interactive --env IS_DOCKER='tru
 
 To ensure a clean re-installation of PANDORA, follow these steps to remove the existing Docker container, images, and volumes associated with PANDORA. This process will remove all data and settings related to the previous PANDORA installation.
 
-Identify Your Docker Entities
 Identify the names or IDs of your PANDORA container(s), volume(s), and image(s). 
-
 Use these commands to list entities:
 
 -   Containers: `docker ps` (for running) or `docker ps -a` (for all)
--   Volumes: `docker volume ls`
 -   Images: `docker images`
+-   Volumes: `docker volume ls`
+
+(Or use Docker GUI)
 
 ```bash
-## Stop the Running PANDORA Container / <ContainerName>
+## Stop and delete any old PANDORA Container
 docker stop <ContainerName>
-
-## Remove the PANDORA Container / <ContainerName>
+## Delete
 docker rm <ContainerName>
 
-## Remove PANDORA Volumes / <VolumeName1> <VolumeName2> <VolumeName3>
+## Check for any images and remove them if necessary
+docker images
+
+## Check for any volumes
+docker volume ls
+
+## Remove them as-well
 docker volume rm genular_frontend_latest genular_backend_latest genular_data_latest
+
+## Now you can proceed with clean installation
 ```
 
 ### Contributing, writing code
