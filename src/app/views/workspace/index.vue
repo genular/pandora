@@ -51,8 +51,34 @@
         </div>
         <el-dialog :title="'Preview of the First ' + currentPreviewRows + ' Rows and 50 Columns, with the summery row as Sum'" :visible.sync="previewFileDataDialog" width="50%">
             <div class="dataset_preview_container">
-                <el-table height="500" border :summary-method="getPreviewSummaries" show-summary :data="previewFileData" size="medium" v-if="previewFileData.length > 0">
-                    <el-table-column v-for="(colItem, colIndex) in Object.keys(previewFileData[0])" :prop="colItem" :key="colItem + '_' + colIndex" :label="colItem">
+                <el-table 
+                    height="500" 
+                    border 
+                    :summary-method="getPreviewSummaries" 
+                    show-summary 
+                    :data="previewFileData" 
+                    size="medium" 
+                    v-if="previewFileData.length > 0"
+                >
+                    <!-- Existing columns -->
+                    <el-table-column 
+                        v-for="(colItem, colIndex) in Object.keys(previewFileData[0])" 
+                        :prop="colItem" 
+                        :key="colItem + '_' + colIndex" 
+                        :label="colItem"
+                        :width="150"
+                        sortable
+                        class-name="custom-column"
+                    >
+                        <template v-slot:header="{ column, $index }">
+                            <span :title="column.label " ><i class="el-icon-arrow-right"></i> {{ column.label }}</span>
+                        </template>
+                        <template v-slot:default="{ row }">
+                            <span 
+                                :style="{ 'margin-left': '10px', 'font-weight': isNaN(Number(row[colItem])) ? 'bold' : 'normal' }">
+                                {{ row[colItem] }}
+                            </span>
+                        </template>
                     </el-table-column>
                 </el-table>
             </div>
@@ -488,7 +514,8 @@ export default {
 };
 
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
+
 .dropzone-container {
     margin-top: 10px;
 }
@@ -524,7 +551,13 @@ export default {
 .dataset_preview_container {
     max-height: 500px;
     overflow: auto;
+    .custom-column .cell {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
+
 
 
 </style>
