@@ -146,6 +146,41 @@
                         </el-tooltip>
                     </el-form-item>
 
+                    <el-form-item label="Grouped display">
+                        <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisGrouped"></el-switch>
+                        <el-tooltip placement="top">
+                            <div slot="content">
+                               Should we display mean values of clusters on a heatmap, scale by row, when enabled or column?
+                            </div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                    </el-form-item>
+
+                    <el-form-item label="Groupped column">
+                        <el-select style="float: left; width: 100%" v-model="settingsForm.datasetAnalysisGroupedColumn" 
+                            filterable remote default-first-option 
+                            reserve-keyword value-key="remapped" 
+                            clearable collapse-tags
+                            :disabled="settingsForm.datasetAnalysisGrouped == false" 
+                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
+                                (userInput) => {
+                                    querySearch(userInput);
+                                }
+                            ">
+                            <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                                <el-row>
+                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                        {{ item.original }}
+                                    </el-col>
+                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
+                                        {{ item.valid_10p === 1 ? "*" : "" }}
+                                        {{ item.unique_count }}
+                                        {{ item.na_percentage > 0 ? "NA" : "" }}
+                                    </el-col>
+                                </el-row>
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.scale.label')">
                         <br />
                         <el-select 
@@ -356,7 +391,7 @@
 import { fetchEditingClusteringPlotImage } from "@/api/plots";
 import { md5String } from "@/utils";
 import { debounce } from "@/utils/helpers";
-import Fuse from "fuse.js";
+import Fuse from 'fuse.js'
 
 import waves from "@/directive/waves";
 
@@ -483,6 +518,8 @@ export default {
                 removeNA: true,
                 preProcessDataset: [],
                 scale: "column",
+                datasetAnalysisGrouped: false,
+                datasetAnalysisGroupedColumn: [],
 
                 displayOptions: ["legend", "colnames", "rownames"],
 
@@ -596,7 +633,13 @@ export default {
             });
         },
         querySearch(query) {
-            const items_found = this.fuse.search(query);
+            if (!this.fuseIndex) {
+                // Prevent running the function if fuse is not initialized
+                console.error("Fuse is not initialized.");
+                return;
+            }
+            
+            const items_found = this.fuseIndex.search(query);
             this.selectedFileDetailsDisplay = items_found.map((x) => x.item);
         },
         redrawImage() {
@@ -636,8 +679,10 @@ export default {
             document.body.removeChild(downloadLink);
         },
         fetchRemoteAnalysis() {
+
             this.loadingPlot = true;
             this.settingsForm.preProcessDataset = this.selectedPreProcess;
+
             // Clone objects as an simple object
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
             const availableColumns = this.selectedFileDetails.columns;
@@ -652,6 +697,17 @@ export default {
             } else {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped);
             }
+
+            if(datasetAnalysisGrouped === true && settingsForm.datasetAnalysisGroupedColumn){
+                settingsForm.datasetAnalysisGroupedColumn = settingsForm.datasetAnalysisGroupedColumn.remapped;
+                // add it to selectedColumns
+                settingsForm.selectedColumns.push(settingsForm.datasetAnalysisGroupedColumn);
+
+                // Change the scale to row
+                settingsForm.scale = "row";
+            }
+
+
             // If no columns are selected
             if (settingsForm.selectedRows.length < 1) {
                 settingsForm.selectedRows = availableColumns
@@ -663,6 +719,7 @@ export default {
             }
 
             settingsForm.selectedRows = settingsForm.selectedRows.filter((x) => !settingsForm.selectedColumns.includes(x));
+
 
             if (settingsForm.selectedColumns.length < 1) {
                 this.$message({
