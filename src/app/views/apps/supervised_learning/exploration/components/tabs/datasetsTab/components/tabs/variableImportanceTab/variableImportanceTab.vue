@@ -3,22 +3,25 @@
         <div v-if="!isTabDisabled">
             <el-col :span="10">
                 <el-row>
-                    <div class="filter-and-tags-container" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="filter-and-tags-container" style="display: flex; align-items: center; flex-wrap: nowrap;">
                         <!-- Inline Form for filters -->
-                        <el-form :inline="true" size="large" class="filter-form">
-                            <el-form-item label="Class">
+                        <el-form :inline="true" size="large" class="filter-form" style="display: flex; align-items: center; flex-wrap: nowrap;">
+                            <el-form-item label="Class" style="margin-right: 20px;">
                                 <el-select v-model="paginateVariableImpData.selectedOutcomeOptionsIDs" collapse-tags size="large" multiple placeholder="Outcome class" @change="handleFetchVariableImp">
                                     <el-option v-for="item in selectedOutcomeOptions" :key="item.id" :label="'Outcome: ' + item.class_original" :value="item.id">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="Order">
-                                <el-select @change="handleTableFilter" class="filter-item" v-model="paginateVariableImpData.sort_by">
+                            <el-form-item label="Order" style="margin-right: 20px;">
+                                <el-select @change="handleTableFilter" class="filter-item" v-model="paginateVariableImpData.sort_by" size="large">
                                     <el-option v-for="item in tableSortOptions" :key="item.key" :label="item.label" :value="item.key"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item>
+                            <el-form-item style="margin-right: 20px;">
                                 <el-switch v-model="paginateVariableImpData.sort" @change="handleTableFilter" active-color="#13ce66" inactive-color="#ff4949" active-text="ASC" inactive-text="DESC"></el-switch>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button size="mini" class="filter-item" type="success" :loading="downloadLoading" v-waves icon="el-icon-download" @click="downloadTable"></el-button>
                             </el-form-item>
                         </el-form>
                     </div>
@@ -30,9 +33,6 @@
                             {{ feature.original | truncateString(15) }}
                         </el-tag>
                     </div>
-                    <!--
-                   <el-button size="mini" class="filter-item" type="success" :loading="downloadLoading" v-waves icon="el-icon-download" @click="downloadTable"></el-button>
-                    -->
                 </el-row>
                 <el-row style="padding-top: 15px;">
                     <el-table ref="variableImpTable" :data="displayVariableImportance" :row-class-name="tableVariableImpClass" row-key="id" @select-all="handleVarImpSelection" @select="handleVarImpSelection" style="min-height: 600px" size="small" border>
