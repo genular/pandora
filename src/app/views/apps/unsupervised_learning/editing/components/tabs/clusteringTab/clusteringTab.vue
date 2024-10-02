@@ -698,7 +698,7 @@ export default {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.map((x) => x.remapped);
             }
 
-            if(datasetAnalysisGrouped === true && settingsForm.datasetAnalysisGroupedColumn){
+            if(settingsForm.datasetAnalysisGroupedColumn && settingsForm.datasetAnalysisGrouped === true){
                 settingsForm.datasetAnalysisGroupedColumn = settingsForm.datasetAnalysisGroupedColumn.remapped;
                 // add it to selectedColumns
                 settingsForm.selectedColumns.push(settingsForm.datasetAnalysisGroupedColumn);
