@@ -380,13 +380,13 @@ export default {
                     const respData = response.data.message;
                     const details = response.data.details;
 
-                    console.log("Response Data:", respData);
-                    console.log("Details:", details);
+                    //console.log("Response Data:", respData);
+                    //console.log("Details:", details);
 
                     let activeTab = false;
                     // Update the image data.
                     for (const [respIndex, respItem] of Object.entries(respData)) {
-                        console.log(`Processing respIndex: ${respIndex}`, respItem);
+                        //console.log(`Processing respIndex: ${respIndex}`, respItem);
                         if (!this.plot_data.hasOwnProperty(respIndex)) {
                             // console.log(`Adding new respIndex to plot_data: ${respIndex}`);
                             this.$set(this.plot_data, respIndex, {});
@@ -400,12 +400,12 @@ export default {
 
                                 if (item === false) {
                                     resetPlotData = true; // Set flag if any item is false
-                                    console.log(`Item is false, setting resetPlotData to true for respIndex: ${respIndex}`);
+                                    //console.log(`Item is false, setting resetPlotData to true for respIndex: ${respIndex}`);
                                     break; // No need to process further if we're going to reset this entry
                                 }
 
                                 if (typeof this.plot_data[respIndex][respItemIndex] !== "object" || this.plot_data[respIndex][respItemIndex] === null) {
-                                    console.log(`Initializing plot_data[${respIndex}][${respItemIndex}]`);
+                                    //console.log(`Initializing plot_data[${respIndex}][${respItemIndex}]`);
                                     this.$set(this.plot_data[respIndex], respItemIndex, {});
                                 }
 
@@ -415,27 +415,27 @@ export default {
 
                                         if (activeTab === false) {
                                             activeTab = respItemIndex;
-                                            console.log(`Setting activeTab to: ${activeTab}`);
+                                            //console.log(`Setting activeTab to: ${activeTab}`);
                                         }
 
                                         if (!this.activeModelTabPlots[respItemIndex]) {
                                             this.activeModelTabPlots[respItemIndex] = `${respIndex}_${respItemIndex}`;
-                                            console.log(`Setting activeModelTabPlots[${respItemIndex}] to: ${this.activeModelTabPlots[respItemIndex]}`);
+                                            //console.log(`Setting activeModelTabPlots[${respItemIndex}] to: ${this.activeModelTabPlots[respItemIndex]}`);
                                         }
 
                                         const activePlotFeatureKey = `${respIndex}_${respItemIndex}`;
                                         if (!this.activeModelTabPlotsFeature[activePlotFeatureKey]) {
                                             if (respIndex !== "saveObjectHash" && respIndex.endsWith("_png")) {
                                                 this.activeModelTabPlotsFeature[activePlotFeatureKey] = `${respIndex}_${respItemIndex}_${index2}`;
-                                                console.log(
-                                                    `Setting activeModelTabPlotsFeature[${activePlotFeatureKey}] to: ${this.activeModelTabPlotsFeature[activePlotFeatureKey]}`
-                                                );
+                                                //console.log(
+                                                //    `Setting activeModelTabPlotsFeature[${activePlotFeatureKey}] to: ${this.activeModelTabPlotsFeature[activePlotFeatureKey]}`
+                                                //);
                                             }
                                         }
 
                                         if (!this.responseMethods.includes(respItemIndex)) {
                                             this.responseMethods.push(respItemIndex);
-                                            console.log(`Added ${respItemIndex} to responseMethods`);
+                                            //console.log(`Added ${respItemIndex} to responseMethods`);
                                         }
 
                                         this.$set(this.plot_data[respIndex][respItemIndex], index2, value);
@@ -449,7 +449,7 @@ export default {
 
                             if (resetPlotData) {
                                 this.plot_data[respIndex] = false; // Reset the entire plot_data index if the flag is true
-                                console.log(`Reset plot_data[${respIndex}] to false`);
+                                //console.log(`Reset plot_data[${respIndex}] to false`);
                             }
                         } else {
                             this.plot_data[respIndex] = Object.keys(respItem).length === 0 ? false : encodeURIComponent(respItem);
@@ -458,10 +458,10 @@ export default {
                     }
 
                     this.activeModelTab = activeTab;
-                    console.log(`Set activeModelTab to ${this.activeModelTab}`);
+                    //console.log(`Set activeModelTab to ${this.activeModelTab}`);
 
                     this.loadingPlot = false;
-                    console.log(`Set loadingPlot to false`);
+                    //console.log(`Set loadingPlot to false`);
                 })
                 .catch((error) => {
                     console.error("API call failed:", error);
@@ -474,7 +474,9 @@ export default {
                 });
         },
         downloadPlotImage(imageType, itemIndex = null, modelIndex = null) {
-            // Check if imageType exists in plot_data
+            
+            console.log("downloadPlotImage: ", imageType, itemIndex, modelIndex);
+            
             if (!this.plot_data[imageType]) {
                 console.error("Image type is undefined.");
                 return;
