@@ -388,7 +388,7 @@ export default {
                     for (const [respIndex, respItem] of Object.entries(respData)) {
                         console.log(`Processing respIndex: ${respIndex}`, respItem);
                         if (!this.plot_data.hasOwnProperty(respIndex)) {
-                            console.log(`Adding new respIndex to plot_data: ${respIndex}`);
+                            // console.log(`Adding new respIndex to plot_data: ${respIndex}`);
                             this.$set(this.plot_data, respIndex, {});
                         }
 
@@ -396,7 +396,7 @@ export default {
                             let resetPlotData = false; // Flag to determine if plot_data needs to be reset
 
                             for (const [respItemIndex, item] of Object.entries(respItem)) {
-                                console.log(`Processing respItemIndex: ${respItemIndex}`, item);
+                                // console.log(`Processing respItemIndex: ${respItemIndex}`, item);
 
                                 if (item === false) {
                                     resetPlotData = true; // Set flag if any item is false
@@ -411,7 +411,7 @@ export default {
 
                                 if (typeof item === "object") {
                                     for (const [index2, value] of Object.entries(item)) {
-                                        console.log(`Processing index2: ${index2}`, value);
+                                        // console.log(`Processing index2: ${index2}`, value);
 
                                         if (activeTab === false) {
                                             activeTab = respItemIndex;
