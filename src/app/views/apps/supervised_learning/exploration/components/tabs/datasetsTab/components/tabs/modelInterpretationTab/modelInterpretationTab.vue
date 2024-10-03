@@ -439,11 +439,11 @@ export default {
                                         }
 
                                         this.$set(this.plot_data[respIndex][respItemIndex], index2, value);
-                                        console.log(`Set plot_data[${respIndex}][${respItemIndex}][${index2}]`, value);
+                                        //console.log(`Set plot_data[${respIndex}][${respItemIndex}][${index2}]`, value);
                                     }
                                 } else {
                                     this.plot_data[respIndex][respItemIndex] = item;
-                                    console.log(`Set plot_data[${respIndex}][${respItemIndex}]`, item);
+                                    //console.log(`Set plot_data[${respIndex}][${respItemIndex}]`, item);
                                 }
                             }
 
@@ -453,7 +453,7 @@ export default {
                             }
                         } else {
                             this.plot_data[respIndex] = Object.keys(respItem).length === 0 ? false : encodeURIComponent(respItem);
-                            console.log(`Set plot_data[${respIndex}]`, this.plot_data[respIndex]);
+                            //console.log(`Set plot_data[${respIndex}]`, this.plot_data[respIndex]);
                         }
                     }
 
