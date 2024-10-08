@@ -20,10 +20,10 @@
                             <br />
                             <el-select style="float: left; width: 100%" v-model="selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
                                     (userInput) => {
-                                        querySearch(userInput);
+                                        querySearch(userInput, 'selectedColumns');
                                     }
                                 ">
-                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" v-bind:class="{
+                                <el-option v-for="item in selectedFileDetailsDisplay['selectedColumns']" :key="item.remapped" :label="item.original" :value="item" v-bind:class="{
                                         item_danger: item.valid_numeric !== 1,
                                     }">
                                     <el-row>
@@ -57,10 +57,10 @@
                             <br />
                             <el-select style="float: left; width: 100%" v-model="settingsForm.excludedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
                                     (userInput) => {
-                                        querySearch(userInput);
+                                        querySearch(userInput, 'excludedColumns');
                                     }
                                 ">
-                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                                <el-option v-for="item in selectedFileDetailsDisplay['excludedColumns']" :key="item.remapped" :label="item.original" :value="item">
                                     <el-row>
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
@@ -85,10 +85,10 @@
                             <br />
                             <el-select style="float: left; width: 100%" v-model="settingsForm.groupingVariables" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
                                     (userInput) => {
-                                        querySearch(userInput);
+                                        querySearch(userInput, 'groupingVariables');
                                     }
                                 ">
-                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1 || item.unique_count < 2">
+                                <el-option v-for="item in selectedFileDetailsDisplay['groupingVariables']" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1 || item.unique_count < 2">
                                     <el-row>
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
@@ -113,10 +113,10 @@
                             <br />
                             <el-select style="float: left; width: 100%" v-model="settingsForm.colorVariables" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
                                     (userInput) => {
-                                        querySearch(userInput);
+                                        querySearch(userInput, 'colorVariables');
                                     }
                                 ">
-                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_numeric === 0 || item.unique_count < 2">
+                                <el-option v-for="item in selectedFileDetailsDisplay['colorVariables']" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_numeric === 0 || item.unique_count < 2">
                                     <el-row>
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
@@ -170,10 +170,8 @@
                                     Determines the quantile used for setting the eps parameter in DBSCAN, controlling the density threshold for clustering; a higher value increases the neighborhood size.
                                     Lower the quantile used to calculate eps from 0.95 to a smaller value, making the criterion for neighborhood density stricter. This increases the likelihood of points being considered outliers.
                                     Experiment with values to find a balance suitable for your dataset's characteristics.
-                                    
                                     How eps is calculated?
                                     k_dist Calculation: The kNNdist function calculates the distance to the k-th nearest neighbor for each point in the dataset, where k is one less than minPts. This distance indicates how far you need to go from each point to find a certain number of neighbors, providing a sense of the local density around each point.
-
                                     Choosing eps with a Quantile: The eps parameter is then chosen based on a quantile (settings$epsQuantile) of these distances. By taking, for example, the 90th percentile (if epsQuantile is 0.9), you set eps to a value where 90% of points have their minPts-1 nearest neighbors within this distance. This quantile approach allows eps to adapt to the spread and density of your dataset, aiming to capture the majority of dense areas while excluding the most sparse outliers.
                                 </div>
                                 <i class="el-icon-question"></i>
@@ -217,11 +215,9 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
-
                         <el-divider></el-divider>
-
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.perplexity.title')">
-                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.perplexity" :step="1" :min="1" :max="100" show-input></el-slider>
+                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.perplexity" :step="1" :min="0" :max="100" show-input></el-slider>
                             <el-tooltip placement="top">
                                 <div slot="content">
                                     {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.perplexity.description") }}
@@ -229,17 +225,15 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
-
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.max_iter.title')">
-                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.max_iter" :step="1" :min="0" :max="50000" show-input></el-slider>
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.exaggeration_factor.title')">
+                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.exaggeration_factor" :step="4" :min="4" :max="128" show-input></el-slider>
                             <el-tooltip placement="top">
                                 <div slot="content">
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.max_iter.description") }}
+                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.exaggeration_factor.description") }}
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
-
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.theta.title')">
                             <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.theta" :step="0.1" :min="0" :max="10" show-input></el-slider>
                             <el-tooltip placement="top">
@@ -249,9 +243,24 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
-
+                        <el-divider></el-divider>
+                        <!-- Display info messages for t-SNE -->
+                        <el-form-item label="Auto t-SNE settings" style="margin-top: 10px">
+                            <span style="float: left; color: #8492a6; font-size: 13px">
+                                {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.explain_auto_compute_tsne.description") }}
+                            </span>
+                        </el-form-item>
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.max_iter.title')">
+                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.max_iter" :step="1" :min="0" :max="50000" show-input></el-slider>
+                            <el-tooltip placement="top">
+                                <div slot="content">
+                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.max_iter.description") }}
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.eta.title')">
-                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.eta" :step="1" :min="1" :max="1000" show-input></el-slider>
+                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.eta" :step="1" :min="0" :max="1000" show-input></el-slider>
                             <el-tooltip placement="top">
                                 <div slot="content">
                                     {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.eta.description") }}
@@ -259,7 +268,6 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
-
                         <el-divider></el-divider>
                         <el-form-item label="Dataset analysis type">
                             <br />
@@ -269,27 +277,24 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-
                         <el-form-item label="Grouped display">
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisGrouped"></el-switch>
                             <el-tooltip placement="top">
                                 <div slot="content">
-                                   Should we display mean values of clusters on a heatmap, scale by row, when enabled or column?
+                                    Should we display mean values of clusters on a heatmap, scale by row, when enabled or column?
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
-
                         <el-form-item label="Remove outliers" v-if="['Hierarchical', 'Mclust', 'Density'].includes(settingsForm.clusterType)">
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisRemoveOutliersDownstream"></el-switch>
                             <el-tooltip placement="top">
                                 <div slot="content">
-                                   Should we remove outlier cluster and data from heatmep display and downstream dataset (ML)?
+                                    Should we remove outlier cluster and data from heatmep display and downstream dataset (ML)?
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
-
                         <el-form-item label="Sort column" v-if="settingsForm.datasetAnalysisType === 'heatmap'">
                             <br />
                             <el-select style="float: left; width: 100%" v-model="settingsForm.datasetAnalysisSortColumn" placeholder="Select">
@@ -445,7 +450,7 @@
                     </el-card>
                 </el-row>
             </el-col>
-            <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
+            <el-col :span="19" :offset="1" style="text-align: center">
                 <el-tabs v-model="activeTab">
                     <el-tab-pane label="t-SNE plot(s)" name="tsne_plot" :disabled="isTabDisabled('tsne_plot')">
                         <el-tabs :value="plot_data.tsne_plot.length > 0 || Object.keys(plot_data.tsne_plot).length > 0 ? 'tab_tsne_grouped_0' : null" :tab-position="'right'">
@@ -557,24 +562,24 @@
                                                 </el-tooltip>
                                             </el-tab-pane>
                                             <el-tab-pane label="Features" v-if="plot_data.cluster_features_means_png !== false">
-                                               <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                        <div slot="content">
-                                                            <el-button type="success" round @click="downloadPlotImage('cluster_features_means')">
-                                                                {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
-                                                            </el-button>
-                                                        </div>
-                                                        <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.cluster_features_means_png" fit="scale-down" />
-                                                    </el-tooltip>
+                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
+                                                    <div slot="content">
+                                                        <el-button type="success" round @click="downloadPlotImage('cluster_features_means')">
+                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
+                                                        </el-button>
+                                                    </div>
+                                                    <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.cluster_features_means_png" fit="scale-down" />
+                                                </el-tooltip>
                                             </el-tab-pane>
                                             <el-tab-pane label="FoldChange" v-if="plot_data.cluster_features_means_png !== false">
                                                 <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                        <div slot="content">
-                                                            <el-button type="success" round @click="downloadPlotImage('cluster_features_means_separated')">
-                                                                {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
-                                                            </el-button>
-                                                        </div>
-                                                        <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.cluster_features_means_separated_png" fit="scale-down" />
-                                                    </el-tooltip>
+                                                    <div slot="content">
+                                                        <el-button type="success" round @click="downloadPlotImage('cluster_features_means_separated')">
+                                                            {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
+                                                        </el-button>
+                                                    </div>
+                                                    <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.cluster_features_means_separated_png" fit="scale-down" />
+                                                </el-tooltip>
                                             </el-tab-pane>
                                         </el-tabs>
                                     </el-col>
@@ -631,17 +636,47 @@
                         </el-row>
                     </el-tab-pane>
                 </el-tabs>
+                <el-row v-if="plot_data.tsne_perplexity !== false" type="flex" justify="center" align="middle" style="margin-bottom: 10px;">
+                    <el-col :span="24" style="text-align: center;">
+                        <!-- Display t-SNE stats using el-tag components -->
+                        <template v-if="plot_data.tsne_perplexity != null">
+                            <el-tag type="info" class="tsne-tag">
+                                Perplexity: {{ plot_data.tsne_perplexity }}
+                            </el-tag>
+                        </template>
+                        <template v-if="plot_data.tsne_exaggeration_factor != null">
+                            <el-tag type="success" class="tsne-tag">
+                                Exaggeration Factor: {{ plot_data.tsne_exaggeration_factor }}
+                            </el-tag>
+                        </template>
+                        <template v-if="plot_data.tsne_max_iter != null">
+                            <el-tag type="warning" class="tsne-tag">
+                                Max Iterations: {{ plot_data.tsne_max_iter }}
+                            </el-tag>
+                        </template>
+                        <template v-if="plot_data.tsne_theta != null">
+                            <el-tag type="danger" class="tsne-tag">
+                                Theta: {{ plot_data.tsne_theta }}
+                            </el-tag>
+                        </template>
+                        <template v-if="plot_data.tsne_eta != null">
+                            <el-tag type="primary" class="tsne-tag">
+                                Eta: {{ plot_data.tsne_eta }}
+                            </el-tag>
+                        </template>
+                    </el-col>
+                </el-row>
             </el-col>
         </el-row>
         <el-dialog title="Select columns for machine learning" :visible.sync="machineLearningDialogVisible" width="30%">
             <el-form ref="machineLearningSettingsForm" :model="machineLearningSettingsForm">
-                <el-form-item  label="Include Columns (selecting none will include all except excluded ones)">
+                <el-form-item label="Include Columns (selecting none will include all except excluded ones)">
                     <el-select style="float: left; width: 100%" v-model="machineLearningSettingsForm.selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
                     (userInput) => {
-                        querySearch(userInput);
+                        querySearch(userInput, 'selectedColumnsML');
                     }
                 ">
-                        <el-option v-for="item in selectedMLFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                        <el-option v-for="item in selectedMLFileDetailsDisplay['selectedColumnsML']" :key="item.remapped" :label="item.original" :value="item">
                             <el-row>
                                 <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                     {{ item.original }}
@@ -658,10 +693,10 @@
                 <el-form-item label="Exclude columns">
                     <el-select style="float: left; width: 100%" v-model="machineLearningSettingsForm.excludedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
                         (userInput) => {
-                            querySearch(userInput);
+                            querySearch(userInput, 'excludedColumnsML');
                         }
                     ">
-                        <el-option v-for="item in selectedMLFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                        <el-option v-for="item in selectedMLFileDetailsDisplay['excludedColumnsML']" :key="item.remapped" :label="item.original" :value="item">
                             <el-row>
                                 <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                     {{ item.original }}
@@ -707,12 +742,19 @@ export default {
             fuseIndex: null,
             loadingPlot: false,
             activeTab: "tsne_plot",
+
             // ML
             machineLearningDialogVisible: false,
-            selectedMLFileDetailsDisplay: [],
-            // ML
-
-            selectedFileDetailsDisplay: [],
+            selectedMLFileDetailsDisplay: {
+                "excludedColumnsML": [],
+                "selectedColumnsML": []
+            },
+            selectedFileDetailsDisplay: {
+                "selectedColumns": [],
+                "excludedColumns": [],
+                "groupingVariables": [],
+                "colorVariables": []
+            },
 
             selectedPreProcessOptions: [{
                     value: "center",
@@ -813,10 +855,13 @@ export default {
 
                 cutOffColumnSize: 50000,
                 removeNA: true,
-                perplexity: 30,
-                max_iter: 10000,
+
+                perplexity: 0,
+                exaggeration_factor: 0,
+                max_iter: 0,
                 theta: 0,
-                eta: 500,
+                eta: 0,
+
                 knn_clusters: 25,
                 clustLinkage: "ward.D2",
 
@@ -849,6 +894,11 @@ export default {
                 tsne_cluster_heatmap_plot_png: false,
 
                 avg_silhouette_score: false,
+                tsne_perplexity: false,
+                tsne_exaggeration_factor: false,
+                tsne_max_iter: false,
+                tsne_theta: false,
+                tsne_eta: false,
 
                 saveObjectHash: false,
                 saveDatasetHash: false,
@@ -950,6 +1000,11 @@ export default {
 
             if (this.tabEnabled === true && this.fuseIndex === null) {
                 this.initFuse(this.selectedFileDetails.columns);
+
+                for (let key in this.selectedFileDetailsDisplay) {
+                    this.selectedFileDetailsDisplay[key] = this.selectedFileDetails.columns;
+                }
+
             }
         },
         isTabDisabled(tabName) {
@@ -994,7 +1049,7 @@ export default {
         startSIMONAnalysis() {
             let datasetDetails = this.machineLearningSettingsForm.dataset;
 
-            if(datasetDetails === null){
+            if (datasetDetails === null) {
                 this.loadingPlot = false;
                 return;
             }
@@ -1091,7 +1146,9 @@ export default {
                                     });
 
                                     this.machineLearningSettingsForm.dataset = response.data.message;
-                                    this.selectedMLFileDetailsDisplay =  this.machineLearningSettingsForm.dataset.details.header.formatted;
+                                    for (let key in this.selectedMLFileDetailsDisplay) {
+                                        this.selectedMLFileDetailsDisplay[key] = this.machineLearningSettingsForm.dataset.details.header.formatted;
+                                    }
                                     this.machineLearningDialogVisible = true;
                                 } else {
                                     this.$message({
@@ -1173,7 +1230,7 @@ export default {
             if (this.selectedColumns.length > 0) {
                 const selectedColumns = JSON.parse(JSON.stringify(this.selectedColumns));
                 settingsForm.selectedColumns = selectedColumns.map((x) => x.remapped);
-            }else{
+            } else {
                 settingsForm.selectedColumns = [];
             }
 
@@ -1286,8 +1343,6 @@ export default {
                 });
         },
         initFuse(searchItems) {
-            this.selectedFileDetailsDisplay = searchItems;
-
             this.fuseIndex = new Fuse(searchItems, {
                 shouldSort: true,
                 threshold: 0.4,
@@ -1308,9 +1363,74 @@ export default {
                 ],
             });
         },
-        querySearch(query) {
-            const items_found = this.fuseIndex.search(query);
-            this.selectedFileDetailsDisplay = items_found.map((x) => x.item);
+        querySearch(query, inputField) {
+            // Validate inputs
+            if (typeof query !== 'string') {
+                console.error('Query must be a string');
+                return;
+            }
+
+            if (typeof inputField !== 'string') {
+                console.error('Input field must be a string');
+                return;
+            }
+
+            // Determine the target object based on inputField
+            let targetObjectName =
+                inputField === 'selectedColumnsML' || inputField === 'excludedColumnsML' ?
+                'selectedMLFileDetailsDisplay' :
+                'selectedFileDetailsDisplay';
+
+            // Initialize the target object if it doesn't exist
+            if (!this[targetObjectName]) {
+                this[targetObjectName] = {};
+            }
+
+            let targetObject = this[targetObjectName];
+
+            // Initialize the target array if it doesn't exist
+            if (!Array.isArray(targetObject[inputField])) {
+                targetObject[inputField] = [];
+            }
+
+            // Handle the case when query is an empty string
+            if (query === '') {
+                // Reset to default values
+                if (targetObjectName === 'selectedMLFileDetailsDisplay') {
+                    targetObject[inputField] = this.machineLearningSettingsForm.dataset.details.header.formatted;
+                } else {
+                    targetObject[inputField] = this.selectedFileDetails.columns;
+                }
+                return;
+            }
+
+            // Ensure that fuseIndex is properly initialized
+            if (!this.fuseIndex || typeof this.fuseIndex.search !== 'function') {
+                console.error('Fuse index is not initialized or invalid');
+                return;
+            }
+
+            let items_found = [];
+            try {
+                items_found = this.fuseIndex.search(query);
+            } catch (error) {
+                console.error('Error during fuseIndex search:', error);
+                items_found = [];
+            }
+
+            // Ensure items_found is an array
+            if (!Array.isArray(items_found)) {
+                items_found = [];
+            }
+
+            // Update the target array based on items_found
+            if (items_found.length === 0) {
+                targetObject[inputField] = [];
+            } else {
+                targetObject[inputField] = items_found
+                    .map((x) => (x && x.item !== undefined ? x.item : null))
+                    .filter((item) => item !== null);
+            }
         },
         downloadPlotImage(imageType, itemIndex = null, itemSubIndex = null) {
             if (typeof this.plot_data[imageType] === "undefined") {
@@ -1373,6 +1493,12 @@ export default {
                 tsne_cluster_heatmap_plot_png: false,
                 avg_silhouette_score: false,
 
+                tsne_perplexity: false,
+                tsne_exaggeration_factor: false,
+                tsne_max_iter: false,
+                tsne_theta: false,
+                tsne_eta: false,
+
                 saveObjectHash: false,
                 saveDatasetHash: false,
             };
@@ -1420,7 +1546,7 @@ export default {
 }
 
 .analysis_images {
-    max-width: 100%;
+    max-width: 50%;
 }
 
 #tsne-three {
@@ -1434,6 +1560,10 @@ export default {
     font-family: "Roboto Mono";
     letter-spacing: 1.2px;
     text-transform: uppercase;
+}
+
+.tsne-tag {
+    margin: 5px;
 }
 
 </style>

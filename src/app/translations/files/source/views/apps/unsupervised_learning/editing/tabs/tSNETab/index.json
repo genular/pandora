@@ -26,10 +26,17 @@
 										"title": "Remove NA?",
 										"description": "Should we drop rows with NA values in dataset before any calculation?"
 									},
+									"explain_auto_compute_tsne": {
+										"description": "Set all of the following 2 options (Maximum Iterations, Learning Rate (Eta)) to 0 to use auto calculated values for (Maximum Iterations, Learning Rate (Eta) and Theta)."
+									},
 									"perplexity": {
 										"title": "Perplexity",
-										"description": "The performance of SNE is fairly robust to changes in the perplexity, and typical values are between 5 and 50."
+										"description": "Set to 0 to automatically determine. The performance of SNE is fairly robust to changes in the perplexity, and typical values are between 5 and 50."
 									},
+								    "exaggeration_factor": {
+								        "title": "Exaggeration Factor",
+								        "description": "Set to 0 to automatically determine. Amplifies attractive forces between clusters during the early optimization phase. Adjusting this parameter can improve cluster separation in the t-SNE embedding."
+								    },
 									"max_iter": {
 										"title": "Maximum Iterations",
 										"description": "Specifies the maximum number of iterations for the t-SNE algorithm to run. Higher values can lead to better convergence but will increase computation time."
