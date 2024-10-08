@@ -3,9 +3,9 @@
 		"apps": {
 			"unsupervised_learning": {
 				"editing": {
-					"components": { 
+					"components": {
 						"tabs": {
-							"tSNETab": { 
+							"tSNETab": {
 								"title": "t-SNE analysis",
 								"form": {
 									"columns": {
@@ -29,6 +29,18 @@
 									"perplexity": {
 										"title": "Perplexity",
 										"description": "The performance of SNE is fairly robust to changes in the perplexity, and typical values are between 5 and 50."
+									},
+									"max_iter": {
+										"title": "Maximum Iterations",
+										"description": "Specifies the maximum number of iterations for the t-SNE algorithm to run. Higher values can lead to better convergence but will increase computation time."
+									},
+									"theta": {
+										"title": "Theta",
+										"description": "Controls the trade-off between speed and accuracy in the Barnes-Hut approximation for t-SNE. A value of 0 uses exact t-SNE, while higher values speed up computation at the cost of some accuracy."
+									},
+									"eta": {
+										"title": "Learning Rate (Eta)",
+										"description": "The learning rate for the t-SNE algorithm. Adjusting this parameter can influence the convergence and quality of the embedding."
 									},
 									"clust_algorithm": {
 										"title": "Clustering algorithm"

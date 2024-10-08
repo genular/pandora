@@ -217,6 +217,9 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
+
+                        <el-divider></el-divider>
+
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.perplexity.title')">
                             <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.perplexity" :step="1" :min="1" :max="100" show-input></el-slider>
                             <el-tooltip placement="top">
@@ -226,6 +229,37 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
+
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.max_iter.title')">
+                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.max_iter" :step="1" :min="0" :max="50000" show-input></el-slider>
+                            <el-tooltip placement="top">
+                                <div slot="content">
+                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.max_iter.description") }}
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.theta.title')">
+                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.theta" :step="0.1" :min="0" :max="10" show-input></el-slider>
+                            <el-tooltip placement="top">
+                                <div slot="content">
+                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.theta.description") }}
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
+                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.eta.title')">
+                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.eta" :step="1" :min="0" :max="1000" show-input></el-slider>
+                            <el-tooltip placement="top">
+                                <div slot="content">
+                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.eta.description") }}
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                        </el-form-item>
+
                         <el-divider></el-divider>
                         <el-form-item label="Dataset analysis type">
                             <br />
@@ -780,6 +814,9 @@ export default {
                 cutOffColumnSize: 50000,
                 removeNA: true,
                 perplexity: 30,
+                max_iter: 10000,
+                theta: 0,
+                eta: 500,
                 knn_clusters: 25,
                 clustLinkage: "ward.D2",
 
