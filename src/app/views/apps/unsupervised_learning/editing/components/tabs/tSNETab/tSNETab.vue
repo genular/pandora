@@ -251,7 +251,7 @@
                         </el-form-item>
 
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.eta.title')">
-                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.eta" :step="1" :min="0" :max="1000" show-input></el-slider>
+                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.eta" :step="1" :min="1" :max="1000" show-input></el-slider>
                             <el-tooltip placement="top">
                                 <div slot="content">
                                     {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.eta.description") }}
