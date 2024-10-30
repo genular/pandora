@@ -1,6 +1,6 @@
 <template>
     <div>
-        <component v-bind:is="currentView" :columnName="columnName" :isTabDisabled="isTabDisabled">
+        <component v-bind:is="currentView" :columnName="columnName" :isTabDisabled="isTabDisabled" :jobDetailsData="jobDetailsData">
             <!-- component changes when vm.currentView changes! -->
         </component>
     </div>
@@ -24,6 +24,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        jobDetailsData: {
+            type: Object,
+            default: {}
+        }
     },
     components: {
         variableImportanceTab,

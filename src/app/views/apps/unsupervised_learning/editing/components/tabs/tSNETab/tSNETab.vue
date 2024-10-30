@@ -172,15 +172,10 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <el-select v-model="settingsForm.resolution_increments" multiple placeholder="Select increments">
-                                <el-option
-                                    v-for="increment in [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]"
-                                    :key="increment"
-                                    :label="increment"
-                                    :value="increment">
+                                <el-option v-for="increment in [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]" :key="increment" :label="increment" :value="increment">
                                 </el-option>
                             </el-select>
                         </el-form-item>
-
                         <el-form-item label="Minimum Modularity" v-if="['Louvain'].includes(settingsForm.clusterType)">
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
@@ -189,15 +184,10 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <el-select v-model="settingsForm.min_modularities" multiple placeholder="Select modularities">
-                                <el-option
-                                    v-for="modularity in [0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9]"
-                                    :key="modularity"
-                                    :label="modularity"
-                                    :value="modularity">
+                                <el-option v-for="modularity in [0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9]" :key="modularity" :label="modularity" :value="modularity">
                                 </el-option>
                             </el-select>
                         </el-form-item>
-
                         <el-form-item label="Target Clusters Range" v-if="['Louvain'].includes(settingsForm.clusterType)">
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
@@ -215,14 +205,9 @@
                             <span> to </span>
                             <el-input-number size="mini" v-model="settingsForm.target_clusters_range[1]" :step="1" :min="1"></el-input-number>
                         </el-form-item>
-
-                        <el-form-item label="Pick Best Cluster Method" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                        <el-form-item label="Pick 'Best Cluster' Method" v-if="['Louvain'].includes(settingsForm.clusterType)">
                             <el-select v-model="settingsForm.pickBestClusterMethod" placeholder="Select method">
-                                <el-option
-                                    v-for="method in settingsOptions.pickBestClusterMethod"
-                                    :key="method.value"
-                                    :label="method.name"
-                                    :value="method.value">
+                                <el-option v-for="method in settingsOptions.pickBestClusterMethod" :key="method.value" :label="method.name" :value="method.value">
                                     <span style="display: flex; justify-content: space-between; align-items: center;">
                                         <span>{{ method.name }}</span>
                                         <el-tooltip placement="right">
@@ -233,8 +218,25 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-
-
+                        <!-- Selected Columns (SIMON) Dropdown -->
+                        <el-form-item label="Selected Columns (SIMON)" v-if="settingsForm.pickBestClusterMethod === 'SIMON'">
+                            <el-select v-model="machineLearningSettingsForm.selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags style="width: 100%" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="(userInput) => querySearch(userInput, 'selectedColumnsML')">
+                                <el-option v-for="item in selectedFileDetailsDisplay['selectedColumns']" :key="item.remapped" :label="item.original" :value="item" v-bind:class="{
+                                        item_danger: item.valid_numeric !== 1,
+                                    }">
+                                    <el-row>
+                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                            {{ item.original }}
+                                        </el-col>
+                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
+                                            {{ item.valid_10p === 1 ? "*" : "" }}
+                                            {{ item.unique_count }}
+                                            {{ item.na_percentage > 0 ? "NA" : "" }}
+                                        </el-col>
+                                    </el-row>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
                         <el-form-item label="Weights" v-if="['Louvain'].includes(settingsForm.clusterType)">
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">
@@ -257,9 +259,6 @@
                                 </div>
                             </div>
                         </el-form-item>
-
-
-
                         <el-form-item label="epsQuantile" v-if="['Hierarchical', 'Mclust', 'Density'].includes(settingsForm.clusterType)">
                             <el-input-number style="float: right" v-model="settingsForm.epsQuantile" :step="0.1" :min="0" :max="1"></el-input-number>
                             <el-tooltip placement="top" style="padding-left: 5px">
@@ -919,8 +918,7 @@ export default {
                 excludeOutliers: true,
 
                 // Louvain specific parameters
-                pickBestClusterMethod: [
-                    {
+                pickBestClusterMethod: [{
                         value: "SIMON",
                         name: "SIMON",
                         description: "Runs a detailed SIMON analysis using six algorithms, including Random Forest, Regularized Random Forest, Generalized Cross Validation Earth, Conditional Inference Trees, and Naive Bayes. It selects the best clustering based on a weighted average of AUROC, modularity, and silhouette scores. This process can take some time, as it builds models for each combination of Resolution Increments and Minimum Modularity settings, especially with larger datasets."
@@ -979,7 +977,7 @@ export default {
                 min_modularities: [0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9],
                 target_clusters_range: [3, 6],
                 pickBestClusterMethod: "Modularity",
-                weights: {AUROC: 0.5, modularity: 0.3, silhouette: 0.2},
+                weights: { AUROC: 0.5, modularity: 0.3, silhouette: 0.2 },
 
                 cutOffColumnSize: 50000,
                 removeNA: true,
@@ -1429,6 +1427,11 @@ export default {
                     this.loadingPlot = false;
                     return;
                 }
+            }
+
+            // If clustering Louvain is selected and Method SIMON add ML columns
+            if (settingsForm.clusterType === "Louvain" && settingsForm.pickBestClusterMethod === "SIMON") {
+                settingsForm.selectedColumnsSIMON = machineLearningSettingsForm.selectedColumns.map(x => x.remapped);
             }
 
             fetchTsnePlot({

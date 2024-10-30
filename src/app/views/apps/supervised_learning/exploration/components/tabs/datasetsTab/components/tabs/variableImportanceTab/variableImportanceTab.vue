@@ -140,7 +140,7 @@ export default {
                 sort: false,
                 sort_by: "score_perc",
                 total_items: null,
-                selectedOutcomeOptionsIDs: false,
+                selectedOutcomeOptionsIDs: [],
 
             },
             tableSortOptions: [{
@@ -224,7 +224,7 @@ export default {
             this.paginateVariableImpData.selectedOutcomeOptionsIDs = this.selectedOutcomeOptionsIDs;
         }
 
-        if (this.listLoading === false && this.displayVariableImportance.length === 0) {
+        if (this.listLoading === false) {
             this.handleFetchVariableImp();
         }
     },
@@ -311,57 +311,77 @@ export default {
                 if (response.data.success === true) {
                     // Step 1: Aggregate the data
                     const featureScoresByDrmId = response.data.data.reduce((acc, curr) => {
-                        if (!acc[curr.original]) {
-                            acc[curr.original] = {};
+                        const feature = curr.original;
+                        const drmId = curr.drm_id;
+                        const score = curr.score_perc;
+
+                        if (!acc[feature]) {
+                            acc[feature] = {};
                         }
-                        acc[curr.original][curr.drm_id] = curr.score_perc;
+                        acc[feature][drmId] = score;
                         return acc;
                     }, {});
 
-                    // Calculate sums of scores for each feature across all drm_id
-                    const featureSums = Object.entries(featureScoresByDrmId).reduce((acc, [feature, scores]) => {
-                        const sum = Object.values(scores).reduce((sumAcc, score) => sumAcc + score, 0);
-                        acc[feature] = sum;
-                        return acc;
-                    }, {});
+                    // Step 2: Calculate sums of scores for each feature across all drm_id
+                    const featureSums = {};
+                    Object.keys(featureScoresByDrmId).forEach(feature => {
+                        const scores = featureScoresByDrmId[feature];
+                        const sum = Object.values(scores).reduce((sum, score) => sum + score, 0);
+                        featureSums[feature] = sum;
+                    });
 
-                    // Sort features based on their sums
+                    // Step 3: Sort features based on their sums (Descending order)
                     const sortedFeatures = Object.entries(featureSums)
-                        .sort(([, sumA], [, sumB]) => sumA - sumB) // Changed from sumB - sumA to sumA - sumB for ascending order
+                        .sort(([, sumA], [, sumB]) => sumB - sumA) // Descending order
                         .map(([feature]) => feature);
 
-                    // Prepare yAxis data (Sorted Feature names)
+                    // yAxisData is the sorted features
                     const yAxisData = sortedFeatures;
 
-                    // Prepare the series data, ensuring it aligns with the sorted feature names
-                    const seriesData = Object.entries(featureScoresByDrmId).reduce((acc, [feature, scores]) => {
-                        Object.entries(scores).forEach(([drmId, score]) => {
-                            const matchingOutcomeOption = this.selectedOutcomeOptions.find(option => option.id === parseInt(drmId));
-                            const seriesName = matchingOutcomeOption ? matchingOutcomeOption.class_original : `DRM ID ${drmId}`;
-
-                            if (!acc[seriesName]) {
-                                acc[seriesName] = { name: seriesName, type: 'bar', stack: 'total', data: [] };
-                            }
-                            // Fill the array to maintain order alignment with yAxisData
-                            acc[seriesName].data = new Array(yAxisData.length).fill(0);
-                        });
-                        return acc;
-                    }, {});
+                    // Step 4: Collect all unique seriesNames (drm_id mapped to class_original)
+                    const seriesNamesSet = new Set();
                     response.data.data.forEach(item => {
-                        const matchingOutcomeOption = this.selectedOutcomeOptions.find(option => option.id === parseInt(item.drm_id));
-                        // Use a traditional conditional check instead of the optional chaining operator
-                        const seriesName = matchingOutcomeOption ? matchingOutcomeOption.class_original : `DRM ID ${item.drm_id}`;
-                        const featureIndex = yAxisData.indexOf(item.original);
-                        // Ensure the series name exists in seriesData before assigning the score
+                        const drmId = item.drm_id;
+                        const matchingOutcomeOption = this.selectedOutcomeOptions.find(option => option.id === parseInt(drmId));
+                        const seriesName = matchingOutcomeOption ? matchingOutcomeOption.class_original : `DRM ID ${drmId}`;
+                        seriesNamesSet.add(seriesName);
+                    });
+
+                    // Convert seriesNamesSet to an array
+                    const seriesNames = Array.from(seriesNamesSet);
+
+                    // Step 5: Initialize seriesData for each seriesName
+                    const seriesData = {};
+                    seriesNames.forEach(seriesName => {
+                        seriesData[seriesName] = {
+                            name: seriesName,
+                            type: 'bar',
+                            stack: 'total',
+                            data: new Array(yAxisData.length).fill(0)
+                        };
+                    });
+
+                    // Step 6: Fill in the data arrays
+                    response.data.data.forEach(item => {
+                        const drmId = item.drm_id;
+                        const matchingOutcomeOption = this.selectedOutcomeOptions.find(option => option.id === parseInt(drmId));
+                        const seriesName = matchingOutcomeOption ? matchingOutcomeOption.class_original : `DRM ID ${drmId}`;
+                        const featureName = item.original;
+                        const featureIndex = yAxisData.indexOf(featureName);
+
+                        if (featureIndex === -1) {
+                            console.warn(`Feature ${featureName} not found in yAxisData`);
+                            return;
+                        }
+
                         if (seriesData[seriesName]) {
                             seriesData[seriesName].data[featureIndex] = item.score_perc;
                         } else {
-                            // Handle the case where the seriesName might not exist in seriesData (optional, based on your data structure)
                             console.warn(`Series name '${seriesName}' not found in seriesData.`);
                         }
                     });
 
-                    // Convert seriesData from object to array format required by ECharts
+                    // Step 7: Convert seriesData from object to array
                     const series = Object.values(seriesData);
 
                     // Add labels to series data
@@ -370,11 +390,11 @@ export default {
                         seriesItem.emphasis = { focus: 'series' };
                     });
 
-                    // Step 2: Prepare data for chart
+                    // Step 8: Prepare data for chart
                     this.categoryStackData = {
                         yAxis: {
                             type: 'category',
-                            data: yAxisData, // Example category data
+                            data: yAxisData, // sorted feature names
                             axisLabel: {
                                 color: 'black', // Set y-axis label color to black
                             }
@@ -383,9 +403,14 @@ export default {
                     };
                 }
             }).catch((error) => {
-
+                console.error('Error fetching variable importance:', error);
+                this.$message({
+                    message: 'Error fetching variable importance data.',
+                    type: 'error',
+                });
             });
         },
+
         tableVariableImpClass({ row, rowIndex }) {
             if (row.score_perc > 50) {
                 return "success-row";

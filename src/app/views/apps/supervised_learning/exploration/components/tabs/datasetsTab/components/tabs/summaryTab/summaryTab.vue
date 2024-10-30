@@ -110,14 +110,6 @@ export default {
                 this.$store.dispatch("setSimonExplorationSelectedOutcomeOptionsIDs", value);
             }
         },
-    },
-    mounted() {
-        console.log("mounted: summaryTab");
-        if (this.isTabDisabled === false && this.selectedModelsIDs.length > 0) {
-            this.handleFetchSummaryPlots();
-        }
-    },
-    computed: {
         selectedFeatureSetId: {
             get() {
                 return this.$store.getters.pandoraExplorationSelectedFeatureSetId;
@@ -134,6 +126,12 @@ export default {
                 this.$store.dispatch("setSimonExplorationSelectedModelId", value);
             },
         },
+    },
+    mounted() {
+        console.log("mounted: summaryTab");
+        if (this.isTabDisabled === false && this.selectedModelsIDs.length > 0) {
+            this.handleFetchSummaryPlots();
+        }
     },
     methods: {
         copyToClipboard(content, event) {
@@ -174,7 +172,6 @@ export default {
             downloadLink.click();
             document.body.removeChild(downloadLink);
         },
-
         handleFetchSummaryPlots() {
             this.loading = true;
 

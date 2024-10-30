@@ -9,6 +9,25 @@ import request from "@/utils/request";
 const baseUrlPath = "/backend";
 
 /**
+ * Updates user profile information including first name, last name, phone, and OpenAI API key.
+ * 
+ * @param {string} first_name - First name of the user
+ * @param {string} last_name - Last name of the user
+ * @param {string} phone - Phone number of the user
+ * @param {string} openai_api - OpenAI API key for the user
+ * @returns {Promise} A Promise that resolves to the response of the update profile request.
+ */
+export function updateUserProfile(first_name, last_name, phone, openai_api) {
+    const data = { first_name, last_name, phone, openai_api };
+    return request({
+        url: baseUrlPath + "/user/update-profile",
+        method: "POST",
+        data,
+    });
+}
+
+
+/**
  * Login user to back-end and create Auth Token in the database
  * @param {string} username - Username of the current user
  * @param {string} password - Password of the current user

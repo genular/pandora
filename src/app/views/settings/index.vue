@@ -93,7 +93,6 @@
                 </el-card>
             </el-col>
         </el-row>
-
         <el-row style="position: fixed; bottom: 15px; right: 15px">
             <el-col :span="24">
                 <div style="color: #781717; font-size: 13px; text-align: right">
@@ -111,10 +110,12 @@
 <script>
 import NProgress from "nprogress"; // progress bar
 import { mapGetters } from "vuex";
-import { 
-    userDetials as ApiBackendUserDetails, 
+import {
+    userDetials as ApiBackendUserDetails,
     systemUpdate as ApiSystemUpdate,
-    generateSystemLogFileDownloadLink as ApiGenerateSystemLogFileDownloadLink } from "@/api/backend";
+    generateSystemLogFileDownloadLink as ApiGenerateSystemLogFileDownloadLink,
+    updateUserProfile
+} from "@/api/backend";
 import { downloadItemsTemplate } from "@/utils/templates.js";
 
 export default {
@@ -196,11 +197,39 @@ export default {
                 message: "Not available in this version",
             });
         },
-        updateProfile() {
-            this.$message({
-                type: "info",
-                message: "Not available in this version",
-            });
+        async updateProfile() {
+            try {
+                this.requestLoading = true;
+
+                // Call updateUserProfile API function with form data
+                const response = await updateUserProfile(
+                    this.settingsForm.first_name,
+                    this.settingsForm.last_name,
+                    this.settingsForm.phone,
+                    this.settingsForm.openai_api
+                );
+
+                // Handle response
+                if (response.data.success) {
+                    this.$message({
+                        type: "success",
+                        message: "Profile updated successfully!",
+                    });
+                } else {
+                    this.$message({
+                        type: "error",
+                        message: "Failed to update profile: " + response.data.message,
+                    });
+                }
+            } catch (error) {
+                console.error("Error updating profile:", error);
+                this.$message({
+                    type: "error",
+                    message: "An error occurred while updating your profile.",
+                });
+            } finally {
+                this.requestLoading = false;
+            }
         },
         updateAccount() {
             this.$message({
@@ -245,53 +274,54 @@ export default {
         },
         updateSimonVersion() {
             this.$confirm(
-                "This can permanently destroy all your PANDORA data and settings. Continue?",
-                "Update minor PANDORA version", {
-                    confirmButtonText: "OK",
-                    cancelButtonText: "Cancel",
-                    type: "warning",
-                }
-            )
-            .then(() => {
-                this.requestLoading = true;
-                ApiSystemUpdate()
-                    .then(response => {
-                        console.log("System update initiated:", response);
+                    "This can permanently destroy all your PANDORA data and settings. Continue?",
+                    "Update minor PANDORA version", {
+                        confirmButtonText: "OK",
+                        cancelButtonText: "Cancel",
+                        type: "warning",
+                    }
+                )
+                .then(() => {
+                    this.requestLoading = true;
+                    ApiSystemUpdate()
+                        .then(response => {
+                            console.log("System update initiated:", response);
 
-                        // Handle the successful update here
-                        setTimeout(() => { // Introduce a delay before setting requestLoading to false
+                            // Handle the successful update here
+                            setTimeout(() => { // Introduce a delay before setting requestLoading to false
+                                this.$message({
+                                    type: response.data.success === true ? "success" : "error",
+                                    message: response.data.message,
+                                });
+                                this.requestLoading = false;
+                            }, 30000);
+                        })
+                        .catch(error => {
+                            // Handle any errors that occur during the update process
+                            console.error("System update failed:", error);
+
                             this.$message({
-                                type: response.data.success === true ? "success" : "error",
-                                message: response.data.message,
+                                type: "error",
+                                message: "System update failed.",
                             });
-                            this.requestLoading = false;
-                        }, 30000);
-                    })
-                    .catch(error => {
-                        // Handle any errors that occur during the update process
-                        console.error("System update failed:", error);
-
-                        this.$message({
-                            type: "error",
-                            message: "System update failed.",
+                            setTimeout(() => { // Use setTimeout to delay setting requestLoading to false even in case of error
+                                this.requestLoading = false;
+                            }, 30000); // Delay for 30 seconds before setting requestLoading to false
                         });
-                        setTimeout(() => { // Use setTimeout to delay setting requestLoading to false even in case of error
-                            this.requestLoading = false;
-                        }, 30000); // Delay for 30 seconds before setting requestLoading to false
+                })
+                .catch(() => {
+                    // This block is executed if the user cancels the update
+                    this.$message({
+                        type: "info",
+                        message: "Update canceled",
                     });
-            })
-            .catch(() => {
-                // This block is executed if the user cancels the update
-                this.$message({
-                    type: "info",
-                    message: "Update canceled",
                 });
-            });
         }
     }
 };
+
 </script>
 <style rel="stylesheet/scss" lang="scss">
-.settings-settings {
-}
+.settings-settings {}
+
 </style>

@@ -224,7 +224,7 @@
                             {{ item.label }}
                         </span>
                         <keep-alive>
-                            <sub-tab-pane v-if="activeDatasetSubTabName == item.key" :currentView="item.view" :columnName="item.key" :isTabDisabled="isTabDisabled(item)"></sub-tab-pane>
+                            <sub-tab-pane v-if="activeDatasetSubTabName == item.key" :currentView="item.view" :columnName="item.key" :isTabDisabled="isTabDisabled(item)" :jobDetailsData="jobDetailsData"></sub-tab-pane>
                             <!-- inactive components will be cached! -->
                         </keep-alive>
                     </el-tab-pane>
