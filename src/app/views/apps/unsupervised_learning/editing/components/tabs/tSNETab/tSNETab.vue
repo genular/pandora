@@ -163,6 +163,103 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
+                        <!-- Additional Louvain-specific parameters -->
+                        <el-form-item label="Resolution Increments" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    Defines the step size for resolution values tested during clustering. Controls how detailed the clustering is, with smaller values creating finer groups. Think of this as adjusting the "focus" on clusters. Typical values range from 0.01 to 0.5.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                            <el-select v-model="settingsForm.resolution_increments" multiple placeholder="Select increments">
+                                <el-option
+                                    v-for="increment in [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]"
+                                    :key="increment"
+                                    :label="increment"
+                                    :value="increment">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="Minimum Modularity" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    Sets the minimum modularity threshold for accepting clusters. Higher modularity values indicate stronger intra-cluster connections, improving cluster quality. Think of it as Quality check that measures how strong the clusters are internally. Higher values (e.g., 0.5 to 0.9) mean clusters are well-separated from each other.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                            <el-select v-model="settingsForm.min_modularities" multiple placeholder="Select modularities">
+                                <el-option
+                                    v-for="modularity in [0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9]"
+                                    :key="modularity"
+                                    :label="modularity"
+                                    :value="modularity">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item label="Target Clusters Range" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    Sets the ideal range for the number of clusters you want (for example, 3 to 6 clusters). This helps guide the clustering to create groups within this range.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    Define approximate target range for the number of clusters.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                            <el-input-number size="mini" v-model="settingsForm.target_clusters_range[0]" :step="1" :min="1"></el-input-number>
+                            <span> to </span>
+                            <el-input-number size="mini" v-model="settingsForm.target_clusters_range[1]" :step="1" :min="1"></el-input-number>
+                        </el-form-item>
+
+                        <el-form-item label="Pick Best Cluster Method" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                            <el-select v-model="settingsForm.pickBestClusterMethod" placeholder="Select method">
+                                <el-option
+                                    v-for="method in settingsOptions.pickBestClusterMethod"
+                                    :key="method.value"
+                                    :label="method.name"
+                                    :value="method.value">
+                                    <span style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>{{ method.name }}</span>
+                                        <el-tooltip placement="right">
+                                            <div slot="content">{{ method.description }}</div>
+                                            <i class="el-icon-question" style="margin-left: 8px;"></i>
+                                        </el-tooltip>
+                                    </span>
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+
+                        <el-form-item label="Weights" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                            <el-tooltip placement="top" style="padding-left: 5px">
+                                <div slot="content">
+                                    Adjust weights for AUROC, modularity, and silhouette scores when selecting the best cluster.
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
+                            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                                <div style="display: flex; align-items: center;">
+                                    <el-input-number size="mini" v-model="settingsForm.weights.AUROC" :step="0.1" :min="0" :max="1"></el-input-number>
+                                    <span style="margin-left: 10px;">AUROC</span>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <el-input-number size="mini" v-model="settingsForm.weights.modularity" :step="0.1" :min="0" :max="1"></el-input-number>
+                                    <span style="margin-left: 10px;">Modularity</span>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <el-input-number size="mini" v-model="settingsForm.weights.silhouette" :step="0.1" :min="0" :max="1"></el-input-number>
+                                    <span style="margin-left: 10px;">Silhouette</span>
+                                </div>
+                            </div>
+                        </el-form-item>
+
+
+
                         <el-form-item label="epsQuantile" v-if="['Hierarchical', 'Mclust', 'Density'].includes(settingsForm.clusterType)">
                             <el-input-number style="float: right" v-model="settingsForm.epsQuantile" :step="0.1" :min="0" :max="1"></el-input-number>
                             <el-tooltip placement="top" style="padding-left: 5px">
@@ -821,6 +918,30 @@ export default {
                 epsQuantile: 0.9,
                 excludeOutliers: true,
 
+                // Louvain specific parameters
+                pickBestClusterMethod: [
+                    {
+                        value: "SIMON",
+                        name: "SIMON",
+                        description: "Runs a detailed SIMON analysis using six algorithms, including Random Forest, Regularized Random Forest, Generalized Cross Validation Earth, Conditional Inference Trees, and Naive Bayes. It selects the best clustering based on a weighted average of AUROC, modularity, and silhouette scores. This process can take some time, as it builds models for each combination of Resolution Increments and Minimum Modularity settings, especially with larger datasets."
+                    },
+                    {
+                        value: "Modularity",
+                        name: "Modularity",
+                        description: "Optimizes clustering based on the modularity score, measuring the strength of division of clusters."
+                    },
+                    {
+                        value: "Silhouette",
+                        name: "Silhouette",
+                        description: "Evaluates clustering by average silhouette score, indicating the similarity of data points within clusters."
+                    },
+                    {
+                        value: "Overall",
+                        name: "Overall",
+                        description: "Selects clusters by combining modularity, silhouette, Davies-Bouldin, and Calinski-Harabasz metrics for balanced scoring."
+                    }
+                ],
+
                 clustOrdering: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }],
 
                 datasetAnalysisType: [
@@ -852,6 +973,13 @@ export default {
                 clusterType: "Louvain",
                 epsQuantile: 0.9,
                 excludeOutliers: true,
+
+                // Immunaut Specific parameters for Louvain clustering
+                resolution_increments: [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5],
+                min_modularities: [0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9],
+                target_clusters_range: [3, 6],
+                pickBestClusterMethod: "Modularity",
+                weights: {AUROC: 0.5, modularity: 0.3, silhouette: 0.2},
 
                 cutOffColumnSize: 50000,
                 removeNA: true,
@@ -1461,7 +1589,7 @@ export default {
             downloadName = downloadName + ".svg";
 
             const svgImage = "data:image/svg+xml;base64," + svgString;
-            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by PANDORA: https://genular.org -->"], {
+            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by PANDORA: https://atomic-lab.org -->"], {
                 type: "image/svg+xml;charset=utf-8",
             });
 

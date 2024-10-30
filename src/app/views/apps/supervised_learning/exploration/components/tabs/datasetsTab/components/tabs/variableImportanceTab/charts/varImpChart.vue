@@ -143,7 +143,7 @@ export default {
             this.handleFetchGraphVariableImportance();
         },
         downloadPlotImage() {
-            const svgBlob = new Blob([window.atob(decodeURIComponent(this.renderedImage.substring(26))) + "<!-- created by PANDORA: https://genular.org -->"], {
+            const svgBlob = new Blob([window.atob(decodeURIComponent(this.renderedImage.substring(26))) + "<!-- created by PANDORA: https://atomic-lab.org -->"], {
                 type: "image/svg+xml;charset=utf-8"
             });
             const svgUrl = URL.createObjectURL(svgBlob);

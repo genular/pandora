@@ -24,9 +24,9 @@
                     <br />
                     {{ $t("components.GenularBottom.dialog.links.title") }}:
                     <ul>
-                        <li><a href="https://genular.org/" target="_blank">genular website</a></li>
+                        <li><a href="https://atomic-lab.org" target="_blank">aTomic Lab website</a></li>
                         <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.forums')" placement="left">
-                            <li><a href="https://community.genular.org/" target="_blank">community forums</a></li>
+                            <li><a href="https://community.atomic-lab.org" target="_blank">community forums</a></li>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.github')" placement="left">
                             <li><a href="https://github.com/genular/" target="_blank">github development page</a></li>

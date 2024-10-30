@@ -2,25 +2,25 @@
     "components": {
         "GenularBottom": {
             "buttons": {
-                "star": "Star us on github",
+                "star": "Star us on GitHub",
                 "help": "Help us with translations",
-                "about": "About genular"
+                "about": "About PANDORA"
             },
             "dialog": {
-                "title": "about us",
-                "intro": "We are open source community existing to promote science and research. We believe that everyone should have right to build highly accurate predictive models even if they would not usually have necessary skills.",
+                "title": "About Us",
+                "intro": "We are a dedicated academic lab driven to promote science and research under the leadership of Dr. Adriana Tomic. Our mission is to advance global health by making highly accurate predictive modeling and universal vaccine design accessible to all, regardless of technical expertise.",
                 "citation": {
-                    "author": "Albert Einstein",
-                    "text": "We can not solve our problems with the same level of thinking that created them"
+                    "author": "Dr. Adriana Tomic",
+                    "text": "In a world where disease knows no borders, our mission is clear: to unlock the secrets of immune resilience and forge universal vaccines that protect all. We’re building a future where precision medicine and global equity go hand in hand, using the language of data to transform the health of generations to come."
                 },
-                "ending": "To work towards a better future, we all need to understand how and why complex mechanisms are changing and whats impacting that change",
-                "footer": "PANDORA is made and maintained by @genular, a community working together to keep science a public good accessible to everyone. We are welcoming participation from organizations and individuals committed to advancing open tools for science. Visit our <a href='https://genular.org' target='_blank'>website</a> for instructions on how you and/or your project/organization can join us.",
+                "ending": "To build a better future, we need a deeper understanding of the complex immune mechanisms driving vaccine responses and immunity across diverse populations.",
+                "footer": "PANDORA and SIMON are developed and maintained by aTomic Lab, an academic research group. We are committed to making scientific advancements a public good and welcome contributions from individuals and organizations passionate about advancing open, accessible scientific tools. Visit our <a href='https://atomic-lab.org' target='_blank'>website</a> to learn how you or your organization can collaborate with us.",
                 "links": {
-                    "title": "Other resources",
+                    "title": "Other Resources",
                     "tooltip": {
-                        "forums": "Discuss with our community possible bugs & feature requests, or just write a usage tutorial",
-                        "github": "Take part in development progress or report bugs you discovered",
-                        "translation": "Join our Translation Community, add new or correct existing translations"
+                        "forums": "Join our community discussions, report bugs, suggest features, or share tutorials.",
+                        "github": "Contribute to our development, track progress, or report bugs.",
+                        "translation": "Help expand our Translation Community by adding or refining translations."
                     }
                 }
             }

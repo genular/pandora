@@ -102,7 +102,7 @@
                     PANDORA {{ packageVersion }} ({{ packageEnviroment }})
                     <br />
                     Developed by the
-                    <a href="https://github.com/genular/pandora" target="_blank">genular community</a>.
+                    <a href="https://atomic-lab.org" target="_blank">aTomic Lab</a>.
                 </div>
             </el-col>
         </el-row>

@@ -100,16 +100,14 @@ If you need any help, please use [community forums](https://community.genular.or
 
 ### Reaching Out
 
-If you'd like to start a conversation feel free to [e-mail us](mailto:info@genular.com).
+If you'd like to start a conversation feel free to [e-mail us](mailto:atomic.research.lab@gmail.com).
 I would also like to hear from you if you find this project useful and helpful!
 
--   Join us on `#genular` on `freenode.net` (or use the [web client](https://webchat.freenode.net/?channels=genular)).
--   Find us [on Twitter](https://twitter.com/genular) under @genular
--   Check out [community forums](https://community.genular.org)
+-   Find us [on Twitter](https://x.com/tomicadriana) under @tomicadriana
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within `PANDORA`, please [e-mail us](mailto:info@genular.com). All security vulnerabilities will be promptly addressed. You are also welcome to open PR request.
+If you discover a security vulnerability within `PANDORA`, please [e-mail us](mailto:atomic.research.lab@gmail.com). All security vulnerabilities will be promptly addressed. You are also welcome to open PR request.
 
 ## Additional Links
 

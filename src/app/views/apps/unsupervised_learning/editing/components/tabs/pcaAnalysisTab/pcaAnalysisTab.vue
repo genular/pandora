@@ -1448,7 +1448,7 @@ export default {
             downloadName = downloadName + ".svg";
 
             const svgImage = "data:image/svg+xml;base64," + svgString;
-            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by PANDORA: https://genular.org -->"], {
+            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by PANDORA: https://atomic-lab.org -->"], {
                 type: "image/svg+xml;charset=utf-8",
             });
 

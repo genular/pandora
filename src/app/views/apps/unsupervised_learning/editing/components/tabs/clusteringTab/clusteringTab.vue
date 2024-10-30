@@ -667,7 +667,7 @@ export default {
                 return;
             }
             const svgImage = "data:image/svg+xml;base64," + this.plot_data[imageType];
-            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by PANDORA: https://genular.org -->"], {
+            const svgBlob = new Blob([window.atob(decodeURIComponent(svgImage.substring(26))) + "<!-- created by PANDORA: https://atomic-lab.org -->"], {
                 type: "image/svg+xml;charset=utf-8",
             });
             const svgUrl = URL.createObjectURL(svgBlob);

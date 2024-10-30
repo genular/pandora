@@ -1,6 +1,6 @@
 # Contribution Guidelines
 
-This document contains a set of guidelines which any contributions to *any* genular repository must follow.
+This document contains a set of guidelines which any contributions to *any* aTomic Lab repository must follow.
 
 [If you disagree with something here, you should open up an issue to discuss making a change!](https://github.com/genular/pandora/issues/new)
 
@@ -14,7 +14,7 @@ This document contains a set of guidelines which any contributions to *any* genu
 
 ## GitHub Flow
 
-We use a modified version of [GitHub Flow](https://guides.github.com/introduction/flow/) at genular. The only difference is instead of deploying from a reviewed pull request, we merge first and deploy straight from master.
+We use a modified version of [GitHub Flow](https://guides.github.com/introduction/flow/) at aTomic Lab. The only difference is instead of deploying from a reviewed pull request, we merge first and deploy straight from master.
 
 Part of the GitHub Flow is submitting pull requests. See https://help.github.com/articles/using-pull-requests/ for a good overview of what pull requests are and how to use them. We use the _fork & pull model_ for managing contributions.
 
