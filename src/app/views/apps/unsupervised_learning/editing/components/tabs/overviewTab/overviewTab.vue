@@ -146,53 +146,6 @@
                         </el-row>
                     </el-form>
                 </el-row>
-                <el-row v-for="(item, index) in reverseSelectedColumns" :key="item.remapped">
-                    <el-card class="box-card box-column-item animated fadeIn">
-                        <div slot="header" class="clearfix">
-                            <span>{{ item.original }}</span>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.index.validation.unique_count.description") }}</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            {{ $t("views.apps.unsupervised_learning.editing.index.validation.unique_count.title") }}
-                            <div class="box-column-item-details">{{ item.unique_count }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_numeric.description") }}</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            {{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_numeric.title") }}
-                            <div class="box-column-item-details">{{ item.valid_numeric === 1 ? "Yes" : "No" }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_zv.description") }}</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            {{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_zv.title") }}
-                            <div class="box-column-item-details">{{ item.valid_zv === 1 ? "Yes" : "No" }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_10p.description") }}</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            {{ $t("views.apps.unsupervised_learning.editing.index.validation.valid_10p.title") }}
-                            <div class="box-column-item-details">{{ item.valid_10p === 1 ? "Yes" : "No" }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.index.validation.na_percentage.description") }}</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            {{ $t("views.apps.unsupervised_learning.editing.index.validation.na_percentage.title") }}
-                            <div class="box-column-item-details">{{ item.na_percentage }}</div>
-                        </div>
-                    </el-card>
-                </el-row>
             </el-col>
             <el-col :span="19" :offset="1" class="data-overview-container" style="text-align: center">
                 <el-tabs v-model="activeTab">

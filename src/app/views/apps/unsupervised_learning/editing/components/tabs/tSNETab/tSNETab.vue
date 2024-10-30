@@ -17,6 +17,7 @@
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
+                            <el-button :title="bottomBarOpen ? 'Hide Details' : 'Show Details'" size="mini" class="filter-item" type="info" style="padding: 0; float: right" v-waves :icon="bottomBarOpen ? 'el-icon-arrow-down' : 'el-icon-arrow-up'" @click="bottomBarOpen = !bottomBarOpen"></el-button>
                             <br />
                             <el-select style="float: left; width: 100%" v-model="selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
                                     (userInput) => {
@@ -171,7 +172,7 @@
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            <el-select v-model="settingsForm.resolution_increments" multiple placeholder="Select increments">
+                            <el-select style="width: 100%;" v-model="settingsForm.resolution_increments" multiple placeholder="Select increments">
                                 <el-option v-for="increment in [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]" :key="increment" :label="increment" :value="increment">
                                 </el-option>
                             </el-select>
@@ -183,7 +184,7 @@
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            <el-select v-model="settingsForm.min_modularities" multiple placeholder="Select modularities">
+                            <el-select style="width: 100%;" v-model="settingsForm.min_modularities" multiple placeholder="Select modularities">
                                 <el-option v-for="modularity in [0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9]" :key="modularity" :label="modularity" :value="modularity">
                                 </el-option>
                             </el-select>
@@ -195,18 +196,14 @@
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    Define approximate target range for the number of clusters.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <el-input-number size="mini" v-model="settingsForm.target_clusters_range[0]" :step="1" :min="1"></el-input-number>
-                            <span> to </span>
-                            <el-input-number size="mini" v-model="settingsForm.target_clusters_range[1]" :step="1" :min="1"></el-input-number>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <el-input-number size="mini" v-model="settingsForm.target_clusters_range[0]" :step="1" :min="1"></el-input-number>
+                                <span> to </span>
+                                <el-input-number size="mini" v-model="settingsForm.target_clusters_range[1]" :step="1" :min="1"></el-input-number>
+                            </div>
                         </el-form-item>
                         <el-form-item label="Pick 'Best Cluster' Method" v-if="['Louvain'].includes(settingsForm.clusterType)">
-                            <el-select v-model="settingsForm.pickBestClusterMethod" placeholder="Select method">
+                            <el-select style="width: 100%;" v-model="settingsForm.pickBestClusterMethod" placeholder="Select method">
                                 <el-option v-for="method in settingsOptions.pickBestClusterMethod" :key="method.value" :label="method.name" :value="method.value">
                                     <span style="display: flex; justify-content: space-between; align-items: center;">
                                         <span>{{ method.name }}</span>
@@ -220,8 +217,12 @@
                         </el-form-item>
                         <!-- Selected Columns (SIMON) Dropdown -->
                         <el-form-item label="Selected Columns (SIMON)" v-if="settingsForm.pickBestClusterMethod === 'SIMON'">
-                            <el-select v-model="machineLearningSettingsForm.selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags style="width: 100%" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="(userInput) => querySearch(userInput, 'selectedColumnsML')">
-                                <el-option v-for="item in selectedFileDetailsDisplay['selectedColumns']" :key="item.remapped" :label="item.original" :value="item" v-bind:class="{
+                            <el-select style="float: left; width: 100%" v-model="settingsForm.selectedColumnsSIMON" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
+                                    (userInput) => {
+                                        querySearch(userInput, 'selectedColumnsSIMON');
+                                    }
+                                ">
+                                <el-option v-for="item in selectedFileDetailsDisplay['selectedColumnsSIMON']" :key="item.remapped" :label="item.original" :value="item" v-bind:class="{
                                         item_danger: item.valid_numeric !== 1,
                                     }">
                                     <el-row>
@@ -244,18 +245,18 @@
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-                                <div style="display: flex; align-items: center;">
-                                    <el-input-number size="mini" v-model="settingsForm.weights.AUROC" :step="0.1" :min="0" :max="1"></el-input-number>
-                                    <span style="margin-left: 10px;">AUROC</span>
+                            <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 10px;">
+                                <!-- Row with titles -->
+                                <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                                    <span>AUROC ({{ settingsForm.weights.AUROC.toFixed(1) }})</span>
+                                    <span>Modularity ({{ settingsForm.weights.modularity.toFixed(1) }})</span>
+                                    <span>Silhouette ({{ settingsForm.weights.silhouette.toFixed(1) }})</span>
                                 </div>
-                                <div style="display: flex; align-items: center;">
-                                    <el-input-number size="mini" v-model="settingsForm.weights.modularity" :step="0.1" :min="0" :max="1"></el-input-number>
-                                    <span style="margin-left: 10px;">Modularity</span>
-                                </div>
-                                <div style="display: flex; align-items: center;">
-                                    <el-input-number size="mini" v-model="settingsForm.weights.silhouette" :step="0.1" :min="0" :max="1"></el-input-number>
-                                    <span style="margin-left: 10px;">Silhouette</span>
+                                <!-- Row with inputs -->
+                                <div style="display: flex; gap: 10px;">
+                                    <el-input-number size="mini" v-model="settingsForm.weights.AUROC" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
+                                    <el-input-number size="mini" v-model="settingsForm.weights.modularity" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
+                                    <el-input-number size="mini" v-model="settingsForm.weights.silhouette" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
                                 </div>
                             </div>
                         </el-form-item>
@@ -342,9 +343,12 @@
                         <el-divider></el-divider>
                         <!-- Display info messages for t-SNE -->
                         <el-form-item label="Auto t-SNE settings" style="margin-top: 10px">
-                            <span style="float: left; color: #8492a6; font-size: 13px">
-                                {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.explain_auto_compute_tsne.description") }}
-                            </span>
+                            <el-tooltip placement="top">
+                                <div slot="content">
+                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.explain_auto_compute_tsne.description") }}
+                                </div>
+                                <i class="el-icon-question"></i>
+                            </el-tooltip>
                         </el-form-item>
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.max_iter.title')">
                             <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.max_iter" :step="1" :min="0" :max="50000" show-input></el-slider>
@@ -492,62 +496,9 @@
                         </el-row>
                     </el-form>
                 </el-row>
-                <el-row v-for="(item, index) in reverseSelectedColumns" :key="item.remapped">
-                    <el-card class="box-card box-column-item animated fadeIn">
-                        <div slot="header" class="clearfix">
-                            <span>{{ item.original }}</span>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">Total number of unique/distinct values in the column</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            Number of unique values:
-                            <div class="box-column-item-details">{{ item.unique_count }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    Checks if selected column valid numeric one. If it contains anything else than numeric values this check will not pass. Such columns will be
-                                    excluded from PCA and other types of analysis.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            Valid numeric:
-                            <div class="box-column-item-details">{{ item.valid_numeric === 1 ? "Yes" : "No" }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">Checks if selected column is zero variance. Such columns will be excluded from PCA and other types of analysis.</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            Zero variance:
-                            <div class="box-column-item-details">{{ item.valid_zv === 1 ? "Yes" : "No" }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    Checks if number of unique values in the column are less than 10% the number of observations. We would use such columns as Grouping variables in
-                                    PCA and other types of analysis.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            Unique 10%:
-                            <div class="box-column-item-details">{{ item.valid_10p === 1 ? "Yes" : "No" }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">Total percentage of NA values found in selected column.</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            Percentage of NA values:
-                            <div class="box-column-item-details">{{ item.na_percentage }}</div>
-                        </div>
-                    </el-card>
-                </el-row>
             </el-col>
             <el-col :span="19" :offset="1" style="text-align: center">
-                <el-tabs v-model="activeTab">
+                <el-tabs v-model="activeTab" type="border-card" class="tab-container-second">
                     <el-tab-pane label="t-SNE plot(s)" name="tsne_plot" :disabled="isTabDisabled('tsne_plot')">
                         <el-tabs :value="plot_data.tsne_plot.length > 0 || Object.keys(plot_data.tsne_plot).length > 0 ? 'tab_tsne_grouped_0' : null" :tab-position="'right'">
                             <el-tab-pane v-for="(plotData, plotIndex) in plot_data.tsne_plot" :key="'tab_tsne_grouped_' + plotIndex" :label="plotData.name" :name="'tab_tsne_grouped_' + plotIndex">
@@ -636,10 +587,9 @@
                                 <el-row>
                                     <el-col :span="24">
                                         <span class="tab_intro_text_tsne">
-                                            This is a clustered t-SNE plot, visualizing the t-SNE dimensions without the use of grouping or color variables. The clustering method used is: {{ settingsForm.clusterType }}. Note that cluster "100" is specially designated for outliers, should outlier detection be enabled.
+                                            Clustered t-SNE plot with clustering method: {{ settingsForm.clusterType }}.
                                             <div v-if="plot_data.avg_silhouette_score" style="font-size: 14px; padding-top: 5px;">
-                                                The average silhouette score for the clustering is: <strong>{{ plot_data.avg_silhouette_score }}</strong>. The value ranges from -1 to +1, where a high value indicates that the object is well matched to its own cluster and poorly matched to neighboring clusters.<br />
-                                                <i>Rousseeuw, P.J. (1987) Silhouettes: A graphical aid to the interpretation and validation of cluster analysis. J. Comput. Appl. Math., 20, 53–65.</i>
+                                                Average silhouette score: <strong>{{ plot_data.avg_silhouette_score }}</strong> (ranges -1 to +1; higher values indicate better cluster fit).
                                             </div>
                                         </span>
                                     </el-col>
@@ -647,33 +597,35 @@
                                 <el-row>
                                     <el-col :span="24">
                                         <el-tabs tab-position="right">
-                                            <el-tab-pane label="Clusters" v-if="plot_data.tsne_cluster_plot_png !== false">
-                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                    <div slot="content">
+                                            <el-tab-pane label="Clusters" v-if="plot_data.tsne_cluster_plot_png">
+                                                <el-tooltip effect="light" placement="top-end" class="download_tooltip">
+                                                    <template v-slot:content>
                                                         <el-button type="success" round @click="downloadPlotImage('tsne_cluster_plot')">
                                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                         </el-button>
-                                                    </div>
+                                                    </template>
                                                     <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.tsne_cluster_plot_png" fit="scale-down" />
                                                 </el-tooltip>
                                             </el-tab-pane>
-                                            <el-tab-pane label="Features" v-if="plot_data.cluster_features_means_png !== false">
-                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                    <div slot="content">
+
+                                            <el-tab-pane label="Features" v-if="plot_data.cluster_features_means_png">
+                                                <el-tooltip effect="light" placement="top-end" class="download_tooltip">
+                                                    <template v-slot:content>
                                                         <el-button type="success" round @click="downloadPlotImage('cluster_features_means')">
                                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                         </el-button>
-                                                    </div>
+                                                    </template>
                                                     <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.cluster_features_means_png" fit="scale-down" />
                                                 </el-tooltip>
                                             </el-tab-pane>
-                                            <el-tab-pane label="FoldChange" v-if="plot_data.cluster_features_means_png !== false">
-                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
-                                                    <div slot="content">
+
+                                            <el-tab-pane label="FoldChange" v-if="plot_data.cluster_features_means_separated_png">
+                                                <el-tooltip effect="light" placement="top-end" class="download_tooltip">
+                                                    <template v-slot:content>
                                                         <el-button type="success" round @click="downloadPlotImage('cluster_features_means_separated')">
                                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                         </el-button>
-                                                    </div>
+                                                    </template>
                                                     <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.cluster_features_means_separated_png" fit="scale-down" />
                                                 </el-tooltip>
                                             </el-tab-pane>
@@ -813,6 +765,59 @@
                 <el-button type="primary" @click="startSIMONAnalysis">Confirm</el-button>
             </span>
         </el-dialog>
+        <el-aside class="bottom-column-details-bar" :class="{ open: bottomBarOpen }">
+            <el-row v-for="(item, index) in reverseSelectedColumns" :key="item.remapped">
+                <el-card class="box-card box-column-item animated fadeIn" shadow="never">
+                    <div slot="header" class="clearfix">
+                        <span>{{ item.original }}</span>
+                    </div>
+                    <div class="box-column-item-text">
+                        <el-tooltip placement="top">
+                            <div slot="content">Total unique/distinct values in this column.</div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        Unique values:
+                        <div class="box-column-item-details">{{ item.unique_count }}</div>
+                    </div>
+                    <div class="box-column-item-text">
+                        <el-tooltip placement="top">
+                            <div slot="content">
+                                Indicates whether the column contains only numeric values. Non-numeric columns will be excluded from PCA and other analyses.
+                            </div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        Valid numeric:
+                        <div class="box-column-item-details">{{ item.valid_numeric === 1 ? "Yes" : "No" }}</div>
+                    </div>
+                    <div class="box-column-item-text">
+                        <el-tooltip placement="top">
+                            <div slot="content">Indicates if the column has zero variance. Columns with zero variance will be excluded from analyses.</div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        Zero variance:
+                        <div class="box-column-item-details">{{ item.valid_zv === 1 ? "Yes" : "No" }}</div>
+                    </div>
+                    <div class="box-column-item-text">
+                        <el-tooltip placement="top">
+                            <div slot="content">
+                                Indicates if the column has fewer unique values than 10% of the total observations. Such columns are suitable as grouping variables in PCA and other analyses.
+                            </div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        Unique < 10%: <div class="box-column-item-details">{{ item.valid_10p === 1 ? "Yes" : "No" }}
+                    </div>
+                    </div>
+                    <div class="box-column-item-text">
+                        <el-tooltip placement="top">
+                            <div slot="content">Percentage of missing (NA) values in this column.</div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        NA values (%):
+                        <div class="box-column-item-details">{{ item.na_percentage }}</div>
+                    </div>
+                </el-card>
+            </el-row>
+        </el-aside>
     </div>
 </template>
 <script>
@@ -833,6 +838,7 @@ export default {
     },
     data() {
         return {
+            bottomBarOpen: false,
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,
             fuseIndex: null,
@@ -849,7 +855,8 @@ export default {
                 "selectedColumns": [],
                 "excludedColumns": [],
                 "groupingVariables": [],
-                "colorVariables": []
+                "colorVariables": [],
+                "selectedColumnsSIMON": [],
             },
 
             selectedPreProcessOptions: [{
@@ -977,6 +984,7 @@ export default {
                 min_modularities: [0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9],
                 target_clusters_range: [3, 6],
                 pickBestClusterMethod: "Modularity",
+                selectedColumnsSIMON: [],
                 weights: { AUROC: 0.5, modularity: 0.3, silhouette: 0.2 },
 
                 cutOffColumnSize: 50000,
@@ -1097,6 +1105,9 @@ export default {
         this.isTabEnabled();
     },
     methods: {
+        roundToTenth(value) {
+            return Math.round(value * 10) / 10;
+        },
         downloadTable() {
             const exportData = this.selectedFileDetails.columns;
             import("@/vendor/Export2Excel").then((excel) => {
@@ -1360,8 +1371,6 @@ export default {
                 settingsForm.selectedColumns = [];
             }
 
-
-
             // Remove any excluded columns from selected columns
             if (settingsForm.excludedColumns !== null && typeof settingsForm.excludedColumns === "object") {
                 settingsForm.excludedColumns = this.settingsForm.excludedColumns.map((x) => x.remapped);
@@ -1431,7 +1440,38 @@ export default {
 
             // If clustering Louvain is selected and Method SIMON add ML columns
             if (settingsForm.clusterType === "Louvain" && settingsForm.pickBestClusterMethod === "SIMON") {
-                settingsForm.selectedColumnsSIMON = machineLearningSettingsForm.selectedColumns.map(x => x.remapped);
+                const selectedColumnsSIMON = JSON.parse(JSON.stringify(this.settingsForm.selectedColumnsSIMON));
+                settingsForm.selectedColumnsSIMON = selectedColumnsSIMON.map(x => x.remapped);
+
+                if (settingsForm.selectedColumnsSIMON.length === 0) {
+                    this.$message({
+                        message: "Please select columns for SIMON cluster analysis",
+                        type: "error",
+                    });
+                    this.loadingPlot = false;
+                    return;
+                } else {
+                    this.machineLearningSettingsForm.selectedColumns = selectedColumnsSIMON;
+                    if (this.selectedColumns.length > 0) {
+                        this.machineLearningSettingsForm.excludedColumns = JSON.parse(JSON.stringify(this.selectedColumns));
+                    }
+                }
+
+                // Check if weights sum up to 1 with a small tolerance for floating-point precision
+                let weightsSum = 0;
+                for (let key in this.settingsForm.weights) {
+                    weightsSum += this.settingsForm.weights[key];
+                }
+
+                if (Math.abs(weightsSum - 1) > 0.01) { // Using a tolerance of 0.01
+                    this.$message({
+                        message: "Weights for SIMON analysis should sum up to 1",
+                        type: "error",
+                    });
+                    this.loadingPlot = false;
+                    return;
+                }
+
             }
 
             fetchTsnePlot({
@@ -1637,6 +1677,26 @@ export default {
     },
 
     watch: {
+        'settingsForm.weights': {
+            handler(newVal) {
+                let total = newVal.AUROC + newVal.modularity + newVal.silhouette;
+
+                if (total > 1) {
+                    // Adjust proportionally to maintain total <= 1
+                    const scaleFactor = 1 / total;
+                    this.settingsForm.weights.AUROC = this.roundToTenth(newVal.AUROC * scaleFactor);
+                    this.settingsForm.weights.modularity = this.roundToTenth(newVal.modularity * scaleFactor);
+                    this.settingsForm.weights.silhouette = this.roundToTenth(newVal.silhouette * scaleFactor);
+                } else {
+                    // Ensure each weight is rounded to one decimal place
+                    this.settingsForm.weights.AUROC = this.roundToTenth(newVal.AUROC);
+                    this.settingsForm.weights.modularity = this.roundToTenth(newVal.modularity);
+                    this.settingsForm.weights.silhouette = this.roundToTenth(newVal.silhouette);
+                }
+            },
+            deep: true
+        },
+
         selectedFileDetails: function(newVal, oldVal) {
             console.log("File selected change detected " + this.$options.name);
             if (newVal.columns.length >= 1) {

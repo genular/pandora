@@ -1,6 +1,6 @@
 <template>
     <div class="app-container" v-loading="pageLoading" :element-loading-text="$t('globals.page_loading')">
-        <el-tabs v-model="activeEditingTabName" type="border-card" class="tab-container">
+        <el-tabs v-model="activeEditingTabName" type="border-card" class="tab-container-first">
             <el-tab-pane
                 v-for="item in tabMapOptions"
                 :label="item.label"
@@ -9,7 +9,7 @@
                 :disabled="isTabDisabled(item) || selectedFileDetails.columns.length < 1"
             >
                 <span slot="label">
-                    <i :class="item.icon"></i>
+                    <i :class="item.icon" style="color: #8492a6; font-size: 16px; margin-right: 4px;"></i> <!-- Adjust color and size here -->
                     {{ item.label }}
                 </span>
                 <keep-alive>
@@ -38,40 +38,40 @@ export default {
                 {
                     label: this.$t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.title"),
                     key: "overviewTab",
-                    icon: "el-icon-date",
+                    icon: "el-icon-s-data",
                 },
                 {
                     label: this.$t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.title"),
                     key: "correlationTab",
-                    icon: "el-icon-date",
+                    icon: "el-icon-s-operation",
                     restriction: "selectedFileDetails",
                     restriction_details: -1,
                 },
                 {
                     label: this.$t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.title"),
                     key: "clusteringTab",
-                    icon: "el-icon-date",
+                    icon: "el-icon-share",
                     restriction: "selectedFileDetails",
                     restriction_details: -1,
                 },
                 {
                     label: this.$t("views.apps.unsupervised_learning.editing.components.tabs.pcaAnalysisTab.title"),
                     key: "pcaAnalysisTab",
-                    icon: "el-icon-date",
+                    icon: "el-icon-pie-chart",
                     restriction: "selectedFileDetails",
                     restriction_details: -1,
                 },
                 {
                     label: this.$t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.title"),
                     key: "tSNETab",
-                    icon: "el-icon-date",
+                    icon: "el-icon-s-promotion",
                     restriction: "selectedFileDetails",
                     restriction_details: -1,
                 },
                 {
                     label: this.$t("views.apps.unsupervised_learning.editing.components.tabs.umapTab.title"),
                     key: "umapTab",
-                    icon: "el-icon-date",
+                    icon: "el-icon-s-flag",
                     restriction: "selectedFileDetails",
                     restriction_details: -1,
                 },

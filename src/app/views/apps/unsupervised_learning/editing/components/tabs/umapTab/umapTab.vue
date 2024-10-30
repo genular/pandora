@@ -294,59 +294,6 @@
                         </el-row>
                     </el-form>
                 </el-row>
-                <el-row v-for="(item, index) in reverseSelectedColumns" :key="item.remapped">
-                    <el-card class="box-card box-column-item animated fadeIn">
-                        <div slot="header" class="clearfix">
-                            <span>{{ item.original }}</span>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">Total number of unique/distinct values in the column</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            Number of unique values:
-                            <div class="box-column-item-details">{{ item.unique_count }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    Checks if selected column valid numeric one. If it contains anything else than numeric values this check will not pass. Such columns will be
-                                    excluded from PCA and other types of analysis.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            Valid numeric:
-                            <div class="box-column-item-details">{{ item.valid_numeric === 1 ? "Yes" : "No" }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">Checks if selected column is zero variance. Such columns will be excluded from PCA and other types of analysis.</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            Zero variance:
-                            <div class="box-column-item-details">{{ item.valid_zv === 1 ? "Yes" : "No" }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    Checks if number of unique values in the column are less than 10% the number of observations. We would use such columns as Grouping variables in
-                                    PCA and other types of analysis.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            Unique 10%:
-                            <div class="box-column-item-details">{{ item.valid_10p === 1 ? "Yes" : "No" }}</div>
-                        </div>
-                        <div class="box-column-item-text">
-                            <el-tooltip placement="top">
-                                <div slot="content">Total percentage of NA values found in selected column.</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            Percentage of NA values:
-                            <div class="box-column-item-details">{{ item.na_percentage }}</div>
-                        </div>
-                    </el-card>
-                </el-row>
             </el-col>
             <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
                 <el-tabs v-model="activeTab">
