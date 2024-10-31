@@ -43,6 +43,11 @@ export default {
             } else {
                 this.stopFetchingLogs();
             }
+        },
+        displayLogs(newLogs) {
+            if (!this.activeTab && Object.keys(newLogs).length) {
+                this.activeTab = Object.keys(newLogs)[0];
+            }
         }
     },
     mounted() {
@@ -94,13 +99,10 @@ export default {
                 }
             });
 
-            this.$nextTick(() => {
-                if (this.scrollEnabled && this.$refs.logContainer) {
-                    console.log('Scrolling to bottom');
-
-                    this.scrollToBottom();
-                }
-            });
+            // Call scrollToBottom if auto-scrolling is enabled
+            if (this.scrollEnabled) {
+                this.scrollToBottom();
+            }
         },
         setActiveTab() {
             console.log('Setting active tab');
@@ -121,10 +123,17 @@ export default {
             }
         },
         scrollToBottom() {
-            const logContainer = this.$refs[`logContainer-${this.activeTab}`];
-            if (logContainer) {
-                logContainer.scrollTop = logContainer.scrollHeight;
-            }
+            this.$nextTick(() => {
+                const logContainers = this.$el.querySelectorAll('.logs-output');
+                logContainers.forEach(logContainer => {
+                    if (logContainer && typeof logContainer.scrollHeight !== 'undefined') {
+                        logContainer.scrollTop = logContainer.scrollHeight;
+                        console.log('Scrolled to bottom:', logContainer.scrollHeight);
+                    } else {
+                        console.warn("Log container or scrollHeight is undefined.", logContainer);
+                    }
+                });
+            });
         }
     },
     beforeDestroy() {
@@ -159,7 +168,8 @@ export default {
     display: flex;
     flex-direction: column;
     box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.5);
-    overflow: hidden; /* Ensure no accidental overflow in main container */
+    overflow: hidden;
+    /* Ensure no accidental overflow in main container */
 }
 
 .terminal-header {
@@ -199,7 +209,8 @@ export default {
 
 .logs-output {
     flex: 1;
-    max-height: 40vh; /* Set a max height for overflow */
+    max-height: 40vh;
+    /* Set a max height for overflow */
     overflow-y: auto;
     overflow-x: hidden;
     padding: 10px 20px;
@@ -207,7 +218,8 @@ export default {
     font-size: 14px;
     line-height: 1.4;
     color: #ddd;
-    scroll-behavior: smooth; /* Adds smooth scrolling behavior */
+    scroll-behavior: smooth;
+    /* Adds smooth scrolling behavior */
 }
 
 /* Allow mouse wheel scroll within .logs-output */

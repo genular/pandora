@@ -1,12 +1,15 @@
 <template>
-    <scroll-bar>
-        <el-menu class="sidebar-container" mode="vertical" :default-active="$route.path" :collapse="isCollapse">
-            <sidebar-item :routes="permission_routers"></sidebar-item>
-        </el-menu>
+    <div class="sidebar-wrapper">
+        <scroll-bar>
+            <el-menu class="sidebar-container" mode="vertical" :default-active="$route.path" :collapse="isCollapse">
+                <sidebar-item :routes="permission_routers"></sidebar-item>
+            </el-menu>
+        </scroll-bar>
         <server-load :currentServerLoad="currentServerLoad"></server-load>
         <genular-bottom></genular-bottom>
-    </scroll-bar>
+    </div>
 </template>
+
 <script>
 import { mapGetters } from "vuex";
 
