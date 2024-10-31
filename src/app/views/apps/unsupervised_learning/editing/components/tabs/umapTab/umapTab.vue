@@ -296,7 +296,7 @@
                 </el-row>
             </el-col>
             <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
-                <el-tabs v-model="activeTab">
+                <el-tabs v-model="activeTab" type="border-card" class="tab-container-second">
                     <el-tab-pane label="UMAP Plot" name="umap_plot" :disabled="isTabDisabled('umap_plot')">
                         <el-tabs :value="plot_data.umap_plot.length > 0 ? 'tab_umap_grouped_0' : null" :tab-position="'right'">
                             <el-tab-pane

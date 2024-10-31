@@ -64,11 +64,66 @@ const apps = {
                 selectedColumns: estore.get("apps-pandora-editing-selectedColumns") || [],
 
                 selectedPreProcess: estore.get("apps-pandora-editing-selectedPreProcess") || ["medianImpute", "center", "scale", "corr", "nzv", "zv"],
-                mlSettingsForm: estore.get("apps-pandora-editing-mlSettingsForm") || {
-                    selectedColumns: [],
-                    excludedColumns: [],
-                    dataset: null
-                },
+
+                tabs: {
+                    tsne: {
+                        mlSettingsForm: estore.get("apps-pandora-editing-mlSettingsForm") || {
+                            selectedColumns: [],
+                            excludedColumns: [],
+                            dataset: null
+                        },
+                        settingsForm: estore.get("apps-pandora-editing-tsne-settingsForm") || {
+                            excludedColumns: [],
+                            groupingVariables: [],
+                            colorVariables: [],
+                            preProcessDataset: [],
+
+                            fontSize: 12,
+                            pointSize: 8,
+                            theme: "theme_bw",
+                            colorPalette: "Dark2",
+                            aspect_ratio: 1,
+                            plot_size: 12,
+
+                            clusterType: "Louvain",
+                            epsQuantile: 0.9,
+                            excludeOutliers: true,
+
+                            // Immunaut Specific parameters for Louvain clustering
+                            resolution_increments: [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5],
+                            min_modularities: [0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9],
+                            target_clusters_range: [3, 6],
+                            pickBestClusterMethod: "Modularity",
+                            selectedColumnsSIMON: [],
+                            weights: { AUROC: 0.5, modularity: 0.3, silhouette: 0.2 },
+
+                            cutOffColumnSize: 50000,
+                            removeNA: true,
+
+                            perplexity: 0,
+                            exaggeration_factor: 0,
+                            max_iter: 0,
+                            theta: 0,
+                            eta: 0,
+
+                            knn_clusters: 25,
+                            clustLinkage: "ward.D2",
+
+                            clustGroups: 3,
+                            legendPosition: "right",
+
+                            datasetAnalysisClustLinkage: "ward.D2",
+                            datasetAnalysisType: "heatmap",
+                            datasetAnalysisGrouped: true,
+                            datasetAnalysisRemoveOutliersDownstream: true,
+
+                            datasetAnalysisSortColumn: "pandora_cluster",
+                            datasetAnalysisClustOrdering: 1,
+                            anyNAValues: false,
+                            categoricalVariables: false,
+                        }
+                    }
+                }
             },
         },
     },
@@ -131,14 +186,18 @@ const apps = {
             estore.set("apps-pandora-editing-selectedPreProcess", selectedPreProcess);
         },
         SET_PANDORA_EDITING_ML_SETTINGS_FORM: (state, settingsForm) => {
-            state.pandora.editing.mlSettingsForm = settingsForm;
+            state.pandora.editing.tabs.tsne.mlSettingsForm = settingsForm;
             estore.set("apps-pandora-editing-mlSettingsForm", settingsForm);
+        },
+        SET_PANDORA_EDITING_TSNE_SETTINGS_FORM: (state, settingsForm) => {
+            state.pandora.editing.tabs.tsne.settingsForm = settingsForm;
+            estore.set("apps-pandora-editing-tsne-settingsForm", settingsForm);
+            console.log("SET_PANDORA_EDITING_TSNE_SETTINGS_FORM");
         },
         SET_PANDORA_EDITING_SELECTED_COLUMNS: (state, selectedColumns) => {
             state.pandora.editing.selectedColumns = selectedColumns;
             estore.set("apps-pandora-editing-selectedColumns", selectedColumns);
         },
-
         // analysis
         SET_PANDORA_ANALYSIS_JOB_ID: (state, job_id) => {
             state.pandora.analysis.job_id = job_id;
@@ -427,6 +486,10 @@ const apps = {
         },
         setPandoraEditingMLSettingsForm({ commit }, settingsForm) {
             commit("SET_PANDORA_EDITING_ML_SETTINGS_FORM", settingsForm);
+        },
+        setPandoraEditingTSNESettingsForm({ commit }, settingsForm) {
+            console.log("setPandoraEditingTSNESettingsForm");
+            commit("SET_PANDORA_EDITING_TSNE_SETTINGS_FORM", settingsForm);
         },
         setPandoraEditingSelectedColumns({ commit }, selectedColumns) {
             commit("SET_PANDORA_EDITING_SELECTED_COLUMNS", selectedColumns);

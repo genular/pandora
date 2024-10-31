@@ -9,469 +9,478 @@
             <el-col :span="4">
                 <el-row>
                     <el-form ref="settingsForm" :model="settingsForm">
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.title')">
-                            <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <el-button :title="bottomBarOpen ? 'Hide Details' : 'Show Details'" size="mini" class="filter-item" type="info" style="padding: 0; float: right" v-waves :icon="bottomBarOpen ? 'el-icon-arrow-down' : 'el-icon-arrow-up'" @click="bottomBarOpen = !bottomBarOpen"></el-button>
-                            <br />
-                            <el-select style="float: left; width: 100%" v-model="selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
-                                    (userInput) => {
-                                        querySearch(userInput, 'selectedColumns');
-                                    }
-                                ">
-                                <el-option v-for="item in selectedFileDetailsDisplay['selectedColumns']" :key="item.remapped" :label="item.original" :value="item" v-bind:class="{
-                                        item_danger: item.valid_numeric !== 1,
-                                    }">
-                                    <el-row>
-                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                            {{ item.original }}
-                                        </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
-                                            {{ item.valid_10p === 1 ? "*" : "" }}
-                                            {{ item.unique_count }}
-                                            {{ item.na_percentage > 0 ? "NA" : "" }}
-                                        </el-col>
-                                    </el-row>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.first_n_columns.title')">
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.first_n_columns.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <br />
-                            <el-input-number style="float: left; width: 100%" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="50000"></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="Exclude Columns">
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">Please select any columns you wish to exclude from analysis.</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <br />
-                            <el-select style="float: left; width: 100%" v-model="settingsForm.excludedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
-                                    (userInput) => {
-                                        querySearch(userInput, 'excludedColumns');
-                                    }
-                                ">
-                                <el-option v-for="item in selectedFileDetailsDisplay['excludedColumns']" :key="item.remapped" :label="item.original" :value="item">
-                                    <el-row>
-                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                            {{ item.original }}
-                                        </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
-                                            {{ item.valid_10p === 1 ? "*" : "" }}
-                                            {{ item.unique_count }}
-                                            {{ item.na_percentage > 0 ? "NA" : "" }}
-                                        </el-col>
-                                    </el-row>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Grouping variable">
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    Please select categorical column to "group by" t-SNE plot. Grouping variable will be excluded from t-SNE analysis and only t-SNE results will be
-                                    colored by it.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <br />
-                            <el-select style="float: left; width: 100%" v-model="settingsForm.groupingVariables" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
-                                    (userInput) => {
-                                        querySearch(userInput, 'groupingVariables');
-                                    }
-                                ">
-                                <el-option v-for="item in selectedFileDetailsDisplay['groupingVariables']" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1 || item.unique_count < 2">
-                                    <el-row>
-                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                            {{ item.original }}
-                                        </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
-                                            {{ item.valid_10p === 1 ? "*" : "" }}
-                                            {{ item.unique_count }}
-                                            {{ item.na_percentage > 0 ? "NA" : "" }}
-                                        </el-col>
-                                    </el-row>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Color variable">
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    Please select continuous column to color t-SNE plot. This columns unlike grouping columns will be included in t-SNE analysis. Values from Group
-                                    variables should not be included also here.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <br />
-                            <el-select style="float: left; width: 100%" v-model="settingsForm.colorVariables" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
-                                    (userInput) => {
-                                        querySearch(userInput, 'colorVariables');
-                                    }
-                                ">
-                                <el-option v-for="item in selectedFileDetailsDisplay['colorVariables']" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_numeric === 0 || item.unique_count < 2">
-                                    <el-row>
-                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                            {{ item.original }}
-                                        </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
-                                            {{ item.valid_10p === 1 ? "*" : "" }}
-                                            {{ item.unique_count }}
-                                            {{ item.na_percentage > 0 ? "NA" : "" }}
-                                        </el-col>
-                                    </el-row>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_algorithm.title')">
-                            <br />
-                            <el-select style="float: left; width: 100%" v-model="settingsForm.clusterType" filterable default-first-option reserve-keyword :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')">
-                                <el-option v-for="item in settingsOptions.clusterType" :key="item.value" :label="item.name" :value="item.value">
-                                    <span style="float: left">
-                                        {{ item.name }}
-                                    </span>
-                                    <el-tooltip placement="top" style="float: right; padding-top: 10px">
+                        <el-collapse v-model="activeSections" :accordion="false" class="settings-tabpanel-content">
+                            <el-collapse-item title="Column Selection" name="columnSelection">
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.title')">
+                                    <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                                    <el-tooltip placement="top" style="padding-left: 5px">
                                         <div slot="content">
-                                            {{ item.description }}
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.description") }}
                                         </div>
                                         <i class="el-icon-question"></i>
                                     </el-tooltip>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.label')" v-if="['Hierarchical'].includes(settingsForm.clusterType)">
-                            <el-select style="float: right" v-model="settingsForm.clustLinkage" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.placeholder')">
-                                <el-option v-for="item in settingsOptions.clustLinkage" :key="item.id" :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options.', item.id].join(''))" :value="item.id">
-                                    <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options." + item.id) }}</span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="K" v-if="['Louvain'].includes(settingsForm.clusterType)">
-                            <el-input-number style="float: right" v-model="settingsForm.knn_clusters" :step="1" :min="2" :max="2048"></el-input-number>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    Maximum number of nearest neighbors to search. The optimal K value usually found is the square root of N, where N is the total number of
-                                    samples.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <!-- Additional Louvain-specific parameters -->
-                        <el-form-item label="Resolution Increments" v-if="['Louvain'].includes(settingsForm.clusterType)">
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    Defines the step size for resolution values tested during clustering. Controls how detailed the clustering is, with smaller values creating finer groups. Think of this as adjusting the "focus" on clusters. Typical values range from 0.01 to 0.5.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <el-select style="width: 100%;" v-model="settingsForm.resolution_increments" multiple placeholder="Select increments">
-                                <el-option v-for="increment in [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]" :key="increment" :label="increment" :value="increment">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Minimum Modularity" v-if="['Louvain'].includes(settingsForm.clusterType)">
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    Sets the minimum modularity threshold for accepting clusters. Higher modularity values indicate stronger intra-cluster connections, improving cluster quality. Think of it as Quality check that measures how strong the clusters are internally. Higher values (e.g., 0.5 to 0.9) mean clusters are well-separated from each other.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <el-select style="width: 100%;" v-model="settingsForm.min_modularities" multiple placeholder="Select modularities">
-                                <el-option v-for="modularity in [0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9]" :key="modularity" :label="modularity" :value="modularity">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Target Clusters Range" v-if="['Louvain'].includes(settingsForm.clusterType)">
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    Sets the ideal range for the number of clusters you want (for example, 3 to 6 clusters). This helps guide the clustering to create groups within this range.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <div style="display: flex; align-items: center; gap: 5px;">
-                                <el-input-number size="mini" v-model="settingsForm.target_clusters_range[0]" :step="1" :min="1"></el-input-number>
-                                <span> to </span>
-                                <el-input-number size="mini" v-model="settingsForm.target_clusters_range[1]" :step="1" :min="1"></el-input-number>
-                            </div>
-                        </el-form-item>
-                        <el-form-item label="Pick 'Best Cluster' Method" v-if="['Louvain'].includes(settingsForm.clusterType)">
-                            <el-select style="width: 100%;" v-model="settingsForm.pickBestClusterMethod" placeholder="Select method">
-                                <el-option v-for="method in settingsOptions.pickBestClusterMethod" :key="method.value" :label="method.name" :value="method.value">
-                                    <span style="display: flex; justify-content: space-between; align-items: center;">
-                                        <span>{{ method.name }}</span>
-                                        <el-tooltip placement="right">
-                                            <div slot="content">{{ method.description }}</div>
-                                            <i class="el-icon-question" style="margin-left: 8px;"></i>
-                                        </el-tooltip>
-                                    </span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <!-- Selected Columns (SIMON) Dropdown -->
-                        <el-form-item label="Selected Columns (SIMON)" v-if="settingsForm.pickBestClusterMethod === 'SIMON'">
-                            <el-select style="float: left; width: 100%" v-model="settingsForm.selectedColumnsSIMON" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
-                                    (userInput) => {
-                                        querySearch(userInput, 'selectedColumnsSIMON');
-                                    }
-                                ">
-                                <el-option v-for="item in selectedFileDetailsDisplay['selectedColumnsSIMON']" :key="item.remapped" :label="item.original" :value="item" v-bind:class="{
-                                        item_danger: item.valid_numeric !== 1,
-                                    }">
-                                    <el-row>
-                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                            {{ item.original }}
-                                        </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
-                                            {{ item.valid_10p === 1 ? "*" : "" }}
-                                            {{ item.unique_count }}
-                                            {{ item.na_percentage > 0 ? "NA" : "" }}
-                                        </el-col>
-                                    </el-row>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Weights" v-if="['Louvain'].includes(settingsForm.clusterType)">
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    Adjust weights for AUROC, modularity, and silhouette scores when selecting the best cluster.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 10px;">
-                                <!-- Row with titles -->
-                                <div style="display: flex; justify-content: space-between; font-size: 12px;">
-                                    <span>AUROC ({{ settingsForm.weights.AUROC.toFixed(1) }})</span>
-                                    <span>Modularity ({{ settingsForm.weights.modularity.toFixed(1) }})</span>
-                                    <span>Silhouette ({{ settingsForm.weights.silhouette.toFixed(1) }})</span>
-                                </div>
-                                <!-- Row with inputs -->
-                                <div style="display: flex; gap: 10px;">
-                                    <el-input-number size="mini" v-model="settingsForm.weights.AUROC" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
-                                    <el-input-number size="mini" v-model="settingsForm.weights.modularity" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
-                                    <el-input-number size="mini" v-model="settingsForm.weights.silhouette" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
-                                </div>
-                            </div>
-                        </el-form-item>
-                        <el-form-item label="epsQuantile" v-if="['Hierarchical', 'Mclust', 'Density'].includes(settingsForm.clusterType)">
-                            <el-input-number style="float: right" v-model="settingsForm.epsQuantile" :step="0.1" :min="0" :max="1"></el-input-number>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    Determines the quantile used for setting the eps parameter in DBSCAN, controlling the density threshold for clustering; a higher value increases the neighborhood size.
-                                    Lower the quantile used to calculate eps from 0.95 to a smaller value, making the criterion for neighborhood density stricter. This increases the likelihood of points being considered outliers.
-                                    Experiment with values to find a balance suitable for your dataset's characteristics.
-                                    How eps is calculated?
-                                    k_dist Calculation: The kNNdist function calculates the distance to the k-th nearest neighbor for each point in the dataset, where k is one less than minPts. This distance indicates how far you need to go from each point to find a certain number of neighbors, providing a sense of the local density around each point.
-                                    Choosing eps with a Quantile: The eps parameter is then chosen based on a quantile (settings$epsQuantile) of these distances. By taking, for example, the 90th percentile (if epsQuantile is 0.9), you set eps to a value where 90% of points have their minPts-1 nearest neighbors within this distance. This quantile approach allows eps to adapt to the spread and density of your dataset, aiming to capture the majority of dense areas while excluding the most sparse outliers.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="Exclude outliers" v-if="['Hierarchical', 'Mclust'].includes(settingsForm.clusterType)">
-                            <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.excludeOutliers"></el-switch>
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    Decide whether to include or exclude outliers in the clustering analysis.
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="Cluster groups" v-if="['Hierarchical', 'Mclust'].includes(settingsForm.clusterType)">
-                            <el-input-number style="float: right" v-model="settingsForm.clustGroups" :step="1" :min="2" :max="128"></el-input-number>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features
-                                    before any calculation?
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <el-select style="float: left; width: 100%" v-model="selectedPreProcess" clearable :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')" multiple>
-                                <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
-                                    <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-                                    <span style="float: right">
-                                        {{ $t("views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}
-                                    </span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.remove_na.title')">
-                            <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.removeNA"></el-switch>
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.remove_na.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-divider></el-divider>
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.perplexity.title')">
-                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.perplexity" :step="1" :min="0" :max="100" show-input></el-slider>
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.perplexity.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.exaggeration_factor.title')">
-                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.exaggeration_factor" :step="4" :min="4" :max="128" show-input></el-slider>
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.exaggeration_factor.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.theta.title')">
-                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.theta" :step="0.1" :min="0" :max="10" show-input></el-slider>
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.theta.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-divider></el-divider>
-                        <!-- Display info messages for t-SNE -->
-                        <el-form-item label="Auto t-SNE settings" style="margin-top: 10px">
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.explain_auto_compute_tsne.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.max_iter.title')">
-                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.max_iter" :step="1" :min="0" :max="50000" show-input></el-slider>
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.max_iter.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.eta.title')">
-                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.eta" :step="1" :min="0" :max="1000" show-input></el-slider>
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.eta.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-divider></el-divider>
-                        <el-form-item label="Dataset analysis type">
-                            <br />
-                            <el-select style="float: left; width: 100%" v-model="settingsForm.datasetAnalysisType" placeholder="Select">
-                                <el-option v-for="item in settingsOptions.datasetAnalysisType" :key="item.id" :label="item.label" :value="item.id">
-                                    <span>{{ item.label }}</span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Grouped display">
-                            <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisGrouped"></el-switch>
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    Should we display mean values of clusters on a heatmap, scale by row, when enabled or column?
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="Remove outliers" v-if="['Hierarchical', 'Mclust', 'Density'].includes(settingsForm.clusterType)">
-                            <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisRemoveOutliersDownstream"></el-switch>
-                            <el-tooltip placement="top">
-                                <div slot="content">
-                                    Should we remove outlier cluster and data from heatmep display and downstream dataset (ML)?
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="Sort column" v-if="settingsForm.datasetAnalysisType === 'heatmap'">
-                            <br />
-                            <el-select style="float: left; width: 100%" v-model="settingsForm.datasetAnalysisSortColumn" placeholder="Select">
-                                <el-option v-for="item in settingsOptions.datasetAnalysisSortColumn" :key="item.id" :label="item.id" :value="item.id">
-                                    <span>{{ item.id }}</span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Cluster linkage" v-if="settingsForm.datasetAnalysisType === 'cluster'">
-                            <el-select style="float: right" size="mini" v-model="settingsForm.datasetAnalysisClustLinkage" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.placeholder')">
-                                <el-option v-for="item in settingsOptions.clustLinkage" :key="item.id" :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options.', item.id].join(''))" :value="item.id">
-                                    <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options." + item.id) }}</span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Cluster ordering" v-if="settingsForm.datasetAnalysisType === 'cluster'">
-                            <el-select style="float: right" size="mini" v-model="settingsForm.datasetAnalysisClustOrdering" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.placeholder')">
-                                <el-option v-for="item in settingsOptions.clustOrdering" :key="item.id" :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.options.', item.id].join(''))" :value="item.id">
-                                    <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.options." + item.id) }}</span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-divider></el-divider>
-                        <el-form-item label="Theme">
-                            <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
-                                <el-option v-for="item in settingsOptions.theme" :key="item.id" :label="item.name" :value="item.id">
-                                    <span style="float: left">{{ item.name }}</span>
-                                    <span style="float: right; color: #8492a6; font-size: 13px">
-                                        <el-tooltip placement="top">
-                                            <div slot="content" style="text-align: center">
-                                                <img :src="'static/images/plot_styles/' + item.id + '_' + settingsForm.colorPalette + '.svg'" style="height: 125px" />
-                                                <br />
-                                                <span style="max-width: 125px; width: 150px; display: block">{{ item.description }}</span>
-                                            </div>
-                                            <span class="el-icon-info"></span>
-                                        </el-tooltip>
-                                    </span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Color">
-                            <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
-                                <el-option v-for="item in settingsOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
-                                    <span style="float: left">{{ item.value }}</span>
-                                    <span style="float: right; color: #8492a6; font-size: 13px">
-                                        <el-tooltip placement="top">
-                                            <div slot="content" style="text-align: center">
-                                                <img :src="'static/images/plot_styles/' + settingsForm.theme + '_' + item.id + '.svg'" style="height: 125px" />
-                                                <br />
-                                                <span style="max-width: 125px; width: 150px; display: block">colorblind: {{ item.colorblind }}</span>
-                                            </div>
-                                            <span class="el-icon-info"></span>
-                                        </el-tooltip>
-                                    </span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Legend position">
-                            <br />
-                            <el-select style="float: left; width: 100%" v-model="settingsForm.legendPosition" size="mini" placeholder="Select">
-                                <el-option v-for="item in settingsOptions.legendPosition" :key="item.id" :label="item.label" :value="item.id">
-                                    <span>{{ item.label }}</span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Font size">
-                            <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="4" :max="48"></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="Point size">
-                            <el-input-number style="float: right" v-model="settingsForm.pointSize" :step="0.5" :min="0.1" :max="25"></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="Ratio">
-                            <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
-                        </el-form-item>
-                        <el-form-item label="Plot size">
-                            <el-input-number style="float: right" size="mini" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
-                        </el-form-item>
+                                    <el-button v-if="reverseSelectedColumns.length > 0" :title="bottomBarOpen ? 'Hide Details' : 'Show Details'" size="mini" class="filter-item" type="info" style="padding: 0; float: right" v-waves :icon="bottomBarOpen ? 'el-icon-arrow-down' : 'el-icon-arrow-up'" @click="bottomBarOpen = !bottomBarOpen">
+                                    </el-button>
+                                    <br />
+                                    <el-select style="float: left; width: 100%" v-model="selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
+                                            (userInput) => {
+                                                querySearch(userInput, 'selectedColumns');
+                                            }
+                                        ">
+                                        <el-option v-for="item in selectedFileDetailsDisplay['selectedColumns']" :key="item.remapped" :label="item.original" :value="item" v-bind:class="{
+                                                item_danger: item.valid_numeric !== 1,
+                                            }">
+                                            <el-row>
+                                                <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                    {{ item.original }}
+                                                </el-col>
+                                                <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
+                                                    {{ item.valid_10p === 1 ? "*" : "" }}
+                                                    {{ item.unique_count }}
+                                                    {{ item.na_percentage > 0 ? "NA" : "" }}
+                                                </el-col>
+                                            </el-row>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.first_n_columns.title')">
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.first_n_columns.description") }}
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                    <br />
+                                    <el-input-number style="float: left; width: 100%" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="50000"></el-input-number>
+                                </el-form-item>
+                                <el-form-item label="Exclude Columns">
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">Please select any columns you wish to exclude from analysis.</div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                    <br />
+                                    <el-select style="float: left; width: 100%" v-model="settingsForm.excludedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
+                                            (userInput) => {
+                                                querySearch(userInput, 'excludedColumns');
+                                            }
+                                        ">
+                                        <el-option v-for="item in selectedFileDetailsDisplay['excludedColumns']" :key="item.remapped" :label="item.original" :value="item">
+                                            <el-row>
+                                                <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                    {{ item.original }}
+                                                </el-col>
+                                                <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
+                                                    {{ item.valid_10p === 1 ? "*" : "" }}
+                                                    {{ item.unique_count }}
+                                                    {{ item.na_percentage > 0 ? "NA" : "" }}
+                                                </el-col>
+                                            </el-row>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Grouping variable">
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">
+                                            Please select categorical column to "group by" t-SNE plot. Grouping variable will be excluded from t-SNE analysis and only t-SNE results will be
+                                            colored by it.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                    <br />
+                                    <el-select style="float: left; width: 100%" v-model="settingsForm.groupingVariables" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
+                                            (userInput) => {
+                                                querySearch(userInput, 'groupingVariables');
+                                            }
+                                        ">
+                                        <el-option v-for="item in selectedFileDetailsDisplay['groupingVariables']" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1 || item.unique_count < 2">
+                                            <el-row>
+                                                <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                    {{ item.original }}
+                                                </el-col>
+                                                <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
+                                                    {{ item.valid_10p === 1 ? "*" : "" }}
+                                                    {{ item.unique_count }}
+                                                    {{ item.na_percentage > 0 ? "NA" : "" }}
+                                                </el-col>
+                                            </el-row>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Color variable">
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">
+                                            Please select continuous column to color t-SNE plot. This columns unlike grouping columns will be included in t-SNE analysis. Values from Group
+                                            variables should not be included also here.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                    <br />
+                                    <el-select style="float: left; width: 100%" v-model="settingsForm.colorVariables" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
+                                            (userInput) => {
+                                                querySearch(userInput, 'colorVariables');
+                                            }
+                                        ">
+                                        <el-option v-for="item in selectedFileDetailsDisplay['colorVariables']" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_numeric === 0 || item.unique_count < 2">
+                                            <el-row>
+                                                <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                    {{ item.original }}
+                                                </el-col>
+                                                <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
+                                                    {{ item.valid_10p === 1 ? "*" : "" }}
+                                                    {{ item.unique_count }}
+                                                    {{ item.na_percentage > 0 ? "NA" : "" }}
+                                                </el-col>
+                                            </el-row>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-collapse-item>
+                            <el-collapse-item title="Clustering Settings" name="clusteringSettings">
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_algorithm.title')">
+                                    <br />
+                                    <el-select style="float: left; width: 100%" v-model="settingsForm.clusterType" filterable default-first-option reserve-keyword :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')">
+                                        <el-option v-for="item in settingsOptions.clusterType" :key="item.value" :label="item.name" :value="item.value">
+                                            <span style="float: left">
+                                                {{ item.name }}
+                                            </span>
+                                            <el-tooltip placement="top" style="float: right; padding-top: 10px">
+                                                <div slot="content">
+                                                    {{ item.description }}
+                                                </div>
+                                                <i class="el-icon-question"></i>
+                                            </el-tooltip>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.label')" v-if="['Hierarchical'].includes(settingsForm.clusterType)">
+                                    <el-select style="float: right" v-model="settingsForm.clustLinkage" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.placeholder')">
+                                        <el-option v-for="item in settingsOptions.clustLinkage" :key="item.id" :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options.', item.id].join(''))" :value="item.id">
+                                            <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options." + item.id) }}</span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="K" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                                    <el-input-number style="float: right" v-model="settingsForm.knn_clusters" :step="1" :min="2" :max="2048"></el-input-number>
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">
+                                            Maximum number of nearest neighbors to search. The optimal K value usually found is the square root of N, where N is the total number of
+                                            samples.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                                <!-- Additional Louvain-specific parameters -->
+                                <el-form-item label="Resolution Increments" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">
+                                            Defines the step size for resolution values tested during clustering. Controls how detailed the clustering is, with smaller values creating finer groups. Think of this as adjusting the "focus" on clusters. Typical values range from 0.01 to 0.5.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                    <el-select style="width: 100%;" v-model="settingsForm.resolution_increments" multiple placeholder="Select increments">
+                                        <el-option v-for="increment in [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5]" :key="increment" :label="increment" :value="increment">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Minimum Modularity" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">
+                                            Sets the minimum modularity threshold for accepting clusters. Higher modularity values indicate stronger intra-cluster connections, improving cluster quality. Think of it as Quality check that measures how strong the clusters are internally. Higher values (e.g., 0.5 to 0.9) mean clusters are well-separated from each other.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                    <el-select style="width: 100%;" v-model="settingsForm.min_modularities" multiple placeholder="Select modularities">
+                                        <el-option v-for="modularity in [0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9]" :key="modularity" :label="modularity" :value="modularity">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Target Clusters Range" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">
+                                            Sets the ideal range for the number of clusters you want (for example, 3 to 6 clusters). This helps guide the clustering to create groups within this range.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                    <div style="display: flex; align-items: center; gap: 5px;">
+                                        <el-input-number size="mini" v-model="settingsForm.target_clusters_range[0]" :step="1" :min="1"></el-input-number>
+                                        <span> to </span>
+                                        <el-input-number size="mini" v-model="settingsForm.target_clusters_range[1]" :step="1" :min="1"></el-input-number>
+                                    </div>
+                                </el-form-item>
+                                <el-form-item label="Pick 'Best Cluster' Method" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                                    <el-select style="width: 100%;" v-model="settingsForm.pickBestClusterMethod" placeholder="Select method">
+                                        <el-option v-for="method in settingsOptions.pickBestClusterMethod" :key="method.value" :label="method.name" :value="method.value">
+                                            <span style="display: flex; justify-content: space-between; align-items: center;">
+                                                <span>{{ method.name }}</span>
+                                                <el-tooltip placement="right">
+                                                    <div slot="content">{{ method.description }}</div>
+                                                    <i class="el-icon-question" style="margin-left: 8px;"></i>
+                                                </el-tooltip>
+                                            </span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <!-- Selected Columns (SIMON) Dropdown -->
+                                <el-form-item label="Selected Columns (SIMON)" v-if="settingsForm.pickBestClusterMethod === 'SIMON'">
+                                    <el-select style="float: left; width: 100%" v-model="settingsForm.selectedColumnsSIMON" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
+                                            (userInput) => {
+                                                querySearch(userInput, 'selectedColumnsSIMON');
+                                            }
+                                        ">
+                                        <el-option v-for="item in selectedFileDetailsDisplay['selectedColumnsSIMON']" :key="item.remapped" :label="item.original" :value="item" v-bind:class="{
+                                                item_danger: item.valid_numeric !== 1,
+                                            }">
+                                            <el-row>
+                                                <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                    {{ item.original }}
+                                                </el-col>
+                                                <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
+                                                    {{ item.valid_10p === 1 ? "*" : "" }}
+                                                    {{ item.unique_count }}
+                                                    {{ item.na_percentage > 0 ? "NA" : "" }}
+                                                </el-col>
+                                            </el-row>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Weights" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">
+                                            Adjust weights for AUROC, modularity, and silhouette scores when selecting the best cluster.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                    <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 10px;">
+                                        <!-- Row with titles -->
+                                        <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                                            <span>AUROC ({{ settingsForm.weights.AUROC.toFixed(1) }})</span>
+                                            <span>Modularity ({{ settingsForm.weights.modularity.toFixed(1) }})</span>
+                                            <span>Silhouette ({{ settingsForm.weights.silhouette.toFixed(1) }})</span>
+                                        </div>
+                                        <!-- Row with inputs -->
+                                        <div style="display: flex; gap: 10px;">
+                                            <el-input-number size="mini" v-model="settingsForm.weights.AUROC" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
+                                            <el-input-number size="mini" v-model="settingsForm.weights.modularity" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
+                                            <el-input-number size="mini" v-model="settingsForm.weights.silhouette" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
+                                        </div>
+                                    </div>
+                                </el-form-item>
+                                <el-form-item label="epsQuantile" v-if="['Hierarchical', 'Mclust', 'Density'].includes(settingsForm.clusterType)">
+                                    <el-input-number style="float: right" v-model="settingsForm.epsQuantile" :step="0.1" :min="0" :max="1"></el-input-number>
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">
+                                            Determines the quantile used for setting the eps parameter in DBSCAN, controlling the density threshold for clustering; a higher value increases the neighborhood size.
+                                            Lower the quantile used to calculate eps from 0.95 to a smaller value, making the criterion for neighborhood density stricter. This increases the likelihood of points being considered outliers.
+                                            Experiment with values to find a balance suitable for your dataset's characteristics.
+                                            How eps is calculated?
+                                            k_dist Calculation: The kNNdist function calculates the distance to the k-th nearest neighbor for each point in the dataset, where k is one less than minPts. This distance indicates how far you need to go from each point to find a certain number of neighbors, providing a sense of the local density around each point.
+                                            Choosing eps with a Quantile: The eps parameter is then chosen based on a quantile (settings$epsQuantile) of these distances. By taking, for example, the 90th percentile (if epsQuantile is 0.9), you set eps to a value where 90% of points have their minPts-1 nearest neighbors within this distance. This quantile approach allows eps to adapt to the spread and density of your dataset, aiming to capture the majority of dense areas while excluding the most sparse outliers.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                                <el-form-item label="Exclude outliers" v-if="['Hierarchical', 'Mclust'].includes(settingsForm.clusterType)">
+                                    <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.excludeOutliers"></el-switch>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            Decide whether to include or exclude outliers in the clustering analysis.
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                                <el-form-item label="Cluster groups" v-if="['Hierarchical', 'Mclust'].includes(settingsForm.clusterType)">
+                                    <el-input-number style="float: right" v-model="settingsForm.clustGroups" :step="1" :min="2" :max="128"></el-input-number>
+                                </el-form-item>
+                            </el-collapse-item>
+                            <el-collapse-item title="tSNE Settings" name="tSNESettings">
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.perplexity.title')">
+                                    <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.perplexity" :step="1" :min="0" :max="100" show-input></el-slider>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.perplexity.description") }}
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.exaggeration_factor.title')">
+                                    <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.exaggeration_factor" :step="4" :min="4" :max="128" show-input></el-slider>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.exaggeration_factor.description") }}
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.theta.title')">
+                                    <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.theta" :step="0.1" :min="0" :max="10" show-input></el-slider>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.theta.description") }}
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                                <!-- Display info messages for t-SNE -->
+                                <el-form-item label="Auto t-SNE settings" style="margin-top: 10px">
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.explain_auto_compute_tsne.description") }}
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.max_iter.title')">
+                                    <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.max_iter" :step="1" :min="0" :max="50000" show-input></el-slider>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.max_iter.description") }}
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.eta.title')">
+                                    <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.eta" :step="1" :min="0" :max="1000" show-input></el-slider>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.eta.description") }}
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                            </el-collapse-item>
+                            <el-collapse-item title="Dataset Settings" name="datasetSettings">
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features
+                                            before any calculation?
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                    <el-select style="float: left; width: 100%" v-model="selectedPreProcess" clearable :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')" multiple>
+                                        <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
+                                            <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                            <span style="float: right">
+                                                {{ $t("views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}
+                                            </span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.remove_na.title')">
+                                    <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.removeNA"></el-switch>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.remove_na.description") }}
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                                <el-form-item label="Dataset analysis type">
+                                    <br />
+                                    <el-select style="float: left; width: 100%" v-model="settingsForm.datasetAnalysisType" placeholder="Select">
+                                        <el-option v-for="item in settingsOptions.datasetAnalysisType" :key="item.id" :label="item.label" :value="item.id">
+                                            <span>{{ item.label }}</span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Grouped display">
+                                    <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisGrouped"></el-switch>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            Should we display mean values of clusters on a heatmap, scale by row, when enabled or column?
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                                <el-form-item label="Remove outliers" v-if="['Hierarchical', 'Mclust', 'Density'].includes(settingsForm.clusterType)">
+                                    <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisRemoveOutliersDownstream"></el-switch>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">
+                                            Should we remove outlier cluster and data from heatmep display and downstream dataset (ML)?
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                                <el-form-item label="Sort column" v-if="settingsForm.datasetAnalysisType === 'heatmap'">
+                                    <br />
+                                    <el-select style="float: left; width: 100%" v-model="settingsForm.datasetAnalysisSortColumn" placeholder="Select">
+                                        <el-option v-for="item in settingsOptions.datasetAnalysisSortColumn" :key="item.id" :label="item.id" :value="item.id">
+                                            <span>{{ item.id }}</span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Cluster linkage" v-if="settingsForm.datasetAnalysisType === 'cluster'">
+                                    <el-select style="float: right" size="mini" v-model="settingsForm.datasetAnalysisClustLinkage" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.placeholder')">
+                                        <el-option v-for="item in settingsOptions.clustLinkage" :key="item.id" :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options.', item.id].join(''))" :value="item.id">
+                                            <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options." + item.id) }}</span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Cluster ordering" v-if="settingsForm.datasetAnalysisType === 'cluster'">
+                                    <el-select style="float: right" size="mini" v-model="settingsForm.datasetAnalysisClustOrdering" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.placeholder')">
+                                        <el-option v-for="item in settingsOptions.clustOrdering" :key="item.id" :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.options.', item.id].join(''))" :value="item.id">
+                                            <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.options." + item.id) }}</span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-collapse-item>
+                            <el-collapse-item title="Theme Settings" name="themeSettings">
+                                <el-form-item label="Theme">
+                                    <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
+                                        <el-option v-for="item in settingsOptions.theme" :key="item.id" :label="item.name" :value="item.id">
+                                            <span style="float: left">{{ item.name }}</span>
+                                            <span style="float: right; color: #8492a6; font-size: 13px">
+                                                <el-tooltip placement="top">
+                                                    <div slot="content" style="text-align: center">
+                                                        <img :src="'static/images/plot_styles/' + item.id + '_' + settingsForm.colorPalette + '.svg'" style="height: 125px" />
+                                                        <br />
+                                                        <span style="max-width: 125px; width: 150px; display: block">{{ item.description }}</span>
+                                                    </div>
+                                                    <span class="el-icon-info"></span>
+                                                </el-tooltip>
+                                            </span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Color">
+                                    <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
+                                        <el-option v-for="item in settingsOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
+                                            <span style="float: left">{{ item.value }}</span>
+                                            <span style="float: right; color: #8492a6; font-size: 13px">
+                                                <el-tooltip placement="top">
+                                                    <div slot="content" style="text-align: center">
+                                                        <img :src="'static/images/plot_styles/' + settingsForm.theme + '_' + item.id + '.svg'" style="height: 125px" />
+                                                        <br />
+                                                        <span style="max-width: 125px; width: 150px; display: block">colorblind: {{ item.colorblind }}</span>
+                                                    </div>
+                                                    <span class="el-icon-info"></span>
+                                                </el-tooltip>
+                                            </span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Legend position">
+                                    <br />
+                                    <el-select style="float: left; width: 100%" v-model="settingsForm.legendPosition" size="mini" placeholder="Select">
+                                        <el-option v-for="item in settingsOptions.legendPosition" :key="item.id" :label="item.label" :value="item.id">
+                                            <span>{{ item.label }}</span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="Font size">
+                                    <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="4" :max="48"></el-input-number>
+                                </el-form-item>
+                                <el-form-item label="Point size">
+                                    <el-input-number style="float: right" v-model="settingsForm.pointSize" :step="0.5" :min="0.1" :max="25"></el-input-number>
+                                </el-form-item>
+                                <el-form-item label="Ratio">
+                                    <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
+                                </el-form-item>
+                                <el-form-item label="Plot size">
+                                    <el-input-number style="float: right" size="mini" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
+                                </el-form-item>
+                            </el-collapse-item>
+                        </el-collapse>
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
@@ -508,8 +517,8 @@
                                             plotData.colorby.length > 0 || Object.keys(plotData.colorby).length > 0
                                                 ? 'tab_tsne_grouped_' + plotIndex + '_colorby_' + Object.keys(plotData.colorby)[0]
                                                 : null
-                                        " :tab-position="'left'">
-                                        <el-tab-pane v-for="(plotDataColor, plotIndexColor) in plotData.colorby" :key="'tab_tsne_grouped_' + plotIndex + '_colorby_' + plotIndexColor" :label="plotDataColor.name" :name="'tab_tsne_grouped_' + plotIndex + '_colorby_' + plotIndexColor">
+                                        " :tab-position="'left'" type="card" class="tab-container-third-vertical">
+                                        <el-tab-pane v-for="(plotDataColor, plotIndexColor) in plotData.colorby" :key="'tab_tsne_grouped_' + plotIndex + '_colorby_' + plotIndexColor" :label="plotDataColor.name" :name="'tab_tsne_grouped_' + plotIndex + '_colorby_' + plotIndexColor" type="card" class="tab-container-third-vertical">
                                             <el-row>
                                                 <el-col :span="12">
                                                     <span class="tab_intro_text_tsne">Graph of individuals colored by: "{{ plotDataColor.name }}".</span>
@@ -530,7 +539,7 @@
                                                                 {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                             </el-button>
                                                         </div>
-                                                        <img id="analysis_images_pca" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plotDataColor.png" fit="scale-down" />
+                                                        <img style="max-width: 100%;" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plotDataColor.png" fit="scale-down" />
                                                     </el-tooltip>
                                                 </el-col>
                                                 <el-col v-else :span="12" class="plot-placeholder">
@@ -543,7 +552,7 @@
                                                                 {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                             </el-button>
                                                         </div>
-                                                        <img id="analysis_images_pca" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plotData.png" fit="scale-down" />
+                                                        <img style="max-width: 100%;" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plotData.png" fit="scale-down" />
                                                     </el-tooltip>
                                                 </el-col>
                                                 <el-col v-else :span="12" class="plot-placeholder">
@@ -569,7 +578,7 @@
                                                     {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                 </el-button>
                                             </div>
-                                            <img id="analysis_images_pca" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plotData.png" fit="scale-down" />
+                                            <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plotData.png" fit="scale-down" />
                                         </el-tooltip>
                                     </el-col>
                                     <el-col v-else class="plot-placeholder">
@@ -596,9 +605,10 @@
                                 </el-row>
                                 <el-row>
                                     <el-col :span="24">
-                                        <el-tabs tab-position="right">
-                                            <el-tab-pane label="Clusters" v-if="plot_data.tsne_cluster_plot_png">
-                                                <el-tooltip effect="light" placement="top-end" class="download_tooltip">
+                                        <el-tabs v-model="cTsneActiveTab" :tab-position="'right'" type="card" class="tab-container-third-vertical">
+                                            <!-- Clusters Tab -->
+                                            <el-tab-pane label="Clusters" name="c_tsne_clusters" v-if="plot_data.tsne_cluster_plot_png">
+                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                     <template v-slot:content>
                                                         <el-button type="success" round @click="downloadPlotImage('tsne_cluster_plot')">
                                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
@@ -607,9 +617,9 @@
                                                     <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.tsne_cluster_plot_png" fit="scale-down" />
                                                 </el-tooltip>
                                             </el-tab-pane>
-
-                                            <el-tab-pane label="Features" v-if="plot_data.cluster_features_means_png">
-                                                <el-tooltip effect="light" placement="top-end" class="download_tooltip">
+                                            <!-- Features Tab -->
+                                            <el-tab-pane label="Features" name="c_tsne_features" v-if="plot_data.cluster_features_means_png">
+                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                     <template v-slot:content>
                                                         <el-button type="success" round @click="downloadPlotImage('cluster_features_means')">
                                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
@@ -618,9 +628,9 @@
                                                     <img class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plot_data.cluster_features_means_png" fit="scale-down" />
                                                 </el-tooltip>
                                             </el-tab-pane>
-
-                                            <el-tab-pane label="FoldChange" v-if="plot_data.cluster_features_means_separated_png">
-                                                <el-tooltip effect="light" placement="top-end" class="download_tooltip">
+                                            <!-- FoldChange Tab -->
+                                            <el-tab-pane label="FoldChange" name="c_tsne_fold_change" v-if="plot_data.cluster_features_means_separated_png">
+                                                <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                                     <template v-slot:content>
                                                         <el-button type="success" round @click="downloadPlotImage('cluster_features_means_separated')">
                                                             {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
@@ -806,18 +816,18 @@
                         </el-tooltip>
                         Unique < 10%: <div class="box-column-item-details">{{ item.valid_10p === 1 ? "Yes" : "No" }}
                     </div>
-                    </div>
-                    <div class="box-column-item-text">
-                        <el-tooltip placement="top">
-                            <div slot="content">Percentage of missing (NA) values in this column.</div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        NA values (%):
-                        <div class="box-column-item-details">{{ item.na_percentage }}</div>
-                    </div>
-                </el-card>
-            </el-row>
-        </el-aside>
+    </div>
+    <div class="box-column-item-text">
+        <el-tooltip placement="top">
+            <div slot="content">Percentage of missing (NA) values in this column.</div>
+            <i class="el-icon-question"></i>
+        </el-tooltip>
+        NA values (%):
+        <div class="box-column-item-details">{{ item.na_percentage }}</div>
+    </div>
+    </el-card>
+    </el-row>
+    </el-aside>
     </div>
 </template>
 <script>
@@ -839,11 +849,13 @@ export default {
     data() {
         return {
             bottomBarOpen: false,
+            activeSections: ['clusteringSettings'],
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,
             fuseIndex: null,
             loadingPlot: false,
             activeTab: "tsne_plot",
+            cTsneActiveTab: "c_tsne_clusters",
 
             // ML
             machineLearningDialogVisible: false,
@@ -961,57 +973,6 @@ export default {
                     { id: "none", label: "None" },
                 ],
             },
-
-            settingsForm: {
-                excludedColumns: [],
-                groupingVariables: [],
-                colorVariables: [],
-                preProcessDataset: [],
-
-                fontSize: 12,
-                pointSize: 8,
-                theme: "theme_bw",
-                colorPalette: "Dark2",
-                aspect_ratio: 1,
-                plot_size: 12,
-
-                clusterType: "Louvain",
-                epsQuantile: 0.9,
-                excludeOutliers: true,
-
-                // Immunaut Specific parameters for Louvain clustering
-                resolution_increments: [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5],
-                min_modularities: [0.4, 0.5, 0.6, 0.7, 0.8, 0.85, 0.9],
-                target_clusters_range: [3, 6],
-                pickBestClusterMethod: "Modularity",
-                selectedColumnsSIMON: [],
-                weights: { AUROC: 0.5, modularity: 0.3, silhouette: 0.2 },
-
-                cutOffColumnSize: 50000,
-                removeNA: true,
-
-                perplexity: 0,
-                exaggeration_factor: 0,
-                max_iter: 0,
-                theta: 0,
-                eta: 0,
-
-                knn_clusters: 25,
-                clustLinkage: "ward.D2",
-
-                clustGroups: 3,
-                legendPosition: "right",
-
-                datasetAnalysisClustLinkage: "ward.D2",
-                datasetAnalysisType: "heatmap",
-                datasetAnalysisGrouped: true,
-                datasetAnalysisRemoveOutliersDownstream: true,
-
-                datasetAnalysisSortColumn: "pandora_cluster",
-                datasetAnalysisClustOrdering: 1,
-                anyNAValues: false,
-                categoricalVariables: false,
-            },
             plot_data: {
                 tsne_plot: [],
 
@@ -1084,6 +1045,14 @@ export default {
                 this.$store.dispatch("setPandoraEditingMLSettingsForm", value);
             },
         },
+        settingsForm: {
+            get() {
+                return this.$store.getters.pandoraEditingTSNESettingsForm;
+            },
+            set(value) {
+                this.$store.dispatch("setPandoraEditingTSNESettingsForm", value);
+            },
+        },
         selectedColumns: {
             get() {
                 return this.$store.getters.pandoraEditingSelectedColumns;
@@ -1093,11 +1062,10 @@ export default {
             },
         },
     },
-
-
-
     mounted() {
         console.log("mounted: " + this.$options.name);
+        console.log(this.settingsForm);
+
         this.isTabEnabled();
     },
     activated() {
@@ -1378,9 +1346,36 @@ export default {
             }
 
             if (settingsForm.colorVariables.length > 0) {
-                settingsForm.colorVariables = settingsForm.colorVariables.map((x) => x.remapped);
-            }
+                // Map colorVariables to remapped values from the main settings form
+                settingsForm.colorVariables = this.settingsForm.colorVariables.map((x) => x.remapped);
 
+                // Add colorVariables to selectedColumns if not already included
+                settingsForm.colorVariables.forEach((colorVar) => {
+                    if (!settingsForm.selectedColumns.includes(colorVar)) {
+                        // Find the item in selectedFileDetails columns based on remapped colorVariable
+                        let item = this.selectedFileDetails.columns.find((o) => o.remapped === colorVar);
+                        if (item) {
+                            // Add to selectedColumns in both the settingsForm and this component’s selectedColumns array
+                            this.selectedColumns.push(item);
+                            settingsForm.selectedColumns.push(colorVar);
+
+                            // Ensure the item is also added to selectedFileDetailsDisplay['selectedColumns'] if not already present
+                            if (!this.selectedFileDetailsDisplay['selectedColumns'].some((col) => col.remapped === item.remapped)) {
+                                this.selectedFileDetailsDisplay['selectedColumns'].push(item);
+                            }
+                            // Notify the user about the addition of this color variable
+                            this.$message({
+                                message: `Color variable "${item.original}" added to selected columns`,
+                                type: "info",
+                            });
+                        }
+                    }
+                });
+                // Remove colorVariables from excludedColumns to prevent conflicts
+                settingsForm.excludedColumns = settingsForm.excludedColumns.filter(
+                    (col) => !settingsForm.colorVariables.includes(col)
+                );
+            }
 
             // Remove any grouping variable from selected columns
             if (settingsForm.groupingVariables.length > 0) {
@@ -1422,7 +1417,8 @@ export default {
                 if (item && item.na_percentage > 0) {
                     this.settingsForm.anyNAValues = true;
                 }
-                if (item.unique_count <= 2) {
+
+                if (item && item.unique_count <= 2) {
                     this.settingsForm.categoricalVariables = true;
                 }
             });
@@ -1677,6 +1673,22 @@ export default {
     },
 
     watch: {
+        settingsForm: {
+            handler(newSettingsForm) {
+                // Dispatch the action to update Vuex with the latest settingsForm
+                this.$store.dispatch("setPandoraEditingTSNESettingsForm", newSettingsForm);
+            },
+            deep: true,
+        },
+        // Watch for changes in machineLearningSettingsForm to keep it in sync with Vuex
+        machineLearningSettingsForm: {
+            handler(newMLSettingsForm) {
+                // Dispatch the action to update Vuex with the latest machineLearningSettingsForm
+                this.$store.dispatch("setPandoraEditingMLSettingsForm", newMLSettingsForm);
+            },
+            deep: true,
+        },
+        // Watch settingsForm.weights to ensure the total weight is <= 1
         'settingsForm.weights': {
             handler(newVal) {
                 let total = newVal.AUROC + newVal.modularity + newVal.silhouette;
@@ -1697,6 +1709,7 @@ export default {
             deep: true
         },
 
+        // Watch for changes in selectedFileDetails
         selectedFileDetails: function(newVal, oldVal) {
             console.log("File selected change detected " + this.$options.name);
             if (newVal.columns.length >= 1) {
@@ -1710,7 +1723,6 @@ export default {
                 this.initFuse(newVal.columns);
             }
         },
-        deep: true,
     },
 };
 
@@ -1755,6 +1767,12 @@ export default {
 
 .tsne-tag {
     margin: 5px;
+}
+
+.settings-tabpanel-content {
+    .el-collapse-item__wrap {
+        padding: 5px;
+    }
 }
 
 </style>

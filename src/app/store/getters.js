@@ -74,6 +74,9 @@ const getters = {
     pandoraEditingActiveTabName: (state) => state.apps.pandora.editing.activeTabName,
     pandoraEditingSelectedColumns: (state) => state.apps.pandora.editing.selectedColumns,
     pandoraEditingSelectedPreProcess: (state) => state.apps.pandora.editing.selectedPreProcess,
-    pandoraEditingMLSettingsForm: (state) => state.apps.pandora.editing.mlSettingsForm,
+
+    // TSNE TAB
+    pandoraEditingMLSettingsForm: (state) => state.apps.pandora.editing.tabs.tsne.mlSettingsForm,
+    pandoraEditingTSNESettingsForm: (state) => state.apps.pandora.editing.tabs.tsne.settingsForm,
 };
 export default getters;

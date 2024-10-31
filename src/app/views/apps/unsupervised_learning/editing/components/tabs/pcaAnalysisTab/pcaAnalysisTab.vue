@@ -372,7 +372,7 @@
             </el-col>
             <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
                 <el-row>
-                    <el-tabs v-model="activePCATabName">
+                    <el-tabs v-model="activePCATabName" type="border-card" class="tab-container-second">
                         <el-tab-pane label="Bartlett's sphericity" name="bartlett" :disabled="isTabDisabled('plot_scree')">
                             <el-row
                                 v-bind:class="{

@@ -222,16 +222,6 @@ export default {
 <style rel="stylesheet/scss" lang="scss">
 @import "~scss_vars";
 
-.tab-container {
-    min-height: 500px;
-    height: 100%;
-
-    .el-form-item--small .el-form-item__label {
-        line-height: 32px;
-        font-weight: normal;
-        color: #413053;
-    }
-}
 .is-disabled {
     opacity: 0.25;
     cursor: no-drop !important;

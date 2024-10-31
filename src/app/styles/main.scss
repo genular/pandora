@@ -330,7 +330,6 @@ div:focus {
     }
 
     .el-tabs__header {
-        border-bottom: 1px solid #a6a6a6;
         display: flex;
         align-items: center;
         justify-content: flex-start; // Aligns tabs to the left
@@ -350,12 +349,12 @@ div:focus {
 
             &:not(.is-disabled):hover {
                 color: #333;
-                border-bottom: 2px solid #888;
+                border-bottom: 1px solid #888;
             }
 
             &:is(.is-active) {
                 color: #333;
-                border-bottom: 2px solid #000;
+                border-bottom: 1px solid #000;
             }
         }
     }
@@ -364,7 +363,7 @@ div:focus {
 .tab-container-second {
     border: none;
     box-shadow: none;
-    background-color: none;
+    background-color: transparent;
     .el-tabs__header {
         background-color: #FFF;
 
@@ -372,8 +371,167 @@ div:focus {
             &:is(.is-disabled) {
                 opacity: 0.2;
             }
+
+            &:is(.is-active) {
+                border-right-color: transparent;
+                border-left-color: transparent;
+            }
         }
     }
+}
+
+.tab-container-third-vertical {
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+
+    /* Header adjustments */
+    .el-tabs__header {
+        background-color: #FFF;
+        border-bottom: none;
+
+        /* Right-positioned tab navigation */
+        .el-tabs__nav-wrap.is-right {
+            border-left: none;
+            border-right: 1px solid black;
+        }
+
+        /* Left-positioned tab navigation */
+        .el-tabs__nav-wrap.is-left {
+            border-right: none;
+            border-left: 1px solid black;
+        }
+
+        .el-tabs__nav {
+            border: none;
+            box-sizing: border-box;
+            border-bottom: none;
+        }
+
+        /* Tab item styling */
+        .el-tabs__item {
+            /* Disabled tab styling */
+            &.is-disabled {
+                opacity: 0.2;
+                cursor: not-allowed;
+            }
+
+            /* Active tab styling for right-positioned tab */
+            &.is-right.is-active {
+                border: none;
+                border-left-color: #fff;
+                border-right: none;
+                border-bottom: 1px solid black;
+
+                /* Last child styling */
+                &:last-child {
+                    border-bottom: 1px solid black;
+                }
+            }
+
+            /* Active tab styling for left-positioned tab */
+            &.is-left.is-active {
+                border: none;
+                border-right-color: #fff;
+                border-left: none;
+                border-bottom: 1px solid black;
+
+                /* Last child styling */
+                &:last-child {
+                    border-bottom: 1px solid black;
+                }
+            }
+
+            /* General styling for right-positioned tabs */
+            &.is-right {
+                border-bottom: none;
+                border-left: none;
+                border-top: none;
+            }
+
+            /* General styling for left-positioned tabs */
+            &.is-left {
+                border-bottom: none;
+                border-right: none;
+                border-top: none;
+            }
+        }
+
+        /* Specific adjustments for the first right-positioned tab */
+        .el-tabs__item.is-right:first-child {
+            border-top: none;
+            border-left: none;
+        }
+
+        /* Specific adjustments for the first left-positioned tab */
+        .el-tabs__item.is-left:first-child {
+            border-top: none;
+            border-right: none;
+        }
+    }
+
+    /* Active tab with bottom border */
+    .el-tabs--border-card .el-tabs__header .el-tabs__item:is(.is-active) {
+        color: #333;
+        border-bottom: 1px solid #000;
+    }
+
+    /* Transition for smooth color and padding changes */
+    .el-tabs__item {
+        transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+}
+
+.tab-container-first {
+    min-height: 500px;
+    height: 100%;
+    padding: 10px;
+
+    .el-form-item--small .el-form-item__label {
+        line-height: 32px;
+        font-weight: 500;
+        color: #413053;
+    }
+
+    .el-collapse {
+        border: none;
+        /* Collapsible Section Styling */
+        .el-collapse-item {
+            margin-bottom: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            
+            &.is-active {
+                transform: scale(1.01); /* Slight scale-up effect for open sections */
+                border: 1px solid #F5F7FA;
+            }
+
+            .el-collapse-item__header {
+                background-color: #F5F7FA;
+                color: #333;
+                font-size: 16px;
+                font-weight: 600;
+                padding: 12px 20px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #d2d4e1;
+                }
+            }
+
+            .el-collapse-item__wrap {
+                padding: 10px 15px;
+                color: #5a5a6d;
+                background-color: #fff;
+                border-radius: 0 0 8px 8px;
+            }
+        }
+    }
+
+    
+
 }
 
 

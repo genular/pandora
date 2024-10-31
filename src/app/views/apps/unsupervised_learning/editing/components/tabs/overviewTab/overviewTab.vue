@@ -25,7 +25,17 @@
                                 <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.description") }}</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-
+                            <el-button 
+                                v-if="reverseSelectedColumns.length > 0" 
+                                :title="bottomBarOpen ? 'Hide Details' : 'Show Details'" 
+                                size="mini" 
+                                class="filter-item" 
+                                type="info" 
+                                style="padding: 0; float: right" 
+                                v-waves 
+                                :icon="bottomBarOpen ? 'el-icon-arrow-down' : 'el-icon-arrow-up'" 
+                                @click="bottomBarOpen = !bottomBarOpen">
+                            </el-button>
                             <br />
                             <el-select
                                 style="float: left;width: 100%;"
@@ -148,7 +158,7 @@
                 </el-row>
             </el-col>
             <el-col :span="19" :offset="1" class="data-overview-container" style="text-align: center">
-                <el-tabs v-model="activeTab">
+                <el-tabs v-model="activeTab" type="border-card" class="tab-container-second">
                     <el-tab-pane
                         :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.tabs.TablePlotTab.title')"
                         name="table_plot"
@@ -231,6 +241,60 @@
                 </el-tabs>
             </el-col>
         </el-row>
+
+        <el-aside class="bottom-column-details-bar" :class="{ open: bottomBarOpen }">
+            <el-row v-for="(item, index) in reverseSelectedColumns" :key="item.remapped">
+                <el-card class="box-card box-column-item animated fadeIn" shadow="never">
+                    <div slot="header" class="clearfix">
+                        <span>{{ item.original }}</span>
+                    </div>
+                    <div class="box-column-item-text">
+                        <el-tooltip placement="top">
+                            <div slot="content">Total unique/distinct values in this column.</div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        Unique values:
+                        <div class="box-column-item-details">{{ item.unique_count }}</div>
+                    </div>
+                    <div class="box-column-item-text">
+                        <el-tooltip placement="top">
+                            <div slot="content">
+                                Indicates whether the column contains only numeric values. Non-numeric columns will be excluded from PCA and other analyses.
+                            </div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        Valid numeric:
+                        <div class="box-column-item-details">{{ item.valid_numeric === 1 ? "Yes" : "No" }}</div>
+                    </div>
+                    <div class="box-column-item-text">
+                        <el-tooltip placement="top">
+                            <div slot="content">Indicates if the column has zero variance. Columns with zero variance will be excluded from analyses.</div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        Zero variance:
+                        <div class="box-column-item-details">{{ item.valid_zv === 1 ? "Yes" : "No" }}</div>
+                    </div>
+                    <div class="box-column-item-text">
+                        <el-tooltip placement="top">
+                            <div slot="content">
+                                Indicates if the column has fewer unique values than 10% of the total observations. Such columns are suitable as grouping variables in PCA and other analyses.
+                            </div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        Unique < 10%: <div class="box-column-item-details">{{ item.valid_10p === 1 ? "Yes" : "No" }}
+                    </div>
+                    </div>
+                    <div class="box-column-item-text">
+                        <el-tooltip placement="top">
+                            <div slot="content">Percentage of missing (NA) values in this column.</div>
+                            <i class="el-icon-question"></i>
+                        </el-tooltip>
+                        NA values (%):
+                        <div class="box-column-item-details">{{ item.na_percentage }}</div>
+                    </div>
+                </el-card>
+            </el-row>
+        </el-aside>
     </div>
 </template>
 <script>
@@ -249,6 +313,7 @@ export default {
     },
     data() {
         return {
+            bottomBarOpen: false,
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,
             fuseIndex: null,
@@ -384,13 +449,23 @@ export default {
             const settingsForm = JSON.parse(JSON.stringify(this.settingsForm));
 
             // If any columns are selected make remapping
-            if (settingsForm.selectedColumns.length > 1) {
+            if (settingsForm.selectedColumns.length > 0) {
                 settingsForm.selectedColumns = this.settingsForm.selectedColumns.map((x) => x.remapped);
             }
 
             // Remove any grouping variable from selected columns
             if (settingsForm.groupingVariable.length > 0) {
                 settingsForm.selectedColumns = settingsForm.selectedColumns.filter((x) => !settingsForm.groupingVariable.includes(x));
+            }
+
+            // Check if selected columns are more than 0 but less than 2
+            if (settingsForm.selectedColumns.length > 0 && settingsForm.selectedColumns.length < 2) {
+                this.$message({
+                    message: "Please select at least two columns for analysis.",
+                    type: "error",
+                });
+                this.loadingPlot = false; // Stop loading spinner
+                return; // Abort further execution
             }
 
             fetchOverViewPlot({
