@@ -221,7 +221,7 @@
                                     </el-select>
                                 </el-form-item>
                                 <!-- Selected Columns (SIMON) Dropdown -->
-                                <el-form-item label="Selected Columns (SIMON)" v-if="settingsForm.pickBestClusterMethod === 'SIMON'">
+                                <el-form-item label="Selected Columns (SIMON)" v-if="['Louvain'].includes(settingsForm.clusterType) && settingsForm.pickBestClusterMethod === 'SIMON'">
                                     <el-select style="float: left; width: 100%" v-model="settingsForm.selectedColumnsSIMON" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
                                             (userInput) => {
                                                 querySearch(userInput, 'selectedColumnsSIMON');
@@ -251,16 +251,22 @@
                                         <i class="el-icon-question"></i>
                                     </el-tooltip>
                                     <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 10px;">
-                                        <!-- Row with titles -->
                                         <div style="display: flex; justify-content: space-between; font-size: 12px;">
                                             <span>AUROC ({{ settingsForm.weights.AUROC.toFixed(1) }})</span>
-                                            <span>Modularity ({{ settingsForm.weights.modularity.toFixed(1) }})</span>
-                                            <span>Silhouette ({{ settingsForm.weights.silhouette.toFixed(1) }})</span>
                                         </div>
-                                        <!-- Row with inputs -->
                                         <div style="display: flex; gap: 10px;">
                                             <el-input-number size="mini" v-model="settingsForm.weights.AUROC" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                                            <span>Modularity ({{ settingsForm.weights.modularity.toFixed(1) }})</span>
+                                        </div>
+                                        <div style="display: flex; gap: 10px;">
                                             <el-input-number size="mini" v-model="settingsForm.weights.modularity" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                                            <span>Silhouette ({{ settingsForm.weights.silhouette.toFixed(1) }})</span>
+                                        </div>
+                                        <div style="display: flex; gap: 10px;">
                                             <el-input-number size="mini" v-model="settingsForm.weights.silhouette" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
                                         </div>
                                     </div>
@@ -849,7 +855,7 @@ export default {
     data() {
         return {
             bottomBarOpen: false,
-            activeSections: ['clusteringSettings'],
+            activeSections: ['columnSelection'],
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,
             fuseIndex: null,
@@ -1727,7 +1733,7 @@ export default {
 };
 
 </script>
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scoped>
 .box-column-item {
     margin-top: 10px;
 
@@ -1750,6 +1756,7 @@ export default {
 
 .analysis_images {
     max-width: 50%;
+    float: none;
 }
 
 #tsne-three {

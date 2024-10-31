@@ -485,7 +485,6 @@ div:focus {
 .tab-container-first {
     min-height: 500px;
     height: 100%;
-    padding: 10px;
 
     .el-form-item--small .el-form-item__label {
         line-height: 32px;
@@ -500,11 +499,10 @@ div:focus {
             margin-bottom: 10px;
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             
             &.is-active {
-                transform: scale(1.01); /* Slight scale-up effect for open sections */
+                transform: scale(1);
                 border: 1px solid #F5F7FA;
             }
 
@@ -529,8 +527,6 @@ div:focus {
             }
         }
     }
-
-    
 
 }
 

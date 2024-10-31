@@ -15,369 +15,381 @@
         <el-row v-else type="flex" align="top">
             <el-col :span="4">
                 <el-form ref="settingsForm" :model="settingsForm">
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.columns.title')">
 
-                        <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
-                        <el-tooltip placement="top" style="padding-left: 5px">
-                            <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.columns.description") }}</div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <br />
+                    <el-collapse v-model="activeSections" :accordion="false" class="settings-tabpanel-content">
+                        <!-- Column Selection Section -->
+                        <el-collapse-item title="Column Selection" name="columnSelection">
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.columns.title')">
 
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.selectedColumns"
-                            multiple
-                            filterable
-                            remote
-                            default-first-option
-                            reserve-keyword
-                            value-key="remapped"
-                            clearable
-                            collapse-tags
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.columns.placeholder')"
-                            :remote-method="
-                                (userInput) => {
-                                    querySearch(userInput);
-                                }
-                            "
-                        >
-                            <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_zv !== 1">
-                                <el-row>
-                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden;  white-space: nowrap" :title="item.original">
-                                        {{ item.original }}
-                                    </el-col>
-                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
-                                        {{ item.valid_10p === 1 ? "*" : "" }}
-                                        {{ item.unique_count }}
-                                        {{ item.na_percentage > 0 ? "NA" : "" }}
-                                    </el-col>
-                                </el-row>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                                <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                                <el-tooltip placement="top" style="padding-left: 5px">
+                                    <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.columns.description") }}</div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                                <br />
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.first_n_columns.title')">
-                        <el-tooltip placement="top" style="padding-left: 5px">
-                            <div slot="content">
-                                {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.first_n_columns.description") }}
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.selectedColumns"
+                                    multiple
+                                    filterable
+                                    remote
+                                    default-first-option
+                                    reserve-keyword
+                                    value-key="remapped"
+                                    clearable
+                                    collapse-tags
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.columns.placeholder')"
+                                    :remote-method="
+                                        (userInput) => {
+                                            querySearch(userInput);
+                                        }
+                                    "
+                                >
+                                    <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_zv !== 1">
+                                        <el-row>
+                                            <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden;  white-space: nowrap" :title="item.original">
+                                                {{ item.original }}
+                                            </el-col>
+                                            <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
+                                                {{ item.valid_10p === 1 ? "*" : "" }}
+                                                {{ item.unique_count }}
+                                                {{ item.na_percentage > 0 ? "NA" : "" }}
+                                            </el-col>
+                                        </el-row>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                        <el-input-number style="float: left;width: 100%;" v-model="settingsForm.cutOffColumnSize" 
-                        :step="10" 
-                        :min="2" 
-                        :max="10000"></el-input-number>
-                    </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.first_n_columns.title')">
+                                <el-tooltip placement="top" style="padding-left: 5px">
+                                    <div slot="content">
+                                        {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.first_n_columns.description") }}
+                                    </div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                                <br />
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.correlation_method.label')">
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.correlation_method"
-                            :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.correlation_method.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.correlation_method"
-                                :key="item.id"
-                                :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.correlation_method.options.', item.id].join(''))"
-                                :value="item.id"
+                                <el-input-number style="float: left;width: 100%;" v-model="settingsForm.cutOffColumnSize" 
+                                :step="10" 
+                                :min="2" 
+                                :max="10000"></el-input-number>
+                            </el-form-item>
+
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.correlation_method.label')">
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.correlation_method"
+                                    :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.correlation_method.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.correlation_method"
+                                        :key="item.id"
+                                        :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.correlation_method.options.', item.id].join(''))"
+                                        :value="item.id"
+                                    >
+                                        <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.correlation_method.options." + item.id) }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-collapse-item>
+                        <!-- Preprocessing Section -->
+                        <el-collapse-item title="Preprocessing" name="preprocessing">
+
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
+                                <el-tooltip placement="top">
+                                    <div slot="content">
+                                        Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features
+                                        before any calculation?
+                                    </div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                                <el-select
+                                    style="float: left; width: 100%"
+                                    v-model="selectedPreProcess"
+                                    clearable
+                                    :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')"
+                                    multiple
+                                >
+                                    <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
+                                        <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                        <span style="float: right">
+                                            {{ $t("views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}
+                                        </span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-collapse-item>
+                        <!-- Correlation and Plot Settings Section -->
+                        <el-collapse-item title="Correlation Settings" name="correlationPlotSettings">
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.na_action.label')">
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.na_action"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.na_action.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.na_action"
+                                        :key="item.id"
+                                        :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.na_action.options.', item.id].join(''))"
+                                        :value="item.id"
+                                    >
+                                        <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.na_action.options." + item.id) }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+
+                            <el-form-item
+                                v-if="settingsForm.confidence.enable === false"
+                                :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method.label')"
                             >
-                                <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.correlation_method.options." + item.id) }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.plot_method"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.plot_method"
+                                        :key="item.id"
+                                        :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method.options.', item.id].join(''))"
+                                        :value="item.id"
+                                    >
+                                        <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method.options." + item.id) }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
-                        <el-tooltip placement="top">
-                            <div slot="content">
-                                Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features
-                                before any calculation?
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <el-select
-                            style="float: left; width: 100%"
-                            v-model="selectedPreProcess"
-                            clearable
-                            :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')"
-                            multiple
-                        >
-                            <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
-                                <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-                                <span style="float: right">
-                                    {{ $t("views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}
-                                </span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.na_action.label')">
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.na_action"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.na_action.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.na_action"
-                                :key="item.id"
-                                :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.na_action.options.', item.id].join(''))"
-                                :value="item.id"
+                            <el-form-item
+                                v-if="settingsForm.plot_method === 'mixed' && settingsForm.confidence.enable === false"
+                                :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.lower_method.label')"
                             >
-                                <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.na_action.options." + item.id) }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.plot_method_mixed.lower_method"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.lower_method.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.plot_method_mixed.lower_method"
+                                        :key="item.id"
+                                        :label="
+                                            $t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.lower_method.options.', item.id].join(''))
+                                        "
+                                        :value="item.id"
+                                    >
+                                        <span>
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.lower_method.options." + item.id) }}
+                                        </span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item
-                        v-if="settingsForm.confidence.enable === false"
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method.label')"
-                    >
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.plot_method"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.plot_method"
-                                :key="item.id"
-                                :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method.options.', item.id].join(''))"
-                                :value="item.id"
+                            <el-form-item
+                                v-if="settingsForm.plot_method === 'mixed' && settingsForm.confidence.enable === false"
+                                :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.upper_method.label')"
                             >
-                                <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method.options." + item.id) }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.plot_method_mixed.upper_method"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.upper_method.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.plot_method_mixed.upper_method"
+                                        :key="item.id"
+                                        :label="
+                                            $t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.upper_method.options.', item.id].join(''))
+                                        "
+                                        :value="item.id"
+                                    >
+                                        <span>
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.upper_method.options." + item.id) }}
+                                        </span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item
-                        v-if="settingsForm.plot_method === 'mixed' && settingsForm.confidence.enable === false"
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.lower_method.label')"
-                    >
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.plot_method_mixed.lower_method"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.lower_method.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.plot_method_mixed.lower_method"
-                                :key="item.id"
-                                :label="
-                                    $t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.lower_method.options.', item.id].join(''))
-                                "
-                                :value="item.id"
+                            <el-form-item
+                                v-if="settingsForm.plot_method !== 'mixed'"
+                                :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_type.label')"
                             >
-                                <span>
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.lower_method.options." + item.id) }}
-                                </span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.plot_type"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_type.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.plot_type"
+                                        :key="item.id"
+                                        :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_type.options.', item.id].join(''))"
+                                        :value="item.id"
+                                    >
+                                        <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_type.options." + item.id) }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item
-                        v-if="settingsForm.plot_method === 'mixed' && settingsForm.confidence.enable === false"
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.upper_method.label')"
-                    >
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.plot_method_mixed.upper_method"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.upper_method.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.plot_method_mixed.upper_method"
-                                :key="item.id"
-                                :label="
-                                    $t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.upper_method.options.', item.id].join(''))
-                                "
-                                :value="item.id"
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation.label')">
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.reorder_correlation"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.reorder_correlation"
+                                        :key="item.id"
+                                        :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation.options.', item.id].join(''))"
+                                        :value="item.id"
+                                    >
+                                        <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation.options." + item.id) }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item
+                                v-if="settingsForm.reorder_correlation === 'hclust'"
+                                :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation_hclust.method.label')"
                             >
-                                <span>
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_method_mixed.upper_method.options." + item.id) }}
-                                </span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-
-                    <el-form-item
-                        v-if="settingsForm.plot_method !== 'mixed'"
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_type.label')"
-                    >
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.plot_type"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_type.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.plot_type"
-                                :key="item.id"
-                                :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_type.options.', item.id].join(''))"
-                                :value="item.id"
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.reorder_correlation_hclust.method"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation_hclust.method.label')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.reorder_correlation_hclust.method"
+                                        :key="item.id"
+                                        :label="
+                                            $t(
+                                                ['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation_hclust.method.options.', item.id].join(
+                                                    ''
+                                                )
+                                            )
+                                        "
+                                        :value="item.id"
+                                    >
+                                        <span>
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation_hclust.method.options." + item.id) }}
+                                        </span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item
+                                v-if="settingsForm.reorder_correlation === 'hclust'"
+                                :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation_hclust.number_of_rectangles')"
                             >
-                                <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.plot_type.options." + item.id) }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                                <el-input-number style="float: right" v-model="settingsForm.reorder_correlation_hclust.number_of_rectangles" :min="1"></el-input-number>
+                            </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.text_size')">
+                                <el-input-number
+                                    style="float: right"
+                                    v-model="settingsForm.text_size.value"
+                                    :value="settingsForm.text_size.value"
+                                    :min="settingOptions.text_size.min"
+                                    :max="settingOptions.text_size.max"
+                                    :step="settingOptions.text_size.step"
+                                ></el-input-number>
+                            </el-form-item>
+                        </el-collapse-item>
+                        <!-- Significance and Confidence Section -->
+                        <el-collapse-item title="Significance" name="significanceConfidence">
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.enable')">
+                                <el-checkbox style="float: right" v-model="settingsForm.significance.enable"></el-checkbox>
+                            </el-form-item>
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation.label')">
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.reorder_correlation"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.reorder_correlation"
-                                :key="item.id"
-                                :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation.options.', item.id].join(''))"
-                                :value="item.id"
+                            <el-form-item
+                                :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.level')"
+                                v-if="settingsForm.significance.enable === true"
                             >
-                                <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation.options." + item.id) }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item
-                        v-if="settingsForm.reorder_correlation === 'hclust'"
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation_hclust.method.label')"
-                    >
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.reorder_correlation_hclust.method"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation_hclust.method.label')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.reorder_correlation_hclust.method"
-                                :key="item.id"
-                                :label="
-                                    $t(
-                                        ['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation_hclust.method.options.', item.id].join(
-                                            ''
-                                        )
-                                    )
-                                "
-                                :value="item.id"
+                                <el-input-number
+                                    style="float: right"
+                                    v-model="settingsForm.significance.level.value"
+                                    :value="settingsForm.significance.level.value"
+                                    :min="settingOptions.significance.level.min"
+                                    :max="settingOptions.significance.level.max"
+                                    :step="settingOptions.significance.level.step"
+                                ></el-input-number>
+                            </el-form-item>
+                            <el-form-item
+                                :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.insignificant_action.label')"
+                                v-if="settingsForm.significance.enable === true"
                             >
-                                <span>
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation_hclust.method.options." + item.id) }}
-                                </span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item
-                        v-if="settingsForm.reorder_correlation === 'hclust'"
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.reorder_correlation_hclust.number_of_rectangles')"
-                    >
-                        <el-input-number style="float: right" v-model="settingsForm.reorder_correlation_hclust.number_of_rectangles" :min="1"></el-input-number>
-                    </el-form-item>
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.text_size')">
-                        <el-input-number
-                            style="float: right"
-                            v-model="settingsForm.text_size.value"
-                            :value="settingsForm.text_size.value"
-                            :min="settingOptions.text_size.min"
-                            :max="settingOptions.text_size.max"
-                            :step="settingOptions.text_size.step"
-                        ></el-input-number>
-                    </el-form-item>
+                                <br />
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.enable')">
-                        <el-checkbox style="float: right" v-model="settingsForm.significance.enable"></el-checkbox>
-                    </el-form-item>
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.significance.insignificant_action"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.insignificant_action.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.significance.insignificant_action"
+                                        :key="item.id"
+                                        :label="
+                                            $t(
+                                                ['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.insignificant_action.options.', item.id].join(
+                                                    ''
+                                                )
+                                            )
+                                        "
+                                        :value="item.id"
+                                    >
+                                        <span>
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.insignificant_action.options." + item.id) }}
+                                        </span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.level')"
-                        v-if="settingsForm.significance.enable === true"
-                    >
-                        <el-input-number
-                            style="float: right"
-                            v-model="settingsForm.significance.level.value"
-                            :value="settingsForm.significance.level.value"
-                            :min="settingOptions.significance.level.min"
-                            :max="settingOptions.significance.level.max"
-                            :step="settingOptions.significance.level.step"
-                        ></el-input-number>
-                    </el-form-item>
-                    <el-form-item
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.insignificant_action.label')"
-                        v-if="settingsForm.significance.enable === true"
-                    >
-                        <br />
-
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.significance.insignificant_action"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.insignificant_action.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.significance.insignificant_action"
-                                :key="item.id"
-                                :label="
-                                    $t(
-                                        ['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.insignificant_action.options.', item.id].join(
-                                            ''
-                                        )
-                                    )
-                                "
-                                :value="item.id"
+                            <el-form-item
+                                v-if="settingsForm.significance.enable === true"
+                                :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.adjust_p_value')"
                             >
-                                <span>
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.significance.insignificant_action.options." + item.id) }}
-                                </span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                                <el-checkbox style="float: right" v-model="settingsForm.significance.adjust_p_value"></el-checkbox>
+                            </el-form-item>
 
-                    <el-form-item
-                        v-if="settingsForm.significance.enable === true"
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.adjust_p_value')"
-                    >
-                        <el-checkbox style="float: right" v-model="settingsForm.significance.adjust_p_value"></el-checkbox>
-                    </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.enable')">
+                                <el-checkbox style="float: right" v-model="settingsForm.confidence.enable"></el-checkbox>
+                            </el-form-item>
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.enable')">
-                        <el-checkbox style="float: right" v-model="settingsForm.confidence.enable"></el-checkbox>
-                    </el-form-item>
-
-                    <el-form-item
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.level')"
-                        v-if="settingsForm.confidence.enable === true"
-                    >
-                        <el-input-number
-                            style="float: right"
-                            v-model="settingsForm.confidence.level.value"
-                            :min="settingOptions.confidence.level.min"
-                            :max="settingOptions.confidence.level.max"
-                            :step="settingOptions.confidence.level.step"
-                        ></el-input-number>
-                    </el-form-item>
-                    <el-form-item
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.ploting_method.label')"
-                        v-if="settingsForm.confidence.enable === true"
-                    >
-                        <br />
-
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.confidence.ploting_method"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.ploting_method.placeholder')"
-                        >
-                            <el-option
-                                v-for="(item, index) in settingOptions.confidence.ploting_method"
-                                :key="item.id"
-                                :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.ploting_method.options.', item.id].join(''))"
-                                :value="item.id"
+                            <el-form-item
+                                :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.level')"
+                                v-if="settingsForm.confidence.enable === true"
                             >
-                                <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.ploting_method.options." + item.id) }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                                <el-input-number
+                                    style="float: right"
+                                    v-model="settingsForm.confidence.level.value"
+                                    :min="settingOptions.confidence.level.min"
+                                    :max="settingOptions.confidence.level.max"
+                                    :step="settingOptions.confidence.level.step"
+                                ></el-input-number>
+                            </el-form-item>
+                            <el-form-item
+                                :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.ploting_method.label')"
+                                v-if="settingsForm.confidence.enable === true"
+                            >
+                                <br />
 
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.confidence.ploting_method"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.ploting_method.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="(item, index) in settingOptions.confidence.ploting_method"
+                                        :key="item.id"
+                                        :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.ploting_method.options.', item.id].join(''))"
+                                        :value="item.id"
+                                    >
+                                        <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.confidence.ploting_method.options." + item.id) }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-collapse-item>
+                    </el-collapse>
                     <el-row>
                         <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                             <el-form-item>
@@ -442,6 +454,7 @@ export default {
     },
     data() {
         return {
+            activeSections: ['columnSelection'],
             fuseIndex: null,
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,

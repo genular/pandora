@@ -18,121 +18,125 @@
             <el-col :span="4">
                 <el-row>
                     <el-form ref="settingsForm" :model="settingsForm">
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.title')">
+                        <el-collapse v-model="activeSections" :accordion="false" class="settings-tabpanel-content">
+                            <el-collapse-item title="Column Selection" name="columnSelection">
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.title')">
 
-                            <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.description") }}</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                            <el-button 
-                                v-if="reverseSelectedColumns.length > 0" 
-                                :title="bottomBarOpen ? 'Hide Details' : 'Show Details'" 
-                                size="mini" 
-                                class="filter-item" 
-                                type="info" 
-                                style="padding: 0; float: right" 
-                                v-waves 
-                                :icon="bottomBarOpen ? 'el-icon-arrow-down' : 'el-icon-arrow-up'" 
-                                @click="bottomBarOpen = !bottomBarOpen">
-                            </el-button>
-                            <br />
-                            <el-select
-                                style="float: left;width: 100%;"
-                                v-model="settingsForm.selectedColumns"
-                                multiple
-                                filterable
-                                remote
-                                default-first-option
-                                reserve-keyword
-                                value-key="remapped"
-                                clearable
-                                collapse-tags
-                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.placeholder')"
-                                :remote-method="
-                                    (userInput) => {
-                                        querySearch(userInput);
-                                    }
-                                "
-                            >
-                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
-                                    <el-row>
-                                        <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                            {{ item.original }}
-                                        </el-col>
-                                        <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
-                                            {{ item.valid_10p === 1 ? "*" : "" }}
-                                            {{ item.unique_count }}
-                                            {{ item.na_percentage > 0 ? "NA" : "" }}
-                                        </el-col>
-                                    </el-row>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+                                    <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.description") }}</div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                    <el-button 
+                                        v-if="reverseSelectedColumns.length > 0" 
+                                        :title="bottomBarOpen ? 'Hide Details' : 'Show Details'" 
+                                        size="mini" 
+                                        class="filter-item" 
+                                        type="info" 
+                                        style="padding: 0; float: right" 
+                                        v-waves 
+                                        :icon="bottomBarOpen ? 'el-icon-arrow-down' : 'el-icon-arrow-up'" 
+                                        @click="bottomBarOpen = !bottomBarOpen">
+                                    </el-button>
+                                    <br />
+                                    <el-select
+                                        style="float: left;width: 100%;"
+                                        v-model="settingsForm.selectedColumns"
+                                        multiple
+                                        filterable
+                                        remote
+                                        default-first-option
+                                        reserve-keyword
+                                        value-key="remapped"
+                                        clearable
+                                        collapse-tags
+                                        :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.placeholder')"
+                                        :remote-method="
+                                            (userInput) => {
+                                                querySearch(userInput);
+                                            }
+                                        "
+                                    >
+                                        <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                                            <el-row>
+                                                <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                    {{ item.original }}
+                                                </el-col>
+                                                <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
+                                                    {{ item.valid_10p === 1 ? "*" : "" }}
+                                                    {{ item.unique_count }}
+                                                    {{ item.na_percentage > 0 ? "NA" : "" }}
+                                                </el-col>
+                                            </el-row>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.first_n_columns.title')">
-                            <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="10" :max="50000"></el-input-number>
-                            <el-tooltip placement="top" style="padding-left: 5px">
-                                <div slot="content">
-                                    {{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.first_n_columns.description") }}
-                                </div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.first_n_columns.title')">
+                                    <el-input-number style="float: right" v-model="settingsForm.cutOffColumnSize" :step="10" :min="10" :max="50000"></el-input-number>
+                                    <el-tooltip placement="top" style="padding-left: 5px">
+                                        <div slot="content">
+                                            {{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.first_n_columns.description") }}
+                                        </div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.preprocess.title')">
-                            <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.preProcessedData"></el-switch>
-                            <el-tooltip placement="top">
-                                <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.preprocess.description") }}</div>
-                                <i class="el-icon-question"></i>
-                            </el-tooltip>
-                        </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.preprocess.title')">
+                                    <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.preProcessedData"></el-switch>
+                                    <el-tooltip placement="top">
+                                        <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.preprocess.description") }}</div>
+                                        <i class="el-icon-question"></i>
+                                    </el-tooltip>
+                                </el-form-item>
+                            </el-collapse-item>
 
-                        <el-divider></el-divider>
+                            <el-collapse-item title="Theme Settings" name="themeSettings">
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.theme.title')">
+                                    <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
+                                        <el-option v-for="item in settingsOptions.theme" :key="item.id" :label="item.name" :value="item.id">
+                                            <span style="float: left">{{ item.name }}</span>
+                                            <span style="float: right; color: #8492a6; font-size: 13px">
+                                                <el-tooltip placement="top">
+                                                    <div slot="content" style="text-align: center">
+                                                        <img :src="'static/images/plot_styles/' + item.id + '_' + settingsForm.colorPalette + '.svg'" style="height: 125px" />
+                                                        <br />
+                                                        <span style="max-width: 125px; width: 150px; display: block">{{ item.description }}</span>
+                                                    </div>
+                                                    <span class="el-icon-info"></span>
+                                                </el-tooltip>
+                                            </span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.theme.title')">
-                            <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
-                                <el-option v-for="item in settingsOptions.theme" :key="item.id" :label="item.name" :value="item.id">
-                                    <span style="float: left">{{ item.name }}</span>
-                                    <span style="float: right; color: #8492a6; font-size: 13px">
-                                        <el-tooltip placement="top">
-                                            <div slot="content" style="text-align: center">
-                                                <img :src="'static/images/plot_styles/' + item.id + '_' + settingsForm.colorPalette + '.svg'" style="height: 125px" />
-                                                <br />
-                                                <span style="max-width: 125px; width: 150px; display: block">{{ item.description }}</span>
-                                            </div>
-                                            <span class="el-icon-info"></span>
-                                        </el-tooltip>
-                                    </span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.color.title')">
+                                    <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
+                                        <el-option v-for="item in settingsOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
+                                            <span style="float: left">{{ item.value }}</span>
+                                            <span style="float: right; color: #8492a6; font-size: 13px">
+                                                <el-tooltip placement="top">
+                                                    <div slot="content" style="text-align: center">
+                                                        <img :src="'static/images/plot_styles/' + settingsForm.theme + '_' + item.id + '.svg'" style="height: 125px" />
+                                                        <br />
+                                                        <span style="max-width: 125px; width: 150px; display: block">colorblind: {{ item.colorblind }}</span>
+                                                    </div>
+                                                    <span class="el-icon-info"></span>
+                                                </el-tooltip>
+                                            </span>
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.color.title')">
-                            <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
-                                <el-option v-for="item in settingsOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
-                                    <span style="float: left">{{ item.value }}</span>
-                                    <span style="float: right; color: #8492a6; font-size: 13px">
-                                        <el-tooltip placement="top">
-                                            <div slot="content" style="text-align: center">
-                                                <img :src="'static/images/plot_styles/' + settingsForm.theme + '_' + item.id + '.svg'" style="height: 125px" />
-                                                <br />
-                                                <span style="max-width: 125px; width: 150px; display: block">colorblind: {{ item.colorblind }}</span>
-                                            </div>
-                                            <span class="el-icon-info"></span>
-                                        </el-tooltip>
-                                    </span>
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.font_size.title')">
+                                    <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="24"></el-input-number>
+                                </el-form-item>
 
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.font_size.title')">
-                            <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="24"></el-input-number>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.ratio.title')">
-                            <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
-                        </el-form-item>
+                                <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.ratio.title')">
+                                    <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
+                                </el-form-item>
+                            </el-collapse-item>
+                        </el-collapse>
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
@@ -313,6 +317,7 @@ export default {
     },
     data() {
         return {
+            activeSections: ['columnSelection'],
             bottomBarOpen: false,
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,

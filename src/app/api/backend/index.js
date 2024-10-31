@@ -78,6 +78,16 @@ export function fetchServerLoad() {
     });
 }
 
+export function fetchLiveLogs(offset) {
+    return request({
+        url: "/backend/system/live-logs",
+        method: "GET",
+        params: {
+            offset: offset,
+        },
+    });
+}
+
 /**
  * Checks if value is available in specific Database Table, like user-name, email address
  * Returns true or false. TRUE if record is available

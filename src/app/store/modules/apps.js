@@ -95,7 +95,7 @@ const apps = {
                             target_clusters_range: [3, 6],
                             pickBestClusterMethod: "Modularity",
                             selectedColumnsSIMON: [],
-                            weights: { AUROC: 0.5, modularity: 0.3, silhouette: 0.2 },
+                            weights: { AUROC: 0.8, modularity: 0.1, silhouette: 0.1 },
 
                             cutOffColumnSize: 50000,
                             removeNA: true,
@@ -192,7 +192,6 @@ const apps = {
         SET_PANDORA_EDITING_TSNE_SETTINGS_FORM: (state, settingsForm) => {
             state.pandora.editing.tabs.tsne.settingsForm = settingsForm;
             estore.set("apps-pandora-editing-tsne-settingsForm", settingsForm);
-            console.log("SET_PANDORA_EDITING_TSNE_SETTINGS_FORM");
         },
         SET_PANDORA_EDITING_SELECTED_COLUMNS: (state, selectedColumns) => {
             state.pandora.editing.selectedColumns = selectedColumns;
@@ -488,7 +487,6 @@ const apps = {
             commit("SET_PANDORA_EDITING_ML_SETTINGS_FORM", settingsForm);
         },
         setPandoraEditingTSNESettingsForm({ commit }, settingsForm) {
-            console.log("setPandoraEditingTSNESettingsForm");
             commit("SET_PANDORA_EDITING_TSNE_SETTINGS_FORM", settingsForm);
         },
         setPandoraEditingSelectedColumns({ commit }, selectedColumns) {
