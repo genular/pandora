@@ -4,42 +4,43 @@
             <!-- Resize Handle -->
             <div class="resize-handle" @mousedown="startResizing"></div>
             <div class="terminal-header">
-                <span>Terminal</span>
+                <el-tabs v-model="mainTab" type="border-card" class="tab-container-title">
+                    <el-tab-pane label="Logs" name="logs"></el-tab-pane>
+                    <el-tab-pane label="Assistant" name="assistant"></el-tab-pane>
+                </el-tabs>
+                <el-button icon="el-icon-copy-document" @click="copyToClipboard" class="utility-button"></el-button>
+                <el-button icon="el-icon-full-screen" @click="maximizeTerminal" v-if="!isMaximized" class="utility-button"></el-button>
+                <el-button icon="el-icon-minus" @click="minimizeTerminal" v-else class="utility-button"></el-button>
                 <el-button icon="el-icon-close" @click="$emit('close')" class="close-button"></el-button>
             </div>
-            <!-- Tabbed Logs Output -->
-            <el-tabs v-model="activeTab" type="border-card" class="tab-container-logs">
-                <el-tab-pane
-                    v-for="(logContent, normalizedLogType) in displayLogs"
-                    :key="normalizedLogType"
-                    :label="formatLabel(normalizedLogType)"
-                    :name="normalizedLogType"
-                >
-                    <!-- Each log output has a unique ref based on the normalizedLogType -->
-                    <div
-                        :ref="`logContainer-${normalizedLogType}`"
-                        class="logs-output"
-                        @scroll="checkIfUserScrolled"
-                    >
-                        <div
-                            v-for="(line, index) in logContent"
-                            :key="`${normalizedLogType}-${index}`"
-                            class="log-line"
-                        >
-                            {{ line.content }}
+            <div v-if="mainTab === 'logs'">
+                <!-- Tabbed Logs Output -->
+                <el-tabs v-model="activeTab" type="border-card" class="tab-container-logs">
+                    <el-tab-pane v-for="(logContent, normalizedLogType) in displayLogs" :key="normalizedLogType" :label="formatLabel(normalizedLogType)" :name="normalizedLogType">
+                        <div :ref="`logContainer-${normalizedLogType}`" class="logs-output" @scroll="checkIfUserScrolled">
+                            <div v-for="(line, index) in logContent" :key="`${normalizedLogType}-${index}`" class="log-line">
+                                {{ line.content }}
+                            </div>
+                            <div class="blinking-cursor">_</div>
                         </div>
-                        <!-- Blinking cursor -->
-                        <div class="blinking-cursor">_</div>
-                    </div>
-                </el-tab-pane>
-            </el-tabs>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
+            <div v-else-if="mainTab === 'assistant'">
+                <!-- Assistant Output Tabs (e.g., Output) -->
+                <el-tabs v-model="llmActiveTab" type="border-card" class="tab-container-logs">
+                    <el-tab-pane label="Output" name="output">
+                        <div class="logs-output">
+                            <!-- Content for Assistant Output tab -->
+                            <p>...</p>
+                            <!-- Add other content here as needed -->
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
         </div>
     </transition>
 </template>
-
-
-
-
 <script>
 import { fetchLiveLogs } from "@/api/backend";
 
@@ -50,7 +51,9 @@ export default {
     },
     data() {
         return {
-            activeTab: null, // Default to null until populated
+            mainTab: 'logs', // Active main tab (Logs or Assistant)
+            activeTab: null, // Active sub-tab under Logs
+            llmActiveTab: 'output', // Active sub-tab under Assistant
             displayLogs: {}, // Populated dynamically with normalized log types
             offsets: {}, // Tracks offsets for each normalized log type
             seenHashes: {}, // Track hashes separately for each log type
@@ -58,33 +61,60 @@ export default {
             scrollEnabled: true, // Determines if auto-scroll is enabled
             originalLabels: {}, // Maps normalized log types to their original labels,
             terminalHeight: 300, // Initial height in pixels
-            isResizing: false,   // Flag to check if resizing is active
-            startY: 0,           // Starting Y position of the mouse
-            startHeight: 0,      // Starting height of the terminal
+            isResizing: false, // Flag to check if resizing is active
+            startY: 0, // Starting Y position of the mouse
+            startHeight: 0,
+            isMaximized: false, // Track if the terminal is maximized
         };
     },
     watch: {
         isTerminalOpen(newVal) {
-            if (newVal) {
+            if (newVal && this.mainTab === 'logs') {
+                this.startFetchingLogs();
+            } else {
+                this.stopFetchingLogs();
+            }
+        },
+        mainTab(newVal) {
+            if (newVal === 'logs') {
                 this.startFetchingLogs();
             } else {
                 this.stopFetchingLogs();
             }
         },
         activeTab(newVal) {
-            if (newVal) {
-                if (this.scrollEnabled) {
-                    this.scrollToBottom();
-                }
+            if (newVal && this.scrollEnabled) {
+                this.scrollToBottom();
             }
-       },
+        },
     },
     mounted() {
-        if (this.isTerminalOpen) {
+        if (this.isTerminalOpen && this.mainTab === 'logs') {
             this.startFetchingLogs();
         }
     },
     methods: {
+        maximizeTerminal() {
+            this.terminalHeight = window.innerHeight;
+            this.isMaximized = true;
+        },
+        minimizeTerminal() {
+            this.terminalHeight = 300;
+            this.isMaximized = false;
+        },
+        async copyToClipboard() {
+            const activeLogs = this.displayLogs[this.activeTab] ?
+                this.displayLogs[this.activeTab].map(line => line.content).join('\n') :
+                '';
+            try {
+                await navigator.clipboard.writeText(activeLogs);
+                this.$message.success('Copied to clipboard');
+            } catch (error) {
+                this.$message.error('Failed to copy');
+                console.error("Error copying to clipboard:", error);
+            }
+        },
+
         startFetchingLogs() {
             this.fetchLogs(); // Initial fetch
             this.fetchInterval = setInterval(this.fetchLogs, 1000); // Fetch every second
@@ -107,7 +137,6 @@ export default {
             Object.keys(newLogs).forEach((logType) => {
                 const normalizedLogType = this.normalizeLogType(logType);
 
-                // Initialize logs, offsets, and seenHashes for new log types if not already initialized
                 if (!this.displayLogs[normalizedLogType]) {
                     this.$set(this.displayLogs, normalizedLogType, []);
                     this.$set(this.offsets, normalizedLogType, 0);
@@ -122,7 +151,6 @@ export default {
                     }
                 });
 
-                // Update offset
                 this.offsets[normalizedLogType] = this.displayLogs[normalizedLogType].length;
             });
 
@@ -161,9 +189,9 @@ export default {
                         console.warn("Log container or scrollHeight is undefined.", logContainer);
                     }
                 });
+                
             });
         },
-        // Resizing Methods
         startResizing(event) {
             this.isResizing = true;
             this.startY = event.clientY;
@@ -178,14 +206,12 @@ export default {
             const dy = this.startY - event.clientY;
             let newHeight = this.startHeight + dy;
 
-            // Set minimum and maximum heights
             newHeight = Math.max(100, newHeight); // Minimum height
             newHeight = Math.min(window.innerHeight - 100, newHeight); // Maximum height
 
             this.terminalHeight = newHeight;
 
-            // logs-output height is calculated based on the terminal header and tabs height
-            const logsOutputHeight = newHeight - 100; // Adjust based on header and tabs height
+            const logsOutputHeight = newHeight - 125;
             const logContainers = this.$el.querySelectorAll('.logs-output');
             logContainers.forEach(logContainer => {
                 logContainer.style.maxHeight = `${logsOutputHeight}px`;
@@ -207,8 +233,8 @@ export default {
         }
     },
 };
-</script>
 
+</script>
 <style scoped>
 /* Slide-up transition */
 .slide-up-enter-active,
@@ -220,6 +246,14 @@ export default {
 .slide-up-leave-to {
     transform: translateY(100%);
 }
+
+.utility-button {
+    color: #00ff00;
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+}
+
 /* Terminal Container Styles */
 .terminal-container {
     position: fixed;
@@ -245,24 +279,53 @@ export default {
     width: 100%;
 }
 
-.resize-handle:hover {
-    background-color: #555;
-}
-
 .terminal-header {
-    background-color: #111; /* Dark background */
+    background-color: #111;
     padding: 10px 20px;
     font-size: 16px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    color: #00ff00; /* Green text */
+    color: #00ff00;
 }
 
 .close-button {
     color: #00ff00;
     background-color: transparent;
     border: none;
+}
+
+.tab-container-title {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: black;
+
+    .el-tabs__header {
+        border: none;
+        background-color: #111;
+
+        .el-tabs__item {
+            color: #00ff00;
+
+            &:hover {
+                color: #ffffff;
+            }
+
+            &.is-active {
+                color: #ffffff;
+                background-color: #333;
+            }
+        }
+
+        .el-tabs__active-bar {
+            background-color: #00ff00;
+        }
+    }
+
+    .el-tabs__content {
+        display: none;
+    }
 }
 
 .tab-container-logs {
@@ -278,8 +341,6 @@ export default {
 
         .el-tabs__item {
             color: #00ff00;
-            background-color: transparent;
-            border: none;
 
             &:hover {
                 color: #ffffff;
@@ -304,16 +365,13 @@ export default {
 
 .logs-output {
     flex: 1;
-    max-height: calc(50vh - 100px); /* Adjust based on header and tabs height */
+    max-height: calc(50vh - 150px);
     overflow-y: auto;
-    overflow-x: hidden;
     padding: 10px 20px;
     font-family: 'Courier New', Courier, monospace;
     font-size: 14px;
-    line-height: 1.4;
-    color: #00ff00; /* Green text */
-    scroll-behavior: smooth;
-    background-color: #000; /* Black background */
+    color: #00ff00;
+    background-color: #000;
 }
 
 .log-line {
@@ -334,4 +392,5 @@ export default {
         opacity: 0;
     }
 }
+
 </style>

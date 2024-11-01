@@ -15,335 +15,342 @@
         <el-row v-else type="flex" align="top">
             <el-col :span="4">
                 <el-form ref="settingsForm" :model="settingsForm">
-                    <el-form-item label="Columns:">
-                        <el-tooltip placement="top">
-                            <div slot="content">
-                                Please select columns you wish to analyze and plot. Leaving this empty will take all valid numerical columns except excluded ones.
+                    <el-collapse v-model="activeSections" :accordion="false" class="settings-tabpanel-content">
+                        <el-collapse-item title="Column Selection" name="columnSelection">
+                            <el-form-item label="Columns:">
+                                <el-tooltip placement="top">
+                                    <div slot="content">
+                                        Please select columns you wish to analyze and plot. Leaving this empty will take all valid numerical columns except excluded ones.
+                                        <br />
+                                        To remove rows with NA values please make sure that "Remove NA" option is enabled.
+                                        Variables with zero variance are automatically excluded when "Preprocess" option is enabled and NA values are median imputed.
+                                    </div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
                                 <br />
-                                To remove rows with NA values please make sure that "Remove NA" option is enabled.
-                                Variables with zero variance are automatically excluded when "Preprocess" option is enabled and NA values are median imputed.
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.selectedColumns"
-                            multiple
-                            filterable
-                            remote
-                            default-first-option
-                            reserve-keyword
-                            value-key="remapped"
-                            clearable
-                            collapse-tags
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
-                            :remote-method="
-                                (userInput) => {
-                                    querySearch(userInput, 'columns_all');
-                                }
-                            "
-                        >
-                            <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
-                                <el-row>
-                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                        {{ item.original }}
-                                    </el-col>
-                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
-                                        {{ item.valid_10p === 1 ? "*" : "" }}
-                                        {{ item.unique_count }}
-                                        {{ item.na_percentage > 0 ? "NA" : "" }}
-                                    </el-col>
-                                </el-row>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.selectedColumns"
+                                    multiple
+                                    filterable
+                                    remote
+                                    default-first-option
+                                    reserve-keyword
+                                    value-key="remapped"
+                                    clearable
+                                    collapse-tags
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
+                                    :remote-method="
+                                        (userInput) => {
+                                            querySearch(userInput, 'columns_all');
+                                        }
+                                    "
+                                >
+                                    <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                                        <el-row>
+                                            <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                {{ item.original }}
+                                            </el-col>
+                                            <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
+                                                {{ item.valid_10p === 1 ? "*" : "" }}
+                                                {{ item.unique_count }}
+                                                {{ item.na_percentage > 0 ? "NA" : "" }}
+                                            </el-col>
+                                        </el-row>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item label="First (n) columns">
-                        <el-tooltip placement="top" style="padding-left: 5px">
-                            <div slot="content">If you have not selected any columns we will take first n columns from your dataset, based on this value.</div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <br />
-                        <el-input-number style="float: left;width: 100%;" v-model="settingsForm.cutOffColumnSize" :step="100" :min="2" :max="50000"></el-input-number>
-                    </el-form-item>
-
-                    <el-form-item label="Exclude Columns">
-                        <el-tooltip placement="top" style="padding-left: 5px">
-                            <div slot="content">Please select any columns you wish to exclude from analysis.</div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.excludedColumns"
-                            multiple
-                            filterable
-                            remote
-                            default-first-option
-                            reserve-keyword
-                            value-key="remapped"
-                            clearable
-                            collapse-tags
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
-                            :remote-method="
-                                (userInput) => {
-                                    querySearch(userInput);
-                                }
-                            "
-                        >
-                            <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
-                                <el-row>
-                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                        {{ item.original }}
-                                    </el-col>
-                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
-                                        {{ item.valid_10p === 1 ? "*" : "" }}
-                                        {{ item.unique_count }}
-                                        {{ item.na_percentage > 0 ? "NA" : "" }}
-                                    </el-col>
-                                </el-row>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-
-                    <el-form-item label="Remove by unique">
-                        <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.cutOffUnique"></el-switch>
-                        <el-tooltip placement="top">
-                            <div slot="content">Remove any columns that have less than defined unique values.</div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                    </el-form-item>
-
-                    <el-form-item v-if="settingsForm.cutOffUnique === true" label="Remove by unique treshold">
-                        <br />
-                        <el-input-number style="float: left;width: 100%;" size="medium" v-model="settingsForm.cutOffUniqueSize" :step="1" :max="10000" :min="1"></el-input-number>
-                    </el-form-item>
-
-                    <el-form-item label="Remove < 10%">
-                        <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.remove_less_10p"></el-switch>
-                        <el-tooltip placement="top">
-                            <div slot="content">Remove any columns that have number of unique values less than 10% of total number of observations.</div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                    </el-form-item>
-
-                    <el-form-item label="Grouping variable:">
-                        <el-tooltip placement="top">
-                            <div slot="content">
-                                Grouping variables are not taken in consideration when calculation PCA. Preprocessing is also not applied to them.
+                            <el-form-item label="First (n) columns">
+                                <el-tooltip placement="top" style="padding-left: 5px">
+                                    <div slot="content">If you have not selected any columns we will take first n columns from your dataset, based on this value.</div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
                                 <br />
-                                They are used only for plotting and displaying PCA results.
+                                <el-input-number style="float: left;width: 100%;" v-model="settingsForm.cutOffColumnSize" :step="100" :min="2" :max="50000"></el-input-number>
+                            </el-form-item>
+
+                            <el-form-item label="Exclude Columns">
+                                <el-tooltip placement="top" style="padding-left: 5px">
+                                    <div slot="content">Please select any columns you wish to exclude from analysis.</div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
                                 <br />
-                                Only variables where the number of unique values is less than 10% of the total number of observations are shown here.
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.groupingVariables"
-                            multiple
-                            filterable
-                            remote
-                            default-first-option
-                            reserve-keyword
-                            value-key="remapped"
-                            clearable
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
-                            :remote-method="
-                                (userInput) => {
-                                    querySearch(userInput, 'columns_grouping');
-                                }
-                            "
-                        >
-                            <el-option
-                                v-for="item in selectedFileDetailsDisplay"
-                                :key="item.remapped"
-                                :label="item.original"
-                                :value="item"
-                                :disabled="item.valid_10p !== 1 || item.unique_count < 2"
-                            >
-                                <el-row>
-                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                        {{ item.original }}
-                                    </el-col>
-                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
-                                        {{ item.valid_10p === 1 ? "*" : "" }}
-                                        {{ item.unique_count }}
-                                        {{ item.na_percentage > 0 ? "NA" : "" }}
-                                    </el-col>
-                                </el-row>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.excludedColumns"
+                                    multiple
+                                    filterable
+                                    remote
+                                    default-first-option
+                                    reserve-keyword
+                                    value-key="remapped"
+                                    clearable
+                                    collapse-tags
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
+                                    :remote-method="
+                                        (userInput) => {
+                                            querySearch(userInput);
+                                        }
+                                    "
+                                >
+                                    <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                                        <el-row>
+                                            <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                {{ item.original }}
+                                            </el-col>
+                                            <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
+                                                {{ item.valid_10p === 1 ? "*" : "" }}
+                                                {{ item.unique_count }}
+                                                {{ item.na_percentage > 0 ? "NA" : "" }}
+                                            </el-col>
+                                        </el-row>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-collapse-item>
 
-                    <el-form-item label="X axis:">
-                        <el-select
-                            style="float: right"
-                            v-model="settingsForm.selectedComponentsX"
-                            filterable
-                            default-first-option
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
-                            :remote-method="
-                                (userInput) => {
-                                    querySearch(userInput, 'pca_components');
-                                }
-                            "
-                        >
-                            <el-option v-for="item in selectedOptions.pca_components_x" :key="item" :label="item" :value="item">
-                                <span style="float: left">{{ item }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                        <el-collapse-item title="Preprocessing Options" name="preprocessingOptions">
+                            <el-form-item label="Remove by unique">
+                                <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.cutOffUnique"></el-switch>
+                                <el-tooltip placement="top">
+                                    <div slot="content">Remove any columns that have less than defined unique values.</div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                            </el-form-item>
 
-                    <el-form-item label="Y axis:">
-                        <el-select
-                            style="float: right"
-                            v-model="settingsForm.selectedComponentsY"
-                            filterable
-                            default-first-option
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
-                            :remote-method="
-                                (userInput) => {
-                                    querySearch(userInput, 'pca_components');
-                                }
-                            "
-                        >
-                            <el-option v-for="item in selectedOptions.pca_components_y" :key="item" :label="item" :value="item">
-                                <span style="float: left">{{ item }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                            <el-form-item v-if="settingsForm.cutOffUnique === true" label="Remove by unique treshold">
+                                <br />
+                                <el-input-number style="float: left;width: 100%;" size="medium" v-model="settingsForm.cutOffUniqueSize" :step="1" :max="10000" :min="1"></el-input-number>
+                            </el-form-item>
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
-                        <el-tooltip placement="top">
-                            <div slot="content">
-                                Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features
-                                before any calculation?
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <el-select
-                            style="float: left; width: 100%"
-                            v-model="selectedPreProcess"
-                            clearable
-                            :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')"
-                            multiple
-                        >
-                            <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
-                                <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-                                <span style="float: right">
-                                    {{ $t("views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}
-                                </span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                            <el-form-item label="Remove < 10%">
+                                <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.remove_less_10p"></el-switch>
+                                <el-tooltip placement="top">
+                                    <div slot="content">Remove any columns that have number of unique values less than 10% of total number of observations.</div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                            </el-form-item>
 
-                    <el-form-item label="Remove NA">
-                        <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.removeNA"></el-switch>
-                        <el-tooltip placement="top">
-                            <div slot="content">Should we drop rows with NA values in dataset before any calculation?</div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                    </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
+                                <el-tooltip placement="top">
+                                    <div slot="content">
+                                        Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features
+                                        before any calculation?
+                                    </div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                                <el-select
+                                    style="float: left; width: 100%"
+                                    v-model="selectedPreProcess"
+                                    clearable
+                                    :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')"
+                                    multiple
+                                >
+                                    <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
+                                        <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                        <span style="float: right">
+                                            {{ $t("views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}
+                                        </span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item label="KMO/Berlett column limit">
-                        <el-tooltip placement="top">
-                            <div slot="content">If we have more columns than in this limit we will skip calculation of Bartlett (1951) and his contrast Kaiser, Meyer, Olkin test.</div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <br />
-                         <el-input-number style="float: left;width: 100%;" size="medium" v-model="settingsForm.kmo_bartlett_limit" :step="100" :max="100000" :min="1"></el-input-number>
-                    </el-form-item>
+                            <el-form-item label="Remove NA">
+                                <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.removeNA"></el-switch>
+                                <el-tooltip placement="top">
+                                    <div slot="content">Should we drop rows with NA values in dataset before any calculation?</div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                            </el-form-item>
+                        </el-collapse-item>
 
-                    <el-form-item label="Analysis method">
-                        <br />
-                        <el-select v-model="settingsForm.analysis_method" size="medium" placeholder="Select" style="float: left;width: 100%;">
-                            <el-option v-for="item in selectedOptions.analysis_method" :key="item.id" :label="item.name" :value="item.id">
-                                <span style="float: left">{{ item.name }}</span>
-                                <span style="float: right; color: #8492a6; font-size: 13px">
-                                    <el-tooltip placement="top">
-                                        <div slot="content" style="text-align: center">
-                                            {{ item.description }}
-                                        </div>
-                                        <span class="el-icon-info"></span>
-                                    </el-tooltip>
-                                </span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                        <el-collapse-item title="PCA Settings" name="PCASettings">
+                            <el-form-item label="Grouping variable:">
+                                <el-tooltip placement="top">
+                                    <div slot="content">
+                                        Grouping variables are not taken in consideration when calculation PCA. Preprocessing is also not applied to them.
+                                        <br />
+                                        They are used only for plotting and displaying PCA results.
+                                        <br />
+                                        Only variables where the number of unique values is less than 10% of the total number of observations are shown here.
+                                    </div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.groupingVariables"
+                                    multiple
+                                    filterable
+                                    remote
+                                    default-first-option
+                                    reserve-keyword
+                                    value-key="remapped"
+                                    clearable
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
+                                    :remote-method="
+                                        (userInput) => {
+                                            querySearch(userInput, 'columns_grouping');
+                                        }
+                                    "
+                                >
+                                    <el-option
+                                        v-for="item in selectedFileDetailsDisplay"
+                                        :key="item.remapped"
+                                        :label="item.original"
+                                        :value="item"
+                                        :disabled="item.valid_10p !== 1 || item.unique_count < 2"
+                                    >
+                                        <el-row>
+                                            <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                {{ item.original }}
+                                            </el-col>
+                                            <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
+                                                {{ item.valid_10p === 1 ? "*" : "" }}
+                                                {{ item.unique_count }}
+                                                {{ item.na_percentage > 0 ? "NA" : "" }}
+                                            </el-col>
+                                        </el-row>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-divider></el-divider>
+                            <el-form-item label="X axis:">
+                                <el-select
+                                    style="float: right"
+                                    v-model="settingsForm.selectedComponentsX"
+                                    filterable
+                                    default-first-option
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
+                                    :remote-method="
+                                        (userInput) => {
+                                            querySearch(userInput, 'pca_components');
+                                        }
+                                    "
+                                >
+                                    <el-option v-for="item in selectedOptions.pca_components_x" :key="item" :label="item" :value="item">
+                                        <span style="float: left">{{ item }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item label="Display Loadings">
-                        <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.displayLoadings"></el-switch>
-                    </el-form-item>
+                            <el-form-item label="Y axis:">
+                                <el-select
+                                    style="float: right"
+                                    v-model="settingsForm.selectedComponentsY"
+                                    filterable
+                                    default-first-option
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
+                                    :remote-method="
+                                        (userInput) => {
+                                            querySearch(userInput, 'pca_components');
+                                        }
+                                    "
+                                >
+                                    <el-option v-for="item in selectedOptions.pca_components_y" :key="item" :label="item" :value="item">
+                                        <span style="float: left">{{ item }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item label="Theme">
-                        <el-select v-model="settingsForm.theme" size="medium" placeholder="Select" style="float: right">
-                            <el-option v-for="item in selectedOptions.theme" :key="item.id" :label="item.name" :value="item.id">
-                                <span style="float: left">{{ item.name }}</span>
-                                <span style="float: right; color: #8492a6; font-size: 13px">
-                                    <el-tooltip placement="top">
-                                        <div slot="content" style="text-align: center">
-                                            <img :src="'static/images/plot_styles/' + item.id + '_' + settingsForm.colorPalette + '.svg'" style="height: 125px" />
-                                            <br />
-                                            <span style="max-width: 125px; width: 150px; display: block">{{ item.description }}</span>
-                                        </div>
-                                        <span class="el-icon-info"></span>
-                                    </el-tooltip>
-                                </span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
 
-                    <el-form-item label="Color">
-                        <el-select v-model="settingsForm.colorPalette" size="medium" placeholder="Select" style="float: right">
-                            <el-option v-for="item in selectedOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
-                                <span style="float: left">{{ item.value }}</span>
-                                <span style="float: right; color: #8492a6; font-size: 13px">
-                                    <el-tooltip placement="top">
-                                        <div slot="content" style="text-align: center">
-                                            <img :src="'static/images/plot_styles/' + settingsForm.theme + '_' + item.id + '.svg'" style="height: 125px" />
-                                            <br />
-                                            <span style="max-width: 125px; width: 150px; display: block">colorblind: {{ item.colorblind }}</span>
-                                        </div>
-                                        <span class="el-icon-info"></span>
-                                    </el-tooltip>
-                                </span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                            <el-form-item label="KMO/Berlett column limit">
+                                <el-tooltip placement="top">
+                                    <div slot="content">If we have more columns than in this limit we will skip calculation of Bartlett (1951) and his contrast Kaiser, Meyer, Olkin test.</div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                                <br />
+                                 <el-input-number style="float: left;width: 100%;" size="medium" v-model="settingsForm.kmo_bartlett_limit" :step="100" :max="100000" :min="1"></el-input-number>
+                            </el-form-item>
 
-                    <el-form-item label="Font size">
-                        <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="24"></el-input-number>
-                    </el-form-item>
+                            <el-form-item label="Analysis method">
+                                <br />
+                                <el-select v-model="settingsForm.analysis_method" size="medium" placeholder="Select" style="float: left;width: 100%;">
+                                    <el-option v-for="item in selectedOptions.analysis_method" :key="item.id" :label="item.name" :value="item.id">
+                                        <span style="float: left">{{ item.name }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">
+                                            <el-tooltip placement="top">
+                                                <div slot="content" style="text-align: center">
+                                                    {{ item.description }}
+                                                </div>
+                                                <span class="el-icon-info"></span>
+                                            </el-tooltip>
+                                        </span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="Display Loadings">
+                                <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.displayLoadings"></el-switch>
+                            </el-form-item>
+                        </el-collapse-item>
 
-                    <el-form-item label="Point size">
-                        <el-input-number style="float: right" v-model="settingsForm.pointSize" :step="0.5" :min="0.1" :max="25"></el-input-number>
-                    </el-form-item>
+                        <el-collapse-item title="Display Options" name="displayOptions">
+                            <el-form-item label="Theme">
+                                <el-select v-model="settingsForm.theme" size="medium" placeholder="Select" style="float: right">
+                                    <el-option v-for="item in selectedOptions.theme" :key="item.id" :label="item.name" :value="item.id">
+                                        <span style="float: left">{{ item.name }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">
+                                            <el-tooltip placement="top">
+                                                <div slot="content" style="text-align: center">
+                                                    <img :src="'static/images/plot_styles/' + item.id + '_' + settingsForm.colorPalette + '.svg'" style="height: 125px" />
+                                                    <br />
+                                                    <span style="max-width: 125px; width: 150px; display: block">{{ item.description }}</span>
+                                                </div>
+                                                <span class="el-icon-info"></span>
+                                            </el-tooltip>
+                                        </span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item label="Label size">
-                        <el-input-number style="float: right" v-model="settingsForm.labelSize" :step="1" :min="1" :max="25"></el-input-number>
-                    </el-form-item>
+                            <el-form-item label="Color">
+                                <el-select v-model="settingsForm.colorPalette" size="medium" placeholder="Select" style="float: right">
+                                    <el-option v-for="item in selectedOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
+                                        <span style="float: left">{{ item.value }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">
+                                            <el-tooltip placement="top">
+                                                <div slot="content" style="text-align: center">
+                                                    <img :src="'static/images/plot_styles/' + settingsForm.theme + '_' + item.id + '.svg'" style="height: 125px" />
+                                                    <br />
+                                                    <span style="max-width: 125px; width: 150px; display: block">colorblind: {{ item.colorblind }}</span>
+                                                </div>
+                                                <span class="el-icon-info"></span>
+                                            </el-tooltip>
+                                        </span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item label="Ellipse Alpha">
-                        <el-input-number style="float: right" v-model="settingsForm.ellipseAlpha" :step="0.01" :min="0" :max="1"></el-input-number>
-                    </el-form-item>
+                            <el-form-item label="Font size">
+                                <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="24"></el-input-number>
+                            </el-form-item>
 
-                    <el-form-item label="Remove Ellipse">
-                        <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.addEllipses"></el-switch>
-                    </el-form-item>
+                            <el-form-item label="Point size">
+                                <el-input-number style="float: right" v-model="settingsForm.pointSize" :step="0.5" :min="0.1" :max="25"></el-input-number>
+                            </el-form-item>
 
-                    <el-form-item label="Ratio">
-                        <el-input-number style="float: right" size="medium" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
-                    </el-form-item>
+                            <el-form-item label="Label size">
+                                <el-input-number style="float: right" v-model="settingsForm.labelSize" :step="1" :min="1" :max="25"></el-input-number>
+                            </el-form-item>
 
-                    <el-form-item label="Plot size">
-                        <el-input-number style="float: right" size="medium" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
-                    </el-form-item>
+                            <el-form-item label="Ellipse Alpha">
+                                <el-input-number style="float: right" v-model="settingsForm.ellipseAlpha" :step="0.01" :min="0" :max="1"></el-input-number>
+                            </el-form-item>
 
+                            <el-form-item label="Remove Ellipse">
+                                <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.addEllipses"></el-switch>
+                            </el-form-item>
+
+                            <el-form-item label="Ratio">
+                                <el-input-number style="float: right" size="medium" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
+                            </el-form-item>
+
+                            <el-form-item label="Plot size">
+                                <el-input-number style="float: right" size="medium" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
+                            </el-form-item>
+                        </el-collapse-item>
+                    </el-collapse>
                     <el-row>
                         <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                             <el-form-item>
@@ -1161,6 +1168,7 @@ export default {
     name: "pcaAnalysisTab",
     data() {
         return {
+            activeSections: [],
             fuseIndex: null,
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,

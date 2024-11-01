@@ -386,7 +386,7 @@ export default {
     },
     data() {
         return {
-            // This tab is disabled and we will enable it on initialization if there is no too much data
+            activeSections: [],
             tabEnabled: false,
             fuseIndex: null,
             loadingPlot: false,

@@ -39,6 +39,7 @@
                 </div>
             </div>
         </el-dialog>
+        
         <TerminalComponent
             v-if="isTerminalOpen"
             @close="toggleTerminal"

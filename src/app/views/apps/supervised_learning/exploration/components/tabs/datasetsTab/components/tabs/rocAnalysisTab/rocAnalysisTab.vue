@@ -104,7 +104,7 @@
                                             </template>
                                             <image-zoom 
                                                 v-if="plot_data['training']['auc_roc_png'][respItemIndex]" 
-                                                img-class="animated fadeIn analysis_images" 
+                                                img-class="animated fadeIn analysis_images_roc" 
                                                 :regular="'data:image/png;base64,' + plot_data['training']['auc_roc_png'][respItemIndex]" 
                                                 fit="scale-down"
                                                 :click-zoom="true"                
@@ -124,7 +124,7 @@
                                             </template>
                                             <image-zoom 
                                                 v-if="plot_data['training']['auc_roc_multiclass_png'][respItemIndex]" 
-                                                img-class="animated fadeIn analysis_images" 
+                                                img-class="animated fadeIn analysis_images_roc" 
                                                 :regular="'data:image/png;base64,' + plot_data['training']['auc_roc_multiclass_png'][respItemIndex]" 
                                                 fit="scale-down"
                                                 :click-zoom="true"                  
@@ -144,7 +144,7 @@
                                             </template>
                                             <image-zoom 
                                                 v-if="plot_data['training']['comparison_png']['comparison']" 
-                                                img-class="animated fadeIn analysis_images" 
+                                                img-class="animated fadeIn analysis_images_roc" 
                                                 :regular="'data:image/png;base64,' + plot_data['training']['comparison_png']['comparison']" 
                                                 fit="scale-down" 
                                                 :click-zoom="true"                  
@@ -176,7 +176,7 @@
                                             </template>
                                             <image-zoom 
                                                 v-if="plot_data['testing']['auc_roc_png'][respItemIndex]" 
-                                                img-class="animated fadeIn analysis_images" 
+                                                img-class="animated fadeIn analysis_images_roc" 
                                                 :regular="'data:image/png;base64,' + plot_data['testing']['auc_roc_png'][respItemIndex]" 
                                                 fit="scale-down" 
                                                 :click-zoom="true"                     
@@ -196,7 +196,7 @@
                                             </template>
                                             <image-zoom
                                                 v-if="plot_data['testing']['auc_roc_multiclass_png'][respItemIndex]"
-                                                img-class="animated fadeIn analysis_images"
+                                                img-class="animated fadeIn analysis_images_roc"
                                                 :regular="'data:image/png;base64,' + plot_data['testing']['auc_roc_multiclass_png'][respItemIndex]"
                                                 :click-zoom="true"                
                                                 :zoom-amount="1.5"               
@@ -217,7 +217,7 @@
                                             </template>
                                             <image-zoom
                                                 v-if="plot_data['testing']['comparison'][respItemIndex] !== false"
-                                                img-class="animated fadeIn analysis_images"
+                                                img-class="animated fadeIn analysis_images_roc"
                                                 :regular="'data:image/png;base64,' + plot_data['testing']['comparison_png']['comparison']"
                                                 :zoom-amount="1.5"           
                                                 :click-zoom="true"             
@@ -754,8 +754,9 @@ export default {
 };
 
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
-.analysis_images {
+<style rel="stylesheet/scss" lang="scss">
+
+.analysis_images_roc {
     width: 100%;
     float: left;
 }

@@ -424,8 +424,7 @@
                             </el-button>
                         </div>
                         <img
-                            id="analysis_images_clustering_plot"
-                            class="animated fadeIn analysis_images"
+                            class="animated fadeIn analysis_images_corolation"
                             :src="'data:image/png;base64,' + plot_data.correlation_plot_png"
                             fit="scale-down"
                         />
@@ -454,7 +453,7 @@ export default {
     },
     data() {
         return {
-            activeSections: ['columnSelection'],
+            activeSections: [],
             fuseIndex: null,
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,
@@ -815,4 +814,10 @@ export default {
     },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss"></style>
+<style rel="stylesheet/scss" lang="scss">
+
+.analysis_images_corolation {
+    width: 65%;
+}
+
+</style>

@@ -317,7 +317,7 @@ export default {
     },
     data() {
         return {
-            activeSections: ['columnSelection'],
+            activeSections: [],
             bottomBarOpen: false,
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,
@@ -478,34 +478,41 @@ export default {
                 settings: settingsForm,
             })
                 .then((response) => {
-                    let respData = response.data.message;
-                    // Update the image data.
-                    let lastValid = false;
+                    const respData = response.data.message;
+                    let lastValid = "table_plot"; // Default fallback to a valid tab
 
-                    for (let respIndex in respData) {
+                    for (const respIndex in respData) {
                         if (typeof this.plot_data[respIndex] !== "undefined") {
-                            this.plot_data[respIndex] = false;
-                            let respItem = respData[respIndex];
+                            const respItem = respData[respIndex];
 
-                            if (respItem.length < 15 || typeof respItem == "undefined" || (typeof respItem === "object" && Object.keys(respItem).length === 0 && respItem.constructor === Object)) {
+                            // Check if response item is empty object or undefined
+                            const isEmptyObject = respItem && typeof respItem === "object" && Object.keys(respItem).length === 0;
 
-                                if (!respIndex.endsWith("_png")) {
+                            // Only set data if it's non-empty and encode if it's a string (e.g., base64 image data)
+                            if (!isEmptyObject && respItem !== undefined) {
+                                this.plot_data[respIndex] = typeof respItem === "string" ? encodeURIComponent(respItem) : respItem;
+                                
+                                // Update lastValid if the item is a plot type and not PNG or saveObjectHash
+                                if (!respIndex.endsWith("_png") && respIndex !== "saveObjectHash") {
+                                    lastValid = respIndex;
+                                }
+                            } else {
+                                // If the item is empty and not a PNG or saveObjectHash, show error message
+                                if (!respIndex.endsWith("_png") && respIndex !== "saveObjectHash") {
                                     this.$message({
                                         message: this.$t("views.apps.unsupervised_learning.editing.index.errors.plot_response.title"),
                                         type: "error",
                                     });
                                 }
-                            } else {
-                                this.plot_data[respIndex] = encodeURIComponent(respItem);
-
-                                if(!respIndex.endsWith("_png") && respIndex !== "saveObjectHash" && lastValid === false){
-                                    lastValid = respIndex;
-                                }
+                                // Ensure empty plots are set to false
+                                this.plot_data[respIndex] = false;
                             }
                         }
                     }
+
                     this.loadingPlot = false;
-                    
+
+                    // Set active tab to lastValid, which defaults to "table_plot" if no valid data was found
                     this.$nextTick(() => {
                         console.log("Setting active tab: " + lastValid);
                         this.activeTab = lastValid;
@@ -516,14 +523,15 @@ export default {
                         message: this.$t("globals.errors.request_general"),
                         type: "error",
                     });
-                    console.log(error);
+                    console.error(error);
                     this.loadingPlot = false;
 
-                    // Loop this.plot_data and set all keys to false
-                    for (let plotIndex in this.plot_data) {
+                    // Set all plot data to false on error
+                    for (const plotIndex in this.plot_data) {
                         this.plot_data[plotIndex] = false;
                     }
                 });
+
         },
 
         initFuse(searchItems) {

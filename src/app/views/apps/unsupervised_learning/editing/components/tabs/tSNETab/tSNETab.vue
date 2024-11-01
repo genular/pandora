@@ -855,7 +855,7 @@ export default {
     data() {
         return {
             bottomBarOpen: false,
-            activeSections: ['columnSelection'],
+            activeSections: [],
             // This tab is disabled and we will enable it on initialization if there is no too much data
             tabEnabled: false,
             fuseIndex: null,
