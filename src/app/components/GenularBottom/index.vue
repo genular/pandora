@@ -4,7 +4,7 @@
             <el-button :title="$t('components.GenularBottom.buttons.star')" @click.prevent.stop="navigateTo('https://github.com/genular/pandora')" type="primary" size="medium" icon="fa fa-github"></el-button>
             <el-button :title="$t('components.GenularBottom.buttons.help')" @click.prevent.stop="navigateTo('https://crowdin.com/project/genular')" type="primary" size="medium" icon="fa fa-language"></el-button>
             <el-button :title="$t('components.GenularBottom.buttons.about')" @click.prevent.stop="navigateTo('about')" type="primary" size="medium" icon="fa fa-info-circle"></el-button>
-            <el-button title="Toggle terminal" @click.prevent.stop="toggleTerminal" type="primary" size="medium" icon="fa fa-terminal"></el-button>
+            <el-button style="z-index: 3000;" title="Toggle terminal" @click.prevent.stop="toggleTerminal" type="primary" size="medium" icon="fa fa-terminal"></el-button>
         </el-button-group>
         <el-dialog class="about-dialog" :title="$t('components.GenularBottom.dialog.title')" :visible.sync="centerDialogVisible" width="600px" center>
             <div class="about-container">

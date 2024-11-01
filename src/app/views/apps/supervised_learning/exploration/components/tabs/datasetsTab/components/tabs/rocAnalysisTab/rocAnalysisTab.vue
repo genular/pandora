@@ -754,7 +754,7 @@ export default {
 };
 
 </script>
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scoped>
 .analysis_images {
     width: 100%;
     float: left;

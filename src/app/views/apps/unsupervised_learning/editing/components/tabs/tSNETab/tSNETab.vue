@@ -12,14 +12,14 @@
                         <el-collapse v-model="activeSections" :accordion="false" class="settings-tabpanel-content">
                             <el-collapse-item title="Column Selection" name="columnSelection">
                                 <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.title')">
-                                    <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                                    <el-button size="medium" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                                     <el-tooltip placement="top" style="padding-left: 5px">
                                         <div slot="content">
                                             {{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.description") }}
                                         </div>
                                         <i class="el-icon-question"></i>
                                     </el-tooltip>
-                                    <el-button v-if="reverseSelectedColumns.length > 0" :title="bottomBarOpen ? 'Hide Details' : 'Show Details'" size="mini" class="filter-item" type="info" style="padding: 0; float: right" v-waves :icon="bottomBarOpen ? 'el-icon-arrow-down' : 'el-icon-arrow-up'" @click="bottomBarOpen = !bottomBarOpen">
+                                    <el-button v-if="reverseSelectedColumns.length > 0" :title="bottomBarOpen ? 'Hide Details' : 'Show Details'" size="medium" class="filter-item" type="info" style="padding: 0; float: right" v-waves :icon="bottomBarOpen ? 'el-icon-arrow-down' : 'el-icon-arrow-up'" @click="bottomBarOpen = !bottomBarOpen">
                                     </el-button>
                                     <br />
                                     <el-select style="float: left; width: 100%" v-model="selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
@@ -202,9 +202,9 @@
                                         <i class="el-icon-question"></i>
                                     </el-tooltip>
                                     <div style="display: flex; align-items: center; gap: 5px;">
-                                        <el-input-number size="mini" v-model="settingsForm.target_clusters_range[0]" :step="1" :min="1"></el-input-number>
+                                        <el-input-number size="medium" v-model="settingsForm.target_clusters_range[0]" :step="1" :min="1"></el-input-number>
                                         <span> to </span>
-                                        <el-input-number size="mini" v-model="settingsForm.target_clusters_range[1]" :step="1" :min="1"></el-input-number>
+                                        <el-input-number size="medium" v-model="settingsForm.target_clusters_range[1]" :step="1" :min="1"></el-input-number>
                                     </div>
                                 </el-form-item>
                                 <el-form-item label="Pick 'Best Cluster' Method" v-if="['Louvain'].includes(settingsForm.clusterType)">
@@ -255,19 +255,19 @@
                                             <span>AUROC ({{ settingsForm.weights.AUROC.toFixed(1) }})</span>
                                         </div>
                                         <div style="display: flex; gap: 10px;">
-                                            <el-input-number size="mini" v-model="settingsForm.weights.AUROC" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
+                                            <el-input-number size="medium" v-model="settingsForm.weights.AUROC" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
                                         </div>
                                         <div style="display: flex; justify-content: space-between; font-size: 12px;">
                                             <span>Modularity ({{ settingsForm.weights.modularity.toFixed(1) }})</span>
                                         </div>
                                         <div style="display: flex; gap: 10px;">
-                                            <el-input-number size="mini" v-model="settingsForm.weights.modularity" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
+                                            <el-input-number size="medium" v-model="settingsForm.weights.modularity" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
                                         </div>
                                         <div style="display: flex; justify-content: space-between; font-size: 12px;">
                                             <span>Silhouette ({{ settingsForm.weights.silhouette.toFixed(1) }})</span>
                                         </div>
                                         <div style="display: flex; gap: 10px;">
-                                            <el-input-number size="mini" v-model="settingsForm.weights.silhouette" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
+                                            <el-input-number size="medium" v-model="settingsForm.weights.silhouette" :step="0.1" :min="0" :max="1" style="flex: 1;"></el-input-number>
                                         </div>
                                     </div>
                                 </el-form-item>
@@ -416,14 +416,14 @@
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="Cluster linkage" v-if="settingsForm.datasetAnalysisType === 'cluster'">
-                                    <el-select style="float: right" size="mini" v-model="settingsForm.datasetAnalysisClustLinkage" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.placeholder')">
+                                    <el-select style="float: right" size="medium" v-model="settingsForm.datasetAnalysisClustLinkage" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.placeholder')">
                                         <el-option v-for="item in settingsOptions.clustLinkage" :key="item.id" :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options.', item.id].join(''))" :value="item.id">
                                             <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.clust_method.options." + item.id) }}</span>
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="Cluster ordering" v-if="settingsForm.datasetAnalysisType === 'cluster'">
-                                    <el-select style="float: right" size="mini" v-model="settingsForm.datasetAnalysisClustOrdering" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.placeholder')">
+                                    <el-select style="float: right" size="medium" v-model="settingsForm.datasetAnalysisClustOrdering" :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.placeholder')">
                                         <el-option v-for="item in settingsOptions.clustOrdering" :key="item.id" :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.options.', item.id].join(''))" :value="item.id">
                                             <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.tree_ordering.options." + item.id) }}</span>
                                         </el-option>
@@ -432,7 +432,7 @@
                             </el-collapse-item>
                             <el-collapse-item title="Theme Settings" name="themeSettings">
                                 <el-form-item label="Theme">
-                                    <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
+                                    <el-select v-model="settingsForm.theme" size="medium" placeholder="Select" style="float: right">
                                         <el-option v-for="item in settingsOptions.theme" :key="item.id" :label="item.name" :value="item.id">
                                             <span style="float: left">{{ item.name }}</span>
                                             <span style="float: right; color: #8492a6; font-size: 13px">
@@ -449,7 +449,7 @@
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="Color">
-                                    <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
+                                    <el-select v-model="settingsForm.colorPalette" size="medium" placeholder="Select" style="float: right">
                                         <el-option v-for="item in settingsOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
                                             <span style="float: left">{{ item.value }}</span>
                                             <span style="float: right; color: #8492a6; font-size: 13px">
@@ -467,7 +467,7 @@
                                 </el-form-item>
                                 <el-form-item label="Legend position">
                                     <br />
-                                    <el-select style="float: left; width: 100%" v-model="settingsForm.legendPosition" size="mini" placeholder="Select">
+                                    <el-select style="float: left; width: 100%" v-model="settingsForm.legendPosition" size="medium" placeholder="Select">
                                         <el-option v-for="item in settingsOptions.legendPosition" :key="item.id" :label="item.label" :value="item.id">
                                             <span>{{ item.label }}</span>
                                         </el-option>
@@ -480,10 +480,10 @@
                                     <el-input-number style="float: right" v-model="settingsForm.pointSize" :step="0.5" :min="0.1" :max="25"></el-input-number>
                                 </el-form-item>
                                 <el-form-item label="Ratio">
-                                    <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
+                                    <el-input-number style="float: right" size="medium" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                                 </el-form-item>
                                 <el-form-item label="Plot size">
-                                    <el-input-number style="float: right" size="mini" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
+                                    <el-input-number style="float: right" size="medium" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
                                 </el-form-item>
                             </el-collapse-item>
                         </el-collapse>

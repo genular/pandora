@@ -2,7 +2,7 @@
     <div class="datasetsTab-container">
         <el-row align="top">
             <el-col :span="24">
-                <el-card class="box-card animated fadeIn">
+                <el-card class="box-card animated fadeIn" shadow="hover">
                     <div slot="header" class="clearfix">
                         <div class="card_intro">{{ $t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.title") }}</div>
                         <div v-if="selectedFeatureSetId > 0">
@@ -13,12 +13,14 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- Main queue Resamples Table -->
-                    <el-table ref="resamplesTable" v-loading="tableLoading.resamples" :data="displayResamples" :row-class-name="resamplesTableRowClass" @select-all="selectResample" @select="selectResample" row-key="resampleID" :border="true" style="width: 100%">
+                    <el-table ref="resamplesTable" v-loading="tableLoading.resamples" :data="displayResamples" :row-class-name="resamplesTableRowClass" @select-all="selectResample" @select="selectResample" row-key="resampleID" :border="false" style="width: 100%" size="medium">
                         <el-table-column type="selection" reserve-selection></el-table-column>
-                        <el-table-column fixed :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.title')" prop="dataSource" :show-overflow-tooltip="true">
+                        
+                        <el-table-column fixed :label="'IDs'" prop="dataSource" :show-overflow-tooltip="true">
                             <template slot-scope="scope">
-                                <span>
+                                <span :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.title')">
                                     <span v-if="scope.row.dataSource == 1">
                                         {{ $t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.initial") }}
                                     </span>
@@ -27,27 +29,10 @@
                                         {{ $t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.data_source.predicted") }}
                                     </span>
                                 </span>
+                                <span :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.resample_id')">-{{ scope.row.resampleID }}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column fixed :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.resample_id')" prop="resampleID" width="100" :show-overflow-tooltip="true" :render-header="
-                                (h, { column, store }) => {
-                                    return renderFilterHeader(h, { column, store }, 'resamplesTable');
-                                }
-                            ">
-                            <template slot-scope="scope">
-                                <span>{{ scope.row.resampleID }}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_features')" prop="featuresTotal" :show-overflow-tooltip="true" :render-header="
-                                (h, { column, store }) => {
-                                    return renderFilterHeader(h, { column, store }, 'resamplesTable');
-                                }
-                            ">
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.featuresTotal">{{ scope.row.featuresTotal }}</span>
-                                <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
+
                         <el-table-column v-for="(performanceItem, performanceIndex) in jobDetailsData.performance" :prop="'performance|' + performanceItem" :key="performanceItem + '_' + performanceIndex" :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))" :show-overflow-tooltip="true" :render-header="
                                 (h, { column, store }) => {
                                     return renderFilterHeader(h, { column, store }, 'resamplesTable');
@@ -60,46 +45,21 @@
                                 <span v-else style="font-weight: bold; color: red;">N/A</span>
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_total')" prop="samplesTotal" :render-header="
-                                (h, { column, store }) => {
-                                    return renderFilterHeader(h, { column, store }, 'resamplesTable');
-                                }
-                            ">
+
+                        <el-table-column :label="'Details'" prop="samplesTotal">
+
                             <template slot-scope="scope">
-                                <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span>
-                                <span v-else>N/A</span>
+                                <span>
+                                    <span :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_total')" v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span>
+                                    <span :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_training')" v-if="scope.row.samplesTotal"> - {{ scope.row.samplesTraining }}</span>
+                                    <span :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_testing')" v-if="scope.row.samplesTotal"> - {{ scope.row.samplesTesting }}</span>
+                                    <span  :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_models')" v-if="scope.row.samplesTotal"> | {{ scope.row.modelsTotal }}</span>
+                                    <span :title="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_features')" v-if="scope.row.featuresTotal"> - {{ scope.row.featuresTotal }}</span>
+                                </span>
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_training')" prop="samplesTraining" :render-header="
-                                (h, { column, store }) => {
-                                    return renderFilterHeader(h, { column, store }, 'resamplesTable');
-                                }
-                            ">
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span>
-                                <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.samples_testing')" prop="samplesTesting" :render-header="
-                                (h, { column, store }) => {
-                                    return renderFilterHeader(h, { column, store }, 'resamplesTable');
-                                }
-                            ">
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span>
-                                <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.total_models')" prop="modelsTotal" :render-header="
-                                (h, { column, store }) => {
-                                    return renderFilterHeader(h, { column, store }, 'resamplesTable');
-                                }
-                            ">
-                            <template slot-scope="scope">
-                                <span v-if="scope.row.modelsTotal">{{ scope.row.modelsTotal }}</span>
-                                <span v-else>N/A</span>
-                            </template>
-                        </el-table-column>
+
+                        
                         <el-table-column align="center" class-name="settings" fixed="right" min-width="125" :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.actions')">
                             <template slot="header" slot-scope="scope">
                                 <el-popover placement="left" trigger="hover" v-show="tableFiltersOrder['resamplesTable'].length > 0">
@@ -129,7 +89,7 @@
         </el-row>
         <el-row align="top" style="margin-top: 15px">
             <el-col :span="24">
-                <el-card class="box-card animated fadeIn">
+                <el-card class="box-card animated fadeIn" shadow="hover">
                     <div slot="header" class="clearfix">
                         <div class="card_intro">{{ $t("views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.title") }}</div>
                         <div class="models_actions" v-if="selectedModelsIDs.length > 0">
@@ -155,7 +115,7 @@
                         </div>
                     </div>
                     <!-- Model Details data -->
-                    <el-table ref="modelDetailsTable" v-loading="tableLoading.models" :data="displayModels" @select-all="handleModelsSelectionChange" @select="handleModelsSelectionChange" row-key="modelID" :empty-text="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.no_data')" :border="true" style="width: 100%">
+                    <el-table ref="modelDetailsTable" v-loading="tableLoading.models" :data="displayModels" @select-all="handleModelsSelectionChange" @select="handleModelsSelectionChange" row-key="modelID" :empty-text="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.models_table.no_data')" :border="false" style="width: 100%"  size="medium">
                         <el-table-column type="selection" reserve-selection @selectable="checkModelsSelectionChange"></el-table-column>
                         <el-table-column fixed align="center" :label="$t('views.apps.supervised_learning.exploration.components.tabs.datasetsTab.index.resamples_table.header.resample_id')" prop="modelID" width="100" :render-header="
                                 (h, { column, store }) => {

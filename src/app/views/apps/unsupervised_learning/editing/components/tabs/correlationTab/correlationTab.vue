@@ -21,7 +21,7 @@
                         <el-collapse-item title="Column Selection" name="columnSelection">
                             <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.columns.title')">
 
-                                <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                                <el-button size="medium" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                                 <el-tooltip placement="top" style="padding-left: 5px">
                                     <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.correlationTab.form.columns.description") }}</div>
                                     <i class="el-icon-question"></i>

@@ -15,327 +15,331 @@
         <el-row v-else type="flex" align="top">
             <el-col :span="4">
                 <el-form ref="settingsForm" :model="settingsForm">
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.title')">
-                        <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
-                        <el-tooltip placement="top" style="padding-left: 5px">
-                            <div slot="content">
-                                {{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.description") }}
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.selectedColumns"
-                            multiple
-                            filterable
-                            remote
-                            default-first-option
-                            reserve-keyword
-                            value-key="remapped"
-                            clearable
-                            collapse-tags
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
-                            :remote-method="
-                                (userInput) => {
-                                    querySearch(userInput);
-                                }
-                            "
-                        >
-                            <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1">
-                                <el-row>
-                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                        {{ item.original }}
-                                    </el-col>
-                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
-                                        {{ item.valid_10p === 1 ? "*" : "" }}
-                                        {{ item.unique_count }}
-                                        {{ item.na_percentage > 0 ? "NA" : "" }}
-                                    </el-col>
-                                </el-row>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.first_n_columns.title')">
-                        <el-tooltip placement="top" style="padding-left: 5px">
-                            <div slot="content">
-                                {{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.first_n_columns.description") }}
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <br />
-                        <el-input-number style="float: left;width: 100%;" v-model="settingsForm.cutOffColumnSize" :step="1" :min="1" :max="15"></el-input-number>
-                    </el-form-item>
+                    <el-collapse v-model="activeSections" :accordion="false" class="settings-tabpanel-content">
+                        <el-collapse-item title="Column Selection" name="columnSelection">
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.title')">
+                                <el-button size="medium" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                                <el-tooltip placement="top" style="padding-left: 5px">
+                                    <div slot="content">
+                                        {{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.description") }}
+                                    </div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.selectedColumns"
+                                    multiple
+                                    filterable
+                                    remote
+                                    default-first-option
+                                    reserve-keyword
+                                    value-key="remapped"
+                                    clearable
+                                    collapse-tags
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
+                                    :remote-method="
+                                        (userInput) => {
+                                            querySearch(userInput);
+                                        }
+                                    "
+                                >
+                                    <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1">
+                                        <el-row>
+                                            <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                {{ item.original }}
+                                            </el-col>
+                                            <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
+                                                {{ item.valid_10p === 1 ? "*" : "" }}
+                                                {{ item.unique_count }}
+                                                {{ item.na_percentage > 0 ? "NA" : "" }}
+                                            </el-col>
+                                        </el-row>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.rows.title')">
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;"
-                            v-model="settingsForm.selectedRows"
-                            multiple
-                            filterable
-                            remote
-                            default-first-option
-                            reserve-keyword
-                            value-key="remapped"
-                            clearable
-                            collapse-tags
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.rows.placeholder')"
-                            :remote-method="
-                                (userInput) => {
-                                    querySearch(userInput);
-                                }
-                            "
-                        >
-                            <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_numeric !== 1">
-                                <el-row>
-                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                        {{ item.original }}
-                                    </el-col>
-                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
-                                        {{ item.valid_10p === 1 ? "*" : "" }}
-                                        {{ item.unique_count }}
-                                        {{ item.na_percentage > 0 ? "NA" : "" }}
-                                    </el-col>
-                                </el-row>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.first_n_columns.title')">
+                                <el-tooltip placement="top" style="padding-left: 5px">
+                                    <div slot="content">
+                                        {{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.first_n_columns.description") }}
+                                    </div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                                <br />
+                                <el-input-number style="float: left;width: 100%;" v-model="settingsForm.cutOffColumnSize" :step="1" :min="1" :max="15"></el-input-number>
+                            </el-form-item>
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.first_n_rows.title')">
-                        <el-tooltip placement="top" style="padding-left: 5px">
-                            <div slot="content">
-                                {{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.first_n_rows.description") }}
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <br />
-                        <el-input-number style="float: left;width: 100%;" v-model="settingsForm.cutOffRowSize" :step="10" :min="10" :max="10000"></el-input-number>
-                    </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.rows.title')">
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;"
+                                    v-model="settingsForm.selectedRows"
+                                    multiple
+                                    filterable
+                                    remote
+                                    default-first-option
+                                    reserve-keyword
+                                    value-key="remapped"
+                                    clearable
+                                    collapse-tags
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.rows.placeholder')"
+                                    :remote-method="
+                                        (userInput) => {
+                                            querySearch(userInput);
+                                        }
+                                    "
+                                >
+                                    <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_numeric !== 1">
+                                        <el-row>
+                                            <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                {{ item.original }}
+                                            </el-col>
+                                            <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right;">
+                                                {{ item.valid_10p === 1 ? "*" : "" }}
+                                                {{ item.unique_count }}
+                                                {{ item.na_percentage > 0 ? "NA" : "" }}
+                                            </el-col>
+                                        </el-row>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
-                        <el-tooltip placement="top">
-                            <div slot="content">
-                                Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features
-                                before any calculation?
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                        <el-select
-                            style="float: left; width: 100%"
-                            v-model="selectedPreProcess"
-                            clearable
-                            :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')"
-                            multiple
-                        >
-                            <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
-                                <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-                                <span style="float: right">
-                                    {{ $t("views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}
-                                </span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.first_n_rows.title')">
+                                <el-tooltip placement="top" style="padding-left: 5px">
+                                    <div slot="content">
+                                        {{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.first_n_rows.description") }}
+                                    </div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                                <br />
+                                <el-input-number style="float: left;width: 100%;" v-model="settingsForm.cutOffRowSize" :step="10" :min="10" :max="10000"></el-input-number>
+                            </el-form-item>
+                        </el-collapse-item>
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.remove_na.title')">
-                        <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.removeNA"></el-switch>
-                        <el-tooltip placement="top">
-                            <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.remove_na.description") }}</div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                    </el-form-item>
+                        <!-- Preprocessing Options -->
+                        <el-collapse-item title="Preprocessing Options" name="preprocessingOptions">
 
-                    <el-form-item label="Grouped display">
-                        <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisGrouped"></el-switch>
-                        <el-tooltip placement="top">
-                            <div slot="content">
-                               Should we display mean values of clusters on a heatmap, scale by row, when enabled or column?
-                            </div>
-                            <i class="el-icon-question"></i>
-                        </el-tooltip>
-                    </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
+                                <el-tooltip placement="top">
+                                    <div slot="content">
+                                        Should we apply preprocessing ("medianImpute", "center", "scale") and remove zero-variance, near-zero-variance and highly correlated features
+                                        before any calculation?
+                                    </div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                                <el-select
+                                    style="float: left; width: 100%"
+                                    v-model="selectedPreProcess"
+                                    clearable
+                                    :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')"
+                                    multiple
+                                >
+                                    <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
+                                        <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                        <span style="float: right">
+                                            {{ $t("views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.dropdown." + item.value) }}
+                                        </span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
 
-                    <el-form-item label="Groupped column">
-                        <el-select style="float: left; width: 100%" v-model="settingsForm.datasetAnalysisGroupedColumn" 
-                            filterable remote default-first-option 
-                            reserve-keyword value-key="remapped" 
-                            clearable collapse-tags
-                            :disabled="settingsForm.datasetAnalysisGrouped == false" 
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
-                                (userInput) => {
-                                    querySearch(userInput);
-                                }
-                            ">
-                            <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
-                                <el-row>
-                                    <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
-                                        {{ item.original }}
-                                    </el-col>
-                                    <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
-                                        {{ item.valid_10p === 1 ? "*" : "" }}
-                                        {{ item.unique_count }}
-                                        {{ item.na_percentage > 0 ? "NA" : "" }}
-                                    </el-col>
-                                </el-row>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.scale.label')">
-                        <br />
-                        <el-select 
-                        v-model="settingsForm.scale" 
-                        style="float: left;width: 100%;" 
-                        placeholder="Select">
-                            <el-option
-                                v-for="item in settingOptions.scale"
-                                :key="item.id"
-                                :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.scale.options.', item.id].join(''))"
-                                :value="item.id"
-                            >
-                                <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.scale.options." + item.id) }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.remove_na.title')">
+                                <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.removeNA"></el-switch>
+                                <el-tooltip placement="top">
+                                    <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.remove_na.description") }}</div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                            </el-form-item>
+                        </el-collapse-item>
 
-                    <!-- ["numbers", "legend", "colnames", "rownames"] -->
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.display.label')">
-                        <el-checkbox-group style="float: right" class="checkbox_group" v-model="settingsForm.displayOptions" size="mini">
-                            <el-checkbox
-                                v-for="(item, index) in settingOptions.displayOptions"
-                                :style="index !== 0 && index % 2 === 0 ? 'width: 50%; margin-right: 0; clear: left;float: left;margin-left: 0;' : 'width: 50%; margin-right: 0;'"
-                                :key="item.id"
-                                :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.display.options.', item.id].join(''))"
-                                :value="item.id"
-                            >
-                                <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.display.options." + item.id) }}</span>
-                            </el-checkbox>
-                        </el-checkbox-group>
-                    </el-form-item>
+                        <!-- Clustering Settings -->
+                        <el-collapse-item title="Clustering Settings" name="clusteringSettings">
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.scale.label')">
+                                <br />
+                                <el-select 
+                                v-model="settingsForm.scale" 
+                                style="float: left;width: 100%;" 
+                                placeholder="Select">
+                                    <el-option
+                                        v-for="item in settingOptions.scale"
+                                        :key="item.id"
+                                        :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.scale.options.', item.id].join(''))"
+                                        :value="item.id"
+                                    >
+                                        <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.scale.options." + item.id) }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_distance.label')">
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;" 
+                                    v-model="settingsForm.clustDistance"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_distance.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.clustDistance"
+                                        :key="item.id"
+                                        :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_distance.options.', item.id].join(''))"
+                                        :value="item.id"
+                                    >
+                                        <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_distance.options." + item.id) }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.label')">
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;" 
+                                    v-model="settingsForm.clustLinkage"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.clustLinkage"
+                                        :key="item.id"
+                                        :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
+                                        :value="item.id"
+                                    >
+                                        <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.label')">
+                                <br />
+                                <el-select
+                                    style="float: left;width: 100%;" 
+                                    v-model="settingsForm.clustOrdering"
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.placeholder')"
+                                >
+                                    <el-option
+                                        v-for="item in settingOptions.clustOrdering"
+                                        :key="item.id"
+                                        :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.options.', item.id].join(''))"
+                                        :value="item.id"
+                                    >
+                                        <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.options." + item.id) }}</span>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-collapse-item>
 
-                    <el-form-item
-                        v-if="settingsForm.displayOptions.indexOf('numbers') !== -1"
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.numbers_size')"
-                    >
-                        <el-input-number
-                            style="float: right"
-                            v-model="settingsForm.fontSizeNumbers"
-                            :value="settingsForm.fontSizeNumbers"
-                            :min="settingOptions.fontSizeNumbers.min"
-                            :max="settingOptions.fontSizeNumbers.max"
-                            :step="settingOptions.fontSizeNumbers.step"
-                        ></el-input-number>
-                    </el-form-item>
-                    <el-form-item
-                        v-if="settingsForm.displayOptions.indexOf('colnames') !== -1"
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.colnames_size')"
-                    >
-                        <el-input-number
-                            style="float: right"
-                            v-model="settingsForm.fontSizeCol"
-                            :value="settingsForm.fontSizeCol"
-                            :min="settingOptions.fontSizeCol.min"
-                            :max="settingOptions.fontSizeCol.max"
-                            :step="settingOptions.fontSizeCol.step"
-                        ></el-input-number>
-                    </el-form-item>
-                    <el-form-item
-                        v-if="settingsForm.displayOptions.indexOf('rownames') !== -1"
-                        :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.rownames_size')"
-                    >
-                        <el-input-number
-                            style="float: right"
-                            v-model="settingsForm.fontSizeRow"
-                            :value="settingsForm.fontSizeRow"
-                            :min="settingOptions.fontSizeRow.min"
-                            :max="settingOptions.fontSizeRow.max"
-                            :step="settingOptions.fontSizeRow.step"
-                        ></el-input-number>
-                    </el-form-item>
+                        <!-- Display Options -->
+                        <el-collapse-item title="Display Options" name="displayOptions">
+                            <el-form-item label="Grouped display">
+                                <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.datasetAnalysisGrouped"></el-switch>
+                                <el-tooltip placement="top">
+                                    <div slot="content">
+                                       Should we display mean values of clusters on a heatmap, scale by row, when enabled or column?
+                                    </div>
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                            </el-form-item>
+                            <el-form-item label="Groupped column">
+                                <el-select style="float: left; width: 100%" v-model="settingsForm.datasetAnalysisGroupedColumn" 
+                                    filterable remote default-first-option 
+                                    reserve-keyword value-key="remapped" 
+                                    clearable collapse-tags
+                                    :disabled="settingsForm.datasetAnalysisGrouped == false" 
+                                    :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.columns.placeholder')" :remote-method="
+                                        (userInput) => {
+                                            querySearch(userInput);
+                                        }
+                                    ">
+                                    <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
+                                        <el-row>
+                                            <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
+                                                {{ item.original }}
+                                            </el-col>
+                                            <el-col :span="8" style="float: left; color: #8492a6; font-size: 13px; text-align: right">
+                                                {{ item.valid_10p === 1 ? "*" : "" }}
+                                                {{ item.unique_count }}
+                                                {{ item.na_percentage > 0 ? "NA" : "" }}
+                                            </el-col>
+                                        </el-row>
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <!-- ["numbers", "legend", "colnames", "rownames"] -->
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.display.label')">
+                                <el-checkbox-group style="float: right" class="checkbox_group" v-model="settingsForm.displayOptions" size="medium">
+                                    <el-checkbox
+                                        v-for="(item, index) in settingOptions.displayOptions"
+                                        :style="index !== 0 && index % 2 === 0 ? 'width: 50%; margin-right: 0; clear: left;float: left;margin-left: 0;' : 'width: 50%; margin-right: 0;'"
+                                        :key="item.id"
+                                        :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.display.options.', item.id].join(''))"
+                                        :value="item.id"
+                                    >
+                                        <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.display.options." + item.id) }}</span>
+                                    </el-checkbox>
+                                </el-checkbox-group>
+                            </el-form-item>
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.plot_width')">
-                        <el-input-number
-                            style="float: right"
-                            v-model="settingsForm.plotWidth"
-                            :value="settingsForm.plotWidth"
-                            :min="settingOptions.plotWidth.min"
-                            :max="settingOptions.plotWidth.max"
-                            :step="settingOptions.plotWidth.step"
-                        ></el-input-number>
-                    </el-form-item>
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.plot_ratio')">
-                        <el-input-number
-                            style="float: right"
-                            v-model="settingsForm.plotRatio"
-                            :value="settingsForm.plotRatio"
-                            :min="settingOptions.plotRatio.min"
-                            :max="settingOptions.plotRatio.max"
-                            :step="settingOptions.plotRatio.step"
-                        ></el-input-number>
-                    </el-form-item>
+                            <el-form-item v-if="settingsForm.displayOptions.indexOf('numbers') !== -1" :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.numbers_size')">
+                                <el-input-number
+                                    style="float: right"
+                                    v-model="settingsForm.fontSizeNumbers"
+                                    :value="settingsForm.fontSizeNumbers"
+                                    :min="settingOptions.fontSizeNumbers.min"
+                                    :max="settingOptions.fontSizeNumbers.max"
+                                    :step="settingOptions.fontSizeNumbers.step"
+                                ></el-input-number>
+                            </el-form-item>
+                            <el-form-item v-if="settingsForm.displayOptions.indexOf('colnames') !== -1" :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.colnames_size')">
+                                <el-input-number
+                                    style="float: right"
+                                    v-model="settingsForm.fontSizeCol"
+                                    :value="settingsForm.fontSizeCol"
+                                    :min="settingOptions.fontSizeCol.min"
+                                    :max="settingOptions.fontSizeCol.max"
+                                    :step="settingOptions.fontSizeCol.step"
+                                ></el-input-number>
+                            </el-form-item>
+                            <el-form-item v-if="settingsForm.displayOptions.indexOf('rownames') !== -1" :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.rownames_size')">
+                                <el-input-number
+                                    style="float: right"
+                                    v-model="settingsForm.fontSizeRow"
+                                    :value="settingsForm.fontSizeRow"
+                                    :min="settingOptions.fontSizeRow.min"
+                                    :max="settingOptions.fontSizeRow.max"
+                                    :step="settingOptions.fontSizeRow.step"
+                                ></el-input-number>
+                            </el-form-item>
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_distance.label')">
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;" 
-                            v-model="settingsForm.clustDistance"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_distance.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.clustDistance"
-                                :key="item.id"
-                                :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_distance.options.', item.id].join(''))"
-                                :value="item.id"
-                            >
-                                <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_distance.options." + item.id) }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.label')">
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;" 
-                            v-model="settingsForm.clustLinkage"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.clustLinkage"
-                                :key="item.id"
-                                :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.options.', item.id].join(''))"
-                                :value="item.id"
-                            >
-                                <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.clust_method.options." + item.id) }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.label')">
-                        <br />
-                        <el-select
-                            style="float: left;width: 100%;" 
-                            v-model="settingsForm.clustOrdering"
-                            :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in settingOptions.clustOrdering"
-                                :key="item.id"
-                                :label="$t(['views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.options.', item.id].join(''))"
-                                :value="item.id"
-                            >
-                                <span>{{ $t("views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.tree_ordering.options." + item.id) }}</span>
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.plot_width')">
+                                <el-input-number
+                                    style="float: right"
+                                    v-model="settingsForm.plotWidth"
+                                    :value="settingsForm.plotWidth"
+                                    :min="settingOptions.plotWidth.min"
+                                    :max="settingOptions.plotWidth.max"
+                                    :step="settingOptions.plotWidth.step"
+                                ></el-input-number>
+                            </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.plot_ratio')">
+                                <el-input-number
+                                    style="float: right"
+                                    v-model="settingsForm.plotRatio"
+                                    :value="settingsForm.plotRatio"
+                                    :min="settingOptions.plotRatio.min"
+                                    :max="settingOptions.plotRatio.max"
+                                    :step="settingOptions.plotRatio.step"
+                                ></el-input-number>
+                            </el-form-item>
 
-                    <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.font_size')">
-                        <el-input-number
-                            style="float: right"
-                            v-model="settingsForm.fontSizeGeneral"
-                            :value="settingsForm.fontSizeGeneral"
-                            :min="settingOptions.fontSizeGeneral.min"
-                            :max="settingOptions.fontSizeGeneral.max"
-                            :step="settingOptions.fontSizeGeneral.step"
-                        ></el-input-number>
-                    </el-form-item>
+                            <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.font_size')">
+                                <el-input-number
+                                    style="float: right"
+                                    v-model="settingsForm.fontSizeGeneral"
+                                    :value="settingsForm.fontSizeGeneral"
+                                    :min="settingOptions.fontSizeGeneral.min"
+                                    :max="settingOptions.fontSizeGeneral.max"
+                                    :step="settingOptions.fontSizeGeneral.step"
+                                ></el-input-number>
+                            </el-form-item>
+                        </el-collapse-item>
+                    </el-collapse>
 
                     <el-row>
                         <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
@@ -371,11 +375,15 @@
                                 {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                             </el-button>
                         </div>
-                        <img
-                            id="analysis_images_clustering_plot"
-                            class="animated fadeIn analysis_images"
-                            :src="'data:image/png;base64,' + plot_data.clustering_plot_png"
+                        <image-zoom 
+                            v-if="plot_data.clustering_plot_png" 
+                            img-class="animated fadeIn analysis_images" 
+                            :regular="'data:image/png;base64,' + plot_data.clustering_plot_png"
                             fit="scale-down"
+                            :click-zoom="true"                  
+                            :zoom-amount="1"                   
+                            click-message="Click to zoom"      
+                            :lazyload="true"                    
                         />
                     </el-tooltip>
                 </el-row>
@@ -395,13 +403,21 @@ import Fuse from 'fuse.js'
 
 import waves from "@/directive/waves";
 
+
+import imageZoom from 'vue-image-zoomer';
+
 export default {
     name: "clusteringTab",
     directives: {
         waves,
     },
+    components: {
+        imageZoom
+    },
     data() {
         return {
+            activeSections: ["columnSelection"],
+            
             // This tab is disabled and we will enable it on initialization if there is no too much data
             fuseIndex: null,
             // This tab is disabled and we will enable it on initialization if there is no too much data
@@ -796,4 +812,9 @@ export default {
     },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss"></style>
+<style rel="stylesheet/scss" lang="scss">
+    
+.analysis_images{
+    width: 65%;
+}
+</style>

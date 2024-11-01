@@ -117,7 +117,7 @@
 
                     <el-form-item v-if="settingsForm.cutOffUnique === true" label="Remove by unique treshold">
                         <br />
-                        <el-input-number style="float: left;width: 100%;" size="mini" v-model="settingsForm.cutOffUniqueSize" :step="1" :max="10000" :min="1"></el-input-number>
+                        <el-input-number style="float: left;width: 100%;" size="medium" v-model="settingsForm.cutOffUniqueSize" :step="1" :max="10000" :min="1"></el-input-number>
                     </el-form-item>
 
                     <el-form-item label="Remove < 10%">
@@ -254,12 +254,12 @@
                             <i class="el-icon-question"></i>
                         </el-tooltip>
                         <br />
-                         <el-input-number style="float: left;width: 100%;" size="mini" v-model="settingsForm.kmo_bartlett_limit" :step="100" :max="100000" :min="1"></el-input-number>
+                         <el-input-number style="float: left;width: 100%;" size="medium" v-model="settingsForm.kmo_bartlett_limit" :step="100" :max="100000" :min="1"></el-input-number>
                     </el-form-item>
 
                     <el-form-item label="Analysis method">
                         <br />
-                        <el-select v-model="settingsForm.analysis_method" size="mini" placeholder="Select" style="float: left;width: 100%;">
+                        <el-select v-model="settingsForm.analysis_method" size="medium" placeholder="Select" style="float: left;width: 100%;">
                             <el-option v-for="item in selectedOptions.analysis_method" :key="item.id" :label="item.name" :value="item.id">
                                 <span style="float: left">{{ item.name }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">
@@ -281,7 +281,7 @@
                     </el-form-item>
 
                     <el-form-item label="Theme">
-                        <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
+                        <el-select v-model="settingsForm.theme" size="medium" placeholder="Select" style="float: right">
                             <el-option v-for="item in selectedOptions.theme" :key="item.id" :label="item.name" :value="item.id">
                                 <span style="float: left">{{ item.name }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">
@@ -299,7 +299,7 @@
                     </el-form-item>
 
                     <el-form-item label="Color">
-                        <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
+                        <el-select v-model="settingsForm.colorPalette" size="medium" placeholder="Select" style="float: right">
                             <el-option v-for="item in selectedOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
                                 <span style="float: left">{{ item.value }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">
@@ -337,11 +337,11 @@
                     </el-form-item>
 
                     <el-form-item label="Ratio">
-                        <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
+                        <el-input-number style="float: right" size="medium" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                     </el-form-item>
 
                     <el-form-item label="Plot size">
-                        <el-input-number style="float: right" size="mini" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
+                        <el-input-number style="float: right" size="medium" v-model="settingsForm.plot_size" :step="1" :max="48" :min="1"></el-input-number>
                     </el-form-item>
 
                     <el-row>

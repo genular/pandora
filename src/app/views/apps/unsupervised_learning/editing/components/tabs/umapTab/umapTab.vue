@@ -18,7 +18,7 @@
                     <el-form ref="settingsForm" :model="settingsForm">
                         <el-form-item label="Columns">
 
-                            <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                            <el-button size="medium" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">Please select columns you wish to analyze and plot. Leaving this empty will take all columns except excluded ones.</div>
                                 <i class="el-icon-question"></i>
@@ -226,7 +226,7 @@
                         <el-divider></el-divider>
 
                         <el-form-item label="Theme">
-                            <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
+                            <el-select v-model="settingsForm.theme" size="medium" placeholder="Select" style="float: right">
                                 <el-option v-for="item in settingsOptions.theme" :key="item.id" :label="item.name" :value="item.id">
                                     <span style="float: left">{{ item.name }}</span>
                                     <span style="float: right; color: #8492a6; font-size: 13px">
@@ -244,7 +244,7 @@
                         </el-form-item>
 
                         <el-form-item label="Color">
-                            <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
+                            <el-select v-model="settingsForm.colorPalette" size="medium" placeholder="Select" style="float: right">
                                 <el-option v-for="item in settingsOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
                                     <span style="float: left">{{ item.value }}</span>
                                     <span style="float: right; color: #8492a6; font-size: 13px">
@@ -266,7 +266,7 @@
                         </el-form-item>
 
                         <el-form-item label="Ratio">
-                            <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
+                            <el-input-number style="float: right" size="medium" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                         </el-form-item>
 
                         <el-row>

@@ -22,7 +22,7 @@
                             <el-collapse-item title="Column Selection" name="columnSelection">
                                 <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.title')">
 
-                                    <el-button size="mini" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
+                                    <el-button size="medium" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                                     <el-tooltip placement="top" style="padding-left: 5px">
                                         <div slot="content">{{ $t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.columns.description") }}</div>
                                         <i class="el-icon-question"></i>
@@ -30,7 +30,7 @@
                                     <el-button 
                                         v-if="reverseSelectedColumns.length > 0" 
                                         :title="bottomBarOpen ? 'Hide Details' : 'Show Details'" 
-                                        size="mini" 
+                                        size="medium" 
                                         class="filter-item" 
                                         type="info" 
                                         style="padding: 0; float: right" 
@@ -93,7 +93,7 @@
 
                             <el-collapse-item title="Theme Settings" name="themeSettings">
                                 <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.theme.title')">
-                                    <el-select v-model="settingsForm.theme" size="mini" placeholder="Select" style="float: right">
+                                    <el-select v-model="settingsForm.theme" size="medium" placeholder="Select" style="float: right">
                                         <el-option v-for="item in settingsOptions.theme" :key="item.id" :label="item.name" :value="item.id">
                                             <span style="float: left">{{ item.name }}</span>
                                             <span style="float: right; color: #8492a6; font-size: 13px">
@@ -111,7 +111,7 @@
                                 </el-form-item>
 
                                 <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.color.title')">
-                                    <el-select v-model="settingsForm.colorPalette" size="mini" placeholder="Select" style="float: right">
+                                    <el-select v-model="settingsForm.colorPalette" size="medium" placeholder="Select" style="float: right">
                                         <el-option v-for="item in settingsOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
                                             <span style="float: left">{{ item.value }}</span>
                                             <span style="float: right; color: #8492a6; font-size: 13px">
@@ -133,7 +133,7 @@
                                 </el-form-item>
 
                                 <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.overviewTab.form.ratio.title')">
-                                    <el-input-number style="float: right" size="mini" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
+                                    <el-input-number style="float: right" size="medium" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                                 </el-form-item>
                             </el-collapse-item>
                         </el-collapse>
