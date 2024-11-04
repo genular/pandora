@@ -243,7 +243,7 @@
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
-                                <el-form-item label="Weights" v-if="['Louvain'].includes(settingsForm.clusterType)">
+                                <el-form-item label="Weights" v-if="['Louvain'].includes(settingsForm.clusterType) && settingsForm.pickBestClusterMethod === 'SIMON'">
                                     <el-tooltip placement="top" style="padding-left: 5px">
                                         <div slot="content">
                                             Adjust weights for AUROC, modularity, and silhouette scores when selecting the best cluster.

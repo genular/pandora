@@ -95,7 +95,7 @@ const apps = {
                             target_clusters_range: [3, 6],
                             pickBestClusterMethod: "Modularity",
                             selectedColumnsSIMON: [],
-                            weights: { AUROC: 0.8, modularity: 0.1, silhouette: 0.1 },
+                            weights: { AUROC: 1, modularity: 0, silhouette: 0 },
 
                             cutOffColumnSize: 50000,
                             removeNA: true,
