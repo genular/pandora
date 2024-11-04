@@ -24,6 +24,15 @@ const main = {
 
         workspace: {
             currentDirectory: estore.get("main-workspace-currentDirectory") || "uploads",
+        },
+
+        terminal: {
+            isTerminalOpen: estore.get("main-terminal-isTerminalOpen") || false,
+            mainTab: estore.get("main-terminal-mainTab") || 'logs',
+            activeTab: estore.get("main-terminal-activeTab") || null,
+            llmActiveTab: estore.get("main-terminal-llmActiveTab") || 'output',
+            terminalHeight: estore.get("main-terminal-terminalHeight") || 300,
+            isMaximized: estore.get("main-terminal-isMaximized") || false
         }
     },
     mutations: {
@@ -66,6 +75,30 @@ const main = {
             state.selectedFileDetails = selectedFileDetails;
             estore.set("main-selectedFileDetails", selectedFileDetails);
         },
+        SET_TERMINAL_OPEN: (state, isTerminalOpen) => {
+            state.terminal.isTerminalOpen = isTerminalOpen;
+            estore.set("main-terminal-isTerminalOpen", isTerminalOpen);
+        },
+        SET_TERMINAL_MAIN_TAB: (state, mainTab) => {
+            state.terminal.mainTab = mainTab;
+            estore.set("main-terminal-mainTab", mainTab);
+        },
+        SET_TERMINAL_ACTIVE_TAB: (state, activeTab) => {
+            state.terminal.activeTab = activeTab;
+            estore.set("main-terminal-activeTab", activeTab);
+        },
+        SET_TERMINAL_LLM_ACTIVE_TAB: (state, llmActiveTab) => {
+            state.terminal.llmActiveTab = llmActiveTab;
+            estore.set("main-terminal-llmActiveTab", llmActiveTab);
+        },
+        SET_TERMINAL_HEIGHT: (state, terminalHeight) => {
+            state.terminal.terminalHeight = terminalHeight;
+            estore.set("main-terminal-terminalHeight", terminalHeight);
+        },
+        SET_TERMINAL_MAXIMIZED: (state, isMaximized) => {
+            state.terminal.isMaximized = isMaximized;
+            estore.set("main-terminal-isMaximized", isMaximized);
+        },
     },
     actions: {
         setWorkspaceDirectory({ commit }, currentDirectory) {
@@ -101,7 +134,7 @@ const main = {
                         if (response.data.success === true) {
                             commit("SET_BACKEND_SERVER_LOAD", response.data.message);
 
-                            if("system_update" in response.data.message){
+                            if ("system_update" in response.data.message) {
                                 commit("SET_BACKEND_SYSTEM_UPDATE", response.data.message.system_update);
                             }
 
@@ -115,6 +148,24 @@ const main = {
                         reject(error);
                     });
             });
+        },
+        setTerminalOpen({ commit }, isTerminalOpen) {
+            commit("SET_TERMINAL_OPEN", isTerminalOpen);
+        },
+        setTerminalMainTab({ commit }, mainTab) {
+            commit("SET_TERMINAL_MAIN_TAB", mainTab);
+        },
+        setTerminalActiveTab({ commit }, activeTab) {
+            commit("SET_TERMINAL_ACTIVE_TAB", activeTab);
+        },
+        setTerminalLlmActiveTab({ commit }, llmActiveTab) {
+            commit("SET_TERMINAL_LLM_ACTIVE_TAB", llmActiveTab);
+        },
+        setTerminalHeight({ commit }, terminalHeight) {
+            commit("SET_TERMINAL_HEIGHT", terminalHeight);
+        },
+        setTerminalMaximized({ commit }, isMaximized) {
+            commit("SET_TERMINAL_MAXIMIZED", isMaximized);
         }
     },
 };

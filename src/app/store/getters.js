@@ -13,6 +13,15 @@ const getters = {
 
     workspace_current_directory: (state) => state.main.workspace.currentDirectory,
 
+    /** terminal **/
+    terminalIsOpen: (state) => state.main.terminal.isTerminalOpen,
+    terminalMainTab: (state) => state.main.terminal.mainTab,
+    terminalActiveTab: (state) => state.main.terminal.activeTab,
+    terminalLlmActiveTab: (state) => state.main.terminal.llmActiveTab,
+    terminalHeight: (state) => state.main.terminal.terminalHeight,
+    terminalIsMaximized: (state) => state.main.terminal.isMaximized,
+
+    
     /** tagsView.js **/
     visitedViews: (state) => state.tagsView.visitedViews,
     cachedViews: (state) => state.tagsView.cachedViews,

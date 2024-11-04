@@ -26,9 +26,13 @@
                     {{ $t("components.GenularBottom.dialog.links.title") }}:
                     <ul>
                         <li><a href="https://atomic-lab.org" target="_blank">aTomic Lab website</a></li>
+
+                        <!--
                         <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.forums')" placement="left">
                             <li><a href="https://community.atomic-lab.org" target="_blank">community forums</a></li>
                         </el-tooltip>
+                        -->
+                        
                         <el-tooltip class="item" effect="dark" :content="$t('components.GenularBottom.dialog.links.tooltip.github')" placement="left">
                             <li><a href="https://github.com/genular/" target="_blank">github development page</a></li>
                         </el-tooltip>
@@ -49,7 +53,10 @@
 
     </div>
 </template>
+
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 export default {
     name: "GenularBottom",
     components: {
@@ -57,11 +64,27 @@ export default {
     },
     data() {
         return {
-            centerDialogVisible: false,
-            isTerminalOpen: false
+            centerDialogVisible: false
         };
     },
+    computed: {
+        ...mapGetters({
+            isTerminalOpen: 'terminalIsOpen'
+        }),
+        isTerminalOpen: {
+            get() {
+                return this.$store.getters.terminalIsOpen;
+            },
+            set(value) {
+                this.SET_TERMINAL_OPEN(value);
+            }
+        }
+    },
     methods: {
+        ...mapMutations({
+            SET_TERMINAL_OPEN: 'SET_TERMINAL_OPEN'
+        }),
+        
         navigateTo(command) {
             if (command === "about") {
                 this.centerDialogVisible = true;
@@ -71,13 +94,11 @@ export default {
         },
         toggleTerminal() {
             this.isTerminalOpen = !this.isTerminalOpen;
-            console.log("isTerminalOpen toggled:", this.isTerminalOpen);
-        },
-
+        }
     }
 };
-
 </script>
+
 <style rel="stylesheet/scss" lang="scss">
 .hideSidebar {
     .genular-bottom-buttons {

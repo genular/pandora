@@ -19,6 +19,7 @@
                             <i class="fa fa-icon fa-eye"></i>
                         </span>
                     </el-form-item>
+                    <!--
                     <el-row>
                         <el-col :span="24">
                             <el-button size="large" style="float: right" round @click.prevent.stop="navigateTo('reset')">
@@ -26,6 +27,7 @@
                             </el-button>
                         </el-col>
                     </el-row>
+                    -->
                     <el-row>
                         <el-col :span="24">
                             <el-button type="primary" class="button-login" :loading="loadingWizard" @click.native.prevent="handleLogin">

@@ -103,15 +103,19 @@ export default {
             this.isMaximized = false;
         },
         async copyToClipboard() {
-            const activeLogs = this.displayLogs[this.activeTab] ?
-                this.displayLogs[this.activeTab].map(line => line.content).join('\n') :
-                '';
-            try {
-                await navigator.clipboard.writeText(activeLogs);
-                this.$message.success('Copied to clipboard');
-            } catch (error) {
-                this.$message.error('Failed to copy');
-                console.error("Error copying to clipboard:", error);
+            if (this.mainTab === 'logs') {
+                const activeLogs = this.displayLogs[this.activeTab] ?
+                    this.displayLogs[this.activeTab].map(line => line.content).join('\n') :
+                    '';
+                try {
+                    await navigator.clipboard.writeText(activeLogs);
+                    this.$message.success('Copied to clipboard');
+                } catch (error) {
+                    this.$message.error('Failed to copy');
+                    console.error("Error copying to clipboard:", error);
+                }
+            }else if (this.mainTab === 'assistant') {
+                // Add logic to copy assistant output here
             }
         },
 
