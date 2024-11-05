@@ -292,6 +292,8 @@ export default {
                                             type: "success",
                                             message: response.data.message || 'Update completed successfully.',
                                         });
+                                        // Refresh the page to apply the changes after 2 seconds
+                                        setTimeout(() => window.location.reload(), 2000);
                                     } else {
                                         this.$message({
                                             type: "error",
