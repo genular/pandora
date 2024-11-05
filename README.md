@@ -63,20 +63,34 @@ Use these commands to list entities:
 (Or use Docker GUI)
 
 ```bash
-## Stop and delete any old PANDORA Container
+##############################################
+#### 1) Stop and Remove Docker Containers ####
+##############################################
+# Stop the Docker container
 docker stop <ContainerName>
-## Delete
+
+# Remove the Docker container
 docker rm <ContainerName>
 
-## Check for any images and remove them if necessary
+
+#################################
+#### 2) Remove Docker Images ####
+#################################
+# List all Docker images
 docker images
 
-## Check for any volumes
+# Remove the Docker image
+docker rmi <ImageID_or_Repository:Tag>
+
+
+##################################
+#### 3) Manage Docker Volumes ####
+##################################
+# List all Docker volumes
 docker volume ls
 
-## Remove them as-well
+# Remove specific Docker volumes
 docker volume rm genular_frontend_latest genular_backend_latest genular_data_latest
-
 ## Now you can proceed with clean installation
 ```
 
