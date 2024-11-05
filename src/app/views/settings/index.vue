@@ -274,56 +274,45 @@ export default {
         },
         systemUpdate() {
             this.$confirm(
-                "This can permanently destroy all your data and settings. Continue?",
-                "Update minor PANDORA version", {
-                    confirmButtonText: "OK",
-                    cancelButtonText: "Cancel",
-                    type: "warning",
-                    beforeClose: (action, instance, done) => {
-                        if (action === 'confirm') {
-                            this.requestLoading = true;
-                            ApiSystemUpdate()
-                                .then(response => {
-                                    console.log("System update initiated:", response);
-
-                                    // Check for success status in the response data
-                                    if (response.data.success) {
-                                        this.$message({
-                                            type: "success",
-                                            message: response.data.message || 'Update completed successfully.',
-                                        });
-                                    } else {
-                                        this.$message({
-                                            type: "error",
-                                            message: response.data.message || 'Update failed with an unknown error.',
-                                        });
-                                    }
-                                    this.requestLoading = false;
-                                    // Refresh the page to apply the changes after 2 seconds
-                                    setTimeout(() => window.location.reload(), 2000);
-                                    done();
-                                })
-                                .catch(error => {
-                                    console.error("System update failed:", error);
-                                    this.$message({
-                                        type: "error",
-                                        message: error.message || "System update failed due to an unexpected error.",
-                                    });
-                                    this.requestLoading = false;
-                                    done();
-                                });
-                        } else {
-                            done(); // Ensure to call done() to close the dialog in case of 'cancel' or any other non-confirm action
-                        }
+                    "This can permanently destroy all your data and settings. Continue?",
+                    "Update PANDORA", {
+                        confirmButtonText: "OK",
+                        cancelButtonText: "Cancel",
+                        type: "warning",
                     }
-                }
-            ).catch(() => {
-                // This block is executed if the user cancels the update
-                this.$message({
-                    type: "info",
-                    message: "Update canceled",
+                )
+                .then(() => {
+                    this.requestLoading = true;
+                    ApiSystemUpdate()
+                        .then(response => {
+                            this.$message({
+                                type: response.data.success === true ? "success" : "error",
+                                message: response.data.message,
+                            });
+                            this.requestLoading = false;
+                            // refresh page with 2 seconds timeout
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 2000);
+                        })
+                        .catch(error => {
+                            // Handle any errors that occur during the update process
+                            console.error("System update failed:", error);
+
+                            this.$message({
+                                type: "error",
+                                message: "System update failed.",
+                            });
+                            this.requestLoading = false;
+                        });
+                })
+                .catch(() => {
+                    // This block is executed if the user cancels the update
+                    this.$message({
+                        type: "info",
+                        message: "Update canceled",
+                    });
                 });
-            });
         }
 
     }
