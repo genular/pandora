@@ -1,13 +1,7 @@
 <template>
     <div class="app-container" v-loading="pageLoading" :element-loading-text="$t('globals.page_loading')">
         <el-tabs v-model="activeEditingTabName" type="border-card" class="tab-container-first">
-            <el-tab-pane
-                v-for="item in tabMapOptions"
-                :label="item.label"
-                :key="item.key"
-                :name="item.key"
-                :disabled="isTabDisabled(item) || selectedFileDetails.columns.length < 1"
-            >
+            <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key="item.key" :name="item.key" :disabled="isTabDisabled(item) || selectedFileDetails.columns.length < 1">
                 <span slot="label">
                     <i :class="item.icon" style="color: #8492a6; font-size: 16px; margin-right: 4px;"></i> <!-- Adjust color and size here -->
                     {{ item.label }}
@@ -34,8 +28,7 @@ export default {
     data() {
         return {
             pageLoading: true,
-            tabMapOptions: [
-                {
+            tabMapOptions: [{
                     label: this.$t("views.apps.unsupervised_learning.editing.components.tabs.overviewTab.title"),
                     key: "overviewTab",
                     icon: "el-icon-s-data",
@@ -116,27 +109,37 @@ export default {
     methods: {
         getFileDetails() {
             const selectedFilesIDs = this.selectedFiles.map((x) => x.id);
-            // TODO: on new file selected reset selectedFileDetails variable
-            if (this.selectedFileDetails.id === selectedFilesIDs[0]) {
-                this.pageLoading = false;
-                return;
+            if (selectedFilesIDs.length === 0) {
+                this.$message({
+                    message: this.$t("globals.errors.no_file_selected"),
+                    type: "warning",
+                    duration: 5000,
+                    showClose: true,
+                });
+                return; // Exit if no file is selected
             }
-            this.pageLoading = true;
-            this.activeEditingTabName = "overviewTab";
-            this.selectedFileDetails = { id: null, columns: [], summary: [] };
 
+            // Reset selectedFileDetails when a new file is selected
+            if (this.selectedFileDetails.id !== selectedFilesIDs[0]) {
+                this.selectedFileDetails = { id: null, columns: [], summary: [] };
+                this.activeEditingTabName = "overviewTab";
+            } else {
+                this.pageLoading = false;
+                return; // No need to proceed if the selected file has not changed
+            }
+
+            this.pageLoading = true;
             getOverViewAavailableColumns({ selectedFileID: selectedFilesIDs[0] })
                 .then((response) => {
-                    if (response.data.success === true && typeof response.data.message.columns !== "undefined") {
+                    if (response.data.success && response.data.message && response.data.message.columns) {
                         this.selectedFileDetails = {
                             id: selectedFilesIDs[0],
-                            // Limit initial columns to 500, TODO: search for columns when typing
-                            columns: response.data.message.columns.slice(0, 500),
-                            summary: [], // TODO: response.data.message.summary,
+                            columns: response.data.message.columns.slice(0, 500), // Limit initial columns to 500
+                            summary: response.data.message.summary || [], // Use summary from response if available
                             saveObjectHash: response.data.message.saveObjectHash,
                         };
                     } else {
-                        // Something went wrong, cannot fetch details from Server
+                        // Server returned an unsuccessful response
                         this.$message({
                             message: this.$t("globals.errors.request_general"),
                             type: "error",
@@ -148,10 +151,12 @@ export default {
                 })
                 .catch((error) => {
                     this.$message({
-                        message: this.$t("globals.errors.request_general"),
+                        message: this.$t("globals.errors.request_general") + `: ${error.message}`,
                         type: "error",
+                        duration: 10000,
+                        showClose: true,
                     });
-                    console.log(error);
+                    console.error("Error fetching file details:", error);
                     this.pageLoading = false;
                 });
         },
@@ -217,8 +222,8 @@ export default {
         },
     },
 };
-</script>
 
+</script>
 <style rel="stylesheet/scss" lang="scss">
 @import "~scss_vars";
 
@@ -250,6 +255,7 @@ export default {
     border: none !important;
     border-top-color: transparent !important;
 }
+
 .plot-placeholder {
     text-align: center;
     height: 100%;
@@ -269,6 +275,7 @@ export default {
 .is_tab_active {
     opacity: 0.1;
 }
+
 .code-output {
     max-height: 1000px;
     font-size: 12px;
@@ -304,4 +311,5 @@ export default {
         }
     }
 }
+
 </style>

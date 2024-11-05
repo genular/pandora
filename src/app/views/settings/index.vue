@@ -83,7 +83,7 @@
                     <div slot="header" class="clearfix"><span>System debugging</span></div>
                     <el-row type="flex" class="row-bg" justify="space-between">
                         <el-col :span="6" style="text-align: left">
-                            <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="updateSimonVersion">Update</el-button>
+                            <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="systemUpdate">Update</el-button>
                         </el-col>
                         <el-col :span="18" style="text-align: right">
                             <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="generateSystemLogFile">System log file</el-button>
@@ -272,51 +272,58 @@ export default {
                 });
             }
         },
-        updateSimonVersion() {
+        systemUpdate() {
             this.$confirm(
-                    "This can permanently destroy all your PANDORA data and settings. Continue?",
-                    "Update minor PANDORA version", {
-                        confirmButtonText: "OK",
-                        cancelButtonText: "Cancel",
-                        type: "warning",
-                    }
-                )
-                .then(() => {
-                    this.requestLoading = true;
-                    ApiSystemUpdate()
-                        .then(response => {
-                            console.log("System update initiated:", response);
+                "This can permanently destroy all your data and settings. Continue?",
+                "Update minor PANDORA version", {
+                    confirmButtonText: "OK",
+                    cancelButtonText: "Cancel",
+                    type: "warning",
+                    beforeClose: (action, instance, done) => {
+                        if (action === 'confirm') {
+                            this.requestLoading = true;
+                            ApiSystemUpdate()
+                                .then(response => {
+                                    console.log("System update initiated:", response);
 
-                            // Handle the successful update here
-                            setTimeout(() => { // Introduce a delay before setting requestLoading to false
-                                this.$message({
-                                    type: response.data.success === true ? "success" : "error",
-                                    message: response.data.message,
+                                    // Check for success status in the response data
+                                    if (response.data.success) {
+                                        this.$message({
+                                            type: "success",
+                                            message: response.data.message || 'Update completed successfully.',
+                                        });
+                                    } else {
+                                        this.$message({
+                                            type: "error",
+                                            message: response.data.message || 'Update failed with an unknown error.',
+                                        });
+                                    }
+                                    this.requestLoading = false;
+                                    done();
+                                })
+                                .catch(error => {
+                                    console.error("System update failed:", error);
+                                    this.$message({
+                                        type: "error",
+                                        message: error.message || "System update failed due to an unexpected error.",
+                                    });
+                                    this.requestLoading = false;
+                                    done();
                                 });
-                                this.requestLoading = false;
-                            }, 30000);
-                        })
-                        .catch(error => {
-                            // Handle any errors that occur during the update process
-                            console.error("System update failed:", error);
-
-                            this.$message({
-                                type: "error",
-                                message: "System update failed.",
-                            });
-                            setTimeout(() => { // Use setTimeout to delay setting requestLoading to false even in case of error
-                                this.requestLoading = false;
-                            }, 30000); // Delay for 30 seconds before setting requestLoading to false
-                        });
-                })
-                .catch(() => {
-                    // This block is executed if the user cancels the update
-                    this.$message({
-                        type: "info",
-                        message: "Update canceled",
-                    });
+                        } else {
+                            done(); // Ensure to call done() to close the dialog in case of 'cancel' or any other non-confirm action
+                        }
+                    }
+                }
+            ).catch(() => {
+                // This block is executed if the user cancels the update
+                this.$message({
+                    type: "info",
+                    message: "Update canceled",
                 });
+            });
         }
+
     }
 };
 
