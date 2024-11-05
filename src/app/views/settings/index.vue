@@ -293,7 +293,7 @@ export default {
                             // refresh page with 2 seconds timeout
                             setTimeout(() => {
                                 window.location.reload();
-                            }, 2000);
+                            }, 5000);
                         })
                         .catch(error => {
                             // Handle any errors that occur during the update process
