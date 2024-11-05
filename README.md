@@ -66,39 +66,36 @@ Use these commands to list entities:
 ##############################################
 #### 1) Stop and Remove Docker Containers ####
 ##############################################
+# List all Docker container
+docker ps
 # Stop the Docker container
-docker stop <ContainerName>
+docker stop <CONTAINER_ID >
 
-# Remove the Docker container
-docker rm <ContainerName>
-
+# Remove the Docker container if needed
+# docker rm <CONTAINER_ID>
 
 #################################
 #### 2) Remove Docker Images ####
 #################################
 # List all Docker images
 docker images
-
 # Remove the Docker image
-docker rmi <ImageID_or_Repository:Tag>
-
+docker rmi <IMAGE_ID>
 
 ##################################
-#### 3) Manage Docker Volumes ####
+#### 3) Remove Docker Volumes ####
 ##################################
 # List all Docker volumes
 docker volume ls
-
-# Remove specific Docker volumes
+# Remove all 3 specific Docker volumes
 docker volume rm genular_frontend_latest genular_backend_latest genular_data_latest
+
 ## Now you can proceed with clean installation
 ```
 
 ### Contributing, writing code
 
 Contributions are very much welcome!
-
-If you need any help, please use [community forums](https://community.genular.org).
 
 1. Check out our [public issues board][0]. If your issue isn't on the board, [open a new one][1].
 2. Pick an issue that nobody has claimed and start working on it.
