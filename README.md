@@ -19,7 +19,7 @@
 `PANDORA` is a comprehensive suite of advanced analytical tools designed to support a wide range of biomedical research applications.
 
 ## Overview
-`PANDORA` uses advanced machine learning techniques, including clustering, t-SNE, PCA, UMAP, and interpretable machine learning models to enhance biomedical discovery. It supports multiclass outcomes, facilitating predictive modeling, biomarker discovery, and omics data analysis for systems biology.
+`PANDORA` is a software that leverages advanced statistical methodologies, many uniquely designed for high-dimensional data in biomedical research. It supports predictive modeling, biomarker discovery, and comprehensive OMICS data analysis, contributing to new insights in systems biology.
 
 ## Installation Quick-start
 
