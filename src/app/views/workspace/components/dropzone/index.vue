@@ -44,13 +44,13 @@ export default {
             ignoreHiddenFiles: true,
             autoProcessQueue: this.autoProcessQueue,
             chunking: true,
-            chunkSize: 100 * 1024 * 1024,
+            chunkSize: 250 * 1024 * 1024,
             forceChunking: false,
             parallelChunkUploads: false,
             retryChunks: true,
             retryChunksLimit: 3,
             createImageThumbnails: false,
-            timeout: (1000 * 60 * 60 * 24 * 1),
+            timeout: (1000 * 60 * 60 * 24 * 2),
             dictDefaultMessage:
                 '<i style="display: table-cell; vertical-align: middle; font-size: 32px;" class="el-icon-upload">  ' +
                 this.$t("views.workspace.components.dropzone.messages.upload_placeholder") +
@@ -202,6 +202,7 @@ export default {
 
 
         this.dropzone.on("error", (file, error, xhr) => {
+            console.log("==> Error: ", error);
             vm.$emit("dropzone-error", file, error, xhr);
         });
 

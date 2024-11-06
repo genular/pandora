@@ -274,8 +274,8 @@ export default {
         },
         systemUpdate() {
             this.$confirm(
-                    "This can permanently destroy all your data and settings. Continue?",
-                    "Update PANDORA", {
+                    "This operation can permanently destroy all your data and settings. The process may take a few minutes.",
+                    "Update PANDORA to the latest version?", {
                         confirmButtonText: "OK",
                         cancelButtonText: "Cancel",
                         type: "warning",

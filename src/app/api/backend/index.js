@@ -71,6 +71,13 @@ export function userDetials() {
     });
 }
 
+export function checkUpdates() {
+    return request({
+        url: baseUrlPath + "/system/check-updates",
+        method: "GET",
+    });
+}
+
 export function fetchServerLoad() {
     return request({
         url: baseUrlPath + "/system/serverload",

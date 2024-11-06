@@ -19,7 +19,7 @@
                     <el-tab-pane v-for="(logContent, normalizedLogType) in displayLogs" :key="normalizedLogType" :label="formatLabel(normalizedLogType)" :name="normalizedLogType">
                         <div :ref="`logContainer-${normalizedLogType}`" class="logs-output" @scroll="checkIfUserScrolled">
                             <div v-for="(line, index) in logContent" :key="`${normalizedLogType}-${index}`" class="log-line">
-                                {{ line.content }}
+                                <span class="log-line-number">{{ index }}</span> {{ line.content }}
                             </div>
                             <div class="blinking-cursor">_</div>
                         </div>
@@ -53,13 +53,17 @@ export default {
         return {
             mainTab: 'logs', // Active main tab (Logs or Assistant)
             activeTab: null, // Active sub-tab under Logs
+
             llmActiveTab: 'output', // Active sub-tab under Assistant
+
             displayLogs: {}, // Populated dynamically with normalized log types
             offsets: {}, // Tracks offsets for each normalized log type
             seenHashes: {}, // Track hashes separately for each log type
+
             fetchInterval: null,
             scrollEnabled: true, // Determines if auto-scroll is enabled
             originalLabels: {}, // Maps normalized log types to their original labels,
+
             terminalHeight: 300, // Initial height in pixels
             isResizing: false, // Flag to check if resizing is active
             startY: 0, // Starting Y position of the mouse
@@ -88,7 +92,12 @@ export default {
             }
         },
     },
+    activated() {
+        console.log("Terminal component Activated");
+    },
     mounted() {
+        console.log("Terminal component Mounted");
+
         if (this.isTerminalOpen && this.mainTab === 'logs') {
             this.startFetchingLogs();
         }
@@ -97,10 +106,14 @@ export default {
         maximizeTerminal() {
             this.terminalHeight = window.innerHeight;
             this.isMaximized = true;
+
+            this.updateLogsContainerHeight();
         },
         minimizeTerminal() {
             this.terminalHeight = 300;
             this.isMaximized = false;
+
+            this.updateLogsContainerHeight();
         },
         async copyToClipboard() {
             if (this.mainTab === 'logs') {
@@ -215,13 +228,16 @@ export default {
 
             this.terminalHeight = newHeight;
 
-            const logsOutputHeight = newHeight - 125;
+
+            this.updateLogsContainerHeight();
+            this.scrollToBottom();
+        },
+        updateLogsContainerHeight(){
+            const logsOutputHeight = this.terminalHeight - 125;
             const logContainers = this.$el.querySelectorAll('.logs-output');
             logContainers.forEach(logContainer => {
                 logContainer.style.maxHeight = `${logsOutputHeight}px`;
             });
-
-            this.scrollToBottom();
         },
         stopResizing() {
             this.isResizing = false;
@@ -364,14 +380,14 @@ export default {
     .el-tabs__content {
         flex: 1;
         overflow: hidden;
+        padding: 0;
     }
 }
 
 .logs-output {
     flex: 1;
-    max-height: calc(50vh - 150px);
+    max-height: 203px;
     overflow-y: auto;
-    padding: 10px 20px;
     font-family: 'Courier New', Courier, monospace;
     font-size: 14px;
     color: #00ff00;
@@ -381,6 +397,13 @@ export default {
 .log-line {
     white-space: pre-wrap;
     text-shadow: 0 0 10px #00ff00;
+    .log-line-number {
+        color: #666;
+        margin-right: 10px;
+        width: 25px;
+        display: inline-block;
+        font-size: 10px;
+    }
 }
 
 .blinking-cursor {

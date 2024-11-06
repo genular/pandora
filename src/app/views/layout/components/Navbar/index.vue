@@ -8,7 +8,7 @@
             -->
 
             <!-- Selected Files and Exploration IDs -->
-            <selected-files class="right-menu-item"></selected-files>
+            <selected-files class="right-menu-item" style="height: 50px; vertical-align: middle;"></selected-files>
             
             <error-log v-if="errorLogs.length > 0" class="right-menu-item error-logs"></error-log>
             <lang-select class="right-menu-item international "></lang-select>
@@ -36,6 +36,7 @@
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
+            <UpdateWatcher class="right-menu-item" style="float: right; padding-right: 10px;" />
         </div>
     </el-menu>
 </template>
@@ -46,7 +47,8 @@ import Hamburger from "@/components/Hamburger";
 import ErrorLog from "@/components/ErrorLog";
 import LangSelect from "@/components/LangSelect";
 import SelectedFiles from "@/components/SelectedFiles";
-import Search from '@/components/HeaderSearch'
+import Search from '@/components/HeaderSearch';
+
 
 import { generateRouteTitle } from "@/utils/i18n";
 export default {
@@ -56,7 +58,8 @@ export default {
         Hamburger,
         ErrorLog,
         LangSelect,
-        Search
+        Search,
+        UpdateWatcher: () => import("@/components/UpdateWatcher")
     },
     computed: {
         ...mapGetters(["sidebar", "errorLogs", "user_id", "user_settings_server_address_backend"])
@@ -138,7 +141,6 @@ export default {
             margin-right: 5px;
             width: 40px;
             margin-left: 0;
-            float: right;
             cursor: pointer;
             color: $white;
 
