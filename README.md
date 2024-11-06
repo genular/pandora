@@ -15,11 +15,7 @@
             <img src="https://img.shields.io/badge/chat-on%20freenode-brightgreen.svg" alt="chat on freenode"></a>
     </p>
 </div>
-
-`PANDORA` is a comprehensive suite of advanced analytical tools designed to support a wide range of biomedical research applications.
-
-## Overview
-`PANDORA` is a software that leverages advanced statistical methodologies, many uniquely designed for high-dimensional data in biomedical research. It supports predictive modeling, biomarker discovery, and comprehensive OMICS data analysis, contributing to new insights in systems biology.
+`PANDORA` is a research software that leverages advanced statistical methodologies, many uniquely designed for high-dimensional data in biomedical research. It supports predictive modeling, biomarker discovery, and comprehensive OMICS data analysis, contributing to new insights in systems biology.
 
 ## Installation Quick-start
 
