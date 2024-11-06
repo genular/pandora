@@ -15,9 +15,10 @@
             <img src="https://img.shields.io/badge/chat-on%20freenode-brightgreen.svg" alt="chat on freenode"></a>
     </p>
 </div>
-`PANDORA` is a research software that leverages advanced statistical methodologies, many uniquely designed for high-dimensional data in biomedical research. It supports predictive modeling, biomarker discovery, and comprehensive OMICS data analysis, contributing to new insights in systems biology.
 
-## Installation Quick-start
+`PANDORA` is a research platform that leverages advanced statistical methodologies, many uniquely designed for high-dimensional data in biomedical research. It supports predictive modeling, biomarker discovery, and comprehensive OMICS data analysis, contributing to new insights in systems biology.
+
+## Installation
 
 `PANDORA` can be installed using Docker, a pre-built version of the platform can be pulled from [DockerHub](https://hub.docker.com/). In order to run `PANDORA`, users will first need to install [Docker](https://www.docker.com/).
 
@@ -28,7 +29,7 @@
 -   Windows, Linux or MacOS
 -   [Docker](https://docs.docker.com/engine/installation/) (`version 17.05` or later is required)
 
-##### Minimum suggested hardware recommendation:
+##### Minimum suggested hardware:
 
 -   64GB RAM
 -   8 CPU Cores / 16 threads with 3 GHz base frequency
