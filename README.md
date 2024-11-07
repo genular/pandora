@@ -16,7 +16,7 @@
     </p>
 </div>
 
-`PANDORA` is a research platform that leverages advanced statistical methodologies, many uniquely designed for high-dimensional data in biomedical research. It supports predictive modeling, biomarker discovery, and comprehensive OMICS data analysis, contributing to new insights in systems biology.
+`PANDORA` is a research platform developed and maintained by [aTomic Lab](https://atomic-lab.org/). It leverages advanced statistical methodologies, many uniquely designed for high-dimensional data in biomedical research. `PANDORA` supports predictive modeling, biomarker discovery, and comprehensive OMICS data analysis, contributing to new insights in systems biology.
 
 ## Installation
 
