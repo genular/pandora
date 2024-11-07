@@ -47,8 +47,11 @@
                             <el-form-item :label="$t('views.settings.profile_information.phone')">
                                 <el-input name="phone" type="text" prop="phone" v-model="settingsForm.phone"></el-input>
                             </el-form-item>
-                            <el-form-item :label="$t('views.settings.profile_information.openai_api')">
-                                <el-input name="openai_api" type="text" prop="openai_api" v-model="settingsForm.openai_api"></el-input>
+                            <el-form-item :label="$t('views.settings.profile_information.llm_api_key')">
+                                <el-input name="llm_api_key" type="text" prop="llm_api_key" v-model="settingsForm.llm_api_key"></el-input>
+                            </el-form-item>
+                            <el-form-item :label="$t('views.settings.profile_information.llm_api_endpoint')">
+                                <el-input name="llm_api_endpoint" type="text" prop="llm_api_endpoint" v-model="settingsForm.llm_api_endpoint"></el-input>
                             </el-form-item>
                         </el-form>
                         <div style="text-align: right">
@@ -138,7 +141,8 @@ export default {
                 last_name: null,
                 email: null,
                 phone: null,
-                openai_api: null,
+                llm_api_key: null,
+                llm_api_endpoint: null,
                 profile_picture: null,
                 account_type: null,
                 oid: null,
@@ -206,7 +210,8 @@ export default {
                     this.settingsForm.first_name,
                     this.settingsForm.last_name,
                     this.settingsForm.phone,
-                    this.settingsForm.openai_api
+                    this.settingsForm.llm_api_key,
+                    this.settingsForm.llm_api_endpoint
                 );
 
                 // Handle response

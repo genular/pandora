@@ -17,8 +17,8 @@ const baseUrlPath = "/backend";
  * @param {string} openai_api - OpenAI API key for the user
  * @returns {Promise} A Promise that resolves to the response of the update profile request.
  */
-export function updateUserProfile(first_name, last_name, phone, openai_api) {
-    const data = { first_name, last_name, phone, openai_api };
+export function updateUserProfile(first_name, last_name, phone, llm_api_key, llm_api_endpoint) {
+    const data = { first_name, last_name, phone, llm_api_key, llm_api_endpoint };
     return request({
         url: baseUrlPath + "/user/update-profile",
         method: "POST",

@@ -13,7 +13,8 @@
 				"first_name": "First name",
 				"last_name": "Last name",
 				"phone": "Phone",
-				"openai_api": "OpenAI API key",
+				"llm_api_key": "LLM API key",
+				"llm_api_endpoint": "LLM Endpoint",
 				"save_button": "Save"
 			},
 			"profile_picture": {
