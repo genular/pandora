@@ -6,7 +6,6 @@
         </el-steps>
         <div class="form-container">
             <div v-if="currentStep == 0" class="form-step step-0">
-                <h2 class="steps-container-title">Please create your account</h2>
                 <el-row>
                     <el-col :span="24">
                         <el-form class="form" size="large" autoComplete="on" ref="userForm" label-position="top">
@@ -89,13 +88,13 @@
                                 </el-form-item>
                                 <el-form-item label="Registration code*" style="width: 49%; float: left; margin-left: 2%; margin-bottom: 0;">
                                     <el-input
-                                        name="org_invite_code"
-                                        v-model="userForm.org_invite_code"
+                                        name="registration_key"
+                                        v-model="userForm.registration_key"
                                         type="text"
                                         placeholder=""
-                                        @input.native="checkFieldAvailability('users_details', 'org_invite_code', $event, 'userForm')"
+                                        @input.native="checkFieldAvailability('users_details', 'registration_key', $event, 'userForm')"
                                     >
-                                        <i slot="suffix" :class="validation['userForm'].org_invite_code"></i>
+                                        <i slot="suffix" :class="validation['userForm'].registration_key"></i>
                                     </el-input>
                                     <!-- Info Text and Link for Registration Code Request -->
                                     <div>
@@ -125,7 +124,7 @@
 
                 <el-row>
                     <el-button-group style="float: right">
-                        <el-button type="primary" size="large" :loading="loading.account" @click="registerAccount" :disabled="userForm.validated !== 6">
+                        <el-button type="primary" size="large" :loading="loading.account" @click="registerAccount" :disabled="!isFormValid">
                             Create account
                             <i class="el-icon-arrow-right el-icon-right"></i>
                         </el-button>
@@ -175,6 +174,13 @@ export default {
     },
     computed: {
         ...mapGetters(["packageVersion", "packageEnviroment"]),
+        isFormValid() {
+            // Count the number of successful validations
+            const successCount = Object.values(this.validation.userForm).filter(icon => icon === 'el-input__icon el-icon-success').length;
+            // Check if all fields except one are valid
+            const isValid = successCount >= Object.keys(this.validation.userForm).length - 1;
+            return isValid;
+        }
     },
     data() {
         return {
@@ -188,7 +194,7 @@ export default {
                     firstName: "el-input__icon el-icon-error",
                     lastName: "el-input__icon el-icon-error",
                     phoneNumber: "el-input__icon el-icon-error",
-                    org_invite_code: "el-input__icon el-icon-error",
+                    registration_key: "el-input__icon el-icon-error",
                 },
             },
             // Loading progress
@@ -205,7 +211,7 @@ export default {
                 lastName: "",
                 phoneNumber: "",
                 install_statistics: true,
-                org_invite_code: "",
+                registration_key: "",
                 validated: 0,
                 packageVersion: this.packageVersion,
                 packageEnviroment: this.packageEnviroment,
@@ -231,7 +237,7 @@ export default {
         navigateToStep(step) {
             console.log("navigateToStep :" + step);
             if (step > 0) {
-                if (this.userForm.validated === 6) {
+                if (this.isFormValid) {
                     this.currentStep = step;
                     this.$router.push({
                         path: "/authenticate/?action=register&usertype=private&step=" + step,
@@ -304,7 +310,6 @@ export default {
             if (!validationValue || /^\s*$/.test(validationValue) || validationValue.length < 2) {
                 if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
                     this.validation[formName][validationField] = "el-input__icon el-icon-error";
-                    this[formName].validated -= 1;
                 }
                 return;
             }
@@ -313,7 +318,6 @@ export default {
                 if (validateUsername(validationValue) === false) {
                     if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
                         this.validation[formName][validationField] = "el-input__icon el-icon-error";
-                        this[formName].validated -= 1;
                     }
                     return;
                 }
@@ -324,7 +328,6 @@ export default {
                     console.log("Cannot validate email: " + validationValue);
                     if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
                         this.validation[formName][validationField] = "el-input__icon el-icon-error";
-                        this[formName].validated -= 1;
                     }
                     return;
                 }
@@ -332,23 +335,20 @@ export default {
                 if (validatePassword(validationValue) === false) {
                     if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
                         this.validation[formName][validationField] = "el-input__icon el-icon-error";
-                        this[formName].validated -= 1;
                     }
                 } else {
                     if (this.validation[formName][validationField] !== "el-input__icon el-icon-success") {
                         this.validation[formName][validationField] = "el-input__icon el-icon-success";
-                        this[formName].validated += 1;
                     }
                 }
                 return;
             } else if (validationField === "firstName" || validationField === "lastName" || validationField === "phoneNumber") {
                 if (this.validation[formName][validationField] !== "el-input__icon el-icon-success") {
                     this.validation[formName][validationField] = "el-input__icon el-icon-success";
-                    this[formName].validated += 1;
                 }
                 return;
 
-            } else if (validationField === "org_invite_code") {
+            } else if (validationField === "registration_key") {
                 const isMD5 = /^[a-f0-9]{32}$/i.test(validationValue);
 
                 if(validationValue.toLowerCase() !== atob("YXRvbWljbGFi")){
@@ -356,7 +356,6 @@ export default {
                         // If not MD5, show error
                         if (this.validation[formName][validationField] !== "el-input__icon el-icon-error") {
                             this.validation[formName][validationField] = "el-input__icon el-icon-error";
-                            this[formName].validated -= 1;
                         }
                         return;
                     }
@@ -372,7 +371,6 @@ export default {
 
                         if (this.validation[formName][validationField] !== "el-input__icon el-icon-success") {
                             this.validation[formName][validationField] = "el-input__icon el-icon-success";
-                            this[formName].validated += 1;
                         }
                     }
                 })

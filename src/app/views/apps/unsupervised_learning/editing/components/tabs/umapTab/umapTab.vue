@@ -2,14 +2,7 @@
     <div class="editing-umap-tab" v-loading.fullscreen.lock="loadingPlot" :element-loading-text="$t('globals.page_loading')">
         <el-row type="flex" align="top" v-if="tabEnabled === false">
             <el-col :span="24">
-                <el-alert
-                    :title="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.alert.function_disabled.title')"
-                    description="Tab is currently disabled. Please try to refresh or choose another file from Workspace."
-                    type="warning"
-                    style="margin-top: 20px"
-                    show-icon
-                    :closable="false"
-                ></el-alert>
+                <el-alert :title="$t('views.apps.unsupervised_learning.editing.components.tabs.correlationTab.alert.function_disabled.title')" description="Tab is currently disabled. Please try to refresh or choose another file from Workspace." type="warning" style="margin-top: 20px" show-icon :closable="false"></el-alert>
             </el-col>
         </el-row>
         <el-row v-else type="flex" align="top">
@@ -17,40 +10,20 @@
                 <el-row>
                     <el-form ref="settingsForm" :model="settingsForm">
                         <el-form-item label="Columns">
-
                             <el-button size="medium" class="filter-item" type="success" style="padding: 0" v-waves icon="el-icon-download" @click="downloadTable" round></el-button>
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">Please select columns you wish to analyze and plot. Leaving this empty will take all columns except excluded ones.</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <br />
-                            <el-select
-                                style="float: left;width: 100%;"
-                                v-model="settingsForm.selectedColumns"
-                                multiple
-                                filterable
-                                remote
-                                default-first-option
-                                reserve-keyword
-                                value-key="remapped"
-                                clearable
-                                collapse-tags
-                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
-                                :remote-method="
+                            <el-select style="float: left;width: 100%;" v-model="settingsForm.selectedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')" :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
                                     }
-                                "
-                            >
-                                <el-option
-                                    v-for="item in selectedFileDetailsDisplay"
-                                    :key="item.remapped"
-                                    :label="item.original"
-                                    :value="item"
-                                    v-bind:class="{
+                                ">
+                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" v-bind:class="{
                                         item_danger: item.valid_numeric !== 1,
-                                    }"
-                                >
+                                    }">
                                     <el-row>
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
@@ -64,7 +37,6 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-
                         <el-form-item label="First (n) columns">
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">If you have not selected any columns we will take first n columns from your dataset, based on this value.</div>
@@ -73,31 +45,17 @@
                             <br />
                             <el-input-number style="float: left; width: 100%;" v-model="settingsForm.cutOffColumnSize" :step="10" :min="2" :max="50000"></el-input-number>
                         </el-form-item>
-
                         <el-form-item label="Exclude Columns">
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">Please select any columns you wish to exclude from analysis.</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <br />
-                            <el-select
-                                style="float: left;width: 100%;"
-                                v-model="settingsForm.excludedColumns"
-                                multiple
-                                filterable
-                                remote
-                                default-first-option
-                                reserve-keyword
-                                value-key="remapped"
-                                clearable
-                                collapse-tags
-                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
-                                :remote-method="
+                            <el-select style="float: left;width: 100%;" v-model="settingsForm.excludedColumns" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')" :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
                                     }
-                                "
-                            >
+                                ">
                                 <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item">
                                     <el-row>
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
@@ -112,38 +70,18 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-
                         <el-form-item label="Grouping variable">
                             <el-tooltip placement="top" style="padding-left: 5px">
                                 <div slot="content">Please select categorical column to "group by" UMAP plot. Grouping variable(s) will be excluded from UMAP analysis.</div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                             <br />
-                            <el-select
-                                style="float: left;width: 100%;"
-                                v-model="settingsForm.groupingVariables"
-                                multiple
-                                filterable
-                                remote
-                                default-first-option
-                                reserve-keyword
-                                value-key="remapped"
-                                clearable
-                                collapse-tags
-                                :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')"
-                                :remote-method="
+                            <el-select style="float: left;width: 100%;" v-model="settingsForm.groupingVariables" multiple filterable remote default-first-option reserve-keyword value-key="remapped" clearable collapse-tags :placeholder="$t('views.apps.unsupervised_learning.editing.components.tabs.clusteringTab.form.columns.placeholder')" :remote-method="
                                     (userInput) => {
                                         querySearch(userInput);
                                     }
-                                "
-                            >
-                                <el-option
-                                    v-for="item in selectedFileDetailsDisplay"
-                                    :key="item.remapped"
-                                    :label="item.original"
-                                    :value="item"
-                                    :disabled="item.valid_10p !== 1 || item.unique_count < 2"
-                                >
+                                ">
+                                <el-option v-for="item in selectedFileDetailsDisplay" :key="item.remapped" :label="item.original" :value="item" :disabled="item.valid_10p !== 1 || item.unique_count < 2">
                                     <el-row>
                                         <el-col :span="16" style="float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap" :title="item.original">
                                             {{ item.original }}
@@ -168,8 +106,6 @@
                             </el-tooltip>
                         </el-form-item>
                         -->
-
-
                         <el-form-item :label="$t('views.apps.unsupervised_learning.editing.components.tabs.tSNETab.form.preprocess.title')">
                             <el-tooltip placement="top">
                                 <div slot="content">
@@ -178,14 +114,7 @@
                                 </div>
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
-                            <el-select
-                                style="float: left; width: 100%"
-                                v-model="selectedPreProcess"
-                                clearable
-                                collapse-tags
-                                :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')"
-                                multiple
-                            >
+                            <el-select style="float: left; width: 100%" v-model="selectedPreProcess" clearable collapse-tags :placeholder="$t('views.apps.supervised_learning.analysis.components.FileDetails.body.preprocessing.placeholder')" multiple>
                                 <el-option v-for="item in selectedPreProcessOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
                                     <span style="float: left; margin-right: 10px; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                                     <span style="float: right">
@@ -194,7 +123,6 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-
                         <el-form-item label="Remove NA">
                             <el-switch style="float: right; padding-top: 10px" v-model="settingsForm.removeNA"></el-switch>
                             <el-tooltip placement="top">
@@ -202,18 +130,8 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
-
                         <el-form-item label="Partition split">
-                            <el-slider
-                                style="clear: both; width: 100%; float: right"
-                                v-model="settingsForm.selectedPartitionSplit"
-                                :step="5"
-                                :min="50"
-                                :max="100"
-                                show-input
-                                :format-tooltip="formatPartitionSplitTooltip"
-                                show-stops
-                            ></el-slider>
+                            <el-slider style="clear: both; width: 100%; float: right" v-model="settingsForm.selectedPartitionSplit" :step="5" :min="50" :max="100" show-input :format-tooltip="formatPartitionSplitTooltip" show-stops></el-slider>
                             <el-tooltip placement="top">
                                 <div slot="content">
                                     If you wish to compute Supervised Learning on umap please mark what percentage should we use for Train and Test dataset. They will be split
@@ -222,9 +140,7 @@
                                 <i class="el-icon-question"></i>
                             </el-tooltip>
                         </el-form-item>
-
                         <el-divider></el-divider>
-
                         <el-form-item label="Theme">
                             <el-select v-model="settingsForm.theme" size="medium" placeholder="Select" style="float: right">
                                 <el-option v-for="item in settingsOptions.theme" :key="item.id" :label="item.name" :value="item.id">
@@ -242,7 +158,6 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-
                         <el-form-item label="Color">
                             <el-select v-model="settingsForm.colorPalette" size="medium" placeholder="Select" style="float: right">
                                 <el-option v-for="item in settingsOptions.colorPalette" :key="item.id" :label="item.value" :value="item.id">
@@ -260,15 +175,12 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-
                         <el-form-item label="Font size">
                             <el-input-number style="float: right" v-model="settingsForm.fontSize" :step="1" :min="8" :max="24"></el-input-number>
                         </el-form-item>
-
                         <el-form-item label="Ratio">
                             <el-input-number style="float: right" size="medium" v-model="settingsForm.aspect_ratio" :step="0.1" :max="4" :min="1"></el-input-number>
                         </el-form-item>
-
                         <el-row>
                             <el-col :span="12" v-if="plot_data.saveObjectHash !== false">
                                 <el-form-item>
@@ -283,7 +195,6 @@
                                     </el-tooltip>
                                 </el-form-item>
                             </el-col>
-
                             <el-col :span="plot_data.saveObjectHash !== false ? 12 : 24">
                                 <el-form-item>
                                     <el-button type="primary" size="large" round @click="redrawImage" style="float: right">
@@ -297,14 +208,10 @@
             </el-col>
             <el-col :span="19" :offset="1" class="correlation-svg-container" style="text-align: center">
                 <el-tabs v-model="activeTab" type="border-card" class="tab-container-second">
-                    <el-tab-pane label="UMAP Plot" name="umap_plot" :disabled="isTabDisabled('umap_plot')">
-                        <el-tabs :value="plot_data.umap_plot.length > 0 ? 'tab_umap_grouped_0' : null" :tab-position="'right'">
-                            <el-tab-pane
-                                v-for="(plotData, plotIndex) in plot_data.umap_plot"
-                                :key="'tab_umap_grouped_' + plotIndex"
-                                :label="plotData.name"
-                                :name="'tab_umap_grouped_' + plotIndex"
-                            >
+                    <el-tab-pane label="UMAP Analysis" name="umap_plot" :disabled="isTabDisabled('umap_plot')">
+                        <el-tabs :value="plot_data.umap_plot.length > 0 ? 'tab_umap_grouped_0' : null" :tab-position="'right'" type="card" class="tab-container-third-vertical">
+                            
+                            <el-tab-pane v-for="(plotData, plotIndex) in plot_data.umap_plot" :key="'tab_umap_grouped_' + plotIndex" :label="plotData.name" :name="'tab_umap_grouped_' + plotIndex">
                                 <el-row>
                                     <el-col :span="24">
                                         <span class="tab_intro_text" v-if="plotData.name === 'Main Plot'">
@@ -319,11 +226,7 @@
                                         </span>
                                     </el-col>
 
-                                    <el-col
-                                        :span="typeof plotData.train !== 'undefined' && typeof plotData.train.png !== 'undefined' ? 12 : 24"
-                                        v-if="plotData.train"
-                                        class="umap_training"
-                                    >
+                                    <el-col :span="typeof plotData.train !== 'undefined' && typeof plotData.train.png !== 'undefined' ? 12 : 24" v-if="plotData.train" class="umap_training">
                                         Training
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
@@ -331,16 +234,11 @@
                                                     {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                 </el-button>
                                             </div>
-                                            <img
-                                                id="analysis_images_pca"
-                                                class="animated fadeIn analysis_images"
-                                                :src="'data:image/png;base64,' + plotData.train.png"
-                                                fit="scale-down"
-                                            />
+                                            <img id="analysis_images_pca" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plotData.train.png" fit="scale-down" />
                                         </el-tooltip>
                                     </el-col>
 
-                                    <el-col :span="12" v-if="typeof plotData.test !== 'undefined' && typeof plotData.test.png !== 'undefined'" class="umap_testing">
+                                    <el-col :span="typeof plotData.test !== 'undefined' && typeof plotData.test.png !== 'undefined' ? 12 : 24" v-if="typeof plotData.test !== 'undefined' && typeof plotData.test.png !== 'undefined'" class="umap_testing">
                                         Testing
                                         <el-tooltip effect="light" placement="top-end" popper-class="download_tooltip">
                                             <div slot="content">
@@ -348,12 +246,7 @@
                                                     {{ $t("views.apps.unsupervised_learning.editing.index.button.download_svg_plot.title") }}
                                                 </el-button>
                                             </div>
-                                            <img
-                                                id="analysis_images_pca"
-                                                class="animated fadeIn analysis_images"
-                                                :src="'data:image/png;base64,' + plotData.test.png"
-                                                fit="scale-down"
-                                            />
+                                            <img id="analysis_images_pca" class="animated fadeIn analysis_images" :src="'data:image/png;base64,' + plotData.test.png" fit="scale-down" />
                                         </el-tooltip>
                                     </el-col>
                                 </el-row>
@@ -394,8 +287,7 @@ export default {
 
             selectedFileDetailsDisplay: [],
 
-            selectedPreProcessOptions: [
-                {
+            selectedPreProcessOptions: [{
                     value: "center",
                     incompatible: [],
                     disabled: false,
@@ -447,7 +339,7 @@ export default {
                 selectedColumns: [],
                 excludedColumns: [],
                 groupingVariables: [],
-                preProcessDataset:  [],
+                preProcessDataset: [],
                 fontSize: 12,
                 theme: "theme_bw",
                 colorPalette: "Set1",
@@ -630,8 +522,8 @@ export default {
             });
 
             // If the are any NA Values in grouping variables we need to have removeNA option enabled
-            if(this.settingsForm.anyNAValues === true){
-                if(this.settingsForm.removeNA === false){
+            if (this.settingsForm.anyNAValues === true) {
+                if (this.settingsForm.removeNA === false) {
                     this.$message({
                         message: "NA Values detected in 'grouping variables'. Please enable 'Remove NA' option.",
                         type: "error",
@@ -651,8 +543,8 @@ export default {
                 }
             });
 
-            if(this.settingsForm.anyNAValues === true){
-                if(this.settingsForm.removeNA === false && settingsForm.preProcessDataset.length === 0){
+            if (this.settingsForm.anyNAValues === true) {
+                if (this.settingsForm.removeNA === false && settingsForm.preProcessDataset.length === 0) {
                     this.$message({
                         message: "NA Values detected in 'selected columns'. Please enable 'Remove NA' or 'Pre-process dataset' option.",
                         type: "error",
@@ -663,9 +555,9 @@ export default {
             }
 
             fetchUmapPlot({
-                selectedFileID: this.selectedFiles[0].id,
-                settings: settingsForm,
-            })
+                    selectedFileID: this.selectedFiles[0].id,
+                    settings: settingsForm,
+                })
                 .then((response) => {
                     let respData = response.data.message;
                     this.plot_data["umap_plot"] = [];
@@ -713,8 +605,7 @@ export default {
                 minMatchCharLength: 0,
                 includeScore: false,
                 includeMatches: true,
-                keys: [
-                    {
+                keys: [{
                         name: "original",
                         weight: 0.7,
                     },
@@ -774,7 +665,7 @@ export default {
     },
 
     watch: {
-        selectedFileDetails: function (newVal, oldVal) {
+        selectedFileDetails: function(newVal, oldVal) {
             console.log("File selected change detected " + this.$options.name);
             if (newVal.columns.length >= 1) {
                 this.tabEnabled = true;
@@ -790,6 +681,7 @@ export default {
         deep: true,
     },
 };
+
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .box-column-item {
@@ -804,7 +696,9 @@ export default {
         }
     }
 }
+
 .analysis_images {
     max-width: 100%;
 }
+
 </style>
