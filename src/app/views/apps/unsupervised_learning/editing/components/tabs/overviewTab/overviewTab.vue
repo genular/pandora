@@ -626,13 +626,17 @@ export default {
     },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scoped>
     .data-overview-container {
         .el-tabs__header {
             padding-left: 20px;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
         }
+    }
+
+    .analysis_images {
+        width: 75%;
     }
 
 </style>
