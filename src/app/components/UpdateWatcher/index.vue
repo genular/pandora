@@ -79,7 +79,7 @@ export default {
     cursor: pointer;
     text-align: center;
     color: #ff0000;
-    animation: blink-animation 5s linear infinite;
+    animation: blink-animation 3s linear infinite;
 }
 
 @keyframes blink-animation {
