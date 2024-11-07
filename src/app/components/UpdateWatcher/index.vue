@@ -1,26 +1,15 @@
 <!-- src/app/components/UpdateWatcher/index.vue -->
-
 <template>
     <div>
         <div v-if="updateStatus">
-            <i v-if="updateStatus.frontend && updateStatus.frontend.behindBy > 0" 
+            <i v-if="isBehind" 
                class="el-icon-warning icon-needs-updating" 
-               :title="`Frontend: ${updateStatus.frontend.behindBy} commit(s) behind`" 
-               @click="navigateToSettings('frontend')">
+               :title="updateTitle" 
+               @click="navigateToSettings">
             </i>
             <i v-else 
                class="el-icon-success icon-up-to-date" 
-               title="Frontend: Up-to-date with the master branch">
-            </i>
-
-            <i v-if="updateStatus.backend && updateStatus.backend.behindBy > 0" 
-               class="el-icon-warning icon-needs-updating" 
-               :title="`Backend: ${updateStatus.backend.behindBy} commit(s) behind`" 
-               @click="navigateToSettings('backend')">
-            </i>
-            <i v-else 
-               class="el-icon-success icon-up-to-date" 
-               title="Backend: Up-to-date with the master branch">
+               title="Up-to-date with the master branch">
             </i>
         </div>
         <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
@@ -41,6 +30,28 @@ export default {
             errorMessage: null,
         };
     },
+    computed: {
+        isBehind() {
+            return (
+                (this.updateStatus.frontend && this.updateStatus.frontend.behindBy > 0) || 
+                (this.updateStatus.backend && this.updateStatus.backend.behindBy > 0)
+            );
+        },
+        updateTitle() {
+            const frontendBehind = this.updateStatus.frontend?.behindBy || 0;
+            const backendBehind = this.updateStatus.backend?.behindBy || 0;
+
+            if (frontendBehind > 0 && backendBehind > 0) {
+                return `Frontend: ${frontendBehind} commit(s) behind, Backend: ${backendBehind} commit(s) behind`;
+            } else if (frontendBehind > 0) {
+                return `Frontend: ${frontendBehind} commit(s) behind`;
+            } else if (backendBehind > 0) {
+                return `Backend: ${backendBehind} commit(s) behind`;
+            } else {
+                return "Up-to-date with the master branch";
+            }
+        }
+    },
     methods: {
         async fetchUpdates() {
             try {
@@ -58,8 +69,8 @@ export default {
                 console.error(error);
             }
         },
-        navigateToSettings(section) {
-            this.$router.push(`/settings/index?startIndex=${section === 'frontend' ? 0 : 1}`);
+        navigateToSettings() {
+            this.$router.push('/settings/index?startIndex=1');
         },
     },
     mounted() {
@@ -67,6 +78,7 @@ export default {
     },
 };
 </script>
+
 <style scoped>
 .icon-up-to-date {
     vertical-align: middle;
