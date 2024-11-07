@@ -1,17 +1,15 @@
 <!-- src/app/components/UpdateWatcher/index.vue -->
 <template>
     <div>
-        <div v-if="updateStatus">
-            <i v-if="isBehind" 
-               class="el-icon-warning icon-needs-updating" 
-               :title="updateTitle" 
-               @click="navigateToSettings">
-            </i>
-            <i v-else 
-               class="el-icon-success icon-up-to-date" 
-               title="Up-to-date with the master branch">
-            </i>
-        </div>
+        <i v-if="isBehind" 
+           class="el-icon-warning icon-needs-updating" 
+           title="Updates available" 
+           @click="navigateToSettings">
+        </i>
+        <i v-else 
+           class="el-icon-success icon-up-to-date" 
+           title="Up-to-date with the master branch">
+        </i>
         <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
     </div>
 </template>
@@ -36,20 +34,6 @@ export default {
                 (this.updateStatus.frontend && this.updateStatus.frontend.behindBy > 0) || 
                 (this.updateStatus.backend && this.updateStatus.backend.behindBy > 0)
             );
-        },
-        updateTitle() {
-            const frontendBehind = this.updateStatus.frontend?.behindBy || 0;
-            const backendBehind = this.updateStatus.backend?.behindBy || 0;
-
-            if (frontendBehind > 0 && backendBehind > 0) {
-                return `Frontend: ${frontendBehind} commit(s) behind, Backend: ${backendBehind} commit(s) behind`;
-            } else if (frontendBehind > 0) {
-                return `Frontend: ${frontendBehind} commit(s) behind`;
-            } else if (backendBehind > 0) {
-                return `Backend: ${backendBehind} commit(s) behind`;
-            } else {
-                return "Up-to-date with the master branch";
-            }
         }
     },
     methods: {
@@ -78,6 +62,7 @@ export default {
     },
 };
 </script>
+
 
 <style scoped>
 .icon-up-to-date {
