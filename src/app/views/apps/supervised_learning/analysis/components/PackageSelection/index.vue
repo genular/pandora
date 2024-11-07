@@ -107,10 +107,13 @@
                                                     <el-button style="float: right; padding: 0" type="info" icon="el-icon-info" circle></el-button>
                                                 </el-tooltip>
                                             </li>
+                                            <!--
                                             <li v-if="item.tuning_parameters.length > 0">
                                                 <span class="title">{{ $t("views.apps.supervised_learning.analysis.components.PackageSelection.containers.tuning_parameters.title") }}:</span>
                                             </li>
+                                            -->
                                         </ul>
+                                        <!--
                                         <ul class="tuning_parameters" v-if="item.tuning_parameters.length > 0">
                                             <li v-for="(tun_parm, index) in item.tuning_parameters" :key="index">
                                                 <span class="title">{{ tun_parm.label }}</span>
@@ -119,6 +122,7 @@
                                                 </span>
                                             </li>
                                         </ul>
+                                        -->
                                         <div class="tag-container">
                                             <el-tag :key="index" v-for="(tag, index) in item.tags" :disable-transitions="false" type="info">{{ tag }}</el-tag>
                                         </div>
@@ -207,10 +211,13 @@
                                                     <el-button style="float: right; padding: 0" type="info" icon="el-icon-info" circle></el-button>
                                                 </el-tooltip>
                                             </li>
+                                            <!--
                                             <li v-if="typeof item.tuning_parameters !== 'undefined' && item.tuning_parameters.length > 0">
                                                 <span class="title">{{ $t("views.apps.supervised_learning.analysis.components.PackageSelection.containers.tuning_parameters.title") }}:</span>
                                             </li>
+                                            -->
                                         </ul>
+                                        <!--
                                         <ul class="tuning_parameters" v-if="typeof item.tuning_parameters !== 'undefined' && item.tuning_parameters.length > 0">
                                             <li v-for="(tun_parm, index) in item.tuning_parameters" :key="index">
                                                 <span class="title">{{ tun_parm.label }}</span>
@@ -219,6 +226,7 @@
                                                 </span>
                                             </li>
                                         </ul>
+                                        -->
                                         <div class="tag-container">
                                             <el-tag :key="index" v-for="(tag, index) in item.tags" :disable-transitions="false" type="info">{{ tag }}</el-tag>
                                         </div>
