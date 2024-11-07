@@ -10,7 +10,6 @@
            class="el-icon-success icon-up-to-date" 
            title="Up-to-date with the master branch">
         </i>
-        <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
     </div>
 </template>
 
@@ -40,10 +39,11 @@ export default {
         async fetchUpdates() {
             try {
                 const response = await checkUpdates();
-                if (response.success) {
+
+                if (response.data.success) {
                     this.updateStatus = {
-                        frontend: response.updates.Frontend,
-                        backend: response.updates.Backend,
+                        frontend: response.data.updates.Frontend,
+                        backend: response.data.updates.Backend,
                     };
                 } else {
                     this.errorMessage = "Failed to fetch update status";
