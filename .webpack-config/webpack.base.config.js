@@ -37,7 +37,7 @@ const prepareMessagesPlugin = require(path.resolve(__dirname, `../src/app/transl
 
 module.exports = (environment) => {
     // Try to copy env template and add ENV variables to it
-    const envTemplateFinal = _.configureEnviroment(environment, argv);
+    const envTemplateFinal = _.configureEnvironment(environment, argv);
 
     const config = {
         resolve: {
