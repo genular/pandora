@@ -9,8 +9,9 @@ _.cwd = file => {
 
 /**
  * Copy CMD arguments to environment file
- * @param  {[type]} environment [description]
- * @return {[type]}            [description]
+ * @param  {string} environment - Environment to configure
+ * @param  {object} argv - Command-line arguments
+ * @return {string} Path to the final environment configuration file
  */
 
 _.configureEnvironment = (environment, argv) => {
@@ -18,36 +19,35 @@ _.configureEnvironment = (environment, argv) => {
 	const envTemplateExample = path.resolve(__dirname, `../config/env_${environment}.example.json`);
 	const envTemplateFinal = path.join(__dirname, `../config/env_${environment}.json`);
 
-	// If destination file doesn't exists copy data from template
-	// if (!fs.existsSync(envTemplateFinal)) {
 	if (argv) {
 		let envTemplate = require(envTemplateExample);
 		let updatedVars = 0;
 
-		if (typeof argv.isDemoServer !== "undefined") {
-			envTemplate.isDemoServer = (argv.isDemoServer == 'true');
-			updatedVars++;
-		}
-		if (typeof argv.server_frontend !== "undefined") {
-			envTemplate.server.frontend = argv.server_frontend;
-			updatedVars++;
-		}
-		if (typeof argv.server_backend !== "undefined") {
-			envTemplate.server.backend = argv.server_backend;
-			updatedVars++;
-		}
-		if (typeof argv.server_homepage !== "undefined") {
-			envTemplate.server.homepage = argv.server_homepage;
-			updatedVars++;
-		}
+		// Helper function to get value from argv or environment variables
+		const getValue = (key, envKey, defaultValue) => {
+			if (typeof argv[key] !== "undefined") {
+				console.log(`Using ${key} from argv: ${argv[key]}`);
+				return argv[key];
+			} else if (typeof process.env[envKey] !== "undefined") {
+				console.log(`Using ${key} from environment variable ${envKey}: ${process.env[envKey]}`);
+				return process.env[envKey];
+			} else {
+				console.log(`Using default value for ${key}: ${defaultValue}`);
+				return defaultValue;
+			}
+		};
 
+		// Update configuration with command-line arguments or environment variables
+		envTemplate.isDemoServer = getValue("isDemoServer", "IS_DEMO_SERVER", envTemplate.isDemoServer) === 'true';
+		envTemplate.server.frontend = getValue("server_frontend", "SERVER_FRONTEND_URL", envTemplate.server.frontend);
+		envTemplate.server.backend = getValue("server_backend", "SERVER_BACKEND_URL", envTemplate.server.backend);
+		envTemplate.server.homepage = getValue("server_homepage", "SERVER_HOMEPAGE_URL", envTemplate.server.homepage);
+
+		// Write to file if there are updates
 		if (updatedVars > 0) {
-			envTemplate = JSON.stringify(envTemplate, null, 2);
-			fs.writeFileSync(envTemplateFinal, envTemplate);
+			fs.writeFileSync(envTemplateFinal, JSON.stringify(envTemplate, null, 2));
 		}
-		// Example of usage:
-		// yarn run start:web --server_frontend=xyc --server_backend=xyc --server_homepage=xyc --api_secret=xyc --api_chargebee_site_name=xyc --api_chargebee=xyc
 	}
-	// }
+
 	return envTemplateFinal;
 };
