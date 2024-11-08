@@ -26,12 +26,12 @@ _.configureEnvironment = (environment, argv) => {
 		// Function to get value from argv or process.env
 		const getValue = (key, defaultValue) => {
 			let value;
-			if (typeof argv[key] !== "undefined") {
+			if (typeof process.env[key] !== "undefined") {
+				value = process.env[key];
+				console.log(`Using ${key} from environment variable: ${value}`);
+			}else if (typeof argv[key] !== "undefined") {
 				value = argv[key];
 				console.log(`Using ${key} from argv: ${value}`);
-			} else if (typeof process.env[key.toUpperCase()] !== "undefined") {
-				value = process.env[key.toUpperCase()];
-				console.log(`Using ${key} from environment variable: ${value}`);
 			} else {
 				value = defaultValue;
 				console.log(`Using default value for ${key}: ${value}`);
@@ -52,15 +52,6 @@ _.configureEnvironment = (environment, argv) => {
 
 		envTemplate.server.homepage = getValue("SERVER_HOMEPAGE_URL", envTemplate.server.homepage);
 		if (envTemplate.server.homepage) updatedVars++;
-
-		envTemplate.api.secret = getValue("api_secret", envTemplate.api.secret);
-		if (envTemplate.api.secret) updatedVars++;
-
-		envTemplate.api.chargebee_site_name = getValue("api_chargebee_site_name", envTemplate.api.chargebee_site_name);
-		if (envTemplate.api.chargebee_site_name) updatedVars++;
-
-		envTemplate.api.chargebee = getValue("api_chargebee", envTemplate.api.chargebee);
-		if (envTemplate.api.chargebee) updatedVars++;
 
 		// If any variables were updated, write to the final file
 		if (updatedVars > 0) {
