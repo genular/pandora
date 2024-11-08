@@ -13,7 +13,7 @@ _.cwd = file => {
  * @return {[type]}            [description]
  */
 
-_.configureEnviroment = (environment, argv) => {
+_.configureEnvironment = (environment, argv) => {
 	// Copy configuration template and try to set initial env variables
 	const envTemplateExample = path.resolve(__dirname, `../config/env_${environment}.example.json`);
 	const envTemplateFinal = path.join(__dirname, `../config/env_${environment}.json`);
