@@ -12,7 +12,6 @@ _.cwd = file => {
  * @param  {[type]} environment [description]
  * @return {[type]}            [description]
  */
-
 _.configureEnvironment = (environment, argv) => {
 	// Copy configuration template and try to set initial env variables
 	const envTemplateExample = path.resolve(__dirname, `../config/env_${environment}.example.json`);
@@ -29,7 +28,7 @@ _.configureEnvironment = (environment, argv) => {
 			if (typeof process.env[key] !== "undefined") {
 				value = process.env[key];
 				console.log(`Using ${key} from environment variable: ${value}`);
-			}else if (typeof argv[key] !== "undefined") {
+			}else if (typeof argv[key] !== "undefined" && argv[key].length > 1) {
 				value = argv[key];
 				console.log(`Using ${key} from argv: ${value}`);
 			} else {
@@ -58,9 +57,6 @@ _.configureEnvironment = (environment, argv) => {
 			const updatedEnvTemplate = JSON.stringify(envTemplate, null, 2);
 			fs.writeFileSync(envTemplateFinal, updatedEnvTemplate);
 		}
-
-		// Example of usage:
-		// yarn run start:web --server_frontend=xyc --server_backend=xyc --server_homepage=xyc --api_secret=xyc --api_chargebee_site_name=xyc --api_chargebee=xyc
 	}
 	return envTemplateFinal;
 };
