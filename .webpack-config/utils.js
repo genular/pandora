@@ -21,7 +21,6 @@ _.configureEnvironment = (environment, argv) => {
 
 	if (argv) {
 		let envTemplate = require(envTemplateExample);
-		let updatedVars = 0;
 
 		// Helper function to get value from argv or environment variables
 		const getValue = (key, envKey, defaultValue) => {
@@ -43,10 +42,7 @@ _.configureEnvironment = (environment, argv) => {
 		envTemplate.server.backend = getValue("server_backend", "SERVER_BACKEND_URL", envTemplate.server.backend);
 		envTemplate.server.homepage = getValue("server_homepage", "SERVER_HOMEPAGE_URL", envTemplate.server.homepage);
 
-		// Write to file if there are updates
-		if (updatedVars > 0) {
-			fs.writeFileSync(envTemplateFinal, JSON.stringify(envTemplate, null, 2));
-		}
+		fs.writeFileSync(envTemplateFinal, JSON.stringify(envTemplate, null, 2));
 	}
 
 	return envTemplateFinal;
