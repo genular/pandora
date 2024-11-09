@@ -113,18 +113,6 @@ I would also like to hear from you if you find this project useful and helpful!
 
 -   Find us [on Twitter](https://x.com/tomicadriana) under @tomicadriana
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within `PANDORA`, please [e-mail us](mailto:atomic.research.lab@gmail.com). All security vulnerabilities will be promptly addressed. You are also welcome to open PR request.
-
-## Additional Links
-
-| Resource      | Link                                             |
-| ------------- | ------------------------------------------------ |
-| File an issue | https://github.com/genular/pandora/issues |
-| Blog          | https://genular.org/blog/                        |
-| Twitter       | https://twitter.com/genular                      |
-
 ## License
 
 For more information please check `LICENCE` file.
