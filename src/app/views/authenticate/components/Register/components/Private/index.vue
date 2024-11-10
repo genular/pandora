@@ -99,23 +99,8 @@
                                     <!-- Info Text and Link for Registration Code Request -->
                                     <div>
                                         <span>Don't have a registration code? </span>
-                                        <el-link href="https://genular.atomic-lab.org/contact?bl=pandora" target="_blank" type="primary">Request one here</el-link>
+                                        <el-link href="https://pandora.atomic-lab.org/request-api-key/" target="_blank" type="primary">Request one here</el-link>
                                     </div>
-                                </el-form-item>
-                            </div>
-                            <div style="width: 100%; float: left; text-align: right">
-                                <el-form-item>
-                                    <el-checkbox style="opacity: 0.25" name="install_statistics" v-model="userForm.install_statistics">
-                                        Install statistics
-                                        <el-tooltip
-                                            class="item"
-                                            effect="dark"
-                                            content="Contribute to PANDORA! Help us improve future versions of PANDORA by allowing us to collect installation statistics."
-                                            placement="bottom"
-                                        >
-                                            <i class="el-icon-question"></i>
-                                        </el-tooltip>
-                                    </el-checkbox>
                                 </el-form-item>
                             </div>
                         </el-form>
@@ -210,7 +195,6 @@ export default {
                 firstName: "",
                 lastName: "",
                 phoneNumber: "",
-                install_statistics: true,
                 registration_key: "",
                 validated: 0,
                 packageVersion: this.packageVersion,
@@ -377,7 +361,7 @@ export default {
                 .catch((error) => {
                     console.log(error);
                 });
-        }, 250),
+        }, 200),
     },
 };
 </script>

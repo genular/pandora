@@ -11,50 +11,43 @@
             <el-col :span="10">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>{{ $t("views.settings.account_information.title") }}</span>
+                        <span>{{ $t("views.settings.account_information.title") }} & {{ $t("views.settings.profile_information.title") }}</span>
                     </div>
                     <div>
-                        <el-form size="large" ref="settingsAccountForm" v-model="settingsForm" label-width="120px">
-                            <el-form-item :label="$t('views.settings.account_information.username')">
-                                <el-input name="username" type="text" prop="username" v-model="settingsForm.username"></el-input>
-                            </el-form-item>
-                            <el-form-item :label="$t('views.settings.account_information.email_address')">
-                                <el-input name="email_adress" type="text" prop="email" v-model="settingsForm.email"></el-input>
-                            </el-form-item>
-                            <el-form-item :label="$t('views.settings.account_information.password')">
-                                <el-input name="password" type="password" value="" disabled></el-input>
-                            </el-form-item>
+                        <el-form size="large" ref="settingsForm" v-model="settingsForm" label-width="120px">
+                            <!-- Account Information Section -->
+                            <div>
+                                <el-form-item :label="$t('views.settings.account_information.username')">
+                                    <el-input name="username" type="text" prop="username" v-model="settingsForm.username" disabled></el-input>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.settings.account_information.email_address')">
+                                    <el-input name="email_address" type="text" prop="email" v-model="settingsForm.email" disabled></el-input>
+                                </el-form-item>
+                            </div>
+                            <!-- Profile Information Section -->
+                            <div style="margin-top: 15px">
+                                <el-form-item :label="$t('views.settings.profile_information.first_name')">
+                                    <el-input name="first_name" type="text" prop="first_name" v-model="settingsForm.first_name"></el-input>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.settings.profile_information.last_name')">
+                                    <el-input name="last_name" type="text" prop="last_name" v-model="settingsForm.last_name"></el-input>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.settings.profile_information.phone')">
+                                    <el-input name="phone" type="text" prop="phone" v-model="settingsForm.phone"></el-input>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.settings.profile_information.llm_api_key.title')">
+                                    <el-input name="llm_api_key" type="text" prop="llm_api_key" v-model="settingsForm.llm_api_key"></el-input>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.settings.profile_information.llm_api_endpoint.title')">
+                                    <el-input name="llm_api_endpoint" type="text" prop="llm_api_endpoint" v-model="settingsForm.llm_api_endpoint"></el-input>
+                                </el-form-item>
+                                <el-form-item :label="$t('views.settings.profile_information.registration_key.title')">
+                                    <el-input :maxlength='32' name="registration_key" type="text" prop="registration_key" v-model="settingsForm.registration_key"></el-input>
+                                </el-form-item>
+                            </div>
                         </el-form>
-                        <div style="text-align: right">
-                            <el-button type="primary" size="large" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="updateAccount">
-                                {{ $t("views.settings.account_information.save_button") }}
-                            </el-button>
-                        </div>
-                    </div>
-                </el-card>
-                <el-card class="box-card" style="margin-top: 15px">
-                    <div slot="header" class="clearfix">
-                        <span>{{ $t("views.settings.profile_information.title") }}</span>
-                    </div>
-                    <div>
-                        <el-form size="large" ref="settingsProfileForm" v-model="settingsForm" label-width="120px">
-                            <el-form-item :label="$t('views.settings.profile_information.first_name')">
-                                <el-input name="first_name" type="text" prop="first_name" v-model="settingsForm.first_name"></el-input>
-                            </el-form-item>
-                            <el-form-item :label="$t('views.settings.profile_information.last_name')">
-                                <el-input name="last_name" type="text" prop="last_name" v-model="settingsForm.last_name"></el-input>
-                            </el-form-item>
-                            <el-form-item :label="$t('views.settings.profile_information.phone')">
-                                <el-input name="phone" type="text" prop="phone" v-model="settingsForm.phone"></el-input>
-                            </el-form-item>
-                            <el-form-item :label="$t('views.settings.profile_information.llm_api_key')">
-                                <el-input name="llm_api_key" type="text" prop="llm_api_key" v-model="settingsForm.llm_api_key"></el-input>
-                            </el-form-item>
-                            <el-form-item :label="$t('views.settings.profile_information.llm_api_endpoint')">
-                                <el-input name="llm_api_endpoint" type="text" prop="llm_api_endpoint" v-model="settingsForm.llm_api_endpoint"></el-input>
-                            </el-form-item>
-                        </el-form>
-                        <div style="text-align: right">
+                        <!-- Action Buttons -->
+                        <div style="text-align: right; margin-top: 15px">
                             <el-button size="large" type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="updateProfile">
                                 {{ $t("views.settings.profile_information.save_button") }}
                             </el-button>
@@ -64,24 +57,6 @@
             </el-col>
             <!-- ACTION BOXES -->
             <el-col :span="10">
-                <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <span>{{ $t("views.settings.profile_picture.title") }}</span>
-                    </div>
-                    <div>
-                        {{ $t("views.settings.profile_picture.description") }}
-                    </div>
-                </el-card>
-                <el-card class="box-card" style="margin-top: 15px">
-                    <div slot="header" class="clearfix">
-                        <span>{{ $t("views.settings.danger_area.title") }}</span>
-                    </div>
-                    <div style="text-align: right">
-                        <el-button size="large" type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="deleteAccount">
-                            {{ $t("views.settings.danger_area.delete_button") }}
-                        </el-button>
-                    </div>
-                </el-card>
                 <el-card class="box-card" style="margin-top: 15px">
                     <div slot="header" class="clearfix"><span>System debugging</span></div>
                     <el-row type="flex" class="row-bg" justify="space-between">
@@ -93,6 +68,16 @@
                             <el-button size="large" type="primary" :disabled="this.$config.isDemoServer == true" @click="generateBrowserLogFile">Browser log file</el-button>
                         </el-col>
                     </el-row>
+                </el-card>
+                <el-card class="box-card" style="margin-top: 15px">
+                    <div slot="header" class="clearfix">
+                        <span>{{ $t("views.settings.danger_area.title") }}</span>
+                    </div>
+                    <div style="text-align: right">
+                        <el-button size="large" type="primary" :disabled="this.$config.name == 'production' && this.$config.isDemoServer == true" @click="deleteAccount">
+                            {{ $t("views.settings.danger_area.delete_button") }}
+                        </el-button>
+                    </div>
                 </el-card>
             </el-col>
         </el-row>
@@ -143,6 +128,7 @@ export default {
                 phone: null,
                 llm_api_key: null,
                 llm_api_endpoint: null,
+                registration_key: null,
                 profile_picture: null,
                 account_type: null,
                 oid: null,
@@ -158,6 +144,14 @@ export default {
     },
     computed: {
         ...mapGetters(["packageVersion", "packageEnviroment", "user_id", "user_settings_server_address_backend"]),
+        systemUpdate: {
+            get() {
+                return this.$store.getters.systemUpdate;
+            },
+            set(value) {
+                this.$store.dispatch("setSystemUpdate", value);
+            },
+        },
     },
     methods: {
         downloadText(filename, text, type = "text/plain") {
@@ -206,13 +200,14 @@ export default {
                 this.requestLoading = true;
 
                 // Call updateUserProfile API function with form data
-                const response = await updateUserProfile(
-                    this.settingsForm.first_name,
-                    this.settingsForm.last_name,
-                    this.settingsForm.phone,
-                    this.settingsForm.llm_api_key,
-                    this.settingsForm.llm_api_endpoint
-                );
+                const response = await updateUserProfile({
+                    first_name: this.settingsForm.first_name,
+                    last_name: this.settingsForm.last_name,
+                    phone: this.settingsForm.phone,
+                    llm_api_key: this.settingsForm.llm_api_key,
+                    llm_api_endpoint: this.settingsForm.llm_api_endpoint,
+                    registration_key: this.settingsForm.registration_key
+                });
 
                 // Handle response
                 if (response.data.success) {
@@ -235,12 +230,6 @@ export default {
             } finally {
                 this.requestLoading = false;
             }
-        },
-        updateAccount() {
-            this.$message({
-                type: "info",
-                message: "Not available in this version",
-            });
         },
         generateSystemLogFile() {
             this.requestLoading = true;
@@ -287,14 +276,15 @@ export default {
                     }
                 )
                 .then(() => {
-                    this.requestLoading = true;
+                    this.systemUpdate = true;
+
                     ApiSystemUpdate()
                         .then(response => {
                             this.$message({
                                 type: response.data.success === true ? "success" : "error",
                                 message: response.data.message,
                             });
-                            this.requestLoading = false;
+                            this.systemUpdate = false;
                             // refresh page with 2 seconds timeout
                             setTimeout(() => {
                                 window.location.reload();
@@ -308,7 +298,7 @@ export default {
                                 type: "error",
                                 message: "System update failed.",
                             });
-                            this.requestLoading = false;
+                            this.systemUpdate = false;
                         });
                 })
                 .catch(() => {

@@ -17,8 +17,7 @@ const baseUrlPath = "/backend";
  * @param {string} openai_api - OpenAI API key for the user
  * @returns {Promise} A Promise that resolves to the response of the update profile request.
  */
-export function updateUserProfile(first_name, last_name, phone, llm_api_key, llm_api_endpoint) {
-    const data = { first_name, last_name, phone, llm_api_key, llm_api_endpoint };
+export function updateUserProfile(data) {
     return request({
         url: baseUrlPath + "/user/update-profile",
         method: "POST",
@@ -74,6 +73,13 @@ export function userDetials() {
 export function checkUpdates() {
     return request({
         url: baseUrlPath + "/system/check-updates",
+        method: "GET",
+    });
+}
+
+export function checkRegistration() {
+    return request({
+        url: baseUrlPath + "/system/check-registration",
         method: "GET",
     });
 }

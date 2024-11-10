@@ -16,6 +16,8 @@ const main = {
         language: estore.get("main-language") || "en",
         is_configured: estore.get("main-is_configured") || false,
 
+        registration_check_counter: estore.get("main-registration_check_counter") || 0,
+
         selectedFiles: estore.get("main-selectedFiles") || [],
         selectedFileDetails: estore.get("main-selectedFileDetails") || { id: null, columns: [], summary: [] },
 
@@ -66,6 +68,10 @@ const main = {
         SET_IS_CONFIGURED: (state, status) => {
             state.is_configured = status;
             estore.set("main-is_configured", status);
+        },
+        SET_REGISTRATION_CHECK_COUNTER: (state, registration_check_counter) => {
+            state.registration_check_counter = registration_check_counter;
+            estore.set("main-registration_check_counter", registration_check_counter);
         },
         SET_SELECTED_FILES: (state, selectedFiles) => {
             state.selectedFiles = selectedFiles;
@@ -118,8 +124,14 @@ const main = {
             console.log("setting language: " + language);
             commit("SET_LANGUAGE", language);
         },
+        setRegistrationCheckCounter({ commit }, registration_check_counter) {
+            commit("SET_REGISTRATION_CHECK_COUNTER", registration_check_counter);
+        },
         setIsConfigured({ commit }, status) {
             commit("SET_IS_CONFIGURED", status);
+        },
+        setSystemUpdate({ commit }, systemUpdate) {
+            commit("SET_BACKEND_SYSTEM_UPDATE", systemUpdate);
         },
         setSelectedFiles({ commit }, selectedFiles) {
             commit("SET_SELECTED_FILES", selectedFiles);

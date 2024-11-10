@@ -6,6 +6,7 @@ const getters = {
     systemUpdate: (state) => state.main.systemUpdate,
     language: (state) => state.main.language,
     is_configured: (state) => state.main.is_configured,
+    registrationCheckCounter: (state) => state.main.registration_check_counter,
     selectedFiles: (state) => state.main.selectedFiles,
     selectedFileDetails: (state) => state.main.selectedFileDetails,
     packageVersion: (state) => state.main.packageVersion,
