@@ -12,7 +12,7 @@
             <span>{{ $t("globals.errors.unsupported_device") }}</span>
         </div>
         <!-- System update overlay and notification -->
-        <div v-if="systemUpdate">
+        <div v-if="systemUpdate === true">
             <div class="system_update-overlay"></div>
             <div class="system_update">
                 <span>System update in progress. Please wait!</span>

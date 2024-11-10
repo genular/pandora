@@ -12,7 +12,7 @@ const main = {
         },
         is_online: false,
         backendServerLoad: {},
-        systemUpdate: false,
+        systemUpdate: estore.get("main-systemUpdate") || false,
         language: estore.get("main-language") || "en",
         is_configured: estore.get("main-is_configured") || false,
 
