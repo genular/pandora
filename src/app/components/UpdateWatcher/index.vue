@@ -61,9 +61,10 @@ export default {
             try {
                 const response = await checkRegistration();
 
-                if (response.data.status === false) {
+
+                if (response.data.success === false) {
                     // Display message and prepare to log out the user if registration is invalid
-                    this.$message.error("Your registration key is invalid. Please update it in Settings to continue, or you will be logged out in 15 minutes.");
+                    this.$message.error("Your registration key is invalid. Please update it in Settings to continue, or you will be irreversibly logged out in 15 minutes.");
                     this.registrationCheckCounter++;
                     if (this.registrationCheckCounter > 5) {
                         this.logoutUser();
