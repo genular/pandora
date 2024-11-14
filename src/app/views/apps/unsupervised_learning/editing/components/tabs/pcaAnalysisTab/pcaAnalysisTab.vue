@@ -1635,11 +1635,16 @@ export default {
     },
 };
 </script>
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scoped>
 .tab_intro_text {
     text-align: left;
     float: left;
     font-size: 16px;
     padding: 20px;
 }
+
+.analysis_images {
+    max-width: 50%;
+}
+
 </style>
