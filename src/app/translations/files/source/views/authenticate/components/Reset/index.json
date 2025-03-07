@@ -4,9 +4,13 @@
 			"components": {
 				"Reset": {
 					"title": "Reset password",
-					"description": "In order to reset your password please enter your email",
-					"placeholder": "email@example.com",
-					"reset_button": "Reset password"
+					"description": "Please enter your Email and Registration Key.",
+					"email": "email@example.com",
+					"password": "Your new password",
+					"registration_key": "Your existing registration key",
+					"reset_button": "Reset password",
+					"success_message": "Password reset successful! Redirecting to login...",
+					"error_message": "Password reset failed."
 				}
 			}
 		}

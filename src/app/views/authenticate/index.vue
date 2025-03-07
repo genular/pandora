@@ -24,7 +24,7 @@
                 <div title="Go back to login form" v-if="action != 'login'" class="go-back" @click="navigateTo('login')">x</div>
                 <login :action="action" v-if="action === 'login'"></login>
                 <register :usertype="usertype" :step="step" :action="action" v-if="action === 'register'"></register>
-                <!-- <reset :action="action" v-if="action === 'reset'"></reset> -->
+                <reset :action="action" v-if="action === 'reset'"></reset>
             </div>
         </div>
         <el-dialog :title="$t('views.authenticate.index.dialog.title')" :visible.sync="backendServersError" :before-close="redirectToHomepage" center :close-on-click-modal="false">

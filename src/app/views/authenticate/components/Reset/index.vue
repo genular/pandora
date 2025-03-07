@@ -4,9 +4,26 @@
         <div class="lead">{{ $t("views.authenticate.components.Reset.description") }}</div>
         <el-row>
             <el-col>
-                <el-form disabled class="reset-tab-form" size="large" autoComplete="on" :model="resetForm" ref="resetForm" label-position="left">
+                <el-form class="reset-tab-form" size="large" autoComplete="on" :model="resetForm" ref="resetForm" label-position="left">
                     <el-form-item>
-                        <el-input name="email" type="email" v-model="resetForm.email" autoComplete="on" :placeholder="$t('views.authenticate.components.Reset.placeholder')" />
+                        <el-input name="email" type="email" v-model="resetForm.email" autoComplete="on" :placeholder="$t('views.authenticate.components.Reset.email')" />
+                    </el-form-item>
+                    <el-form-item>
+                        <el-input name="password" type="password" v-model="resetForm.password" autoComplete="on" :placeholder="$t('views.authenticate.components.Reset.password')" />
+                    </el-form-item>
+                    <el-form-item>
+                        <el-input
+                            name="registration_key"
+                            type="registration_key"
+                            v-model="resetForm.registration_key"
+                            autoComplete="on"
+                            :placeholder="$t('views.authenticate.components.Reset.registration_key')"
+                        />
+                        <!-- Info Text and Link for Registration Code Request -->
+                        <div>
+                            <span>Forgot registration code? </span>
+                            <el-link href="https://pandora.atomic-lab.org/request-api-key/" target="_blank" type="primary">Retrieve it here</el-link>
+                        </div>
                     </el-form-item>
                     <el-row>
                         <el-col :span="24">
@@ -18,21 +35,24 @@
         </el-row>
     </div>
 </template>
+
 <script>
 export default {
     name: "Reset",
     props: {
         action: {
             default: "reset",
-            type: String
-        }
+            type: String,
+        },
     },
     data() {
         return {
             resetForm: {
-                email: null
+                email: null,
+                password: null,
+                registration_key: null,
             },
-            loadingWizard: false
+            loadingWizard: false,
         };
     },
     mounted() {
@@ -40,9 +60,57 @@ export default {
     },
     methods: {
         resetPassword() {
-            console.log("resetPassword");
-        }
-    }
+            this.$refs.resetForm.validate((valid) => {
+                if (valid) {
+                    this.loadingWizard = true;
+                    this.$store
+                        .dispatch("userPasswordReset", this.resetForm)
+                        .then((response) => {
+                            this.loadingWizard = false;
+
+                            // Check if backend responded with success
+                            if (response && response.success === true) {
+                                // Display success message
+                                this.$message({
+                                    type: "success",
+                                    message: this.$t("views.authenticate.components.Reset.success_message") || 
+                                             "Password reset successful! Redirecting to login...",
+                                    duration: 3000 // 3 seconds
+                                });
+
+                                // Redirect to login after 3 seconds
+                                setTimeout(() => {
+                                    this.$router.push({ name: "login" }); 
+                                    // or this.$router.push("/login")
+                                }, 3000);
+
+                            } else {
+                                // Show an error message if not successful
+                                this.$message({
+                                    type: "error",
+                                    message: response.message || 
+                                             this.$t("views.authenticate.components.Reset.error_message") ||
+                                             "Password reset failed.",
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            this.loadingWizard = false;
+                            console.log(error);
+                            // Show a generic error message
+                            this.$message({
+                                type: "error",
+                                message: this.$t("views.authenticate.components.Reset.error_message") ||
+                                         "An unexpected error occurred.",
+                            });
+                        });
+                } else {
+                    // Form validation failed
+                    return false;
+                }
+            });
+        },
+    },
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">

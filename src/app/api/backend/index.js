@@ -42,6 +42,19 @@ export function userLogin(username, password) {
         data,
     });
 }
+
+export function userPasswordReset(email, password, registration_key) {
+    const data = {
+        email,
+        password,
+        registration_key,
+    };
+    return request({
+        url: baseUrlPath + "/user/password-reset",
+        method: "POST",
+        data,
+    });
+}
 /**
  * @return {[type]}
  */

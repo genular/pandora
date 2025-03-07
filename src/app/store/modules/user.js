@@ -1,5 +1,6 @@
 import {
     userLogin as ApiBackendUserLogin,
+    userPasswordReset as ApiBackendUserPasswordReset,
     userDetials as ApiBackendUserDetails,
     systemConfigure as ApiBackendSystemConfigure,
     userLogout as ApiBackendUserLogout
@@ -83,7 +84,6 @@ const user = {
                     });
             });
         },
-
         userLogin({ commit }, user) {
             return new Promise((resolve, reject) => {
                 ApiBackendUserLogin(user.username, user.password)
@@ -95,6 +95,18 @@ const user = {
                         } else {
                             reject(false);
                         }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        reject(error);
+                    });
+            });
+        },
+        userPasswordReset({ commit }, user) {
+            return new Promise((resolve, reject) => {
+                ApiBackendUserPasswordReset(user.email, user.password, user.registration_key)
+                    .then(response => {
+                        resolve(response.data);
                     })
                     .catch(error => {
                         console.log(error);
