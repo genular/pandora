@@ -7,7 +7,7 @@
                 </div>
                 <div class="card-panel-description">
                     <div class="card-panel-text">{{ $t("views.dashboard.admin.components.PanelGroup.tasks.title") }}</div>
-                    <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_queue)" :duration="1500"></count-to>
+                    <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_queue || 0)" :duration="1500"></count-to>
                 </div>
             </div>
         </el-col>
@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-panel-description">
                     <div class="card-panel-text">{{ $t("views.dashboard.admin.components.PanelGroup.datasets.title") }}</div>
-                    <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_resamples)" :duration="2000"></count-to>
+                    <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_resamples || 0)" :duration="2000"></count-to>
                 </div>
             </div>
         </el-col>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="card-panel-description">
                     <div class="card-panel-text">{{ $t("views.dashboard.admin.components.PanelGroup.models.title") }}</div>
-                    <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_models)" :duration="2500"></count-to>
+                    <count-to class="card-panel-num" :startVal="0" :endVal="parseInt(statistics.total_models || 0)" :duration="2500"></count-to>
                 </div>
             </div>
         </el-col>

@@ -1,14 +1,7 @@
 <template>
     <div class="queue-list-container" v-loading="queueListLoading" :element-loading-text="$t('globals.page_loading')">
         <div class="filter-container">
-            <el-input
-                @keyup.enter.native="handleFilter"
-                style="width: 300px"
-                class="filter-item"
-                :placeholder="$t('views.dashboard.admin.components.QueueTable.filters.queue_id.placeholder')"
-                size="large"
-                v-model="queueFilterQuery.queueID"
-            ></el-input>
+            <el-input @keyup.enter.native="handleFilter" style="width: 300px" class="filter-item" :placeholder="$t('views.dashboard.admin.components.QueueTable.filters.queue_id.placeholder')" size="large" v-model="queueFilterQuery.queueID"></el-input>
             <el-select @change="handleFilter" size="large" style="width: 140px" class="filter-item" v-model="queueFilterQuery.sort">
                 <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"></el-option>
             </el-select>
@@ -18,51 +11,21 @@
             <el-button class="filter-item" size="large" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">
                 {{ $t("views.dashboard.admin.components.QueueTable.filters.buttons.export") }}
             </el-button>
-            <el-button
-                v-if="selectedQueueIDs.length > 0"
-                :title="$t('views.dashboard.admin.components.QueueTable.table.operations.delete.title')"
-                class="filter-item"
-                type="primary"
-                size="large"
-                v-waves
-                icon="el-icon-delete"
-                @click="handleOperationsMultiple('delete')"
-            ></el-button>
+            <el-button v-if="selectedQueueIDs.length > 0" :title="$t('views.dashboard.admin.components.QueueTable.table.operations.delete.title')" class="filter-item" type="primary" size="large" v-waves icon="el-icon-delete" @click="handleOperationsMultiple('delete')"></el-button>
         </div>
         <!-- Queue Table -->
-        <el-table
-            :data="queueList"
-            ref="queueTable"
-            :empty-text="$t('views.dashboard.admin.components.QueueTable.table.no_data')"
-            row-key="queueID"
-            stripe
-            :border="true"
-            size="large"
-            fit
-            class="queue-list-container-table"
-            highlight-current-row
-            @current-change="selectWorkingQueueID"
-            @selection-change="selectQueueSelection"
-            :row-class-name="queueTableRowClassName"
-            style="width: 100%"
-        >
+        <el-table :data="queueList" ref="queueTable" :empty-text="$t('views.dashboard.admin.components.QueueTable.table.no_data')" row-key="queueID" stripe :border="true" size="large" fit class="queue-list-container-table" highlight-current-row @current-change="selectWorkingQueueID" @selection-change="selectQueueSelection" :row-class-name="queueTableRowClassName" style="width: 100%">
             <el-table-column type="selection" reserve-selection width="40" fixed></el-table-column>
             <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.queue_id')" :show-overflow-tooltip="true" width="65">
                 <template slot-scope="scope">
                     <span>{{ scope.row.queueID }}</span>
                 </template>
             </el-table-column>
-            <el-table-column
-                align="left"
-                :label="$t('views.dashboard.admin.components.QueueTable.table.header.queue_name')"
-                :show-overflow-tooltip="true"
-                prop="queueName"
-                :render-header="
+            <el-table-column align="left" :label="$t('views.dashboard.admin.components.QueueTable.table.header.queue_name')" :show-overflow-tooltip="true" prop="queueName" :render-header="
                     (h, { column, store }) => {
                         return renderHeader(h, { column, store }, 'queueTable');
                     }
-                "
-            >
+                ">
                 <template slot-scope="scope">
                     <div style="display: flex; justify-content: space-between">
                         <span style="float: left; line-height: 32px" class="queue-name" :title="scope.row.queueName" v-show="!scope.row.edit['queueName']">
@@ -71,60 +34,35 @@
                         <div v-if="typeof scope.row.edit['queueName'] !== 'undefined'" style="display: flex; float: right">
                             <!-- update users_files.display_filename -->
                             <el-input style="float: left" v-model="scope.row.queueName" v-show="scope.row.edit['queueName']"></el-input>
-                            <el-button
-                                style="float: right"
-                                @click="editTableField(scope.row, 'queueName')"
-                                :icon="scope.row.edit['queueName'] ? 'el-icon-check' : 'el-icon-edit'"
-                                circle
-                            ></el-button>
+                            <el-button style="float: right" @click="editTableField(scope.row, 'queueName')" :icon="scope.row.edit['queueName'] ? 'el-icon-check' : 'el-icon-edit'" circle></el-button>
                         </div>
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column
-                align="center"
-                :label="$t('views.dashboard.admin.components.QueueTable.table.header.created')"
-                :show-overflow-tooltip="true"
-                prop="created"
-                :render-header="
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.created')" :show-overflow-tooltip="true" prop="created" :render-header="
                     (h, { column, store }) => {
                         return renderHeader(h, { column, store }, 'queueTable');
                     }
-                "
-            >
+                ">
                 <template slot-scope="scope">
                     <span>{{ scope.row.created | parseTime("{y}-{m}-{d} {h}:{i}") }}</span>
                 </template>
             </el-table-column>
-            <el-table-column
-                align="center"
-                :label="$t('views.dashboard.admin.components.QueueTable.table.header.queueProcessingTime')"
-                :show-overflow-tooltip="true"
-                prop="queueProcessingTime"
-                :render-header="
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.queueProcessingTime')" :show-overflow-tooltip="true" prop="queueProcessingTime" :render-header="
                     (h, { column, store }) => {
                         return renderHeader(h, { column, store }, 'queueTable');
                     }
-                "
-            >
+                ">
                 <template slot-scope="scope">
                     <span v-if="scope.row.queueProcessingTime">{{ scope.row.queueProcessingTime | millisecondsToStr }}</span>
                     <span v-else>N/A</span>
                 </template>
             </el-table-column>
-            <el-table-column
-                align="center"
-                class-name="status-col"
-                :label="$t('views.dashboard.admin.components.QueueTable.table.header.status')"
-                :show-overflow-tooltip="true"
-                width="175"
-                prop="status"
-                :render-header="
+            <el-table-column align="center" class-name="status-col" :label="$t('views.dashboard.admin.components.QueueTable.table.header.status')" :show-overflow-tooltip="true" width="175" prop="status" :render-header="
                     (h, { column, store }) => {
                         return renderHeader(h, { column, store }, 'queueTable');
                     }
-                "
-            >
+                ">
                 <template slot-scope="scope">
                     <el-tag :type="statusFilter(scope.row.status, 'class')">
                         {{ statusFilter(scope.row.status, "value") }}
@@ -132,16 +70,11 @@
                     </el-tag>
                 </template>
             </el-table-column>
-            <el-table-column
-                align="center"
-                :label="$t('views.dashboard.admin.components.QueueTable.table.header.extraction.title')"
-                prop="queueExtraction"
-                :render-header="
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.extraction.title')" prop="queueExtraction" :render-header="
                     (h, { column, store }) => {
                         return renderHeader(h, { column, store }, 'queueTable');
                     }
-                "
-            >
+                ">
                 <template slot-scope="scope">
                     <span v-if="scope.row.queueExtraction < 1">
                         {{ $t("views.dashboard.admin.components.QueueTable.table.header.extraction.options.no") }}
@@ -151,16 +84,11 @@
                     </span>
                 </template>
             </el-table-column>
-            <el-table-column
-                align="center"
-                :label="$t('views.dashboard.admin.components.QueueTable.table.header.sparsity')"
-                prop="sparsity"
-                :render-header="
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.sparsity')" prop="sparsity" :render-header="
                     (h, { column, store }) => {
                         return renderHeader(h, { column, store }, 'queueTable');
                     }
-                "
-            >
+                ">
                 <template slot-scope="scope">
                     <span v-if="scope.row.sparsity < 0.5">
                         <span class="el-icon-success"></span>
@@ -176,100 +104,45 @@
                     </span>
                 </template>
             </el-table-column>
-            <el-table-column
-                align="center"
-                :label="$t('views.dashboard.admin.components.QueueTable.table.header.resamples')"
-                prop="resamplesTotal"
-                :render-header="
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.resamples')" prop="resamplesTotal" :render-header="
                     (h, { column, store }) => {
                         return renderHeader(h, { column, store }, 'queueTable');
                     }
-                "
-            >
+                ">
                 <template slot-scope="scope">
                     <span>{{ scope.row.resamplesTotal }}</span>
                 </template>
             </el-table-column>
-            <el-table-column
-                align="center"
-                :label="$t('views.dashboard.admin.components.QueueTable.table.header.modelsTotal')"
-                prop="modelsTotal"
-                :render-header="
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.modelsTotal')" prop="modelsTotal" :render-header="
                     (h, { column, store }) => {
                         return renderHeader(h, { column, store }, 'queueTable');
                     }
-                "
-            >
+                ">
                 <template slot-scope="scope">
                     <span>{{ scope.row.modelsTotal }} / {{ scope.row.packages.length * scope.row.resamplesTotal }}</span>
                 </template>
             </el-table-column>
-            <el-table-column
-                align="center"
-                :label="$t('views.dashboard.admin.components.QueueTable.table.header.modelsSuccess')"
-                prop="modelsSuccess"
-                :render-header="
+            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.table.header.modelsSuccess')" prop="modelsSuccess" :render-header="
                     (h, { column, store }) => {
                         return renderHeader(h, { column, store }, 'queueTable');
                     }
-                "
-            >
+                ">
                 <template slot-scope="scope">
                     <span>{{ scope.row.modelsSuccess }}</span>
                 </template>
             </el-table-column>
             <el-table-column class-name="settings" fixed="right" :label="$t('views.dashboard.admin.components.QueueTable.table.header.operations')" width="230">
                 <template slot-scope="scope">
-                    <el-button
-                        size="mini"
-                        :title="$t('views.dashboard.admin.components.QueueTable.table.operations.info.title')"
-                        type="success"
-                        plain
-                        round
-                        icon="el-icon-info"
-                        @click="handleOperations('info', scope.row)"
-                    ></el-button>
-                    <el-button
-                        size="mini"
-                        :title="$t('views.dashboard.admin.components.QueueTable.table.operations.download.title')"
-                        type="success"
-                        icon="el-icon-download"
-                        @click="handleOperations('download', scope.row)"
-                    ></el-button>
-                    <el-button
-                        size="mini"
-                        :title="$t('views.dashboard.admin.components.QueueTable.table.operations.delete.title')"
-                        type="danger"
-                        icon="el-icon-delete"
-                        @click="handleOperations('delete', scope.row)"
-                    ></el-button>
-                    <el-button
-                        size="mini"
-                        :title="$t('views.dashboard.admin.components.QueueTable.table.operations.pause.title')"
-                        type="warning"
-                        plain
-                        round
-                        icon="el-icon-refresh"
-                        disabled
-                        @click="handleOperations('toggle', scope.row)"
-                    ></el-button>
+                    <el-button size="mini" :title="$t('views.dashboard.admin.components.QueueTable.table.operations.info.title')" type="success" plain round icon="el-icon-info" @click="handleOperations('info', scope.row)"></el-button>
+                    <el-button size="mini" :title="$t('views.dashboard.admin.components.QueueTable.table.operations.download.title')" type="success" icon="el-icon-download" @click="handleOperations('download', scope.row)"></el-button>
+                    <el-button size="mini" :title="$t('views.dashboard.admin.components.QueueTable.table.operations.delete.title')" type="danger" icon="el-icon-delete" @click="handleOperations('delete', scope.row)"></el-button>
+                    <el-button size="mini" :title="$t('views.dashboard.admin.components.QueueTable.table.operations.pause.title')" type="warning" plain round icon="el-icon-refresh" disabled @click="handleOperations('toggle', scope.row)"></el-button>
                 </template>
             </el-table-column>
         </el-table>
         <div class="pagination-container">
-            <el-pagination
-                background
-                size="large"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page.sync="queueFilterQuery.page"
-                :page-sizes="[10, 20, 30, 50]"
-                :page-size="queueFilterQuery.limit"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="queueTotalItems"
-            ></el-pagination>
+            <el-pagination background size="large" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="queueFilterQuery.page" :page-sizes="[10, 20, 30, 50]" :page-size="queueFilterQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="queueTotalItems"></el-pagination>
         </div>
-
         <!-- Queue Details Info Dialog -->
         <el-dialog :visible.sync="dialogQueueDetails" :before-close="closeQueueDetailsDialog" width="75%" center>
             <span slot="title">
@@ -278,20 +151,8 @@
                         <span>{{ $t("views.dashboard.admin.components.QueueTable.dialog.title") }}</span>
                     </el-col>
                     <el-col :span="12" style="text-align: right" v-if="performaceVariables[selectedResampleIDsHash]">
-                        <el-select
-                            style="padding-right: 25px; width: 100%"
-                            v-model="selectedPerformace"
-                            multiple
-                            filterable
-                            size="large"
-                            :placeholder="$t('globals.performanceVariables.placeholder')"
-                        >
-                            <el-option
-                                v-for="item in performaceVariables[selectedResampleIDsHash]"
-                                :key="item"
-                                :value="item"
-                                :label="$t(['globals.performanceVariables.options.', item, '.title'].join(''))"
-                            >
+                        <el-select style="padding-right: 25px; width: 100%" v-model="selectedPerformace" multiple filterable size="large" :placeholder="$t('globals.performanceVariables.placeholder')">
+                            <el-option v-for="item in performaceVariables[selectedResampleIDsHash]" :key="item" :value="item" :label="$t(['globals.performanceVariables.options.', item, '.title'].join(''))">
                                 <span>{{ $t("globals.performanceVariables.options." + item + ".title") }}</span>
                             </el-option>
                         </el-select>
@@ -308,48 +169,26 @@
                     </el-col>
                 </el-row>
             </span>
-
             <span>
                 <!-- Resample data -->
                 <el-row align="top">
                     <el-col :span="24">
-                        <el-table
-                            ref="resamplesDetailsTable"
-                            :data="resamplesList[selectedQueueID]"
-                            :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')"
-                            @selection-change="getDatasetResamplesModels"
-                            row-key="resampleID"
-                            :border="true"
-                            fit
-                            style="width: 100%"
-                            size="large"
-                            height="250"
-                        >
+                        <el-table ref="resamplesDetailsTable" :data="resamplesList[selectedQueueID]" :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')" @selection-change="getDatasetResamplesModels" row-key="resampleID" :border="true" fit style="width: 100%" size="large" height="250">
                             <el-table-column type="selection" reserve-selection width="50" fixed></el-table-column>
-                            <el-table-column
-                                align="center"
-                                :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.resample_id')"
-                                prop="resampleID"
-                                :render-header="
+                            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.resample_id')" prop="resampleID" :render-header="
                                     (h, { column, store }) => {
                                         return renderHeader(h, { column, store }, 'resamplesDetailsTable');
                                     }
-                                "
-                            >
+                                ">
                                 <template slot-scope="scope">
                                     <span>{{ scope.row.resampleID }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.processingTime')"
-                                prop="processing_time"
-                                :render-header="
+                            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.processingTime')" prop="processing_time" :render-header="
                                     (h, { column, store }) => {
                                         return renderHeader(h, { column, store }, 'resamplesDetailsTable');
                                     }
-                                "
-                            >
+                                ">
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.processing_time">{{ scope.row.processing_time | millisecondsToStr }}</span>
                                     <span v-else>N/A</span>
@@ -363,14 +202,12 @@
                                             <span class="el-icon-more"></span>
                                         </el-tooltip>
                                     </div>
-
                                     <div v-else-if="scope.row.dataSource === 2">
                                         <el-tooltip class="item" effect="dark" placement="top-start">
                                             <div slot="content">Original RFE</div>
                                             <span class="el-icon-more"></span>
                                         </el-tooltip>
                                     </div>
-
                                     <div v-else>
                                         <el-tooltip class="item" effect="dark" placement="top-start">
                                             <div slot="content">{{ $t("views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.source.options.predicted") }}</div>
@@ -379,80 +216,51 @@
                                     </div>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                prop="samplesTotal"
-                                sortable
-                                :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples')"
-                                :render-header="
+                            <el-table-column align="center" prop="samplesTotal" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples')" :render-header="
                                     (h, { column, store }) => {
                                         return renderHeader(h, { column, store }, 'resamplesDetailsTable');
                                     }
-                                "
-                            >
+                                ">
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.samplesTotal">{{ scope.row.samplesTotal }}</span>
                                     <span v-else>N/A</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                prop="featuresTotal"
-                                sortable
-                                :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_features')"
-                                :render-header="
+                            <el-table-column align="center" prop="featuresTotal" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_features')" :render-header="
                                     (h, { column, store }) => {
                                         return renderHeader(h, { column, store }, 'resamplesDetailsTable');
                                     }
-                                "
-                            >
+                                ">
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.featuresTotal">{{ scope.row.featuresTotal }}</span>
                                     <span v-else>N/A</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                prop="samplesTraining"
-                                sortable
-                                :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples_training')"
-                                :render-header="
+                            <el-table-column align="center" prop="samplesTraining" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples_training')" :render-header="
                                     (h, { column, store }) => {
                                         return renderHeader(h, { column, store }, 'resamplesDetailsTable');
                                     }
-                                "
-                            >
+                                ">
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.samplesTraining">{{ scope.row.samplesTraining }}</span>
                                     <span v-else>N/A</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                prop="samplesTesting"
-                                sortable
-                                :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples_testing')"
-                                :render-header="
+                            <el-table-column align="center" prop="samplesTesting" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_samples_testing')" :render-header="
                                     (h, { column, store }) => {
                                         return renderHeader(h, { column, store }, 'resamplesDetailsTable');
                                     }
-                                "
-                            >
+                                ">
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.samplesTesting">{{ scope.row.samplesTesting }}</span>
                                     <span v-else>N/A</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_models_processed')"
-                                prop="modelsTotal"
-                                :render-header="
+                            <el-table-column align="center" :label="$t('views.dashboard.admin.components.QueueTable.dialog.resamples_table.header.total_models_processed')" prop="modelsTotal" :render-header="
                                     (h, { column, store }) => {
                                         return renderHeader(h, { column, store }, 'resamplesDetailsTable');
                                     }
-                                "
-                            >
+                                ">
                                 <template slot-scope="scope">
                                     <span>{{ scope.row.modelsTotal }}</span>
                                 </template>
@@ -460,38 +268,18 @@
                         </el-table>
                     </el-col>
                 </el-row>
-
                 <!-- Model Details data -->
                 <el-row>
                     <el-col :span="24">
-                        <el-table
-                            ref="modelDetailsTable"
-                            v-loading="modelsListLoading"
-                            @sort-change="
+                        <el-table ref="modelDetailsTable" v-loading="modelsListLoading" @sort-change="
                                 ({ column, prop, order }) => {
                                     deepSort({ column, prop, order }, 'modelsList', null, null, null);
                                 }
-                            "
-                            :data="modelsList"
-                            :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')"
-                            :row-class-name="modelDetailsTableRowClassName"
-                            row-key="modelID"
-                            style="width: 100%"
-                            height="300"
-                            size="large"
-                        >
-                            <el-table-column
-                                fixed
-                                align="center"
-                                width="50"
-                                prop="status"
-                                :filters="[
+                            " :data="modelsList" :empty-text="$t('views.dashboard.admin.components.QueueTable.dialog.no_data')" :row-class-name="modelDetailsTableRowClassName" row-key="modelID" style="width: 100%" height="300" size="large">
+                            <el-table-column fixed align="center" width="50" prop="status" :filters="[
                                     { text: 'Failed', value: 0 },
                                     { text: 'Success', value: 1 },
-                                ]"
-                                :filter-method="filterModelStatus"
-                                filter-placement="bottom-end"
-                            >
+                                ]" :filter-method="filterModelStatus" filter-placement="bottom-end">
                                 <template slot-scope="scope">
                                     <div v-if="scope.row.status > 0"><span class="el-icon-success"></span></div>
                                     <div v-else>
@@ -515,36 +303,19 @@
                                     <span>{{ scope.row.modelID }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                align="left"
-                                prop="modelName"
-                                sortable
-                                :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.analasys_method')"
-                            >
+                            <el-table-column align="left" prop="modelName" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.analasys_method')">
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.modelName">{{ scope.row.modelName }}</span>
                                     <span v-else>N/A</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                prop="training_time"
-                                sortable
-                                :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.processing_time')"
-                            >
+                            <el-table-column align="center" prop="training_time" sortable :label="$t('views.dashboard.admin.components.QueueTable.dialog.models_table.header.processing_time')">
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.training_time">{{ scope.row.training_time | millisecondsToStr }}</span>
                                     <span v-else>N/A</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column
-                                v-for="(performanceItem, performanceIndex) in selectedPerformace"
-                                :prop="'performance|' + performanceItem"
-                                :key="performanceItem + '_' + performanceIndex"
-                                :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))"
-                                sortable="custom"
-                                @sort-orders="['ascending', 'descending']"
-                            >
+                            <el-table-column v-for="(performanceItem, performanceIndex) in selectedPerformace" :prop="'performance|' + performanceItem" :key="performanceItem + '_' + performanceIndex" :label="$t(['globals.performanceVariables.options.', performanceItem, '.title'].join(''))" sortable="custom" @sort-orders="['ascending', 'descending']">
                                 <template slot-scope="scope">
                                     <span v-if="typeof scope.row.performance !== 'undefined' && scope.row.performance[performanceItem]">
                                         {{ scope.row.performance[performanceItem] }}
@@ -607,8 +378,7 @@ export default {
                 queueID: undefined,
                 sort: "+",
             },
-            sortOptions: [
-                {
+            sortOptions: [{
                     label: this.$t("views.dashboard.admin.components.QueueTable.filters.queue_id.sorting.ascending"),
                     key: "+",
                 },
@@ -648,14 +418,14 @@ export default {
         // Set the timer to get new data each 60 seconds
         if (this.updateInterval === null) {
             this.updateInterval = setInterval(
-                function () {
+                function() {
                     this.getDatasetQueueList();
                 }.bind(this),
                 10000
             );
         }
     },
-    beforeDestroy: function () {
+    beforeDestroy: function() {
         clearInterval(this.updateInterval);
         this.updateInterval = null;
     },
@@ -663,7 +433,7 @@ export default {
         queueTableRowClassName({ row, rowIndex }) {
             // Base class for all rows
             const baseClass = 'queue-row';
-            
+
             // Determine additional class based on status using a switch statement for clarity
             let statusClass = '';
             switch (row.status) {
@@ -757,8 +527,7 @@ export default {
                 element = h("span", { class: "custom-table-header-labels" + sortable }, [
                     h("span", { class: "custom-table-header-labels-text" }, [
                         h(
-                            "el-tooltip",
-                            {
+                            "el-tooltip", {
                                 props: { content: column.label, placement: "top" },
                             },
                             [h("span", { class: "custom-table-header-text-" + column.property }, column.label)]
@@ -800,7 +569,7 @@ export default {
                     arrayData = this[dataArray];
                 }
 
-                let arraySorted = arrayData.sort(function (obj1, obj2) {
+                let arraySorted = arrayData.sort(function(obj1, obj2) {
                     if (typeof obj1.performance !== "undefined" && typeof obj2.performance !== "undefined") {
                         // Ascending
                         return obj1.performance[pref] - obj2.performance[pref];
@@ -840,7 +609,7 @@ export default {
                                     dangerouslyUseHTMLString: true,
                                     callback: (action) => {},
                                 });
-                            }else{
+                            } else {
                                 console.log(response.data);
                             }
                             this.queueListLoading = false;
@@ -868,12 +637,11 @@ export default {
                         const queueID = rowInfo.queueID;
 
                         this.$confirm(
-                            this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.dialog.description"),
-                            this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.dialog.title"),
-                            {
-                                type: "warning",
-                            }
-                        )
+                                this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.dialog.description"),
+                                this.$t("views.dashboard.admin.components.QueueTable.table.operations.delete.dialog.title"), {
+                                    type: "warning",
+                                }
+                            )
                             .then((_) => {
                                 if (this.$config.isDemoServer) {
                                     this.$message({
@@ -891,14 +659,14 @@ export default {
                                             message: this.$t("globals.messages.success"),
                                         });
                                         this.queueListLoading = false;
-                                        
+
                                         this.$nextTick(() => {
                                             // Force update of the table
                                             this.queueListHash = "";
                                             this.getDatasetQueueList();
                                             this.$refs.queueTable.doLayout()
                                         });
-                                       
+
                                         console.log(response);
                                     })
                                     .catch((error) => {
@@ -985,24 +753,38 @@ export default {
             if (this.queueListHash === "") {
                 this.queueListLoading = true;
             }
+
             apiFetchQueueList(this.queueFilterQuery)
                 .then((response) => {
-                    const queueData = response.data.message;
+                    // Make sure response.data and response.data.message are valid
+                    const queueData = response && response.data ? response.data.message : undefined;
+
+                    if (!queueData || !queueData.queueList) {
+                        // If we do not have the data shape we expect, handle it gracefully:
+                        console.warn("No queue data or queueList found in response.");
+                        // You could set a default or return early
+                        this.queueListLoading = false;
+                        return;
+                    }
+
+                    // If the data is valid, proceed as usual
                     const queueListHash = md5String(JSON.stringify(queueData));
-                    // Update elements only if needed to avoid DOM rendering
                     if (this.queueListHash !== queueListHash) {
                         this.queueListHash = queueListHash;
-
                         this.queueList = queueData.queueList;
                         this.queueTotalItems = queueData.queueTotalItems;
                     }
-                    
+
+                    // Turn off the loading indicator if it was on
                     if (this.queueListLoading === true) {
                         this.queueListLoading = false;
                     }
                 })
                 .catch((error) => {
                     console.log("==> Cannot get dashboard queue stats: " + error);
+                    console.log(response);
+
+                    this.queueListLoading = false;
                 });
         },
         getDatasetResamples(pqid, status) {
@@ -1149,21 +931,21 @@ export default {
         },
     },
     watch: {
-        selectedQueueID: function (newVal, oldVal) {
+        selectedQueueID: function(newVal, oldVal) {
             if (newVal === "") {
                 this.$refs.queueTable.setCurrentRow();
             }
         },
 
-        selectedPerformace: function (newVal, oldVal) {
+        selectedPerformace: function(newVal, oldVal) {
             this.$nextTick(() => {
                 this.$refs.modelDetailsTable.doLayout();
             });
         },
     },
 };
-</script>
 
+</script>
 <style rel="stylesheet/scss" lang="scss">
 .queue-list-container {
     .queue-list-container-table {
@@ -1188,23 +970,57 @@ export default {
         $error-color: #d32f2f;
 
         .queue-row {
-            &.created-row { background-color: #e7f4ff; } // Very light blue for created rows
-            &.confirmed-active-row { background-color: #d9f7be; } // Soft green for active confirmations
-            &.canceled-inactive-row { background-color: #ffdce0; } // Light pink for canceled
-            &.marked-processing-row { background-color: #fff5c4; } // Light yellow for pending processing
-            &.processing-row { background-color: #cceeff; } // Lighter blue for processing
+            &.created-row {
+                background-color: #e7f4ff;
+            }
+
+            // Very light blue for created rows
+            &.confirmed-active-row {
+                background-color: #d9f7be;
+            }
+
+            // Soft green for active confirmations
+            &.canceled-inactive-row {
+                background-color: #ffdce0;
+            }
+
+            // Light pink for canceled
+            &.marked-processing-row {
+                background-color: #fff5c4;
+            }
+
+            // Light yellow for pending processing
+            &.processing-row {
+                background-color: #cceeff;
+            }
+
+            // Lighter blue for processing
             &.success-row {
                 background-color: #e6ffed; // Light green for success
                 color: $success-color; // Darker green text for better contrast and readability
                 cursor: pointer; // Change cursor to pointer on hover for better UX
             }
+
             &.error-row {
                 background-color: #ffebee; // Very light red for errors
                 color: $error-color; // Dark red text for visibility
             }
-            &.paused-row { background-color: #fef7e0; } // Pale yellow for paused
-            &.resumed-row { background-color: #e0f7ff; } // Very light cyan for resumed
-            &.unknown-status-row { background-color: #e0e0e0; } // Grey indicating an unknown status
+
+            &.paused-row {
+                background-color: #fef7e0;
+            }
+
+            // Pale yellow for paused
+            &.resumed-row {
+                background-color: #e0f7ff;
+            }
+
+            // Very light cyan for resumed
+            &.unknown-status-row {
+                background-color: #e0e0e0;
+            }
+
+            // Grey indicating an unknown status
         }
     }
 
@@ -1212,6 +1028,7 @@ export default {
         padding: 0 20px;
     }
 }
+
 .el-table .warning-row {
     background-color: rgba(53, 34, 74, 0.05);
 }
